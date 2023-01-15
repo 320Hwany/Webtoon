@@ -11,7 +11,7 @@ public class CartoonRepositoryImpl implements CartoonRepository {
     private final CartoonJpaRepository cartoonJpaRepository;
 
     @Override
-    public void save(Cartoon cartoon) {
-        cartoonJpaRepository.save(cartoon);
+    public Cartoon save(Cartoon cartoon) {
+        return cartoonJpaRepository.save(cartoon);
     }
 }

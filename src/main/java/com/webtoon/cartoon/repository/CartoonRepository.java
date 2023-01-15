@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CartoonRepository {
 
-    void save(Cartoon cartoon);
+    Cartoon save(Cartoon cartoon);
 }

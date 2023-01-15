@@ -1,21 +1,16 @@
-package com.webtoon.author.domain;
+package com.webtoon.author.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
-@Entity
-public class Author {
+public class AuthorSession implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "author_id")
     private Long id;
 
     private String nickName;
@@ -24,7 +19,8 @@ public class Author {
     private String password;
 
     @Builder
-    public Author(String nickName, String email, String password) {
+    public AuthorSession(Long id, String nickName, String email, String password) {
+        this.id = id;
         this.nickName = nickName;
         this.email = email;
         this.password = password;

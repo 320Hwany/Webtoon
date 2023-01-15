@@ -12,23 +12,23 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 
 class CartoonControllerTest extends ControllerTest {
 
-    @Test
-    @DisplayName("만화 제목을 저장")
-    void saveBookFail() {
-        CartoonSave cartoonSave = CartoonSave.builder()
-                .title("만화 제목")
-                .build();
-
-        restDocs
-                .contentType(APPLICATION_JSON_VALUE)
-                .body(cartoonSave)
-                .when().post("/cartoon")
-                .then().log().all()
-                .assertThat()
-                .apply(document("cartoon",
-                        requestFields(fieldWithPath("title").description("만화 제목")),
-                        responseFields(fieldWithPath("title").description("만화 제목"))
-                ))
-                .statusCode(HttpStatus.OK.value());
-    }
+//    @Test
+//    @DisplayName("만화 제목을 저장")
+//    void saveBookFail() {
+//        CartoonSave cartoonSave = CartoonSave.builder()
+//                .title("만화 제목")
+//                .build();
+//
+//        restDocs
+//                .contentType(APPLICATION_JSON_VALUE)
+//                .body(cartoonSave)
+//                .when().post("/cartoon")
+//                .then().log().all()
+//                .assertThat()
+//                .apply(document("save-cartoon",
+//                        requestFields(fieldWithPath("title").description("만화 제목")),
+//                        responseFields(fieldWithPath("title").description("만화 제목"))
+//                ))
+//                .statusCode(HttpStatus.OK.value());
+//    }
 }

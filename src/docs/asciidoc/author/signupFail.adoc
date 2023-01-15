@@ -1,0 +1,12 @@
+= 작가 회원가입 실패
+:toc:
+
+== 요청
+
+include::{snippets}/author/signupFail/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/author/signupFail/http-response.adoc[]
+
