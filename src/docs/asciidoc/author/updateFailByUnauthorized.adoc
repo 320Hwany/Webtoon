@@ -1,0 +1,11 @@
+= 로그인을 하지 않으면 작가 정보를 수정할 수 없습니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/author/updateFail/unauthorized/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/author/updateFail/unauthorized/http-response.adoc[]

@@ -1,0 +1,11 @@
+= 작가 계정 삭제 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/author/delete/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/author/delete/http-response.adoc[]

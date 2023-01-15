@@ -1,5 +1,6 @@
 package com.webtoon.global.config;
 
+import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.dto.request.AuthorSession;
 import com.webtoon.author.exception.AuthorUnauthorizedException;
 import com.webtoon.author.repository.AuthorRepository;
@@ -21,8 +22,11 @@ public class AuthorArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(LoginForAuthor.class);
+        boolean hasAuthorSessionType = parameter.getParameterType().equals(AuthorSession.class);
+        boolean hasLoginForAuthorAnnotation = parameter.hasParameterAnnotation(LoginForAuthor.class);
+        return hasAuthorSessionType && hasLoginForAuthorAnnotation;
     }
+
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {

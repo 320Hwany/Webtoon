@@ -1,0 +1,11 @@
+= 로그인을 하지 않으면 계정을 삭제할 수 없습니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/author/delete/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/author/delete/http-response.adoc[]

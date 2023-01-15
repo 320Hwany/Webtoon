@@ -1,5 +1,6 @@
 package com.webtoon.author.domain;
 
+import com.webtoon.author.dto.request.AuthorUpdate;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,5 +29,11 @@ public class Author {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
+    }
+
+    public void update(AuthorUpdate authorUpdate) {
+        this.nickName = authorUpdate.getNickName();
+        this.email = authorUpdate.getEmail();
+        this.password = authorUpdate.getPassword();
     }
 }

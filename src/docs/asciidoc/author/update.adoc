@@ -1,0 +1,11 @@
+= 작가 정보 수정 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/author/update/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/author/update/http-response.adoc[]
