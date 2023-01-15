@@ -1,0 +1,13 @@
+= 만화 저장
+:toc:
+
+== 요청
+
+include::{snippets}/cartoon/http-request.adoc[]
+include::{snippets}/cartoon/request-fields.adoc[]
+
+
+== 응답
+
+include::{snippets}/cartoon/http-response.adoc[]
+include::{snippets}/cartoon/response-fields.adoc[]
