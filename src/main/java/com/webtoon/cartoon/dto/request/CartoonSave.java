@@ -13,6 +13,8 @@ import org.springframework.web.method.annotation.MethodArgumentConversionNotSupp
 
 import javax.validation.constraints.NotBlank;
 
+import static com.webtoon.cartoon.domain.Cartoon.checkEnumTypeValid;
+
 @Getter
 @NoArgsConstructor
 public class CartoonSave {
@@ -32,6 +34,7 @@ public class CartoonSave {
     }
 
     public Cartoon toEntity(Author author) {
+        checkEnumTypeValid(dayOfTheWeek, progress);
         return Cartoon.builder()
                 .title(title)
                 .dayOfTheWeek(DayOfTheWeek.valueOf(dayOfTheWeek))

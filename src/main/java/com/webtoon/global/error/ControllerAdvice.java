@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Map;
+
 import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
@@ -15,7 +17,7 @@ public class ControllerAdvice {
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> notFoundException(MethodArgumentNotValidException e) {
+    public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .statusCode("400")
                 .message("잘못된 요청입니다")
@@ -58,6 +60,8 @@ public class ControllerAdvice {
                 .message(e.getMessage())
                 .build();
 
+        Map<String, String> validation = e.getValidation();
+        errorResponse.addValidation(validation);
         return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
     }
 }

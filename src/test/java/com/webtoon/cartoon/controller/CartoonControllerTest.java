@@ -16,6 +16,10 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 @Transactional
 class CartoonControllerTest extends ControllerTest {
 
+    @BeforeEach
+    void clean() {
+        authorRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("작가로 로그인하면 만화를 등록할 수 있습니다 - 성공")
@@ -69,7 +73,7 @@ class CartoonControllerTest extends ControllerTest {
         MockHttpSession session = loginAuthorSession();
 
         CartoonSave cartoonSave = CartoonSave.builder()
-                .title("")
+                .title("만화 제목")
                 .dayOfTheWeek("")
                 .progress("")
                 .build();

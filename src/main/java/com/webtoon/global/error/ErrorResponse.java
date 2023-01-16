@@ -26,4 +26,8 @@ public class ErrorResponse {
     public void addValidation(FieldError fieldError) {
         validation.put(fieldError.getField(), fieldError.getDefaultMessage());
     }
+
+    public void addValidation(Map<String, String> enumTypeValidation) {
+        validation = enumTypeValidation;
+    }
 }

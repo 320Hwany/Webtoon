@@ -2,6 +2,7 @@ package com.webtoon.cartoon.domain;
 
 import com.webtoon.author.domain.Author;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
+import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Progress;
 import lombok.Builder;
@@ -51,5 +52,29 @@ public class Cartoon {
                 .progress(progress)
                 .author(author)
                 .build();
+    }
+
+    public static void checkEnumTypeValid(String inputDayOfWeek, String inputProgress) {
+        DayOfTheWeek[] DayList = DayOfTheWeek.values();
+        Progress[] progressList = Progress.values();
+        Boolean isDayValid = false;
+        Boolean isProgressValid = false;
+
+        for (DayOfTheWeek day : DayList) {
+            if (inputDayOfWeek.equals(day.getValue())) {
+                isDayValid = true;
+                break;
+            }
+        }
+        for (Progress progress : progressList) {
+            if (inputProgress.equals(progress.getValue())) {
+                isProgressValid = true;
+                break;
+            }
+        }
+
+        if ((isDayValid == false) || (isProgressValid == false)) {
+            throw new EnumTypeValidException(isDayValid, isProgressValid);
+        }
     }
 }
