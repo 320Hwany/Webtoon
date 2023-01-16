@@ -28,11 +28,12 @@ public class AuthorSession implements Serializable {
         this.password = password;
     }
 
-    public AuthorResponse getAuthorResponse() {
-        return AuthorResponse.builder()
-                .nickName(nickName)
-                .email(email)
-                .password(password)
+    public static AuthorSession getFromAuthor(Author author) {
+        return AuthorSession.builder()
+                .id(author.getId())
+                .nickName(author.getNickName())
+                .email(author.getEmail())
+                .password(author.getPassword())
                 .build();
     }
 }

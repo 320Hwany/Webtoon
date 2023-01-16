@@ -1,8 +1,10 @@
 package com.webtoon.cartoon.domain;
 
 import com.webtoon.author.domain.Author;
+import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.util.BaseTimeEntity;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Progress;
 import lombok.Builder;
@@ -11,14 +13,15 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static javax.persistence.EnumType.*;
+import java.io.Serializable;
+
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class Cartoon {
+public class Cartoon extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -27,10 +30,10 @@ public class Cartoon {
 
     private String title;
 
-    @Enumerated(STRING)
+    @Enumerated(EnumType.STRING)
     private DayOfTheWeek dayOfTheWeek;
 
-    @Enumerated(STRING)
+    @Enumerated(EnumType.STRING)
     private Progress progress;
 
     @ManyToOne(fetch = LAZY)
@@ -45,11 +48,11 @@ public class Cartoon {
         this.author = author;
     }
 
-    public CartoonResponse getCartoonResponse() {
-        return CartoonResponse.builder()
-                .title(title)
-                .dayOfTheWeek(dayOfTheWeek)
-                .progress(progress)
+    public static Cartoon getFromCartoonSaveAndAuthor(CartoonSave cartoonSave, Author author) {
+        return Cartoon.builder()
+                .title(cartoonSave.getTitle())
+                .dayOfTheWeek(DayOfTheWeek.valueOf(cartoonSave.getDayOfTheWeek()))
+                .progress(Progress.valueOf(cartoonSave.getProgress()))
                 .author(author)
                 .build();
     }

@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import static com.webtoon.author.domain.Author.invalidateSession;
+
 @RequiredArgsConstructor
 @RestController
 public class AuthorController {
@@ -34,8 +36,7 @@ public class AuthorController {
         AuthorSession authorSession = authorService.makeAuthorSession(authorLogin);
         HttpSession session = httpServletRequest.getSession();
         session.setAttribute("authorSession", authorSession);
-        AuthorResponse authorResponse = authorSession.getAuthorResponse();
-
+        AuthorResponse authorResponse = AuthorResponse.getFromAuthorSession(authorSession);
         return ResponseEntity.ok(authorResponse);
     }
 
@@ -43,25 +44,22 @@ public class AuthorController {
     public ResponseEntity<AuthorResponse> update(@LoginForAuthor AuthorSession authorSession,
                                                  @RequestBody @Valid AuthorUpdate authorUpdate) {
         Author author = authorService.update(authorSession, authorUpdate);
-        AuthorResponse authorResponse = author.getAuthorResponse();
-
+        AuthorResponse authorResponse = AuthorResponse.getFromAuthor(author);
         return ResponseEntity.ok(authorResponse);
     }
 
     @DeleteMapping("/author")
     public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
-                                       HttpServletRequest request) {
+                                       HttpServletRequest httpServletRequest) {
         authorService.delete(authorSession);
-        HttpSession session = request.getSession(false);
-        session.invalidate();
+        invalidateSession(httpServletRequest);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/author/logout")
     public ResponseEntity<Void> logout(@LoginForAuthor AuthorSession authorSession,
-                       HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        session.invalidate();
+                                       HttpServletRequest httpServletRequest) {
+        invalidateSession(httpServletRequest);
         return ResponseEntity.ok().build();
     }
 }

@@ -8,6 +8,7 @@ import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.exception.AuthorDuplicationException;
 import com.webtoon.author.exception.AuthorNotFoundException;
 import com.webtoon.util.ServiceTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AuthorServiceTest extends ServiceTest {
 
     @Autowired
-    protected AuthorService authorService;
+    private AuthorService authorService;
 
     @BeforeEach
     void clean() {
@@ -113,7 +114,7 @@ class AuthorServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("작가 정보 수정에 성공합니다")
+    @DisplayName("작가 정보가 수정됩니다 - 성공")
     void updateSuccess() {
         // given
         Author author = saveAuthorInRepository();
@@ -141,7 +142,29 @@ class AuthorServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("작가 계정 삭제 - 성공")
+    @DisplayName("존재하지 않는 작가 계정이면 수정이 되지 않습니다 - 실패")
+    void updateFail() {
+        // given
+        AuthorSession authorSession = AuthorSession.builder()
+                .id(1L)
+                .nickName("DB에 없는 회원")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        AuthorUpdate authorUpdate = AuthorUpdate.builder()
+                .nickName("수정 닉네임")
+                .email("수정 이메일")
+                .password("4321")
+                .build();
+
+        // expected
+        assertThrows(AuthorNotFoundException.class,
+                () -> authorService.update(authorSession, authorUpdate));
+    }
+
+    @Test
+    @DisplayName("작가 계정이 삭제됩니다 - 성공")
     void delete() {
         // given
         Author author = saveAuthorInRepository();
@@ -159,5 +182,21 @@ class AuthorServiceTest extends ServiceTest {
         // then
         Optional<Author> optionalAuthor = authorRepository.findByNickName(author.getNickName());
         assertThat(optionalAuthor).isEmpty();
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 작가 계정이면 삭제할 수 없습니다 - 실패")
+    void deleteFail() {
+        // given
+        AuthorSession authorSession = AuthorSession.builder()
+                .id(1L)
+                .nickName("DB에 없는 회원")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        // expected
+        assertThrows(AuthorNotFoundException.class,
+                () -> authorService.delete(authorSession));
     }
 }

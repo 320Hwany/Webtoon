@@ -54,7 +54,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-        authorJpaRepository.deleteById(id);
+    public void delete(Author author) {
+        authorJpaRepository.delete(author);
     }
 }

@@ -21,7 +21,8 @@ public class CartoonService {
     @Transactional
     public Cartoon save(CartoonSave cartoonSave, AuthorSession authorSession) {
         Author author = authorRepository.getById(authorSession.getId());
-        Cartoon cartoon = cartoonSave.toEntity(author);
+        Cartoon.checkEnumTypeValid(cartoonSave.getDayOfTheWeek(), cartoonSave.getProgress());
+        Cartoon cartoon = Cartoon.getFromCartoonSaveAndAuthor(cartoonSave, author);
         return cartoonRepository.save(cartoon);
     }
 }

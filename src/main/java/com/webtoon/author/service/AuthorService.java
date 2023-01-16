@@ -29,15 +29,8 @@ public class AuthorService {
 
     public AuthorSession makeAuthorSession(AuthorLogin authorLogin) {
         Author author = authorRepository.getByEmailAndPassword(authorLogin.getEmail(), authorLogin.getPassword());
-        AuthorSession authorSession = author.getAuthorSession();
+        AuthorSession authorSession = AuthorSession.getFromAuthor(author);
         return authorSession;
-    }
-
-    @Transactional
-    public Author update(AuthorSession authorSession, AuthorUpdate authorUpdate) {
-        Author author = authorRepository.getById(authorSession.getId());
-        author.update(authorUpdate);
-        return author;
     }
 
     public void checkDuplication(AuthorSignup authorSignup) {
@@ -49,7 +42,15 @@ public class AuthorService {
     }
 
     @Transactional
+    public Author update(AuthorSession authorSession, AuthorUpdate authorUpdate) {
+        Author author = authorRepository.getById(authorSession.getId());
+        author.update(authorUpdate);
+        return author;
+    }
+
+    @Transactional
     public void delete(AuthorSession authorSession) {
-        authorRepository.deleteById(authorSession.getId());
+        Author author = authorRepository.getById(authorSession.getId());
+        authorRepository.delete(author);
     }
 }

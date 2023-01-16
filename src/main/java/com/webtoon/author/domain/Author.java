@@ -1,20 +1,24 @@
 package com.webtoon.author.domain;
 
-import com.webtoon.author.dto.request.AuthorSession;
 import com.webtoon.author.dto.request.AuthorUpdate;
-import com.webtoon.author.dto.response.AuthorResponse;
+import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class Author {
+public class Author extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -33,26 +37,28 @@ public class Author {
         this.password = password;
     }
 
-    public AuthorResponse getAuthorResponse() {
-        return AuthorResponse.builder()
-                .nickName(nickName)
-                .email(email)
-                .password(password)
-                .build();
-    }
-
-    public AuthorSession getAuthorSession() {
-        return AuthorSession.builder()
-                .id(id)
-                .nickName(nickName)
-                .email(email)
-                .password(password)
-                .build();
-    }
-
     public void update(AuthorUpdate authorUpdate) {
         this.nickName = authorUpdate.getNickName();
         this.email = authorUpdate.getEmail();
         this.password = authorUpdate.getPassword();
+    }
+
+    public static void invalidateSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return Objects.equals(id, author.id) && Objects.equals(nickName, author.nickName)
+                && Objects.equals(email, author.email) && Objects.equals(password, author.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nickName, email, password);
     }
 }
