@@ -1,6 +1,7 @@
 package com.webtoon.author.repository;
 
 import com.webtoon.author.domain.Author;
+import com.webtoon.author.dto.request.AuthorSession;
 import com.webtoon.author.exception.AuthorNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -38,6 +39,13 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     public Author getByEmailAndPassword(String email, String password) {
         return authorJpaRepository.findByEmailAndPassword(email, password)
                 .orElseThrow(AuthorNotFoundException::new);
+    }
+
+    @Override
+    public Boolean checkAuthorPresent(AuthorSession authorSession) {
+        authorJpaRepository.findByEmailAndPassword(authorSession.getEmail(), authorSession.getPassword())
+                .orElseThrow(AuthorNotFoundException::new);
+        return true;
     }
 
     @Override

@@ -23,22 +23,14 @@ public class AuthorService {
     @Transactional
     public Author signup(AuthorSignup authorSignup) {
         checkDuplication(authorSignup);
-        return authorRepository.save(
-                Author.builder()
-                .nickName(authorSignup.getNickName())
-                .email(authorSignup.getEmail())
-                .password(authorSignup.getPassword())
-                .build());
+        Author author = authorSignup.toEntity();
+        return authorRepository.save(author);
     }
 
     public AuthorSession makeAuthorSession(AuthorLogin authorLogin) {
         Author author = authorRepository.getByEmailAndPassword(authorLogin.getEmail(), authorLogin.getPassword());
-        return AuthorSession.builder()
-                .id(author.getId())
-                .nickName(author.getNickName())
-                .email(author.getEmail())
-                .password(author.getPassword())
-                .build();
+        AuthorSession authorSession = author.getAuthorSession();
+        return authorSession;
     }
 
     @Transactional

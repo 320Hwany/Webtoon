@@ -4,6 +4,8 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.author.service.AuthorService;
+import com.webtoon.cartoon.repository.CartoonRepository;
+import com.webtoon.cartoon.service.CartoonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +22,11 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.http.HttpSession;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,6 +44,12 @@ public class ControllerTest {
 
     @Autowired
     protected AuthorRepository authorRepository;
+
+    @Autowired
+    protected CartoonService cartoonService;
+
+    @Autowired
+    protected CartoonRepository cartoonRepository;
 
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
@@ -62,7 +72,7 @@ public class ControllerTest {
         return author;
     }
 
-    protected MockHttpSession LoginAuthorSession() throws Exception {
+    protected MockHttpSession loginAuthorSession() throws Exception {
         AuthorLogin authorLogin = AuthorLogin.builder()
                 .email("yhwjd99@gmail.com")
                 .password("1234")

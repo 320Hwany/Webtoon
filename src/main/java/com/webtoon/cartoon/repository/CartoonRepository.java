@@ -7,4 +7,8 @@ import org.springframework.stereotype.Repository;
 public interface CartoonRepository {
 
     Cartoon save(Cartoon cartoon);
+
+    Cartoon getById(Long id);
+
+    void deleteAll();
 }

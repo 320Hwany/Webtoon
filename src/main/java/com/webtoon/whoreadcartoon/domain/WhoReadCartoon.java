@@ -2,7 +2,7 @@ package com.webtoon.whoreadcartoon.domain;
 
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.member.domain.Member;
-import com.webtoon.util.embedded.Likes;
+import com.webtoon.util.enumerated.Likes;
 import lombok.Getter;
 
 import javax.persistence.*;

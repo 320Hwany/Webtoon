@@ -1,6 +1,5 @@
 package com.webtoon.author.dto.response;
 
-import com.webtoon.author.dto.request.AuthorSession;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

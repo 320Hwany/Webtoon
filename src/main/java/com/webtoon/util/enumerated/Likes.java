@@ -1,4 +1,4 @@
-package com.webtoon.util.embedded;
+package com.webtoon.util.enumerated;
 
 public enum Likes {
     LIKES, NORMAL

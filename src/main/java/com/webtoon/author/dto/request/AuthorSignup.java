@@ -1,6 +1,7 @@
 package com.webtoon.author.dto.request;
 
 import com.webtoon.author.domain.Author;
+import com.webtoon.author.dto.response.AuthorResponse;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,13 @@ public class AuthorSignup {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
+    }
+
+    public Author toEntity() {
+        return Author.builder()
+                .nickName(nickName)
+                .email(email)
+                .password(password)
+                .build();
     }
 }

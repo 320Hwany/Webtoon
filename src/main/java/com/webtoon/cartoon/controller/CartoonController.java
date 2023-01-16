@@ -1,9 +1,7 @@
 package com.webtoon.cartoon.controller;
 
 import com.webtoon.author.dto.request.AuthorSession;
-import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.dto.request.CartoonSave;
-import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +19,9 @@ public class CartoonController {
     private final CartoonService cartoonService;
 
     @PostMapping("/cartoon")
-    public ResponseEntity<CartoonResponse> save(@LoginForAuthor AuthorSession authorSession,
-                                                @RequestBody @Valid CartoonSave cartoonSave) {
-        Cartoon cartoon = cartoonService.save(cartoonSave, authorSession);
-        return ResponseEntity.ok(
-                CartoonResponse.builder()
-                .title(cartoon.getTitle())
-                .dayOfTheWeek(cartoon.getDayOfTheWeek())
-                .progress(cartoon.getProgress())
-                .author(cartoon.getAuthor())
-                .build());
+    public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
+                                     @RequestBody @Valid CartoonSave cartoonSave) {
+        cartoonService.save(cartoonSave, authorSession);
+        return ResponseEntity.ok().build();
     }
 }

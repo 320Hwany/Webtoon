@@ -1,10 +1,15 @@
 package com.webtoon.cartoon.dto.request;
 
-import com.webtoon.util.embedded.DayOfTheWeek;
-import com.webtoon.util.embedded.Progress;
+import com.webtoon.author.domain.Author;
+import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.util.enumerated.DayOfTheWeek;
+import com.webtoon.util.enumerated.Progress;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.method.annotation.MethodArgumentConversionNotSupportedException;
 
 import javax.validation.constraints.NotBlank;
 
@@ -15,16 +20,23 @@ public class CartoonSave {
     @NotBlank(message = "제목을 입력해주세요")
     private String title;
 
-    @NotBlank(message = "무슨 요일 웹툰인지 입력해주세요")
-    private DayOfTheWeek dayOfTheWeek;
+    private String dayOfTheWeek;
 
-    @NotBlank(message = "웹툰의 현재 진행 상황을 알려주세요")
-    private Progress progress;
+    private String progress;
 
     @Builder
-    public CartoonSave(String title, DayOfTheWeek dayOfTheWeek, Progress progress) {
+    public CartoonSave(String title, String dayOfTheWeek, String progress) {
         this.title = title;
         this.dayOfTheWeek = dayOfTheWeek;
         this.progress = progress;
+    }
+
+    public Cartoon toEntity(Author author) {
+        return Cartoon.builder()
+                .title(title)
+                .dayOfTheWeek(DayOfTheWeek.valueOf(dayOfTheWeek))
+                .progress(Progress.valueOf(progress))
+                .author(author)
+                .build();
     }
 }

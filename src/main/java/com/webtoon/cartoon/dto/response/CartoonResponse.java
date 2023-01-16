@@ -1,8 +1,8 @@
 package com.webtoon.cartoon.dto.response;
 
 import com.webtoon.author.domain.Author;
-import com.webtoon.util.embedded.DayOfTheWeek;
-import com.webtoon.util.embedded.Progress;
+import com.webtoon.util.enumerated.DayOfTheWeek;
+import com.webtoon.util.enumerated.Progress;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

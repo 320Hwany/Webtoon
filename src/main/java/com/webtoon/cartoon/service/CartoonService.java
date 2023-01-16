@@ -2,35 +2,26 @@ package com.webtoon.cartoon.service;
 
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.dto.request.AuthorSession;
+import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class CartoonService {
 
     private final CartoonRepository cartoonRepository;
+    private final AuthorRepository authorRepository;
 
+    @Transactional
     public Cartoon save(CartoonSave cartoonSave, AuthorSession authorSession) {
-
-//        Author author = Author.builder()
-//                .id(authorSession.getId())
-//                .nickName(authorSession.getNickName())
-//                .email(authorSession.getEmail())
-//                .password(authorSession.getPassword())
-//                .build();
-
-//        Cartoon cartoon = Cartoon.builder()
-//                .title(cartoonSave.getTitle())
-//                .dayOfTheWeek(cartoonSave.getDayOfTheWeek())
-//                .progress(cartoonSave.getProgress())
-//                .author(author)
-//                .build();
-//
-//        return cartoonRepository.save(cartoon);
-        return null;
+        Author author = authorRepository.getById(authorSession.getId());
+        Cartoon cartoon = cartoonSave.toEntity(author);
+        return cartoonRepository.save(cartoon);
     }
 }

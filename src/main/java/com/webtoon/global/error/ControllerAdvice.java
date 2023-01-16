@@ -1,5 +1,6 @@
 package com.webtoon.global.error;
 
+import com.webtoon.cartoon.exception.EnumTypeValidException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -47,5 +48,16 @@ public class ControllerAdvice {
                 .build();
 
         return ResponseEntity.status(UNAUTHORIZED).body(errorResponse);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(EnumTypeValidException.class)
+    public ResponseEntity<ErrorResponse> enumTypeValidException(EnumTypeValidException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .statusCode(e.getStatusCode())
+                .message(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
     }
 }

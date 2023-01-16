@@ -23,8 +23,9 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @PostMapping("/author/signup")
-    public void signup(@RequestBody @Valid AuthorSignup authorSignup) {
+    public ResponseEntity<Void> signup(@RequestBody @Valid AuthorSignup authorSignup) {
         authorService.signup(authorSignup);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/author/login")
@@ -33,26 +34,34 @@ public class AuthorController {
         AuthorSession authorSession = authorService.makeAuthorSession(authorLogin);
         HttpSession session = httpServletRequest.getSession();
         session.setAttribute("authorSession", authorSession);
-        return ResponseEntity.ok(AuthorResponse.builder()
-                        .nickName(authorSession.getNickName())
-                        .email(authorSession.getEmail())
-                        .password(authorSession.getPassword())
-                        .build());
+        AuthorResponse authorResponse = authorSession.getAuthorResponse();
+
+        return ResponseEntity.ok(authorResponse);
     }
 
     @PatchMapping("/author")
     public ResponseEntity<AuthorResponse> update(@LoginForAuthor AuthorSession authorSession,
                                                  @RequestBody @Valid AuthorUpdate authorUpdate) {
         Author author = authorService.update(authorSession, authorUpdate);
-        return ResponseEntity.ok(AuthorResponse.builder()
-                .nickName(author.getNickName())
-                .email(author.getEmail())
-                .password(author.getPassword())
-                .build());
+        AuthorResponse authorResponse = author.getAuthorResponse();
+
+        return ResponseEntity.ok(authorResponse);
     }
 
     @DeleteMapping("/author")
-    public void delete(@LoginForAuthor AuthorSession authorSession) {
+    public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
+                                       HttpServletRequest request) {
         authorService.delete(authorSession);
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/author/logout")
+    public ResponseEntity<Void> logout(@LoginForAuthor AuthorSession authorSession,
+                       HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+        return ResponseEntity.ok().build();
     }
 }

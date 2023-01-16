@@ -1,9 +1,9 @@
 package com.webtoon.cartoon.domain;
 
 import com.webtoon.author.domain.Author;
-import com.webtoon.cartoon.dto.request.CartoonSave;
-import com.webtoon.util.embedded.DayOfTheWeek;
-import com.webtoon.util.embedded.Progress;
+import com.webtoon.cartoon.dto.response.CartoonResponse;
+import com.webtoon.util.enumerated.DayOfTheWeek;
+import com.webtoon.util.enumerated.Progress;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,5 +42,14 @@ public class Cartoon {
         this.dayOfTheWeek = dayOfTheWeek;
         this.progress = progress;
         this.author = author;
+    }
+
+    public CartoonResponse getCartoonResponse() {
+        return CartoonResponse.builder()
+                .title(title)
+                .dayOfTheWeek(dayOfTheWeek)
+                .progress(progress)
+                .author(author)
+                .build();
     }
 }

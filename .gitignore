@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 !**/src/main/resources/static
 !**/src/main/resources/template
+http
 
 ### STS ###
 .apt_generated

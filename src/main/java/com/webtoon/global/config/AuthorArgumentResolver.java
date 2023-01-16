@@ -37,7 +37,7 @@ public class AuthorArgumentResolver implements HandlerMethodArgumentResolver {
             throw new AuthorUnauthorizedException();
         }
         AuthorSession authorSession = (AuthorSession) session.getAttribute("authorSession");
-        authorRepository.getByEmailAndPassword(authorSession.getEmail(), authorSession.getPassword());
+        authorRepository.checkAuthorPresent(authorSession);
         return authorSession;
     }
 }

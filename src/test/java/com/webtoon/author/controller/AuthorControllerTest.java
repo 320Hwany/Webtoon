@@ -33,11 +33,11 @@ class AuthorControllerTest extends ControllerTest {
                 .password("1234")
                 .build();
 
-        String json = objectMapper.writeValueAsString(authorSignup);
+        String authorSignupJson = objectMapper.writeValueAsString(authorSignup);
 
         mockMvc.perform(post("/author/signup")
                         .contentType(APPLICATION_JSON)
-                        .content(json))
+                        .content(authorSignupJson))
                 .andExpect(status().isOk())
                 .andDo(document("author/signup"));
     }
@@ -50,11 +50,11 @@ class AuthorControllerTest extends ControllerTest {
                 .email("abc")
                 .password("")
                 .build();
-        String json = objectMapper.writeValueAsString(authorSignup);
+        String authorSignupJson = objectMapper.writeValueAsString(authorSignup);
 
         mockMvc.perform(post("/author/signup")
                         .contentType(APPLICATION_JSON)
-                        .content(json))
+                        .content(authorSignupJson))
                 .andExpect(status().isBadRequest())
                 .andDo(document("author/signupFail"));
     }
@@ -70,11 +70,11 @@ class AuthorControllerTest extends ControllerTest {
                 .password(author.getPassword())
                 .build();
 
-        String json = objectMapper.writeValueAsString(authorLogin);
+        String authorLoginJson = objectMapper.writeValueAsString(authorLogin);
 
         mockMvc.perform(post("/author/login")
                         .contentType(APPLICATION_JSON)
-                        .content(json))
+                        .content(authorLoginJson))
                 .andExpect(status().isOk())
                 .andDo(document("author/login"));
     }
@@ -87,11 +87,11 @@ class AuthorControllerTest extends ControllerTest {
                 .password("1234")
                 .build();
 
-        String json = objectMapper.writeValueAsString(authorLogin);
+        String authorLoginJson = objectMapper.writeValueAsString(authorLogin);
 
         mockMvc.perform(post("/author/login")
                         .contentType(APPLICATION_JSON)
-                        .content(json))
+                        .content(authorLoginJson))
                 .andExpect(status().isNotFound())
                 .andDo(document("author/loginFail"));
     }
@@ -108,14 +108,14 @@ class AuthorControllerTest extends ControllerTest {
                 .password("4321")
                 .build();
 
-        String updateJson = objectMapper.writeValueAsString(authorUpdate);
-        MockHttpSession session = LoginAuthorSession();
+        String authorUpdateJson = objectMapper.writeValueAsString(authorUpdate);
+        MockHttpSession session = loginAuthorSession();
 
         // expected
         mockMvc.perform(patch("/author")
                         .session(session)
                         .contentType(APPLICATION_JSON)
-                        .content(updateJson))
+                        .content(authorUpdateJson))
                 .andExpect(status().isOk())
                 .andDo(document("author/update"));
     }
@@ -132,12 +132,12 @@ class AuthorControllerTest extends ControllerTest {
                 .password("4321")
                 .build();
 
-        String updateJson = objectMapper.writeValueAsString(authorUpdate);
+        String authorUpdateJson = objectMapper.writeValueAsString(authorUpdate);
 
         // expected
         mockMvc.perform(patch("/author")
                         .contentType(APPLICATION_JSON)
-                        .content(updateJson))
+                        .content(authorUpdateJson))
                 .andExpect(status().isUnauthorized())
                 .andDo(document("author/updateFail/unauthorized"));
     }
@@ -154,14 +154,14 @@ class AuthorControllerTest extends ControllerTest {
                 .password("")
                 .build();
 
-        String updateJson = objectMapper.writeValueAsString(authorUpdate);
-        MockHttpSession session = LoginAuthorSession();
+        String authorUpdateJson = objectMapper.writeValueAsString(authorUpdate);
+        MockHttpSession session = loginAuthorSession();
 
         // expected
         mockMvc.perform(patch("/author")
                         .session(session)
                         .contentType(APPLICATION_JSON)
-                        .content(updateJson))
+                        .content(authorUpdateJson))
                 .andExpect(status().isBadRequest())
                 .andDo(document("author/updateFail/valid"));
     }
@@ -171,7 +171,7 @@ class AuthorControllerTest extends ControllerTest {
     void delete() throws Exception {
         // given
         saveAuthorInRepository();
-        MockHttpSession session = LoginAuthorSession();
+        MockHttpSession session = loginAuthorSession();
 
         // expected
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/author")
@@ -192,5 +192,31 @@ class AuthorControllerTest extends ControllerTest {
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
                 .andDo(document("author/deleteFail"));
+    }
+
+    @Test
+    @DisplayName("로그아웃은 로그인을 한 후에 진행가능합니다 - 성공")
+    void logoutSuccess() throws Exception {
+        // given
+        saveAuthorInRepository();
+        MockHttpSession session = loginAuthorSession();
+
+        // expected
+        mockMvc.perform(post("/author/logout")
+                        .session(session))
+                .andExpect(status().isOk())
+                .andDo(document("author/logout"));
+    }
+
+    @Test
+    @DisplayName("로그인을 하지 않으면 로그아웃을 할 수 없습니다 - 실패")
+    void logoutFail() throws Exception {
+        // given
+        saveAuthorInRepository();
+
+        // expected
+        mockMvc.perform(post("/author/logout"))
+                .andExpect(status().isUnauthorized())
+                .andDo(document("author/logoutFail"));
     }
 }
