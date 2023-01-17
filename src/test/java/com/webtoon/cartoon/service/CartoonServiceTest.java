@@ -12,9 +12,12 @@ import com.webtoon.global.error.ForbiddenException;
 import com.webtoon.util.ServiceTest;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Progress;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -23,6 +26,12 @@ class CartoonServiceTest extends ServiceTest {
 
     @Autowired
     private CartoonService cartoonService;
+
+    @BeforeEach
+    void clean() {
+        cartoonRepository.deleteAll();
+        authorRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("로그인한 작가 계정으로 만화를 등록합니다 - 성공")
@@ -82,11 +91,35 @@ class CartoonServiceTest extends ServiceTest {
                 .progress("현재 진행상황 입력 잘못함")
                 .build();
 
-
         // expected
         assertThrows(EnumTypeValidException.class,
                 () -> cartoonService.save(cartoonSave, authorSession));
     }
+
+    @Test
+    @DisplayName("제목이 일치하는 만화가 있다면 검색 결과를 보여줍니다 - 성공")
+    @Transactional
+    void getByTitle() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+
+        // when
+        Cartoon findCartoon = cartoonService.getByTitle(cartoon.getTitle());
+
+        // then
+        assertThat(findCartoon).isEqualTo(cartoon);
+    }
+
+    @Test
+    @DisplayName("제목이 일치하는 만화가 없다면 검색 결과를 보여줄 수 없습니다 - 실패")
+    @Transactional
+    void getByTitleFail() {
+        // expected
+        Assertions.assertThrows(CartoonNotFoundException.class,
+                () -> cartoonService.getByTitle("없는 제목"));
+    }
+
 
     @Test
     @DisplayName("작가, 만화가 모두 존재하고 권한 접근이 있다면 만화를 수정할 수 있습니다 - 성공")

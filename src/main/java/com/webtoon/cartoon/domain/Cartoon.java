@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.util.Objects;
+
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -97,5 +99,20 @@ public class Cartoon extends BaseTimeEntity {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cartoon cartoon = (Cartoon) o;
+        return Objects.equals(id, cartoon.id) && Objects.equals(title, cartoon.title)
+                && dayOfTheWeek == cartoon.dayOfTheWeek && progress == cartoon.progress
+                && Objects.equals(author, cartoon.author);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, dayOfTheWeek, progress, author);
     }
 }

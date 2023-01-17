@@ -41,6 +41,10 @@ public class AuthorService {
         return authorSession;
     }
 
+    public Author getByNickName(String nickName) {
+        return authorRepository.getByNickName(nickName);
+    }
+
     @Transactional
     public Author update(AuthorSession authorSession, AuthorUpdate authorUpdate) {
         Author author = authorRepository.getById(authorSession.getId());

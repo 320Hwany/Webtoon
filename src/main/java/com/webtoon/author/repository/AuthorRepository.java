@@ -13,6 +13,7 @@ public interface AuthorRepository {
 
     Author getById(Long id);
     Optional<Author> findByNickName(String nickName);
+    Author getByNickName(String nickName);
 
     Optional<Author> findByEmail(String email);
 

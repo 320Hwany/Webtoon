@@ -10,5 +10,7 @@ public interface CartoonRepository {
 
     Cartoon getById(Long id);
 
+    Cartoon getByTitle(String title);
+
     void deleteAll();
 }

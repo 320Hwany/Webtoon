@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Transactional
@@ -22,12 +21,13 @@ class CartoonControllerTest extends ControllerTest {
 
     @BeforeEach
     void clean() {
+        cartoonRepository.deleteAll();
         authorRepository.deleteAll();
     }
 
     @Test
     @DisplayName("작가로 로그인하면 만화를 등록할 수 있습니다 - 성공")
-    void save() throws Exception {
+    void save200() throws Exception {
         // given
         saveAuthorInRepository();
         MockHttpSession session = loginAuthorSession();
@@ -51,7 +51,7 @@ class CartoonControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("작가로 로그인해도 조건에 맞지 않으면 만화를 등록할 수 없습니다 - 실패")
-    void saveFailByValid() throws Exception {
+    void save400() throws Exception {
         // given
         saveAuthorInRepository();
         MockHttpSession session = loginAuthorSession();
@@ -75,7 +75,7 @@ class CartoonControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("작가로 로그인하지 않으면 만화를 등록할 수 없습니다 - 실패")
-    void saveFailByUnauthorized() throws Exception {
+    void save401() throws Exception {
         // given
         CartoonSave cartoonSave = CartoonSave.builder()
                 .title("만화 제목")
@@ -94,8 +94,33 @@ class CartoonControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("제목이 일치하는 만화가 있다면 검색 결과를 보여줍니다 - 성공")
+    void getCartoonByTitle200() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+
+        // expected
+        mockMvc.perform(get("/cartoon/title")
+                        .param("title", cartoon.getTitle()))
+                .andExpect(status().isOk())
+                .andDo(document("cartoon/get/title/200"));
+    }
+
+    @Test
+    @DisplayName("제목이 일치하는 만화가 없다면 검색 결과를 보여줄 수 없습니다 - 실패")
+    void getCartoonByTitle404() throws Exception {
+        // expected
+        mockMvc.perform(get("/cartoon/title")
+                        .param("title", "없는 제목"))
+                .andExpect(status().isNotFound())
+                .andDo(document("cartoon/get/title/404"));
+    }
+
+
+    @Test
     @DisplayName("작가로 로그인하면 만화를 수정할 수 있습니다 - 성공")
-    void updateSuccess() throws Exception {
+    void update200() throws Exception {
         // given
         Author author = saveAuthorInRepository();
         MockHttpSession session = loginAuthorSession();
@@ -120,7 +145,7 @@ class CartoonControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("작가로 로그인해도 조건에 맞지 않으면 만화를 수정할 수 없습니다 - 실패")
-    void updateFailByValid() throws Exception {
+    void update400() throws Exception {
         // given
         Author author = saveAuthorInRepository();
         MockHttpSession session = loginAuthorSession();
@@ -145,7 +170,7 @@ class CartoonControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("작가로 로그인하지 않으면 만화를 수정할 수 없습니다 - 실패")
-    void updateFailByUnauthorized() throws Exception {
+    void update401() throws Exception {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -168,7 +193,7 @@ class CartoonControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("작가로 로그인해도 해당 작가의 만화가 아니면 수정할 수 없습니다 - 실패")
-    void updateFailByForbidden() throws Exception {
+    void update403() throws Exception {
         // given
         Author author = saveAuthorInRepository();
         MockHttpSession session = loginAuthorSession();

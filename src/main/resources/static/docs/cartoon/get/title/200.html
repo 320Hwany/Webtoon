@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>작가로 로그인해도 해당 작가의 만화가 아니면 수정할 수 없습니다 - 실패</title>
+<title>제목이 일치하는 만화가 있다면 검색 결과를 보여줍니다 - 성공</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,7 +438,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>작가로 로그인해도 해당 작가의 만화가 아니면 수정할 수 없습니다 - 실패</h1>
+<h1>제목이 일치하는 만화가 있다면 검색 결과를 보여줍니다 - 성공</h1>
 <div class="details">
 <span id="revnumber">version 0.0.1-SNAPSHOT</span>
 </div>
@@ -456,16 +456,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /cartoon/4 HTTP/1.1
-Content-Type: application/json
-Content-Length: 91
-Host: localhost:8080
-
-{
-  "title" : "수정 만화 제목",
-  "dayOfTheWeek" : "TUE",
-  "progress" : "COMPLETE"
-}</code></pre>
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /cartoon/title?title=%EB%A7%8C%ED%99%94+%EC%A0%9C%EB%AA%A9 HTTP/1.1
+Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
@@ -475,14 +467,22 @@ Host: localhost:8080
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 403 Forbidden
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 112
+Content-Length: 329
 
 {
-  "statusCode" : "403",
-  "message" : "해당 만화에 접근 권한이 없습니다",
-  "validation" : { }
+  "title" : "만화 제목",
+  "dayOfTheWeek" : "MON",
+  "progress" : "SERIALIZATION",
+  "author" : {
+    "createDateTime" : "2023-01-17T17:45:02.438307",
+    "lastModifiedDateTime" : "2023-01-17T17:45:02.438307",
+    "id" : 13,
+    "nickName" : "작가 이름",
+    "email" : "yhwjd99@gmail.com",
+    "password" : "1234"
+  }
 }</code></pre>
 </div>
 </div>
@@ -492,7 +492,7 @@ Content-Length: 112
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-01-17 13:37:45 +0900
+Last updated 2023-01-17 17:44:39 +0900
 </div>
 </div>
 </body>

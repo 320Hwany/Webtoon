@@ -1,0 +1,11 @@
+= 제목이 일치하는 만화가 없다면 검색 결과를 보여줄 수 없습니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/cartoon/get/title/404/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/cartoon/get/title/404/http-response.adoc[]

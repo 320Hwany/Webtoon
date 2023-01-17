@@ -23,6 +23,12 @@ public class CartoonRepositoryImpl implements CartoonRepository {
     }
 
     @Override
+    public Cartoon getByTitle(String title) {
+        return cartoonJpaRepository.findByTitle(title)
+                .orElseThrow(CartoonNotFoundException::new);
+    }
+
+    @Override
     public void deleteAll() {
         cartoonJpaRepository.deleteAll();
     }

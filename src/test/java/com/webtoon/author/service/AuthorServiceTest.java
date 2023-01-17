@@ -31,7 +31,7 @@ class AuthorServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("회원가입이 성공합니다")
-    void signupSuccess() {
+    void signup() {
         // given
         AuthorSignup authorSignup = AuthorSignup.builder()
                 .nickName("작가 닉네임")
@@ -62,6 +62,23 @@ class AuthorServiceTest extends ServiceTest {
         // expected
         assertThrows(AuthorDuplicationException.class,
                 () -> authorService.signup(authorSignup));
+    }
+
+    @Test
+    @DisplayName("이미 존재하는 회원이면 에러 메세지를 보여줍니다")
+    void checkDuplication() {
+        // given
+        Author author = saveAuthorInRepository();
+
+        AuthorSignup authorSignup = AuthorSignup.builder()
+                .nickName(author.getNickName())
+                .email(author.getEmail())
+                .password(author.getPassword())
+                .build();
+
+        // expected
+        assertThrows(AuthorDuplicationException.class,
+                () -> authorService.checkDuplication(authorSignup));
     }
 
     @Test
@@ -97,25 +114,29 @@ class AuthorServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("이미 존재하는 회원이면 에러 메세지를 보여줍니다")
-    void checkDuplication() {
+    @DisplayName("닉네임으로 작가를 찾습니다 - 성공")
+    void getByNickName() {
         // given
         Author author = saveAuthorInRepository();
 
-        AuthorSignup authorSignup = AuthorSignup.builder()
-                .nickName(author.getNickName())
-                .email(author.getEmail())
-                .password(author.getPassword())
-                .build();
+        // when
+        Author findAuthor = authorService.getByNickName(author.getNickName());
 
+        // then
+        assertThat(findAuthor).isEqualTo(author);
+    }
+
+    @Test
+    @DisplayName("해당 닉네임에 해당하는 작가가 없다면 작가를 찾을 수 없습니다 - 실패")
+    void getByNickNameFail() {
         // expected
-        assertThrows(AuthorDuplicationException.class,
-                () -> authorService.checkDuplication(authorSignup));
+        assertThrows(AuthorNotFoundException.class,
+                () -> authorService.getByNickName("없는 작가 이름"));
     }
 
     @Test
     @DisplayName("작가 정보가 수정됩니다 - 성공")
-    void updateSuccess() {
+    void update() {
         // given
         Author author = saveAuthorInRepository();
 

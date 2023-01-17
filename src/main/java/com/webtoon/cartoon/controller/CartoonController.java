@@ -26,6 +26,13 @@ public class CartoonController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/cartoon/title")
+    public ResponseEntity<CartoonResponse> getCartoonByTitle(@RequestParam String title) {
+        Cartoon cartoon = cartoonService.getByTitle(title);
+        CartoonResponse cartoonResponse = CartoonResponse.getFromCartoon(cartoon);
+        return ResponseEntity.ok(cartoonResponse);
+    }
+
     @PatchMapping("/cartoon/{cartoonId}")
     public ResponseEntity<CartoonResponse> update(@LoginForAuthor AuthorSession authorSession,
                                                   @PathVariable Long cartoonId,

@@ -36,6 +36,13 @@ public class AuthorController {
         return ResponseEntity.ok(authorResponse);
     }
 
+    @GetMapping("/author/nickName")
+    public ResponseEntity<AuthorResponse> getAuthorByNickName(@RequestParam String nickName) {
+        Author author = authorService.getByNickName(nickName);
+        AuthorResponse authorResponse = AuthorResponse.getFromAuthor(author);
+        return ResponseEntity.ok(authorResponse);
+    }
+
     @PatchMapping("/author")
     public ResponseEntity<AuthorResponse> update(@LoginForAuthor AuthorSession authorSession,
                                                  @RequestBody @Valid AuthorUpdate authorUpdate) {
