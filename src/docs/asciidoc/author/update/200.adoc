@@ -1,0 +1,11 @@
+= 로그인되어 있고 조건에 맞으면 회원정보가 수정됩니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/author/update/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/author/update/200/http-response.adoc[]

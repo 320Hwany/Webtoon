@@ -1,0 +1,11 @@
+= 작가 로그인 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/author/login/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/author/login/200/http-response.adoc[]

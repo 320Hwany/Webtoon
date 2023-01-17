@@ -41,7 +41,7 @@ class AuthorControllerTest extends ControllerTest {
                         .contentType(APPLICATION_JSON)
                         .content(authorSignupJson))
                 .andExpect(status().isOk())
-                .andDo(document("author/signup"));
+                .andDo(document("author/signup/200"));
     }
 
     @Test
@@ -58,7 +58,7 @@ class AuthorControllerTest extends ControllerTest {
                         .contentType(APPLICATION_JSON)
                         .content(authorSignupJson))
                 .andExpect(status().isBadRequest())
-                .andDo(document("author/signupFail"));
+                .andDo(document("author/signup/400"));
     }
 
     @Test
@@ -78,7 +78,7 @@ class AuthorControllerTest extends ControllerTest {
                         .contentType(APPLICATION_JSON)
                         .content(authorLoginJson))
                 .andExpect(status().isOk())
-                .andDo(document("author/login"));
+                .andDo(document("author/login/200"));
     }
 
     @Test
@@ -95,7 +95,7 @@ class AuthorControllerTest extends ControllerTest {
                         .contentType(APPLICATION_JSON)
                         .content(authorLoginJson))
                 .andExpect(status().isNotFound())
-                .andDo(document("author/loginFail"));
+                .andDo(document("author/login/404"));
     }
 
     @Test
@@ -119,29 +119,7 @@ class AuthorControllerTest extends ControllerTest {
                         .contentType(APPLICATION_JSON)
                         .content(authorUpdateJson))
                 .andExpect(status().isOk())
-                .andDo(document("author/update"));
-    }
-
-    @Test
-    @DisplayName("로그인되어 있지 않으면 회원 정보 수정을 할 수 없습니다 - 실패")
-    void updateFailByUnauthorized() throws Exception {
-        // given
-        saveAuthorInRepository();
-
-        AuthorUpdate authorUpdate = AuthorUpdate.builder()
-                .nickName("수정 닉네임")
-                .email("yhwjd@naver.com")
-                .password("4321")
-                .build();
-
-        String authorUpdateJson = objectMapper.writeValueAsString(authorUpdate);
-
-        // expected
-        mockMvc.perform(patch("/author")
-                        .contentType(APPLICATION_JSON)
-                        .content(authorUpdateJson))
-                .andExpect(status().isUnauthorized())
-                .andDo(document("author/updateFail/unauthorized"));
+                .andDo(document("author/update/200"));
     }
 
     @Test
@@ -165,7 +143,29 @@ class AuthorControllerTest extends ControllerTest {
                         .contentType(APPLICATION_JSON)
                         .content(authorUpdateJson))
                 .andExpect(status().isBadRequest())
-                .andDo(document("author/updateFail/valid"));
+                .andDo(document("author/update/400"));
+    }
+
+    @Test
+    @DisplayName("로그인되어 있지 않으면 회원 정보 수정을 할 수 없습니다 - 실패")
+    void updateFailByUnauthorized() throws Exception {
+        // given
+        saveAuthorInRepository();
+
+        AuthorUpdate authorUpdate = AuthorUpdate.builder()
+                .nickName("수정 닉네임")
+                .email("yhwjd@naver.com")
+                .password("4321")
+                .build();
+
+        String authorUpdateJson = objectMapper.writeValueAsString(authorUpdate);
+
+        // expected
+        mockMvc.perform(patch("/author")
+                        .contentType(APPLICATION_JSON)
+                        .content(authorUpdateJson))
+                .andExpect(status().isUnauthorized())
+                .andDo(document("author/update/401"));
     }
 
     @Test
@@ -180,7 +180,7 @@ class AuthorControllerTest extends ControllerTest {
                         .session(session)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("author/delete"));
+                .andDo(document("author/delete/200"));
     }
 
     @Test
@@ -193,7 +193,7 @@ class AuthorControllerTest extends ControllerTest {
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/author")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
-                .andDo(document("author/deleteFail"));
+                .andDo(document("author/delete/401"));
     }
 
     @Test
@@ -207,7 +207,7 @@ class AuthorControllerTest extends ControllerTest {
         mockMvc.perform(post("/author/logout")
                         .session(session))
                 .andExpect(status().isOk())
-                .andDo(document("author/logout"));
+                .andDo(document("author/logout/200"));
     }
 
     @Test
@@ -219,6 +219,6 @@ class AuthorControllerTest extends ControllerTest {
         // expected
         mockMvc.perform(post("/author/logout"))
                 .andExpect(status().isUnauthorized())
-                .andDo(document("author/logoutFail"));
+                .andDo(document("author/logout/401"));
     }
 }

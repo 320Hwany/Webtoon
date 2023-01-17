@@ -1,0 +1,11 @@
+= 로그인 후 작가 계정을 삭제할 수 있습니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/author/delete/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/author/delete/200/http-response.adoc[]

@@ -1,0 +1,11 @@
+= 작가로 로그인해도 해당 작가의 만화가 아니면 수정할 수 없습니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/cartoon/update/403/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/cartoon/update/403/http-response.adoc[]

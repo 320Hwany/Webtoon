@@ -1,0 +1,11 @@
+= 로그아웃은 로그인을 한 후에 진행가능합니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/author/logout/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/author/logout/200/http-response.adoc[]

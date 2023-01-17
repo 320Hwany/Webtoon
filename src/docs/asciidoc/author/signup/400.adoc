@@ -1,0 +1,11 @@
+= 조건에 맞지 않으면 작가 회원가입이 되지 않습니다- 실패
+:toc:
+
+== 요청
+
+include::{snippets}/author/signup/400/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/author/signup/400/http-response.adoc[]

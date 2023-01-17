@@ -1,0 +1,11 @@
+= 로그인되어 있지 않으면 회원 정보 수정을 할 수 없습니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/author/update/401/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/author/update/401/http-response.adoc[]
