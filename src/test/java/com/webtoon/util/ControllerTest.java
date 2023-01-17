@@ -4,8 +4,11 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.author.service.AuthorService;
+import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoon.service.CartoonService;
+import com.webtoon.util.enumerated.DayOfTheWeek;
+import com.webtoon.util.enumerated.Progress;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +88,16 @@ public class ControllerTest {
 
         HttpSession session = request.getSession();
         return (MockHttpSession)session;
+    }
+
+    protected Cartoon saveCartoonInRepository(Author author) {
+        Cartoon cartoon = Cartoon.builder()
+                .title("만화 제목")
+                .dayOfTheWeek(DayOfTheWeek.MON)
+                .progress(Progress.SERIALIZATION)
+                .author(author)
+                .build();
+        cartoonRepository.save(cartoon);
+        return cartoon;
     }
 }

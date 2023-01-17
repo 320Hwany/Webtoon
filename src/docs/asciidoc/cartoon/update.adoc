@@ -1,0 +1,11 @@
+= 작가로 로그인하면 만화를 수정할 수 있습니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/cartoon/update/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/cartoon/update/http-response.adoc[]

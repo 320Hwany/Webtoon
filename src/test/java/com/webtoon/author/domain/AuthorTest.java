@@ -55,7 +55,7 @@ class AuthorTest {
         session.setAttribute("SessionTest", authorSession);
 
         // when
-        Author.invalidateSession(httpServletRequest);
+        authorSession.invalidateSession(httpServletRequest);
 
         // then
         HttpSession findSession = httpServletRequest.getSession(false);

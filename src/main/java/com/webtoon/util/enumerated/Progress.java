@@ -1,6 +1,5 @@
 package com.webtoon.util.enumerated;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Progress implements EnumModel{
 

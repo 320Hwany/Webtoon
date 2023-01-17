@@ -23,14 +23,8 @@ public class AuthorService {
     @Transactional
     public Author signup(AuthorSignup authorSignup) {
         checkDuplication(authorSignup);
-        Author author = authorSignup.toEntity();
+        Author author = Author.getFromAuthorSignup(authorSignup);
         return authorRepository.save(author);
-    }
-
-    public AuthorSession makeAuthorSession(AuthorLogin authorLogin) {
-        Author author = authorRepository.getByEmailAndPassword(authorLogin.getEmail(), authorLogin.getPassword());
-        AuthorSession authorSession = AuthorSession.getFromAuthor(author);
-        return authorSession;
     }
 
     public void checkDuplication(AuthorSignup authorSignup) {
@@ -39,6 +33,12 @@ public class AuthorService {
         if (findAuthorByNickName.isPresent() || findAuthorByEmail.isPresent()) {
             throw new AuthorDuplicationException();
         }
+    }
+
+    public AuthorSession makeAuthorSession(AuthorLogin authorLogin) {
+        Author author = authorRepository.getByEmailAndPassword(authorLogin.getEmail(), authorLogin.getPassword());
+        AuthorSession authorSession = AuthorSession.getFromAuthor(author);
+        return authorSession;
     }
 
     @Transactional

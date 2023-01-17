@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor
-public class CartoonSave {
+public class CartoonUpdate {
 
     @NotBlank(message = "제목을 입력해주세요")
     private String title;
@@ -18,7 +18,7 @@ public class CartoonSave {
     private String progress;
 
     @Builder
-    public CartoonSave(String title, String dayOfTheWeek, String progress) {
+    public CartoonUpdate(String title, String dayOfTheWeek, String progress) {
         this.title = title;
         this.dayOfTheWeek = dayOfTheWeek;
         this.progress = progress;

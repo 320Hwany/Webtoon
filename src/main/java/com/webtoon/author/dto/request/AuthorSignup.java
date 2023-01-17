@@ -28,12 +28,4 @@ public class AuthorSignup {
         this.email = email;
         this.password = password;
     }
-
-    public Author toEntity() {
-        return Author.builder()
-                .nickName(nickName)
-                .email(email)
-                .password(password)
-                .build();
-    }
 }

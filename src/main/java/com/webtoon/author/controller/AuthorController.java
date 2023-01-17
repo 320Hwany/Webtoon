@@ -13,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
-import static com.webtoon.author.domain.Author.invalidateSession;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,8 +31,7 @@ public class AuthorController {
     public ResponseEntity<AuthorResponse> login(@RequestBody @Valid AuthorLogin authorLogin,
                                                 HttpServletRequest httpServletRequest) {
         AuthorSession authorSession = authorService.makeAuthorSession(authorLogin);
-        HttpSession session = httpServletRequest.getSession();
-        session.setAttribute("authorSession", authorSession);
+        authorSession.makeSession(httpServletRequest);
         AuthorResponse authorResponse = AuthorResponse.getFromAuthorSession(authorSession);
         return ResponseEntity.ok(authorResponse);
     }
@@ -52,14 +48,14 @@ public class AuthorController {
     public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
                                        HttpServletRequest httpServletRequest) {
         authorService.delete(authorSession);
-        invalidateSession(httpServletRequest);
+        authorSession.invalidateSession(httpServletRequest);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/author/logout")
     public ResponseEntity<Void> logout(@LoginForAuthor AuthorSession authorSession,
                                        HttpServletRequest httpServletRequest) {
-        invalidateSession(httpServletRequest);
+        authorSession.invalidateSession(httpServletRequest);
         return ResponseEntity.ok().build();
     }
 }

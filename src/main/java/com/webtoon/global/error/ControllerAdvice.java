@@ -53,6 +53,17 @@ public class ControllerAdvice {
     }
 
     @ResponseBody
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponse> forbiddenException(ForbiddenException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .statusCode(e.getStatusCode())
+                .message(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(FORBIDDEN).body(errorResponse);
+    }
+
+    @ResponseBody
     @ExceptionHandler(EnumTypeValidException.class)
     public ResponseEntity<ErrorResponse> enumTypeValidException(EnumTypeValidException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()

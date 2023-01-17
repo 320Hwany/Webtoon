@@ -1,5 +1,6 @@
 package com.webtoon.author.domain;
 
+import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
@@ -7,10 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -37,15 +35,18 @@ public class Author extends BaseTimeEntity {
         this.password = password;
     }
 
+    public static Author getFromAuthorSignup(AuthorSignup authorSignup) {
+        return Author.builder()
+                .nickName(authorSignup.getNickName())
+                .email(authorSignup.getEmail())
+                .password(authorSignup.getPassword())
+                .build();
+    }
+
     public void update(AuthorUpdate authorUpdate) {
         this.nickName = authorUpdate.getNickName();
         this.email = authorUpdate.getEmail();
         this.password = authorUpdate.getPassword();
-    }
-
-    public static void invalidateSession(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        session.invalidate();
     }
 
     @Override

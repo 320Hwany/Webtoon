@@ -1,13 +1,13 @@
 package com.webtoon.author.dto.request;
 
 import com.webtoon.author.domain.Author;
-import com.webtoon.author.dto.response.AuthorResponse;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -26,6 +26,16 @@ public class AuthorSession implements Serializable {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
+    }
+
+    public void makeSession(HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        session.setAttribute("authorSession", this);
+    }
+
+    public void invalidateSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.invalidate();
     }
 
     public static AuthorSession getFromAuthor(Author author) {
