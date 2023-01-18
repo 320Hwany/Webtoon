@@ -1,7 +1,7 @@
 package com.webtoon.author.repository;
 
 import com.webtoon.author.domain.Author;
-import com.webtoon.author.dto.request.AuthorSession;
+import com.webtoon.author.domain.AuthorSession;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

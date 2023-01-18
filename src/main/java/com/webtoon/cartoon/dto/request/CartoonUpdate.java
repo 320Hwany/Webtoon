@@ -1,5 +1,7 @@
 package com.webtoon.cartoon.dto.request;
 
+import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.exception.EnumTypeValidException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,10 +19,13 @@ public class CartoonUpdate {
 
     private String progress;
 
+    private String genre;
+
     @Builder
-    public CartoonUpdate(String title, String dayOfTheWeek, String progress) {
+    public CartoonUpdate(String title, String dayOfTheWeek, String progress, String genre) {
         this.title = title;
         this.dayOfTheWeek = dayOfTheWeek;
         this.progress = progress;
+        this.genre = genre;
     }
 }

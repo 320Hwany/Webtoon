@@ -5,7 +5,6 @@ import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.util.ControllerTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
@@ -20,10 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class AuthorControllerTest extends ControllerTest {
 
-    @BeforeEach
-    void clean() {
-        authorRepository.deleteAll();
-    }
 
     @Test
     @DisplayName("작가 회원가입 - 성공")
@@ -78,6 +73,24 @@ class AuthorControllerTest extends ControllerTest {
                         .content(authorLoginJson))
                 .andExpect(status().isOk())
                 .andDo(document("author/login/200"));
+    }
+
+    @Test
+    @DisplayName("입력한 이메일, 비밀번호가 조건에 맞지 않으면 로그인이 되지 않습니다 - 실패")
+    void login400() throws Exception {
+        // given
+        AuthorLogin authorLogin = AuthorLogin.builder()
+                .email("조건에 맞지 않는 이메일")
+                .password("")
+                .build();
+
+        String authorLoginJson = objectMapper.writeValueAsString(authorLogin);
+
+        mockMvc.perform(post("/author/login")
+                        .contentType(APPLICATION_JSON)
+                        .content(authorLoginJson))
+                .andExpect(status().isBadRequest())
+                .andDo(document("author/login/400"));
     }
 
     @Test

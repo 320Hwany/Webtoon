@@ -2,7 +2,7 @@ package com.webtoon.author.service;
 
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.dto.request.AuthorLogin;
-import com.webtoon.author.dto.request.AuthorSession;
+import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.exception.AuthorDuplicationException;
@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -22,7 +23,6 @@ public class AuthorService {
 
     @Transactional
     public Author signup(AuthorSignup authorSignup) {
-        checkDuplication(authorSignup);
         Author author = Author.getFromAuthorSignup(authorSignup);
         return authorRepository.save(author);
     }
@@ -39,6 +39,14 @@ public class AuthorService {
         Author author = authorRepository.getByEmailAndPassword(authorLogin.getEmail(), authorLogin.getPassword());
         AuthorSession authorSession = AuthorSession.getFromAuthor(author);
         return authorSession;
+    }
+
+    public void makeSessionForAuthorSession(AuthorSession authorSession, HttpServletRequest request) {
+        authorSession.makeSession(request);
+    }
+
+    public void invalidateSession(AuthorSession authorSession, HttpServletRequest request) {
+        authorSession.invalidateSession(request);
     }
 
     public Author getByNickName(String nickName) {

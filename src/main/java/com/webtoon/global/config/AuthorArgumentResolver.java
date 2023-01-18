@@ -1,7 +1,6 @@
 package com.webtoon.global.config;
 
-import com.webtoon.author.dto.request.AuthorLogin;
-import com.webtoon.author.dto.request.AuthorSession;
+import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.exception.AuthorUnauthorizedException;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.util.annotation.LoginForAuthor;

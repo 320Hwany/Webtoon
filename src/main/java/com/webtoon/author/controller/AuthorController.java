@@ -2,7 +2,7 @@ package com.webtoon.author.controller;
 
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.dto.request.AuthorLogin;
-import com.webtoon.author.dto.request.AuthorSession;
+import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.dto.response.AuthorResponse;
@@ -23,6 +23,7 @@ public class AuthorController {
 
     @PostMapping("/author/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid AuthorSignup authorSignup) {
+        authorService.checkDuplication(authorSignup);
         authorService.signup(authorSignup);
         return ResponseEntity.ok().build();
     }
@@ -31,7 +32,7 @@ public class AuthorController {
     public ResponseEntity<AuthorResponse> login(@RequestBody @Valid AuthorLogin authorLogin,
                                                 HttpServletRequest httpServletRequest) {
         AuthorSession authorSession = authorService.makeAuthorSession(authorLogin);
-        authorSession.makeSession(httpServletRequest);
+        authorService.makeSessionForAuthorSession(authorSession, httpServletRequest);
         AuthorResponse authorResponse = AuthorResponse.getFromAuthorSession(authorSession);
         return ResponseEntity.ok(authorResponse);
     }
@@ -55,14 +56,14 @@ public class AuthorController {
     public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
                                        HttpServletRequest httpServletRequest) {
         authorService.delete(authorSession);
-        authorSession.invalidateSession(httpServletRequest);
+        authorService.invalidateSession(authorSession, httpServletRequest);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/author/logout")
     public ResponseEntity<Void> logout(@LoginForAuthor AuthorSession authorSession,
                                        HttpServletRequest httpServletRequest) {
-        authorSession.invalidateSession(httpServletRequest);
+        authorService.invalidateSession(authorSession, httpServletRequest);
         return ResponseEntity.ok().build();
     }
 }

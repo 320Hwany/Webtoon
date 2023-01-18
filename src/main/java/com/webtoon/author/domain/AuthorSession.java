@@ -1,6 +1,5 @@
-package com.webtoon.author.dto.request;
+package com.webtoon.author.domain;
 
-import com.webtoon.author.domain.Author;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -45,5 +45,19 @@ public class AuthorSession implements Serializable {
                 .email(author.getEmail())
                 .password(author.getPassword())
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthorSession that = (AuthorSession) o;
+        return Objects.equals(id, that.id) && Objects.equals(nickName, that.nickName)
+                && Objects.equals(email, that.email) && Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nickName, email, password);
     }
 }

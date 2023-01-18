@@ -8,6 +8,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.util.enumerated.DayOfTheWeek;
+import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -93,9 +94,10 @@ public class ControllerTest {
     protected Cartoon saveCartoonInRepository(Author author) {
         Cartoon cartoon = Cartoon.builder()
                 .title("만화 제목")
+                .author(author)
                 .dayOfTheWeek(DayOfTheWeek.MON)
                 .progress(Progress.SERIALIZATION)
-                .author(author)
+                .genre(Genre.ROMANCE)
                 .build();
         cartoonRepository.save(cartoon);
         return cartoon;

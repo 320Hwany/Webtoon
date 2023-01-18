@@ -1,7 +1,7 @@
 package com.webtoon.author.repository;
 
 import com.webtoon.author.domain.Author;
-import com.webtoon.author.dto.request.AuthorSession;
+import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.exception.AuthorNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

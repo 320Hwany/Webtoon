@@ -1,15 +1,16 @@
 package com.webtoon.util;
 
 import com.webtoon.author.domain.Author;
-import com.webtoon.author.dto.request.AuthorSession;
+import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.util.enumerated.DayOfTheWeek;
+import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 public class ServiceTest {
@@ -34,9 +35,10 @@ public class ServiceTest {
     protected Cartoon saveCartoonInRepository(Author author) {
         Cartoon cartoon = Cartoon.builder()
                 .title("만화 제목")
+                .author(author)
                 .dayOfTheWeek(DayOfTheWeek.MON)
                 .progress(Progress.SERIALIZATION)
-                .author(author)
+                .genre(Genre.ROMANCE)
                 .build();
         cartoonRepository.save(cartoon);
         return cartoon;

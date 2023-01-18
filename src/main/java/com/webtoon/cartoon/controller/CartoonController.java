@@ -1,7 +1,8 @@
 package com.webtoon.cartoon.controller;
 
-import com.webtoon.author.dto.request.AuthorSession;
+import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.dto.request.CartoonEnumField;
 import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
@@ -22,6 +23,8 @@ public class CartoonController {
     @PostMapping("/cartoon")
     public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
                                      @RequestBody @Valid CartoonSave cartoonSave) {
+        CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonSave(cartoonSave);
+        cartoonService.checkEnumTypeValid(cartoonEnumField);
         cartoonService.save(cartoonSave, authorSession);
         return ResponseEntity.ok().build();
     }
@@ -37,8 +40,12 @@ public class CartoonController {
     public ResponseEntity<CartoonResponse> update(@LoginForAuthor AuthorSession authorSession,
                                                   @PathVariable Long cartoonId,
                                                   @RequestBody @Valid CartoonUpdate cartoonUpdate) {
-        Cartoon cartoon = cartoonService.update(cartoonUpdate, cartoonId, authorSession);
-        CartoonResponse cartoonResponse = CartoonResponse.getFromCartoon(cartoon);
+        CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonUpdate(cartoonUpdate);
+        cartoonService.checkEnumTypeValid(cartoonEnumField);
+        cartoonService.checkAuthorityForCartoon(cartoonId, authorSession);
+        Cartoon afterUpdateCartoon = cartoonService.update(cartoonId, cartoonUpdate);
+        CartoonResponse cartoonResponse = CartoonResponse.getFromCartoon(afterUpdateCartoon);
+
         return ResponseEntity.ok(cartoonResponse);
     }
 }

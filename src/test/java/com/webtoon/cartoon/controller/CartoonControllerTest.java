@@ -19,11 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class CartoonControllerTest extends ControllerTest {
 
-    @BeforeEach
-    void clean() {
-        cartoonRepository.deleteAll();
-        authorRepository.deleteAll();
-    }
 
     @Test
     @DisplayName("작가로 로그인하면 만화를 등록할 수 있습니다 - 성공")
@@ -36,6 +31,7 @@ class CartoonControllerTest extends ControllerTest {
                 .title("만화 제목")
                 .dayOfTheWeek("MON")
                 .progress("SERIALIZATION")
+                .genre("ROMANCE")
                 .build();
 
         String cartoonSaveJson = objectMapper.writeValueAsString(cartoonSave);
@@ -60,6 +56,7 @@ class CartoonControllerTest extends ControllerTest {
                 .title("만화 제목")
                 .dayOfTheWeek("")
                 .progress("")
+                .genre("ROMANCE")
                 .build();
 
         String cartoonSaveJson = objectMapper.writeValueAsString(cartoonSave);
@@ -81,6 +78,7 @@ class CartoonControllerTest extends ControllerTest {
                 .title("만화 제목")
                 .dayOfTheWeek("MON")
                 .progress("SERIALIZATION")
+                .genre("ROMANCE")
                 .build();
 
         String cartoonSaveJson = objectMapper.writeValueAsString(cartoonSave);
@@ -130,6 +128,7 @@ class CartoonControllerTest extends ControllerTest {
                 .title("수정 만화 제목")
                 .dayOfTheWeek("TUE")
                 .progress("COMPLETE")
+                .genre("ROMANCE")
                 .build();
 
         String cartoonUpdateJson = objectMapper.writeValueAsString(cartoonUpdate);
@@ -155,6 +154,7 @@ class CartoonControllerTest extends ControllerTest {
                 .title("")
                 .dayOfTheWeek("TUE")
                 .progress("SERIALIZATION")
+                .genre("ROMANCE")
                 .build();
 
         String cartoonUpdateJson = objectMapper.writeValueAsString(cartoonUpdate);
@@ -179,6 +179,7 @@ class CartoonControllerTest extends ControllerTest {
                 .title("수정 만화 제목")
                 .dayOfTheWeek("TUE")
                 .progress("COMPLETE")
+                .genre("ROMANCE")
                 .build();
 
         String cartoonUpdateJson = objectMapper.writeValueAsString(cartoonUpdate);
@@ -209,6 +210,7 @@ class CartoonControllerTest extends ControllerTest {
                 .title("수정 만화 제목")
                 .dayOfTheWeek("TUE")
                 .progress("COMPLETE")
+                .genre("ROMANCE")
                 .build();
 
         authorRepository.save(anotherAuthor);

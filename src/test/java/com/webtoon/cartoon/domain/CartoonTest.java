@@ -1,12 +1,15 @@
 package com.webtoon.cartoon.domain;
 
 import com.webtoon.author.domain.Author;
-import com.webtoon.author.dto.request.AuthorSession;
+import com.webtoon.author.domain.AuthorSession;
+import com.webtoon.cartoon.dto.request.CartoonEnumField;
+import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
+import com.webtoon.cartoon.exception.CartoonForbiddenException;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
-import com.webtoon.global.error.ForbiddenException;
 import com.webtoon.util.DomainTest;
 import com.webtoon.util.enumerated.DayOfTheWeek;
+import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +20,32 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class CartoonTest extends DomainTest {
 
     @Test
-    @DisplayName("만화 정보가 수정됩니다 - 성공")
+    @DisplayName("CartoonSave와 Author로부터 Cartoon을 생성합니다")
+    void getFromCartoonSaveAndAuthor() {
+        // given
+        CartoonSave cartoonSave = CartoonSave.builder()
+                .title("만화 제목")
+                .dayOfTheWeek("MON")
+                .progress("SERIALIZATION")
+                .genre("ROMANCE")
+                .build();
+
+        Author author = getAuthor();
+
+        // when
+        Cartoon cartoon = Cartoon.getFromCartoonSaveAndAuthor(cartoonSave, author);
+
+        // then
+        assertThat(cartoon.getAuthor()).isEqualTo(author);
+        assertThat(cartoon.getTitle()).isEqualTo(cartoonSave.getTitle());
+        assertThat(cartoon.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.MON);
+        assertThat(cartoon.getProgress()).isEqualTo(Progress.SERIALIZATION);
+        assertThat(cartoon.getGenre()).isEqualTo(Genre.ROMANCE);
+    }
+
+
+    @Test
+    @DisplayName("만화 정보가 수정됩니다")
     void update() {
         // given
         Author author = getAuthor();
@@ -27,6 +55,7 @@ class CartoonTest extends DomainTest {
                 .title("수정 만화 제목")
                 .dayOfTheWeek("TUE")
                 .progress("COMPLETE")
+                .genre("ACTION")
                 .build();
 
         // when
@@ -36,35 +65,67 @@ class CartoonTest extends DomainTest {
         assertThat(cartoon.getTitle()).isEqualTo("수정 만화 제목");
         assertThat(cartoon.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.TUE);
         assertThat(cartoon.getProgress()).isEqualTo(Progress.COMPLETE);
+        assertThat(cartoon.getGenre()).isEqualTo(Genre.ACTION);
     }
 
     @Test
+    @DisplayName("작가의 만화이면 메소드를 통과합니다")
+    void checkAuthorityForCartoon200() {
+        // given
+        Author author = getAuthor();
+        Cartoon cartoon = getCartoon(author);
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
+
+        // expected
+        cartoon.checkAuthorityForCartoon(authorSession);
+    }
+
+
+    @Test
     @DisplayName("작가의 만화가 아니면 접근 권한 예외가 발생합니다")
-    void checkAuthorityForCartoon() {
+    void checkAuthorityForCartoon403() {
         // given
         Author author = getAuthor();
         Cartoon cartoon = getCartoon(author);
         AuthorSession anotherAuthorSession = AuthorSession.builder()
+                .id(9999L)
                 .nickName("다른 작가")
                 .email("yhwjd@naver.com")
                 .password("4321")
                 .build();
 
         // expected
-        assertThrows(ForbiddenException.class,
+        assertThrows(CartoonForbiddenException.class,
                 () -> cartoon.checkAuthorityForCartoon(anotherAuthorSession));
     }
 
     @Test
-    @DisplayName("요일, 진행 상황이 등록된 Enum 과 일치하지 않으면 예외가 발생합니다")
-    void checkEnumTypeValid() {
+    @DisplayName("요일, 진행 상황이 등록된 Enum과 일치하면 메소드가 통과합니다")
+    void checkEnumTypeValid200() {
         // given
-        String inputDayOfWeek = "조건에 맞지 않은 요일";
-        String inputProgress = "조건에 맞지 않은 진행상황";
+        CartoonEnumField cartoonEnumField = CartoonEnumField.builder()
+                .dayOfTheWeek("MON")
+                .progress("SERIALIZATION")
+                .genre("ROMANCE")
+                .build();
+
+        // expected
+        Cartoon.checkEnumTypeValid(cartoonEnumField);
+    }
+
+    @Test
+    @DisplayName("요일, 진행 상황이 등록된 Enum 과 일치하지 않으면 예외가 발생합니다")
+    void checkEnumTypeValid400() {
+        // given
+        CartoonEnumField cartoonEnumField = CartoonEnumField.builder()
+                .dayOfTheWeek("조건에 맞지 않은 요일")
+                .progress("조건에 맞지 않은 진행상황")
+                .genre("조건에 맞지 않은 장르")
+                .build();
 
         // expected
         assertThrows(EnumTypeValidException.class,
-                () -> Cartoon.checkEnumTypeValid(inputDayOfWeek, inputProgress));
+                () -> Cartoon.checkEnumTypeValid(cartoonEnumField));
     }
 
     @Test
@@ -73,11 +134,10 @@ class CartoonTest extends DomainTest {
         // given
         String inputDayOfWeekTrue = "MON";
         String inputDayOfWeekFalse = "조건에 맞지 않은 요일";
-        DayOfTheWeek[] DayList = DayOfTheWeek.values();
 
         // when
-        Boolean booleanTrue = Cartoon.checkDayValid(inputDayOfWeekTrue, DayList);
-        Boolean booleanFalse = Cartoon.checkDayValid(inputDayOfWeekFalse, DayList);
+        Boolean booleanTrue = Cartoon.checkDayValid(inputDayOfWeekTrue);
+        Boolean booleanFalse = Cartoon.checkDayValid(inputDayOfWeekFalse);
 
         // then
         assertThat(booleanTrue).isTrue();
@@ -90,11 +150,26 @@ class CartoonTest extends DomainTest {
         // given
         String inputProgressTrue = "SERIALIZATION";
         String inputProgressFalse = "조건에 맞지 않은 진행상황";
-        Progress[] progressList = Progress.values();
 
         // when
-        Boolean booleanTrue = Cartoon.checkProgressValid(inputProgressTrue, progressList);
-        Boolean booleanFalse = Cartoon.checkProgressValid(inputProgressFalse, progressList);
+        Boolean booleanTrue = Cartoon.checkProgressValid(inputProgressTrue);
+        Boolean booleanFalse = Cartoon.checkProgressValid(inputProgressFalse);
+
+        // then
+        assertThat(booleanTrue).isTrue();
+        assertThat(booleanFalse).isFalse();
+    }
+
+    @Test
+    @DisplayName("장르가 등록된 리스트에 있다면 True 없으면 False 를 반환합니다")
+    void checkGenreValid() {
+        // given
+        String inputGenreTrue = "ROMANCE";
+        String inputGenreFalse = "조건에 맞지 않은 장르";
+
+        // when
+        Boolean booleanTrue = Cartoon.checkGenreValid(inputGenreTrue);
+        Boolean booleanFalse = Cartoon.checkGenreValid(inputGenreFalse);
 
         // then
         assertThat(booleanTrue).isTrue();
