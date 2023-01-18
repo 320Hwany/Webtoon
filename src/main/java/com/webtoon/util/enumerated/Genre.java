@@ -7,7 +7,8 @@ public enum Genre implements EnumModel {
     FANTASY("FANTASY"),
     THRILLER("THRILLER"),
     SPORTS("SPORTS"),
-    ACTION("ACTION");
+    ACTION("ACTION"),
+    NONE(null);
 
     private String value;
 

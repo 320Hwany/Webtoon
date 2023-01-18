@@ -1,6 +1,8 @@
 package com.webtoon.cartoon.repository;
 
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.util.enumerated.Genre;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +15,11 @@ public interface CartoonRepository {
 
     Cartoon getById(Long id);
 
-    Cartoon getByTitle(String title);
+    List<Cartoon> findAllByTitle(CartoonSearch cartoonSearch);
 
-    List<Cartoon> findAllByGenre(Genre genre);
+    List<Cartoon> findAllByGenre(CartoonSearch cartoonSearch);
+
+    List<Cartoon> findAllOrderByLikes(CartoonSearch cartoonSearch);
+
+    void saveAll(List<Cartoon> cartoonList);
 }

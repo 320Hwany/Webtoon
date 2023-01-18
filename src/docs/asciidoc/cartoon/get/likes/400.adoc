@@ -1,0 +1,11 @@
+= 페이지를 잘못 입력하면 좋아요가 많은 순으로 페이지를 가져올 수 없습니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/cartoon/get/likes/400/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/cartoon/get/likes/400/http-response.adoc[]

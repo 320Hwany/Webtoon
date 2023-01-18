@@ -1,0 +1,11 @@
+= 좋아요가 많은 순으로 만화 리스트를 한 페이지 보여줍니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/cartoon/get/likes/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/cartoon/get/likes/200/http-response.adoc[]

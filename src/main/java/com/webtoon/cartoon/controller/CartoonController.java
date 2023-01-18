@@ -2,13 +2,14 @@ package com.webtoon.cartoon.controller;
 
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonEnumField;
 import com.webtoon.cartoon.dto.request.CartoonSave;
+import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.util.annotation.LoginForAuthor;
-import com.webtoon.util.enumerated.Genre;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,21 +29,38 @@ public class CartoonController {
         CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonSave(cartoonSave);
         cartoonService.checkEnumTypeValid(cartoonEnumField);
         cartoonService.save(cartoonSave, authorSession);
+
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/cartoon/title")
-    public ResponseEntity<CartoonResponse> getCartoonByTitle(@RequestParam String title) {
-        Cartoon cartoon = cartoonService.getByTitle(title);
-        CartoonResponse cartoonResponse = CartoonResponse.getFromCartoon(cartoon);
-        return ResponseEntity.ok(cartoonResponse);
+    public ResponseEntity<List<CartoonResponse>> getCartoonListByTitle(
+            @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        List<Cartoon> cartoonList = cartoonService.findAllByTitle(cartoonSearch);
+        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
+
+        return ResponseEntity.ok(cartoonResponseList);
     }
 
     @GetMapping("/cartoon/genre")
-    public ResponseEntity<List<CartoonResponse>> getCartoonListByGenre(@RequestParam String genreString) {
-        Genre genre = cartoonService.getGenreFromString(genreString);
-        List<Cartoon> cartoonList = cartoonService.findAllByGenre(genre);
+    public ResponseEntity<List<CartoonResponse>> getCartoonListByGenre(
+            @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
+        cartoonService.checkGenreValid(cartoonSearchDto.getGenre());
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        List<Cartoon> cartoonList = cartoonService.findAllByGenre(cartoonSearch);
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
+
+        return ResponseEntity.ok(cartoonResponseList);
+    }
+
+    @GetMapping("/cartoon/likes")
+    public ResponseEntity<List<CartoonResponse>> getCartoonListOrderByLikes(
+            @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        List<Cartoon> cartoonList = cartoonService.findAllOrderByLikes(cartoonSearch);
+        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
+
         return ResponseEntity.ok(cartoonResponseList);
     }
 

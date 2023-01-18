@@ -1,5 +1,6 @@
 package com.webtoon.cartoon.exception;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -12,6 +13,7 @@ public class EnumTypeValidException extends RuntimeException {
     private static final String MESSAGE = "잘못된 요청입니다";
 
     private Map<String, String> validation = new HashMap<>();
+
 
     public EnumTypeValidException(Boolean isDayValid, Boolean isProgressValid, Boolean isGenreValid) {
         super(MESSAGE);

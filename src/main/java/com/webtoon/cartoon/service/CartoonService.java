@@ -4,9 +4,12 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonEnumField;
 import com.webtoon.cartoon.dto.request.CartoonSave;
+import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
+import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.util.enumerated.Genre;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +33,16 @@ public class CartoonService {
         return cartoonRepository.save(cartoon);
     }
 
-    public Cartoon getByTitle(String title) {
-        return cartoonRepository.getByTitle(title);
+    public List<Cartoon> findAllByTitle(CartoonSearch cartoonSearch) {
+        return cartoonRepository.findAllByTitle(cartoonSearch);
     }
 
-    public List<Cartoon> findAllByGenre(Genre genre) {
-        return cartoonRepository.findAllByGenre(genre);
+    public List<Cartoon> findAllByGenre(CartoonSearch cartoonSearch) {
+        return cartoonRepository.findAllByGenre(cartoonSearch);
+    }
+
+    public List<Cartoon> findAllOrderByLikes(CartoonSearch cartoonSearch) {
+        return cartoonRepository.findAllOrderByLikes(cartoonSearch);
     }
 
     public void checkAuthorityForCartoon(Long cartoonId, AuthorSession authorSession) {
@@ -47,9 +54,10 @@ public class CartoonService {
         Cartoon.checkEnumTypeValid(cartoonEnumField);
     }
 
-    public Genre getGenreFromString(String genreString) {
-        Genre genre = CartoonEnumField.getGenreFromString(genreString);
-        return genre;
+    public void checkGenreValid(String genre) {
+        if (Cartoon.checkGenreValid(genre) == false) {
+            throw new EnumTypeValidException(false, false, true);
+        }
     }
 
     @Transactional

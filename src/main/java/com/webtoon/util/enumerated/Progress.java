@@ -5,7 +5,8 @@ public enum Progress implements EnumModel{
 
     SERIALIZATION("SERIALIZATION"),
     ONBREAK("ONBREAK"),
-    COMPLETE("COMPLETE");
+    COMPLETE("COMPLETE"),
+    NONE(null);
 
     private String value;
 
