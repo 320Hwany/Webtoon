@@ -54,10 +54,6 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         return true;
     }
 
-    @Override
-    public void deleteAll() {
-        authorJpaRepository.deleteAll();
-    }
 
     @Override
     public void delete(Author author) {

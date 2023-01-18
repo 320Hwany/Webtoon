@@ -5,7 +5,6 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.util.ControllerTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
@@ -113,6 +112,26 @@ class CartoonControllerTest extends ControllerTest {
                         .param("title", "없는 제목"))
                 .andExpect(status().isNotFound())
                 .andDo(document("cartoon/get/title/404"));
+    }
+
+    @Test
+    @DisplayName("입력한 장르의 만화 리스트를 보여줍니다 - 성공")
+    void getCartoonListByGenre200() throws Exception {
+        // expected
+        mockMvc.perform(get("/cartoon/genre")
+                        .param("genreString", "ROMANCE"))
+                .andExpect(status().isOk())
+                .andDo(document("cartoon/get/genre/200"));
+    }
+
+    @Test
+    @DisplayName("입력한 장르가 존재하지 않는다면 오류메세지를 보여줍니다 - 실패")
+    void getCartoonListByGenre400() throws Exception {
+        // expected
+        mockMvc.perform(get("/cartoon/genre")
+                        .param("genreString", "존재하지 않는 장르"))
+                .andExpect(status().isBadRequest())
+                .andDo(document("cartoon/get/genre/400"));
     }
 
 

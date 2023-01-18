@@ -1,7 +1,10 @@
 package com.webtoon.cartoon.repository;
 
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.util.enumerated.Genre;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface CartoonRepository {
@@ -12,5 +15,5 @@ public interface CartoonRepository {
 
     Cartoon getByTitle(String title);
 
-    void deleteAll();
+    List<Cartoon> findAllByGenre(Genre genre);
 }

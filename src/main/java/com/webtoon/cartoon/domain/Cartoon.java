@@ -91,7 +91,7 @@ public class Cartoon extends BaseTimeEntity {
         Boolean isGenreValid = checkGenreValid(cartoonEnumField.getGenre());
 
         if ((isDayValid == false) || (isProgressValid == false) || (isGenreValid == false)) {
-            throw new EnumTypeValidException(isDayValid, isProgressValid);
+            throw new EnumTypeValidException(isDayValid, isProgressValid, isGenreValid);
         }
     }
 

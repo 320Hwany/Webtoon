@@ -1,5 +1,7 @@
 package com.webtoon.cartoon.dto.request;
 
+import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.util.enumerated.Genre;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -33,5 +35,15 @@ public class CartoonEnumField {
                 .progress(cartoonUpdate.getProgress())
                 .genre(cartoonUpdate.getGenre())
                 .build();
+    }
+
+    public static Genre getGenreFromString(String genreString) {
+        Genre[] genreList = Genre.values();
+        for (Genre genre : genreList) {
+            if (genre.getValue().equals(genreString)) {
+                return Genre.valueOf(genreString);
+            }
+        }
+        throw new EnumTypeValidException(true, true, false);
     }
 }

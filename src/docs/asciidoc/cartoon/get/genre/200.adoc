@@ -1,0 +1,11 @@
+= 입력한 장르의 만화 리스트를 보여줍니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/cartoon/get/genre/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/cartoon/get/genre/200/http-response.adoc[]

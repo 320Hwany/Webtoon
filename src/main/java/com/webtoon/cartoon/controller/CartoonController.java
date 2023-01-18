@@ -8,11 +8,13 @@ import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.util.annotation.LoginForAuthor;
+import com.webtoon.util.enumerated.Genre;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,6 +36,14 @@ public class CartoonController {
         Cartoon cartoon = cartoonService.getByTitle(title);
         CartoonResponse cartoonResponse = CartoonResponse.getFromCartoon(cartoon);
         return ResponseEntity.ok(cartoonResponse);
+    }
+
+    @GetMapping("/cartoon/genre")
+    public ResponseEntity<List<CartoonResponse>> getCartoonListByGenre(@RequestParam String genreString) {
+        Genre genre = cartoonService.getGenreFromString(genreString);
+        List<Cartoon> cartoonList = cartoonService.findAllByGenre(genre);
+        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
+        return ResponseEntity.ok(cartoonResponseList);
     }
 
     @PatchMapping("/cartoon/{cartoonId}")

@@ -21,7 +21,5 @@ public interface AuthorRepository {
 
     Boolean checkAuthorPresent(AuthorSession authorSession);
 
-    void deleteAll();
-
     void delete(Author author);
 }

@@ -20,7 +20,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Transactional
@@ -101,6 +106,34 @@ class CartoonServiceTest extends ServiceTest {
                 () -> cartoonService.getByTitle("없는 제목"));
     }
 
+    @Test
+    @DisplayName("장르와 일치하는 만화 리스트를 가져옵니다 - 성공")
+    @Transactional
+    void findAllByGenre200() {
+        // given
+        Author author = saveAuthorInRepository();
+        saveCartoonInRepository(author);
+        Cartoon anotherCartoon = Cartoon.builder()
+                .genre(Genre.ACTION)
+                .build();
+
+        cartoonRepository.save(anotherCartoon);
+        Genre genre = Genre.valueOf("ROMANCE");
+        List<Genre> genreList = new ArrayList<>();
+
+        // when
+        List<Cartoon> cartoonList = cartoonService.findAllByGenre(genre);
+
+        for (Cartoon cartoon : cartoonList) {
+            genreList.add(cartoon.getGenre());
+        }
+
+        // then
+        assertThat(genreList.size()).isEqualTo(1);
+        assertThat(genreList).contains(Genre.ROMANCE);
+        assertThat(genreList).doesNotContain(Genre.ACTION);
+    }
+
 
     @Test
     @DisplayName("작가가 만화에 대한 접근 권한이 있는면 메소드를 통과합니다 - 성공")
@@ -157,8 +190,32 @@ class CartoonServiceTest extends ServiceTest {
                 .build();
 
         // expected
-        Assertions.assertThrows(EnumTypeValidException.class,
+        assertThrows(EnumTypeValidException.class,
                 () -> cartoonService.checkEnumTypeValid(cartoonEnumField));
+    }
+
+    @Test
+    @DisplayName("장르 String과 일치하는 장르가 있다면 Genre변수로 가져옵니다 - 성공")
+    void getGenreFromString200() {
+        // given
+        String genreString = "ROMANCE";
+
+        // when
+        Genre genre = cartoonService.getGenreFromString(genreString);
+
+        // then
+        assertThat(genre).isInstanceOf(Genre.class);
+    }
+
+    @Test
+    @DisplayName("장르 String과 일치하는 장르가 없다면 예외가 발생합니다 - 실패")
+    void getGenreFromString400() {
+        // given
+        String genreString = "존재하지 않는 장르";
+
+        // expected
+        assertThrows(EnumTypeValidException.class,
+                () -> cartoonService.getGenreFromString(genreString));
     }
 
     @Test
