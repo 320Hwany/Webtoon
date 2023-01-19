@@ -79,23 +79,23 @@ public class Cartoon extends BaseTimeEntity {
         this.genre = Genre.valueOf(cartoonUpdate.getGenre());
     }
 
-    public void checkAuthorityForCartoon(AuthorSession authorSession) {
+    public void validateAuthorityForCartoon(AuthorSession authorSession) {
         if (author.getId() != authorSession.getId()) {
             throw new CartoonForbiddenException();
         }
     }
 
-    public static void checkEnumTypeValid(CartoonEnumField cartoonEnumField) {
-        Boolean isDayValid = checkDayValid(cartoonEnumField.getDayOfTheWeek());
-        Boolean isProgressValid = checkProgressValid(cartoonEnumField.getProgress());
-        Boolean isGenreValid = checkGenreValid(cartoonEnumField.getGenre());
+    public static void validateEnumTypeValid(CartoonEnumField cartoonEnumField) {
+        Boolean isDayValid = validateDayValid(cartoonEnumField.getDayOfTheWeek());
+        Boolean isProgressValid = validateProgressValid(cartoonEnumField.getProgress());
+        Boolean isGenreValid = validateGenreValid(cartoonEnumField.getGenre());
 
         if ((isDayValid == false) || (isProgressValid == false) || (isGenreValid == false)) {
             throw new EnumTypeValidException(isDayValid, isProgressValid, isGenreValid);
         }
     }
 
-    public static Boolean checkDayValid(String inputDayOfWeek) {
+    public static Boolean validateDayValid(String inputDayOfWeek) {
         DayOfTheWeek[] DayList = DayOfTheWeek.values();
         for (DayOfTheWeek day : DayList) {
             if (inputDayOfWeek.equals(day.getValue())) {
@@ -105,7 +105,7 @@ public class Cartoon extends BaseTimeEntity {
         return false;
     }
 
-    public static Boolean checkProgressValid(String inputProgress) {
+    public static Boolean validateProgressValid(String inputProgress) {
         Progress[] progressList = Progress.values();
         for (Progress progress : progressList) {
             if (inputProgress.equals(progress.getValue())) {
@@ -115,7 +115,7 @@ public class Cartoon extends BaseTimeEntity {
         return false;
     }
 
-    public static Boolean checkGenreValid(String inputGenre) {
+    public static Boolean validateGenreValid(String inputGenre) {
         Genre[] genreList = Genre.values();
         for (Genre genre : genreList) {
             if (inputGenre.equals(genre.getValue())) {

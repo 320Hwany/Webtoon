@@ -77,7 +77,7 @@ class CartoonTest extends DomainTest {
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
 
         // expected
-        cartoon.checkAuthorityForCartoon(authorSession);
+        cartoon.validateAuthorityForCartoon(authorSession);
     }
 
 
@@ -96,7 +96,7 @@ class CartoonTest extends DomainTest {
 
         // expected
         assertThrows(CartoonForbiddenException.class,
-                () -> cartoon.checkAuthorityForCartoon(anotherAuthorSession));
+                () -> cartoon.validateAuthorityForCartoon(anotherAuthorSession));
     }
 
     @Test
@@ -110,7 +110,7 @@ class CartoonTest extends DomainTest {
                 .build();
 
         // expected
-        Cartoon.checkEnumTypeValid(cartoonEnumField);
+        Cartoon.validateEnumTypeValid(cartoonEnumField);
     }
 
     @Test
@@ -125,7 +125,7 @@ class CartoonTest extends DomainTest {
 
         // expected
         assertThrows(EnumTypeValidException.class,
-                () -> Cartoon.checkEnumTypeValid(cartoonEnumField));
+                () -> Cartoon.validateEnumTypeValid(cartoonEnumField));
     }
 
     @Test
@@ -136,8 +136,8 @@ class CartoonTest extends DomainTest {
         String inputDayOfWeekFalse = "조건에 맞지 않은 요일";
 
         // when
-        Boolean booleanTrue = Cartoon.checkDayValid(inputDayOfWeekTrue);
-        Boolean booleanFalse = Cartoon.checkDayValid(inputDayOfWeekFalse);
+        Boolean booleanTrue = Cartoon.validateDayValid(inputDayOfWeekTrue);
+        Boolean booleanFalse = Cartoon.validateDayValid(inputDayOfWeekFalse);
 
         // then
         assertThat(booleanTrue).isTrue();
@@ -152,8 +152,8 @@ class CartoonTest extends DomainTest {
         String inputProgressFalse = "조건에 맞지 않은 진행상황";
 
         // when
-        Boolean booleanTrue = Cartoon.checkProgressValid(inputProgressTrue);
-        Boolean booleanFalse = Cartoon.checkProgressValid(inputProgressFalse);
+        Boolean booleanTrue = Cartoon.validateProgressValid(inputProgressTrue);
+        Boolean booleanFalse = Cartoon.validateProgressValid(inputProgressFalse);
 
         // then
         assertThat(booleanTrue).isTrue();
@@ -168,8 +168,8 @@ class CartoonTest extends DomainTest {
         String inputGenreFalse = "조건에 맞지 않은 장르";
 
         // when
-        Boolean booleanTrue = Cartoon.checkGenreValid(inputGenreTrue);
-        Boolean booleanFalse = Cartoon.checkGenreValid(inputGenreFalse);
+        Boolean booleanTrue = Cartoon.validateGenreValid(inputGenreTrue);
+        Boolean booleanFalse = Cartoon.validateGenreValid(inputGenreFalse);
 
         // then
         assertThat(booleanTrue).isTrue();

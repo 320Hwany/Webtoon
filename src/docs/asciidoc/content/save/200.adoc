@@ -1,0 +1,11 @@
+= 작가로 로그인한 후 자신의 만화에 내용을 추가할 수 있습니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/content/save/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/content/save/200/http-response.adoc[]

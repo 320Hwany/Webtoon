@@ -56,17 +56,13 @@ public class CartoonService {
         cartoonRepository.delete(cartoon);
     }
 
-    public void checkAuthorityForCartoon(AuthorSession authorSession, Long cartoonId) {
+    public void validateAuthorityForCartoon(AuthorSession authorSession, Long cartoonId) {
         Cartoon cartoon = cartoonRepository.getById(cartoonId);
-        cartoon.checkAuthorityForCartoon(authorSession);
+        cartoon.validateAuthorityForCartoon(authorSession);
     }
 
-    public void checkEnumTypeValid(CartoonEnumField cartoonEnumField) {
-        Cartoon.checkEnumTypeValid(cartoonEnumField);
-    }
-
-    public void checkGenreValid(String genre) {
-        if (Cartoon.checkGenreValid(genre) == false) {
+    public void validateGenreValid(String genre) {
+        if (Cartoon.validateGenreValid(genre) == false) {
             throw new EnumTypeValidException(false, false, true);
         }
     }

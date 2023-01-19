@@ -5,6 +5,7 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
+import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
@@ -20,6 +21,9 @@ public class ServiceTest {
 
     @Autowired
     protected CartoonRepository cartoonRepository;
+
+    @Autowired
+    protected ContentRepository contentRepository;
 
     protected Author saveAuthorInRepository() {
         Author author = Author.builder()

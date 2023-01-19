@@ -1,0 +1,29 @@
+package com.webtoon.content.service;
+
+import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.repository.CartoonRepository;
+import com.webtoon.content.domain.Content;
+import com.webtoon.content.dto.request.ContentSave;
+import com.webtoon.content.repository.ContentRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@RequiredArgsConstructor
+@Service
+public class ContentService {
+
+    private final ContentRepository contentRepository;
+    private final CartoonRepository cartoonRepository;
+
+    @Transactional
+    public Content save(Content content) {
+        return contentRepository.save(content);
+    }
+
+    public Content getContentFromContentSaveAndCartoonId(ContentSave contentSave, Long cartoonId) {
+        Cartoon cartoon = cartoonRepository.getById(cartoonId);
+        Content content = Content.getFromContentSaveAndCartoon(contentSave, cartoon);
+        return content;
+    }
+}

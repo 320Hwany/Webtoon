@@ -27,7 +27,7 @@ public class CartoonController {
     public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
                                      @RequestBody @Valid CartoonSave cartoonSave) {
         CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonSave(cartoonSave);
-        cartoonService.checkEnumTypeValid(cartoonEnumField);
+        Cartoon.validateEnumTypeValid(cartoonEnumField);
         cartoonService.save(cartoonSave, authorSession);
 
         return ResponseEntity.ok().build();
@@ -46,7 +46,7 @@ public class CartoonController {
     @GetMapping("/cartoon/genre")
     public ResponseEntity<List<CartoonResponse>> getCartoonListByGenre(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
-        cartoonService.checkGenreValid(cartoonSearchDto.getGenre());
+        cartoonService.validateGenreValid(cartoonSearchDto.getGenre());
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<Cartoon> cartoonList = cartoonService.findAllByGenre(cartoonSearch);
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
@@ -69,8 +69,8 @@ public class CartoonController {
                                                   @PathVariable Long cartoonId,
                                                   @RequestBody @Valid CartoonUpdate cartoonUpdate) {
         CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonUpdate(cartoonUpdate);
-        cartoonService.checkEnumTypeValid(cartoonEnumField);
-        cartoonService.checkAuthorityForCartoon(authorSession, cartoonId);
+        Cartoon.validateEnumTypeValid(cartoonEnumField);
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
         Cartoon afterUpdateCartoon = cartoonService.update(cartoonId, cartoonUpdate);
         CartoonResponse cartoonResponse = CartoonResponse.getFromCartoon(afterUpdateCartoon);
 
@@ -80,7 +80,7 @@ public class CartoonController {
     @DeleteMapping("/cartoon/{cartoonId}")
     public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
                        @PathVariable Long cartoonId) {
-        cartoonService.checkAuthorityForCartoon(authorSession, cartoonId);
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
         cartoonService.delete(cartoonId);
         return ResponseEntity.ok().build();
     }

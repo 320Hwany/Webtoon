@@ -259,7 +259,7 @@ class CartoonServiceTest extends ServiceTest {
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
 
         // expected
-        cartoonService.checkAuthorityForCartoon(authorSession, cartoon.getId());
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoon.getId());
     }
 
     @Test
@@ -277,43 +277,14 @@ class CartoonServiceTest extends ServiceTest {
 
         // expected
         assertThrows(CartoonForbiddenException.class,
-                () -> cartoonService.checkAuthorityForCartoon(anotherAuthorSession, cartoon.getId()));
-    }
-
-    @Test
-    @DisplayName("CartoonEnumField의 정보가 Enum에 존재하면 메소드를 통과합니다 - 성공")
-    void checkEnumTypeValid200() {
-        // given
-        CartoonEnumField cartoonEnumField = CartoonEnumField.builder()
-                .dayOfTheWeek("MON")
-                .progress("SERIALIZATION")
-                .genre("ROMANCE")
-                .build();
-
-        // expected
-        cartoonService.checkEnumTypeValid(cartoonEnumField);
-    }
-
-    @Test
-    @DisplayName("CartoonEnumField의 정보가 Enum에 존재하지 않으면 예외가 발생합니다 - 실패")
-    void checkEnumTypeValid400() {
-        // given
-        CartoonEnumField cartoonEnumField = CartoonEnumField.builder()
-                .dayOfTheWeek("존재하지 않는 요일")
-                .progress("존재하지 않는 진행과정")
-                .genre("존재하지 않는 장르")
-                .build();
-
-        // expected
-        assertThrows(EnumTypeValidException.class,
-                () -> cartoonService.checkEnumTypeValid(cartoonEnumField));
+                () -> cartoonService.validateAuthorityForCartoon(anotherAuthorSession, cartoon.getId()));
     }
 
     @Test
     @DisplayName("입력한 장르가 유효하면 메소드를 통과합니다 - 성공")
     void checkGenreValid200() {
         // expected
-        cartoonService.checkGenreValid("ROMANCE");
+        cartoonService.validateGenreValid("ROMANCE");
     }
 
     @Test
@@ -321,6 +292,6 @@ class CartoonServiceTest extends ServiceTest {
     void checkGenreValid400() {
         // expected
         assertThrows(EnumTypeValidException.class,
-                () -> cartoonService.checkGenreValid("존재하지 않는 장르"));
+                () -> cartoonService.validateGenreValid("존재하지 않는 장르"));
     }
 }
