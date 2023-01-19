@@ -1,0 +1,11 @@
+= 작가로 로그인하면 자기 만화를 삭제할 수 있습니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/cartoon/delete/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/cartoon/delete/200/http-response.adoc[]

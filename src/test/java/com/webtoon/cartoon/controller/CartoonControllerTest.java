@@ -386,4 +386,96 @@ class CartoonControllerTest extends ControllerTest {
                 .andExpect(status().isForbidden())
                 .andDo(document("cartoon/update/403"));
     }
+
+    @Test
+    @DisplayName("만화가 존재하지 않으면 만화를 수정할 수 없습니다 - 실패")
+    void update404() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        MockHttpSession session = loginAuthorSession();
+
+        CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
+                .title("수정 만화 제목")
+                .dayOfTheWeek("TUE")
+                .progress("COMPLETE")
+                .genre("ROMANCE")
+                .build();
+
+        String cartoonUpdateJson = objectMapper.writeValueAsString(cartoonUpdate);
+
+        // expected
+        mockMvc.perform(patch("/cartoon/{cartoonId}", 9999L)
+                        .session(session)
+                        .contentType(APPLICATION_JSON)
+                        .content(cartoonUpdateJson))
+                .andExpect(status().isNotFound())
+                .andDo(document("cartoon/update/404"));
+    }
+
+    @Test
+    @DisplayName("작가로 로그인하면 자기 만화를 삭제할 수 있습니다 - 성공")
+    void delete200() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        MockHttpSession session = loginAuthorSession();
+
+        // expected
+        mockMvc.perform(delete("/cartoon/{cartoonId}", cartoon.getId())
+                        .session(session))
+                .andExpect(status().isOk())
+                .andDo(document("cartoon/delete/200"));
+    }
+
+    @Test
+    @DisplayName("작가로 로그인을 하지 않으면 만화를 삭제할 수 없습니다 - 실패")
+    void delete401() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+
+        // expected
+        mockMvc.perform(delete("/cartoon/{cartoonId}", cartoon.getId()))
+                .andExpect(status().isUnauthorized())
+                .andDo(document("cartoon/delete/401"));
+    }
+
+    @Test
+    @DisplayName("작가로 로그인하여도 자기 만화가 아니면 삭제할 수 없습니다 - 실패")
+    void delete403() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        MockHttpSession session = loginAuthorSession();
+
+        Author anotherAuthor = Author.builder()
+                .nickName("다른 작가 이름")
+                .email("yhwjd@naver.com")
+                .password("4321")
+                .build();
+
+        authorRepository.save(anotherAuthor);
+        Cartoon anotherCartoon = saveCartoonInRepository(anotherAuthor);
+
+        // expected
+        mockMvc.perform(delete("/cartoon/{cartoonId}", anotherCartoon.getId())
+                        .session(session))
+                .andExpect(status().isForbidden())
+                .andDo(document("cartoon/delete/403"));
+    }
+
+    @Test
+    @DisplayName("만화가 존재하지 않으면 만화를 삭제할 수 없습니다 - 실패")
+    void delete404() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        MockHttpSession session = loginAuthorSession();
+
+        // expected
+        mockMvc.perform(delete("/cartoon/{cartoonId}", 9999L)
+                        .session(session))
+                .andExpect(status().isNotFound())
+                .andDo(document("cartoon/delete/404"));
+    }
 }

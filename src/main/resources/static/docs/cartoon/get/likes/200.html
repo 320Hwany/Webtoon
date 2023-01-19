@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>작가 로그인 - 성공</title>
+<title>좋아요가 많은 순으로 만화 리스트를 한 페이지 보여줍니다 - 성공</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,7 +438,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>작가 로그인 - 성공</h1>
+<h1>좋아요가 많은 순으로 만화 리스트를 한 페이지 보여줍니다 - 성공</h1>
 <div class="details">
 <span id="revnumber">version 0.0.1-SNAPSHOT</span>
 </div>
@@ -456,14 +456,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /author/login HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /cartoon/likes HTTP/1.1
 Content-Type: application/json
-Content-Length: 58
+Content-Length: 125
 Host: localhost:8080
 
 {
-  "email" : "yhwjd99@gmail.com",
-  "password" : "1234"
+  "page" : 1,
+  "title" : null,
+  "nickName" : null,
+  "dayOfTheWeek" : "NONE",
+  "progress" : "NONE",
+  "genre" : "NONE"
 }</code></pre>
 </div>
 </div>
@@ -476,13 +480,169 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 90
+Content-Length: 3122
 
-{
-  "nickName" : "작가 이름",
-  "email" : "yhwjd99@gmail.com",
-  "password" : "1234"
-}</code></pre>
+[ {
+  "title" : "만화 제목 30",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 29",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 28",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 27",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 26",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 25",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 24",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 23",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 22",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 21",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 20",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 19",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 18",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 17",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 16",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 15",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 14",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 13",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 12",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+}, {
+  "title" : "만화 제목 11",
+  "author" : null,
+  "dayOfTheWeek" : null,
+  "progress" : null,
+  "genre" : null,
+  "rating" : null,
+  "likes" : null
+} ]</code></pre>
 </div>
 </div>
 </div>
@@ -491,7 +651,7 @@ Content-Length: 90
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-01-15 19:06:10 +0900
+Last updated 2023-01-18 16:39:36 +0900
 </div>
 </div>
 </body>

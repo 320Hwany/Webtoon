@@ -1,0 +1,11 @@
+= 작가로 로그인을 하지 않으면 만화를 삭제할 수 없습니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/cartoon/delete/401/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/cartoon/delete/401/http-response.adoc[]

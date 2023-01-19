@@ -46,109 +46,6 @@ class AuthorServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 회원이면 메소드를 에러없이 메소드를 통과합니다")
-    void checkDuplication200() {
-        // given
-        AuthorSignup authorSignup = AuthorSignup.builder()
-                .nickName("새로운 회원")
-                .email("yhwjd99@gmail.com")
-                .password("4321")
-                .build();
-
-        // expected
-        authorService.checkDuplication(authorSignup);
-    }
-
-    @Test
-    @DisplayName("이미 존재하는 회원이면 에러 메세지를 보여줍니다")
-    void checkDuplication404() {
-        // given
-        Author author = saveAuthorInRepository();
-
-        AuthorSignup authorSignup = AuthorSignup.builder()
-                .nickName(author.getNickName())
-                .email(author.getEmail())
-                .password(author.getPassword())
-                .build();
-
-        // expected
-        assertThrows(AuthorDuplicationException.class,
-                () -> authorService.checkDuplication(authorSignup));
-    }
-
-    @Test
-    @DisplayName("회원정보가 존재하면 AuthorSession 을 생성합니다")
-    void makeAuthorSession200() {
-        // given
-        Author author = saveAuthorInRepository();
-
-        AuthorLogin authorLogin = AuthorLogin.builder()
-                .email(author.getEmail())
-                .password(author.getPassword())
-                .build();
-
-        // when
-        AuthorSession authorSession = authorService.makeAuthorSession(authorLogin);
-
-        // then
-        assertThat(authorSession).isNotNull();
-    }
-
-    @Test
-    @DisplayName("회원정보가 존재하지 않으면 AuthorSession 을 생성할 수 없습니다 - 실패")
-    void makeAuthorSession404() {
-        // given
-        AuthorLogin authorLogin = AuthorLogin.builder()
-                .email("yhwjd99@gmail.com")
-                .password("1234")
-                .build();
-
-        // expected
-        assertThrows(AuthorNotFoundException.class,
-                () -> authorService.makeAuthorSession(authorLogin));
-    }
-
-    @Test
-    @DisplayName("AuthorSession 의 세션을 생성합니다")
-    void makeSessionForAuthorSession200() {
-        // given
-        AuthorSession authorSession = AuthorSession.builder()
-                .nickName("작가 이름")
-                .email("yhwjd99@gmail.com")
-                .password("1234")
-                .build();
-
-        MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
-
-        // when
-        authorService.makeSessionForAuthorSession(authorSession, httpServletRequest);
-
-        // then
-        HttpSession session = httpServletRequest.getSession(false);
-        assertThat(session).isNotNull();
-    }
-
-    @Test
-    @DisplayName("AuthorSession 의 세션을 삭제합니다")
-    void invalidateSession200() {
-        // given
-        AuthorSession authorSession = AuthorSession.builder()
-                .nickName("작가 이름")
-                .email("yhwjd99@gmail.com")
-                .password("1234")
-                .build();
-
-        MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
-        authorSession.makeSession(httpServletRequest);
-        // when
-        authorService.invalidateSession(authorSession, httpServletRequest);
-
-        // then
-        HttpSession session = httpServletRequest.getSession(false);
-        assertThat(session).isNull();
-    }
-
-    @Test
     @DisplayName("닉네임으로 작가를 찾습니다 - 성공")
     void getByNickName200() {
         // given
@@ -254,5 +151,108 @@ class AuthorServiceTest extends ServiceTest {
         // expected
         assertThrows(AuthorNotFoundException.class,
                 () -> authorService.delete(authorSession));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 회원이면 메소드를 에러없이 메소드를 통과합니다")
+    void checkDuplication200() {
+        // given
+        AuthorSignup authorSignup = AuthorSignup.builder()
+                .nickName("새로운 회원")
+                .email("yhwjd99@gmail.com")
+                .password("4321")
+                .build();
+
+        // expected
+        authorService.checkDuplication(authorSignup);
+    }
+
+    @Test
+    @DisplayName("이미 존재하는 회원이면 에러 메세지를 보여줍니다")
+    void checkDuplication404() {
+        // given
+        Author author = saveAuthorInRepository();
+
+        AuthorSignup authorSignup = AuthorSignup.builder()
+                .nickName(author.getNickName())
+                .email(author.getEmail())
+                .password(author.getPassword())
+                .build();
+
+        // expected
+        assertThrows(AuthorDuplicationException.class,
+                () -> authorService.checkDuplication(authorSignup));
+    }
+
+    @Test
+    @DisplayName("회원정보가 존재하면 AuthorSession 을 생성합니다")
+    void makeAuthorSession200() {
+        // given
+        Author author = saveAuthorInRepository();
+
+        AuthorLogin authorLogin = AuthorLogin.builder()
+                .email(author.getEmail())
+                .password(author.getPassword())
+                .build();
+
+        // when
+        AuthorSession authorSession = authorService.makeAuthorSession(authorLogin);
+
+        // then
+        assertThat(authorSession).isNotNull();
+    }
+
+    @Test
+    @DisplayName("회원정보가 존재하지 않으면 AuthorSession 을 생성할 수 없습니다 - 실패")
+    void makeAuthorSession404() {
+        // given
+        AuthorLogin authorLogin = AuthorLogin.builder()
+                .email("yhwjd99@gmail.com")
+                .password("1234")
+                .build();
+
+        // expected
+        assertThrows(AuthorNotFoundException.class,
+                () -> authorService.makeAuthorSession(authorLogin));
+    }
+
+    @Test
+    @DisplayName("AuthorSession 의 세션을 생성합니다")
+    void makeSessionForAuthorSession200() {
+        // given
+        AuthorSession authorSession = AuthorSession.builder()
+                .nickName("작가 이름")
+                .email("yhwjd99@gmail.com")
+                .password("1234")
+                .build();
+
+        MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
+
+        // when
+        authorService.makeSessionForAuthorSession(authorSession, httpServletRequest);
+
+        // then
+        HttpSession session = httpServletRequest.getSession(false);
+        assertThat(session).isNotNull();
+    }
+
+    @Test
+    @DisplayName("AuthorSession 의 세션을 삭제합니다")
+    void invalidateSession200() {
+        // given
+        AuthorSession authorSession = AuthorSession.builder()
+                .nickName("작가 이름")
+                .email("yhwjd99@gmail.com")
+                .password("1234")
+                .build();
+
+        MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
+        authorSession.makeSession(httpServletRequest);
+        // when
+        authorService.invalidateSession(authorSession, httpServletRequest);
+
+        // then
+        HttpSession session = httpServletRequest.getSession(false);
+        assertThat(session).isNull();
     }
 }

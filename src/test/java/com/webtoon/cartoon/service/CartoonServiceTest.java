@@ -190,6 +190,65 @@ class CartoonServiceTest extends ServiceTest {
         assertThat(onePageCartoonList.get(0).getLikes()).isEqualTo(30);
     }
 
+    @Test
+    @DisplayName("만화가 존재하면 수정에 성공합니다")
+    @Transactional
+    void update200() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+
+        CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
+                .title("수정 만화 제목")
+                .dayOfTheWeek("TUE")
+                .progress("COMPLETE")
+                .genre("ROMANCE")
+                .build();
+        // when
+        Cartoon afterUpdate = cartoonService.update(cartoon.getId(), cartoonUpdate);
+
+        // then
+        assertThat(afterUpdate).isEqualTo(cartoon);
+    }
+
+    @Test
+    @DisplayName("만화가 존재하지 않으면 수정할 수 없습니다 - 실패")
+    void update404() {
+        // given
+        CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
+                .title("수정 만화 제목")
+                .dayOfTheWeek("TUE")
+                .progress("COMPLETE")
+                .genre("ROMANCE")
+                .build();
+
+        // expected
+        assertThrows(CartoonNotFoundException.class,
+                () -> cartoonService.update(9999L,  cartoonUpdate));
+    }
+
+    @Test
+    @DisplayName("만화가 존재하면 만화를 삭제합니다 - 성공")
+    void delete200() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+
+        // when
+        cartoonService.delete(cartoon.getId());
+
+        // then
+        assertThat(cartoonRepository.count()).isEqualTo(0L);
+    }
+
+    @Test
+    @DisplayName("만화가 존재하지 않으면 만화를 예외가 발생합니다 - 실패")
+    void delete404() {
+        // expected
+        assertThrows(CartoonNotFoundException.class,
+                () -> cartoonService.delete(1L));
+    }
+
 
     @Test
     @DisplayName("작가가 만화에 대한 접근 권한이 있는면 메소드를 통과합니다 - 성공")
@@ -200,7 +259,7 @@ class CartoonServiceTest extends ServiceTest {
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
 
         // expected
-        cartoonService.checkAuthorityForCartoon(cartoon.getId(), authorSession);
+        cartoonService.checkAuthorityForCartoon(authorSession, cartoon.getId());
     }
 
     @Test
@@ -218,7 +277,7 @@ class CartoonServiceTest extends ServiceTest {
 
         // expected
         assertThrows(CartoonForbiddenException.class,
-                () -> cartoonService.checkAuthorityForCartoon(cartoon.getId(), anotherAuthorSession));
+                () -> cartoonService.checkAuthorityForCartoon(anotherAuthorSession, cartoon.getId()));
     }
 
     @Test
@@ -263,42 +322,5 @@ class CartoonServiceTest extends ServiceTest {
         // expected
         assertThrows(EnumTypeValidException.class,
                 () -> cartoonService.checkGenreValid("존재하지 않는 장르"));
-    }
-
-    @Test
-    @DisplayName("만화가 존재하면 수정에 성공합니다")
-    @Transactional
-    void update200() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-
-        CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
-                .title("수정 만화 제목")
-                .dayOfTheWeek("TUE")
-                .progress("COMPLETE")
-                .genre("ROMANCE")
-                .build();
-        // when
-        Cartoon afterUpdate = cartoonService.update(cartoon.getId(), cartoonUpdate);
-
-        // then
-        assertThat(afterUpdate).isEqualTo(cartoon);
-    }
-
-    @Test
-    @DisplayName("만화가 존재하지 않으면 수정할 수 없습니다 - 실패")
-    void update404() {
-        // given
-        CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
-                .title("수정 만화 제목")
-                .dayOfTheWeek("TUE")
-                .progress("COMPLETE")
-                .genre("ROMANCE")
-                .build();
-
-        // when
-        assertThrows(CartoonNotFoundException.class,
-                () -> cartoonService.update(9999L,  cartoonUpdate));
     }
 }

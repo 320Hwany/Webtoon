@@ -33,10 +33,6 @@ public class CartoonSearch {
         this.genre = genre;
     }
 
-    public Integer getOffset() {
-        return Math.max(page - 1, 0) * limit;
-    }
-
     public static CartoonSearch getByCartoonSearchDto(CartoonSearchDto cartoonSearchDto) {
         return CartoonSearch.builder()
                 .page(cartoonSearchDto.getPage())
@@ -46,5 +42,9 @@ public class CartoonSearch {
                 .progress(Progress.valueOf(cartoonSearchDto.getProgress()))
                 .genre(Genre.valueOf(cartoonSearchDto.getGenre()))
                 .build();
+    }
+
+    public Integer getOffset() {
+        return Math.max(page - 1, 0) * limit;
     }
 }

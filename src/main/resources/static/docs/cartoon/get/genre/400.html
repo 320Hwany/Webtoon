@@ -456,8 +456,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /cartoon/genre?genreString=%EC%A1%B4%EC%9E%AC%ED%95%98%EC%A7%80+%EC%95%8A%EB%8A%94+%EC%9E%A5%EB%A5%B4 HTTP/1.1
-Host: localhost:8080</code></pre>
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /cartoon/genre HTTP/1.1
+Content-Type: application/json
+Content-Length: 149
+Host: localhost:8080
+
+{
+  "page" : -10,
+  "title" : null,
+  "nickName" : null,
+  "dayOfTheWeek" : "NONE",
+  "progress" : "NONE",
+  "genre" : "존재하지 않는 장르"
+}</code></pre>
 </div>
 </div>
 </div>
@@ -469,12 +480,14 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
 Content-Type: application/json
-Content-Length: 91
+Content-Length: 152
 
 {
   "statusCode" : "400",
   "message" : "잘못된 요청입니다",
-  "validation" : { }
+  "validation" : {
+    "page" : "1 이상의 페이지를 입력해주세요"
+  }
 }</code></pre>
 </div>
 </div>

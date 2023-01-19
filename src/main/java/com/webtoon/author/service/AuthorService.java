@@ -27,6 +27,23 @@ public class AuthorService {
         return authorRepository.save(author);
     }
 
+    public Author getByNickName(String nickName) {
+        return authorRepository.getByNickName(nickName);
+    }
+
+    @Transactional
+    public Author update(AuthorSession authorSession, AuthorUpdate authorUpdate) {
+        Author author = authorRepository.getById(authorSession.getId());
+        author.update(authorUpdate);
+        return author;
+    }
+
+    @Transactional
+    public void delete(AuthorSession authorSession) {
+        Author author = authorRepository.getById(authorSession.getId());
+        authorRepository.delete(author);
+    }
+
     public void checkDuplication(AuthorSignup authorSignup) {
         Optional<Author> findAuthorByNickName = authorRepository.findByNickName(authorSignup.getNickName());
         Optional<Author> findAuthorByEmail = authorRepository.findByEmail(authorSignup.getEmail());
@@ -47,22 +64,5 @@ public class AuthorService {
 
     public void invalidateSession(AuthorSession authorSession, HttpServletRequest request) {
         authorSession.invalidateSession(request);
-    }
-
-    public Author getByNickName(String nickName) {
-        return authorRepository.getByNickName(nickName);
-    }
-
-    @Transactional
-    public Author update(AuthorSession authorSession, AuthorUpdate authorUpdate) {
-        Author author = authorRepository.getById(authorSession.getId());
-        author.update(authorUpdate);
-        return author;
-    }
-
-    @Transactional
-    public void delete(AuthorSession authorSession) {
-        Author author = authorRepository.getById(authorSession.getId());
-        authorRepository.delete(author);
     }
 }

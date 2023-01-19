@@ -1,0 +1,11 @@
+= 작가로 로그인하여도 자기 만화가 아니면 삭제할 수 없습니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/cartoon/delete/403/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/cartoon/delete/403/http-response.adoc[]

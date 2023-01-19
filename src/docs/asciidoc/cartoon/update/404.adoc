@@ -1,0 +1,11 @@
+= 만화가 존재하지 않으면 만화를 수정할 수 없습니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/cartoon/update/404/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/cartoon/update/404/http-response.adoc[]

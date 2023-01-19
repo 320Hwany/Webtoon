@@ -70,10 +70,18 @@ public class CartoonController {
                                                   @RequestBody @Valid CartoonUpdate cartoonUpdate) {
         CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonUpdate(cartoonUpdate);
         cartoonService.checkEnumTypeValid(cartoonEnumField);
-        cartoonService.checkAuthorityForCartoon(cartoonId, authorSession);
+        cartoonService.checkAuthorityForCartoon(authorSession, cartoonId);
         Cartoon afterUpdateCartoon = cartoonService.update(cartoonId, cartoonUpdate);
         CartoonResponse cartoonResponse = CartoonResponse.getFromCartoon(afterUpdateCartoon);
 
         return ResponseEntity.ok(cartoonResponse);
+    }
+
+    @DeleteMapping("/cartoon/{cartoonId}")
+    public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
+                       @PathVariable Long cartoonId) {
+        cartoonService.checkAuthorityForCartoon(authorSession, cartoonId);
+        cartoonService.delete(cartoonId);
+        return ResponseEntity.ok().build();
     }
 }
