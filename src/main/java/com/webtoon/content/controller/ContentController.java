@@ -9,10 +9,7 @@ import com.webtoon.content.service.ContentService;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -32,6 +29,15 @@ public class ContentController {
         contentService.save(content);
         ContentResponse contentResponse = ContentResponse.getFromContent(content);
 
+        return ResponseEntity.ok(contentResponse);
+    }
+
+    @GetMapping("/content/{cartoonId}/{contentEpisode}")
+    public ResponseEntity<ContentResponse> getContent(@PathVariable Long cartoonId,
+                                                      @PathVariable Integer contentEpisode) {
+
+        Content content = contentService.findByCartoonAndEpisode(cartoonId, contentEpisode);
+        ContentResponse contentResponse = ContentResponse.getFromContent(content);
         return ResponseEntity.ok(contentResponse);
     }
 }

@@ -4,12 +4,14 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.dto.request.ContentSave;
+import com.webtoon.content.exception.ContentNotFoundException;
 import com.webtoon.content.repository.ContentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class ContentService {
 
@@ -25,5 +27,10 @@ public class ContentService {
         Cartoon cartoon = cartoonRepository.getById(cartoonId);
         Content content = Content.getFromContentSaveAndCartoon(contentSave, cartoon);
         return content;
+    }
+
+    public Content findByCartoonAndEpisode(Long cartoonId, Integer episode) {
+        return contentRepository.findByCartoonAndEpisode(cartoonId, episode)
+                .orElseThrow(ContentNotFoundException::new);
     }
 }

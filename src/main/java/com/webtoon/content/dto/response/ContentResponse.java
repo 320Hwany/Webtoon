@@ -1,13 +1,11 @@
 package com.webtoon.content.dto.response;
 
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.content.domain.Content;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 public class ContentResponse {

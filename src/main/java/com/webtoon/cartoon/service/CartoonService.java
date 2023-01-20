@@ -5,7 +5,6 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.cartoon.dto.request.CartoonEnumField;
 import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
