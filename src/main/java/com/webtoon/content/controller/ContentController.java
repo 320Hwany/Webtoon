@@ -36,7 +36,7 @@ public class ContentController {
     public ResponseEntity<ContentResponse> getContent(@PathVariable Long cartoonId,
                                                       @PathVariable Integer contentEpisode) {
 
-        Content content = contentService.findByCartoonAndEpisode(cartoonId, contentEpisode);
+        Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
         ContentResponse contentResponse = ContentResponse.getFromContent(content);
         return ResponseEntity.ok(contentResponse);
     }

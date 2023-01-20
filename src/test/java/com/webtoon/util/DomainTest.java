@@ -7,7 +7,7 @@ import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 
-public abstract class DomainTest {
+public class DomainTest {
 
     protected static Author getAuthor() {
         Author author = Author.builder()

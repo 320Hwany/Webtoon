@@ -2,6 +2,7 @@ package com.webtoon.content.controller;
 
 import com.webtoon.author.domain.Author;
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.content.domain.Content;
 import com.webtoon.content.dto.request.ContentSave;
 import com.webtoon.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -146,5 +148,50 @@ class ContentControllerTest extends ControllerTest {
                         .content(contentSaveJson))
                 .andExpect(status().isNotFound())
                 .andDo(document("content/save/404"));
+    }
+
+    @Test
+    @DisplayName("만화의 에피소드가 존재하면 컨텐츠를 가져옵니다 - 성공")
+    void getContent200() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+
+        // expected
+        mockMvc.perform(get("/content/{cartoonId}/{contentEpisode}",
+                        cartoon.getId(), content.getEpisode()))
+                .andExpect(status().isOk())
+                .andDo(document("content/get/200"));
+    }
+
+    @Test
+    @DisplayName("만화가 존재하지 않으면 예외를 보여줍니다 - 실패")
+    void getContent404Cartoon() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+
+        // expected
+        mockMvc.perform(get("/content/{cartoonId}/{contentEpisode}",
+                        9999L, content.getEpisode()))
+                .andExpect(status().isNotFound())
+                .andDo(document("content/get/404Cartoon"));
+    }
+
+    @Test
+    @DisplayName("만화의 에피소드가 존재하지 않으면 예외를 보여줍니다 - 실패")
+    void getContent404Content() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+
+        // expected
+        mockMvc.perform(get("/content/{cartoonId}/{contentEpisode}",
+                        cartoon.getId(), 9999))
+                .andExpect(status().isNotFound())
+                .andDo(document("content/get/404Episode"));
     }
 }

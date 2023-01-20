@@ -2,12 +2,11 @@ package com.webtoon.content.service;
 
 import com.webtoon.author.domain.Author;
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.dto.request.ContentSave;
+import com.webtoon.content.exception.ContentNotFoundException;
 import com.webtoon.util.ServiceTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,5 +82,46 @@ class ContentServiceTest extends ServiceTest {
         // expected
         assertThrows(CartoonNotFoundException.class,
                 () -> contentService.getContentFromContentSaveAndCartoonId(contentSave, 9999L));
+    }
+
+    @Test
+    @DisplayName("만화에 대한 에피소드가 존재하면 컨텐츠를 가져옵니다 - 성공")
+    void findByCartoonAndEpisode200() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+
+        // when
+        Content findContent = contentService.findByCartoonIdAndEpisode(cartoon.getId(), content.getEpisode());
+
+        // then
+        assertThat(findContent).isEqualTo(content);
+    }
+
+    @Test
+    @DisplayName("만화가 존재하지 않으면 예외를 보여줍니다 - 성공")
+    void findByCartoonAndEpisode404Cartoon() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+
+        // expected
+        assertThrows(ContentNotFoundException.class,
+                () -> contentService.findByCartoonIdAndEpisode(9999L, content.getEpisode()));
+    }
+
+    @Test
+    @DisplayName("만화에 대한 에피소드가 존재하지 않으면 예외를 보여줍니다 - 성공")
+    void findByCartoonAndEpisode404Episode() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+
+        // expected
+        assertThrows(ContentNotFoundException.class,
+                () -> contentService.findByCartoonIdAndEpisode(cartoon.getId(), 9999));
     }
 }

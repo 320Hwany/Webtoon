@@ -2,6 +2,7 @@ package com.webtoon.content.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.content.domain.Content;
+import com.webtoon.content.exception.ContentNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -23,11 +24,11 @@ public class ContentRepositoryImpl implements ContentRepository {
     }
 
     @Override
-    public Optional<Content> findByCartoonAndEpisode(Long cartoonId, Integer episode) {
+    public Optional<Content> findByCartoonIdAndEpisode(Long cartoonId, Integer episode) {
         return Optional.ofNullable(jpaQueryFactory.selectFrom(content)
                 .leftJoin(content.cartoon, cartoon)
                 .fetchJoin()
-                .where(content.cartoon.id.eq(cartoon.id))
+                .where(content.cartoon.id.eq(cartoonId))
                 .where(content.episode.eq(episode))
                 .fetchOne());
     }

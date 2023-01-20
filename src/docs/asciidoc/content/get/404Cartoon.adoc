@@ -1,0 +1,11 @@
+= 만화가 존재하지 않으면 예외를 보여줍니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/content/get/404Cartoon/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/content/get/404Cartoon/http-response.adoc[]

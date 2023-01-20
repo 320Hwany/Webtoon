@@ -1,0 +1,11 @@
+= 만화에 대한 에피소드가 존재하면 컨텐츠를 가져옵니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/content/get/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/content/get/200/http-response.adoc[]

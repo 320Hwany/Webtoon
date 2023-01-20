@@ -29,8 +29,8 @@ public class ContentService {
         return content;
     }
 
-    public Content findByCartoonAndEpisode(Long cartoonId, Integer episode) {
-        return contentRepository.findByCartoonAndEpisode(cartoonId, episode)
+    public Content findByCartoonIdAndEpisode(Long cartoonId, Integer episode) {
+        return contentRepository.findByCartoonIdAndEpisode(cartoonId, episode)
                 .orElseThrow(ContentNotFoundException::new);
     }
 }

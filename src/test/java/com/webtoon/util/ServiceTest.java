@@ -5,13 +5,16 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
+import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
+import com.webtoon.content.repository.ContentRepositoryTest;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDate;
 
 @SpringBootTest
 public class ServiceTest {
@@ -46,6 +49,19 @@ public class ServiceTest {
                 .build();
         cartoonRepository.save(cartoon);
         return cartoon;
+    }
+
+    protected Content saveContentInRepository(Cartoon cartoon) {
+        Content content = Content.builder()
+                .cartoon(cartoon)
+                .subTitle("만화 부제")
+                .episode(1)
+                .rating(9.8f)
+                .registrationDate(LocalDate.of(2023, 1, 20))
+                .build();
+
+        contentRepository.save(content);
+        return content;
     }
 
     protected static AuthorSession getAuthorSessionFromAuthor(Author author) {

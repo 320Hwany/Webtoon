@@ -10,5 +10,5 @@ public interface ContentRepository {
 
     Content save(Content content);
 
-    Optional<Content> findByCartoonAndEpisode(Long cartoonId, Integer episode);
+    Optional<Content> findByCartoonIdAndEpisode(Long cartoonId, Integer episode);
 }

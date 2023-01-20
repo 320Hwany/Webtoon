@@ -7,7 +7,9 @@ import com.webtoon.author.service.AuthorService;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoon.service.CartoonService;
+import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
+import com.webtoon.content.repository.ContentRepositoryTest;
 import com.webtoon.content.service.ContentService;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
@@ -26,6 +28,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpSession;
+
+import java.time.LocalDate;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -82,6 +86,31 @@ public class ControllerTest {
         return author;
     }
 
+    protected Cartoon saveCartoonInRepository(Author author) {
+        Cartoon cartoon = Cartoon.builder()
+                .title("만화 제목")
+                .author(author)
+                .dayOfTheWeek(DayOfTheWeek.MON)
+                .progress(Progress.SERIALIZATION)
+                .genre(Genre.ROMANCE)
+                .build();
+        cartoonRepository.save(cartoon);
+        return cartoon;
+    }
+
+    protected Content saveContentInRepository(Cartoon cartoon) {
+        Content content = Content.builder()
+                .cartoon(cartoon)
+                .subTitle("만화 부제")
+                .episode(1)
+                .rating(9.8f)
+                .registrationDate(LocalDate.of(2023, 1, 20))
+                .build();
+
+        contentRepository.save(content);
+        return content;
+    }
+
     protected MockHttpSession loginAuthorSession() throws Exception {
         AuthorLogin authorLogin = AuthorLogin.builder()
                 .email("yhwjd99@gmail.com")
@@ -97,17 +126,5 @@ public class ControllerTest {
 
         HttpSession session = request.getSession();
         return (MockHttpSession)session;
-    }
-
-    protected Cartoon saveCartoonInRepository(Author author) {
-        Cartoon cartoon = Cartoon.builder()
-                .title("만화 제목")
-                .author(author)
-                .dayOfTheWeek(DayOfTheWeek.MON)
-                .progress(Progress.SERIALIZATION)
-                .genre(Genre.ROMANCE)
-                .build();
-        cartoonRepository.save(cartoon);
-        return cartoon;
     }
 }
