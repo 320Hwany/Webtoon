@@ -4,6 +4,7 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.dto.request.ContentSave;
+import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.content.dto.response.ContentResponse;
 import com.webtoon.content.service.ContentService;
 import com.webtoon.util.annotation.LoginForAuthor;
@@ -21,15 +22,14 @@ public class ContentController {
     private final CartoonService cartoonService;
 
     @PostMapping("/content/{cartoonId}")
-    public ResponseEntity<ContentResponse> save(@LoginForAuthor AuthorSession authorSession,
-                                                @PathVariable Long cartoonId,
-                                                @RequestBody @Valid ContentSave contentSave) {
+    public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
+                                     @PathVariable Long cartoonId,
+                                     @RequestBody @Valid ContentSave contentSave) {
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
         Content content = contentService.getContentFromContentSaveAndCartoonId(contentSave, cartoonId);
         contentService.save(content);
-        ContentResponse contentResponse = ContentResponse.getFromContent(content);
 
-        return ResponseEntity.ok(contentResponse);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/content/{cartoonId}/{contentEpisode}")
@@ -39,5 +39,16 @@ public class ContentController {
         Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
         ContentResponse contentResponse = ContentResponse.getFromContent(content);
         return ResponseEntity.ok(contentResponse);
+    }
+
+    @PatchMapping("/content/{cartoonId}/{contentEpisode}")
+    public ResponseEntity<Void> update(@LoginForAuthor AuthorSession authorSession,
+                                       @PathVariable Long cartoonId, @PathVariable Integer contentEpisode,
+                                       @RequestBody @Valid ContentUpdate contentUpdate) {
+
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
+        Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
+        contentService.update(content, contentUpdate);
+        return ResponseEntity.ok().build();
     }
 }

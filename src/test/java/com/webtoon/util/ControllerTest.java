@@ -9,7 +9,6 @@ import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
-import com.webtoon.content.repository.ContentRepositoryTest;
 import com.webtoon.content.service.ContentService;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;

@@ -4,6 +4,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.dto.request.ContentSave;
+import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.content.exception.ContentNotFoundException;
 import com.webtoon.content.repository.ContentRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,11 @@ public class ContentService {
     @Transactional
     public Content save(Content content) {
         return contentRepository.save(content);
+    }
+
+    @Transactional
+    public void update(Content content, ContentUpdate contentUpdate) {
+        content.update(contentUpdate);
     }
 
     public Content getContentFromContentSaveAndCartoonId(ContentSave contentSave, Long cartoonId) {

@@ -3,9 +3,12 @@ package com.webtoon.util;
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.content.domain.Content;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
+
+import java.time.LocalDate;
 
 public class DomainTest {
 
@@ -27,6 +30,17 @@ public class DomainTest {
                 .genre(Genre.ROMANCE)
                 .build();
         return cartoon;
+    }
+
+    protected static Content getContent(Cartoon cartoon) {
+        Content content = Content.builder()
+                .cartoon(cartoon)
+                .subTitle("만화 부제")
+                .episode(1)
+                .rating(9.8f)
+                .registrationDate(LocalDate.of(2023, 1, 20))
+                .build();
+        return content;
     }
 
     protected static AuthorSession getAuthorSessionFromAuthor(Author author) {

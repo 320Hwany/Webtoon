@@ -1,0 +1,11 @@
+= 입력 내용이 조건에 맞지 않으면 수정에 실패합니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/content/update/400/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/content/update/400/http-response.adoc[]

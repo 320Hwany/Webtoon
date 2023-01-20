@@ -1,0 +1,11 @@
+= 만화의 에피소드가 없으면 수정에 실패합니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/content/update/404/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/content/update/404/http-response.adoc[]

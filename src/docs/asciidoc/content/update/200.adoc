@@ -1,0 +1,11 @@
+= 입력한 수정 정보로 수정합니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/content/update/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/content/update/200/http-response.adoc[]

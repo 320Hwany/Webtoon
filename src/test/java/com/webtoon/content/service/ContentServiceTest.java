@@ -5,6 +5,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.dto.request.ContentSave;
+import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.content.exception.ContentNotFoundException;
 import com.webtoon.util.ServiceTest;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +26,7 @@ class ContentServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("Content를 저장합니다 - 성공")
-    void save() {
+    void save200() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -43,6 +44,30 @@ class ContentServiceTest extends ServiceTest {
 
         // then
         assertThat(afterSaveContent).isEqualTo(content);
+    }
+
+    @Test
+    @DisplayName("Content를 수정합니다 - 성공")
+    void update200() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+
+        ContentUpdate contentUpdate = ContentUpdate.builder()
+                .subTitle("수정 부제입니다")
+                .episode(30)
+                .registrationDate(LocalDate.of(1999, 3, 20))
+                .build();
+
+        // when
+        contentService.update(content, contentUpdate);
+
+        // then
+        assertThat(content.getCartoon()).isEqualTo(cartoon);
+        assertThat(content.getSubTitle()).isEqualTo("수정 부제입니다");
+        assertThat(content.getEpisode()).isEqualTo(30);
+        assertThat(content.getRegistrationDate()).isEqualTo(LocalDate.of(1999, 3, 20));
     }
 
     @Test

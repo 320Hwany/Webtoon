@@ -2,6 +2,7 @@ package com.webtoon.content.domain;
 
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.content.dto.request.ContentSave;
+import com.webtoon.content.dto.request.ContentUpdate;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,6 +45,12 @@ public class Content {
         this.episode = episode;
         this.rating = rating;
         this.registrationDate = registrationDate;
+    }
+
+    public void update(ContentUpdate contentUpdate) {
+        this.subTitle = contentUpdate.getSubTitle();
+        this.episode = contentUpdate.getEpisode();
+        this.registrationDate = contentUpdate.getRegistrationDate();
     }
 
     public static Content getFromContentSaveAndCartoon(ContentSave contentSave, Cartoon cartoon) {
