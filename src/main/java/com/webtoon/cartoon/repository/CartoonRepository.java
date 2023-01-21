@@ -24,5 +24,5 @@ public interface CartoonRepository {
 
     void saveAll(List<Cartoon> cartoonList);
 
-    Long count();
+    long count();
 }

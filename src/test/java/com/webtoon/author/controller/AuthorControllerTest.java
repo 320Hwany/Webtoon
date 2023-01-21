@@ -114,7 +114,7 @@ class AuthorControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("작가 닉네임으로 작가를 검색합니다 - 성공")
-    void getAuthorByNickName200() throws Exception {
+    void findAllByNickName200() throws Exception {
         // given
         Author author = saveAuthorInRepository();
 
@@ -125,15 +125,6 @@ class AuthorControllerTest extends ControllerTest {
                 .andDo(document("author/get/nickname/200"));
     }
 
-    @Test
-    @DisplayName("검색한 닉네임의 작가가 존재하지 않으면 검색할 수 없습니다 - 실패")
-    void getAuthorByNickName404() throws Exception {
-        // expected
-        mockMvc.perform(get("/author/nickName")
-                        .param("nickName", "작가 이름"))
-                .andExpect(status().isNotFound())
-                .andDo(document("author/get/nickname/404"));
-    }
 
     @Test
     @DisplayName("로그인되어 있고 조건에 맞으면 회원정보가 수정됩니다 - 성공")

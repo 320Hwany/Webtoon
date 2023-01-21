@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @NoArgsConstructor
 public class AuthorResponse {
@@ -35,5 +38,11 @@ public class AuthorResponse {
                 .email(author.getEmail())
                 .password(author.getPassword())
                 .build();
+    }
+
+    public static List<AuthorResponse> getFromAuthorList(List<Author> authorList) {
+        return authorList.stream()
+                .map(AuthorResponse::getFromAuthor)
+                .collect(Collectors.toList());
     }
 }

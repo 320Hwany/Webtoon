@@ -16,6 +16,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,29 +42,20 @@ class AuthorServiceTest extends ServiceTest {
         authorService.signup(authorSignup);
 
         // then
-        assertThat(authorRepository.findByNickName("작가 닉네임")).isPresent();
-        assertThat(authorRepository.findByEmail("yhwjd99@gmail.com")).isPresent();
+        assertThat(authorRepository.count()).isEqualTo(1L);
     }
 
     @Test
-    @DisplayName("닉네임으로 작가를 찾습니다 - 성공")
-    void getByNickName200() {
+    @DisplayName("입력한 닉네임이 포함된 작가를 검색합니다 - 성공")
+    void findAllByNickName200() {
         // given
         Author author = saveAuthorInRepository();
 
         // when
-        Author findAuthor = authorService.getByNickName(author.getNickName());
+        List<Author> authorList = authorService.findAllByNickName(author.getNickName());
 
         // then
-        assertThat(findAuthor).isEqualTo(author);
-    }
-
-    @Test
-    @DisplayName("해당 닉네임에 해당하는 작가가 없다면 작가를 찾을 수 없습니다 - 실패")
-    void getByNickName404() {
-        // expected
-        assertThrows(AuthorNotFoundException.class,
-                () -> authorService.getByNickName("없는 작가 이름"));
+        assertThat(authorList.get(0)).isEqualTo(author);
     }
 
     @Test

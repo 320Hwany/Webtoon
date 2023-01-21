@@ -7,6 +7,8 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
+import com.webtoon.member.domain.Member;
+import com.webtoon.member.repository.MemberRepository;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
@@ -26,6 +28,9 @@ public class ServiceTest {
 
     @Autowired
     protected ContentRepository contentRepository;
+
+    @Autowired
+    protected MemberRepository memberRepository;
 
     protected Author saveAuthorInRepository() {
         Author author = Author.builder()
@@ -61,6 +66,17 @@ public class ServiceTest {
 
         contentRepository.save(content);
         return content;
+    }
+
+    protected Member saveMemberInRepository() {
+        Member member = Member.builder()
+                .nickName("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        memberRepository.save(member);
+        return member;
     }
 
     protected static AuthorSession getAuthorSessionFromAuthor(Author author) {

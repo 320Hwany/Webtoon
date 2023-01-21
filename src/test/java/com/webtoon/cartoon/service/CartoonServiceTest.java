@@ -55,6 +55,7 @@ class CartoonServiceTest extends ServiceTest {
         Cartoon cartoon = cartoonService.save(cartoonSave, authorSession);
 
         // then
+        assertThat(cartoonRepository.count()).isEqualTo(1L);
         assertThat(cartoon.getTitle()).isEqualTo("만화 제목");
         assertThat(cartoon.getAuthor()).isEqualTo(author);
         assertThat(cartoon.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.MON);

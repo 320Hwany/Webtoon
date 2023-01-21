@@ -1,11 +1,14 @@
 package com.webtoon.author.repository;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
+import com.webtoon.author.domain.QAuthor;
 import com.webtoon.author.exception.AuthorNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -13,10 +16,11 @@ import java.util.Optional;
 public class AuthorRepositoryImpl implements AuthorRepository {
 
     private final AuthorJpaRepository authorJpaRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Author save(Author author) {
-        return authorJpaRepository.save(author);
+    public void save(Author author) {
+        authorJpaRepository.save(author);
     }
 
     @Override
@@ -31,9 +35,10 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public Author getByNickName(String nickName) {
-        return authorJpaRepository.findByNickName(nickName)
-                .orElseThrow(AuthorNotFoundException::new);
+    public List<Author> findAllByNickName(String nickName) {
+        return jpaQueryFactory.selectFrom(QAuthor.author)
+                .where(QAuthor.author.nickName.contains(nickName))
+                .fetch();
     }
 
     @Override
@@ -58,5 +63,10 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     @Override
     public void delete(Author author) {
         authorJpaRepository.delete(author);
+    }
+
+    @Override
+    public long count() {
+        return authorJpaRepository.count();
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -22,13 +23,13 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
 
     @Transactional
-    public Author signup(AuthorSignup authorSignup) {
+    public void signup(AuthorSignup authorSignup) {
         Author author = Author.getFromAuthorSignup(authorSignup);
-        return authorRepository.save(author);
+        authorRepository.save(author);
     }
 
-    public Author getByNickName(String nickName) {
-        return authorRepository.getByNickName(nickName);
+    public List<Author> findAllByNickName(String nickName) {
+        return authorRepository.findAllByNickName(nickName);
     }
 
     @Transactional

@@ -79,7 +79,7 @@ public class CartoonRepositoryImpl implements CartoonRepository {
     }
 
     @Override
-    public Long count() {
+    public long count() {
         return cartoonJpaRepository.count();
     }
 }

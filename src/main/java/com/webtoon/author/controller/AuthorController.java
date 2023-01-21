@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -38,10 +39,10 @@ public class AuthorController {
     }
 
     @GetMapping("/author/nickName")
-    public ResponseEntity<AuthorResponse> getAuthorByNickName(@RequestParam String nickName) {
-        Author author = authorService.getByNickName(nickName);
-        AuthorResponse authorResponse = AuthorResponse.getFromAuthor(author);
-        return ResponseEntity.ok(authorResponse);
+    public ResponseEntity<List<AuthorResponse>> getAuthorByNickName(@RequestParam String nickName) {
+        List<Author> authorList = authorService.findAllByNickName(nickName);
+        List<AuthorResponse> authorResponseList = AuthorResponse.getFromAuthorList(authorList);
+        return ResponseEntity.ok(authorResponseList);
     }
 
     @PatchMapping("/author")

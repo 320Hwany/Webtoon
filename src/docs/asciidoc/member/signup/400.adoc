@@ -1,0 +1,11 @@
+= 회원가입 조건이 맞지 않으면 예외가 발생합니다- 성공
+:toc:
+
+== 요청
+
+include::{snippets}/member/signup/400/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/member/signup/400/http-response.adoc[]
