@@ -1,13 +1,9 @@
 spring:
-    h2:
-        console:
-            enabled: true
-
     datasource:
-        driver-class-name: org.h2.Driver
-        url: jdbc:h2:mem:webtoon
-        username: sa
-        password:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://webtoon-db.cbqivcjiws3r.ap-northeast-2.rds.amazonaws.com:3306/webtoon_database?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+        username: hwany
+        password: dbghks3655
 
     jpa:
         properties:

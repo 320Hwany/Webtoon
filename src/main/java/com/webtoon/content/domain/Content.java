@@ -1,6 +1,7 @@
 package com.webtoon.content.domain;
 
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.content.dto.request.ContentImg;
 import com.webtoon.content.dto.request.ContentSave;
 import com.webtoon.content.dto.request.ContentUpdate;
 import lombok.Builder;

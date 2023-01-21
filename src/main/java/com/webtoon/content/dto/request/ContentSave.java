@@ -24,7 +24,6 @@ public class ContentSave {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate registrationDate;
 
-
     @Builder
     public ContentSave(String subTitle, Integer episode, LocalDate registrationDate) {
         this.subTitle = subTitle;
