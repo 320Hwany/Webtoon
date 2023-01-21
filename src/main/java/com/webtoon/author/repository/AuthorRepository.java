@@ -19,7 +19,7 @@ public interface AuthorRepository {
 
     Author getByEmailAndPassword(String email, String password);
 
-    Boolean checkAuthorPresent(AuthorSession authorSession);
+    Boolean validateAuthorPresent(AuthorSession authorSession);
 
     void delete(Author author);
 

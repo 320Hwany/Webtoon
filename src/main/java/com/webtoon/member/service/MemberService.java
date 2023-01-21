@@ -1,9 +1,8 @@
 package com.webtoon.member.service;
 
-import com.webtoon.author.domain.Author;
-import com.webtoon.author.dto.request.AuthorSignup;
-import com.webtoon.author.exception.AuthorDuplicationException;
 import com.webtoon.member.domain.Member;
+import com.webtoon.member.domain.MemberSession;
+import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.exception.MemberDuplicationException;
 import com.webtoon.member.repository.MemberRepository;
@@ -11,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -31,5 +31,15 @@ public class MemberService {
         if (findMemberByNickName.isPresent() || findMemberByEmail.isPresent()) {
             throw new MemberDuplicationException();
         }
+    }
+
+    public MemberSession makeMemberSession(MemberLogin memberLogin) {
+        Member member = memberRepository.getByEmailAndPassword(memberLogin.getEmail(), memberLogin.getPassword());
+        MemberSession memberSession = MemberSession.getByMember(member);
+        return memberSession;
+    }
+
+    public void makeSessionForMemberSession(MemberSession memberSession, HttpServletRequest request) {
+        memberSession.makeSession(request);
     }
 }

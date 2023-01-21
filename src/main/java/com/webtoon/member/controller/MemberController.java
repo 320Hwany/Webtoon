@@ -1,13 +1,18 @@
 package com.webtoon.member.controller;
 
+import com.webtoon.member.domain.MemberSession;
+import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.dto.request.MemberSignup;
+import com.webtoon.member.dto.response.MemberResponse;
 import com.webtoon.member.service.MemberService;
+import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
@@ -21,5 +26,15 @@ public class MemberController {
         memberService.checkDuplication(memberSignup);
         memberService.signup(memberSignup);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/member/login")
+    public ResponseEntity<MemberResponse> login(@RequestBody @Valid MemberLogin memberLogin,
+                                                HttpServletRequest request) {
+
+        MemberSession memberSession = memberService.makeMemberSession(memberLogin);
+        memberService.makeSessionForMemberSession(memberSession, request);
+        MemberResponse memberResponse = MemberResponse.getFromMemberSession(memberSession);
+        return ResponseEntity.ok(memberResponse);
     }
 }

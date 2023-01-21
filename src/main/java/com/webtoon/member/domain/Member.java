@@ -3,6 +3,7 @@ package com.webtoon.member.domain;
 import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @NoArgsConstructor
+@Getter
 @Entity
 public class Member extends BaseTimeEntity {
 

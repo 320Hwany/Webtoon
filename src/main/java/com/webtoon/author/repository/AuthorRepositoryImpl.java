@@ -53,8 +53,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public Boolean checkAuthorPresent(AuthorSession authorSession) {
-        authorJpaRepository.findByEmailAndPassword(authorSession.getEmail(), authorSession.getPassword())
+    public Boolean validateAuthorPresent(AuthorSession authorSession) {
+        authorJpaRepository.findById(authorSession.getId())
                 .orElseThrow(AuthorNotFoundException::new);
         return true;
     }

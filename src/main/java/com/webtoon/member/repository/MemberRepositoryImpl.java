@@ -1,6 +1,8 @@
 package com.webtoon.member.repository;
 
 import com.webtoon.member.domain.Member;
+import com.webtoon.member.domain.MemberSession;
+import com.webtoon.member.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +27,18 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public Optional<Member> findByEmail(String email) {
         return memberJpaRepository.findByEmail(email);
+    }
+
+    @Override
+    public Member getByEmailAndPassword(String email, String password) {
+        return memberJpaRepository.findByEmailAndPassword(email, password)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
+    @Override
+    public void validateMemberPresent(MemberSession memberSession) {
+        memberJpaRepository.findById(memberSession.getId())
+                .orElseThrow(MemberNotFoundException::new);
     }
 
     @Override

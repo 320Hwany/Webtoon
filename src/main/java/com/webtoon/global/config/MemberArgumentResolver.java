@@ -1,9 +1,9 @@
 package com.webtoon.global.config;
 
-import com.webtoon.author.domain.AuthorSession;
-import com.webtoon.author.exception.AuthorUnauthorizedException;
-import com.webtoon.author.repository.AuthorRepository;
-import com.webtoon.util.annotation.LoginForAuthor;
+import com.webtoon.member.domain.MemberSession;
+import com.webtoon.member.exception.MemberUnauthorizedException;
+import com.webtoon.member.repository.MemberRepository;
+import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -15,15 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
-public class AuthorArgumentResolver implements HandlerMethodArgumentResolver {
+public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final AuthorRepository authorRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        boolean hasAuthorSessionType = parameter.getParameterType().equals(AuthorSession.class);
-        boolean hasLoginForAuthorAnnotation = parameter.hasParameterAnnotation(LoginForAuthor.class);
-        return hasAuthorSessionType && hasLoginForAuthorAnnotation;
+        boolean hasMemberSessionType = parameter.getParameterType().equals(MemberSession.class);
+        boolean hasLoginForMemberAnnotation = parameter.hasParameterAnnotation(LoginForMember.class);
+        return hasMemberSessionType && hasLoginForMemberAnnotation;
     }
 
     @Override
@@ -33,10 +33,12 @@ public class AuthorArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
         HttpSession session = httpServletRequest.getSession(false);
         if (session == null) {
-            throw new AuthorUnauthorizedException();
+            throw new MemberUnauthorizedException();
         }
-        AuthorSession authorSession = (AuthorSession) session.getAttribute("authorSession");
-        authorRepository.validateAuthorPresent(authorSession);
-        return authorSession;
+
+        MemberSession memberSession = (MemberSession) session.getAttribute("memberSession");
+        memberRepository.validateMemberPresent(memberSession);
+
+        return memberSession;
     }
 }
