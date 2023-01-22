@@ -10,6 +10,7 @@ import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.content.service.ContentService;
+import com.webtoon.member.domain.Member;
 import com.webtoon.member.repository.MemberRepository;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
@@ -112,6 +113,17 @@ public class ControllerTest {
 
         contentRepository.save(content);
         return content;
+    }
+
+    protected Member saveMemberInRepository() {
+        Member member = Member.builder()
+                .nickName("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        memberRepository.save(member);
+        return member;
     }
 
     protected MockHttpSession loginAuthorSession() throws Exception {

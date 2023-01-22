@@ -1,0 +1,11 @@
+= 조건이 맞으면 로그인이 됩니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/member/login/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/member/login/200/http-response.adoc[]
