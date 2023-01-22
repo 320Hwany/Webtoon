@@ -9,5 +9,7 @@ public interface ContentRepository {
 
     Content save(Content content);
 
+    Content getById(Long id);
+
     Optional<Content> findByCartoonIdAndEpisode(Long cartoonId, Integer episode);
 }

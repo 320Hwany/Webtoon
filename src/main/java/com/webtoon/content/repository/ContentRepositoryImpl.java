@@ -24,6 +24,12 @@ public class ContentRepositoryImpl implements ContentRepository {
     }
 
     @Override
+    public Content getById(Long id) {
+        return contentJpaRepository.findById(id)
+                .orElseThrow(ContentNotFoundException::new);
+    }
+
+    @Override
     public Optional<Content> findByCartoonIdAndEpisode(Long cartoonId, Integer episode) {
         return Optional.ofNullable(jpaQueryFactory.selectFrom(content)
                 .leftJoin(content.cartoon, cartoon)
