@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -33,12 +34,25 @@ public class MemberSession implements Serializable {
         session.setAttribute("memberSession", this);
     }
 
-    public static MemberSession getByMember(Member member) {
+    public static MemberSession getFromMember(Member member) {
         return MemberSession.builder()
                 .id(member.getId())
                 .nickName(member.getNickName())
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MemberSession that = (MemberSession) o;
+        return Objects.equals(id, that.id) && Objects.equals(nickName, that.nickName) && Objects.equals(email, that.email) && Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nickName, email, password);
     }
 }

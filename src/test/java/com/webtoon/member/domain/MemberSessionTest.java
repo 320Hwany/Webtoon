@@ -1,5 +1,6 @@
 package com.webtoon.member.domain;
 
+import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.util.DomainTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class MemberService {
 
@@ -35,7 +36,7 @@ public class MemberService {
 
     public MemberSession makeMemberSession(MemberLogin memberLogin) {
         Member member = memberRepository.getByEmailAndPassword(memberLogin.getEmail(), memberLogin.getPassword());
-        MemberSession memberSession = MemberSession.getByMember(member);
+        MemberSession memberSession = MemberSession.getFromMember(member);
         return memberSession;
     }
 

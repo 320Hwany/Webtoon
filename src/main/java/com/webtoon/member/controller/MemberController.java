@@ -43,7 +43,7 @@ public class MemberController {
 
     @PatchMapping("/member")
     public ResponseEntity<MemberResponse> update(@LoginForMember MemberSession memberSession,
-                       @RequestBody MemberUpdate memberUpdate) {
+                                                 @RequestBody @Valid MemberUpdate memberUpdate) {
         Member member = memberService.update(memberSession, memberUpdate);
         MemberResponse memberResponse = MemberResponse.getFromMember(member);
         return ResponseEntity.ok(memberResponse);

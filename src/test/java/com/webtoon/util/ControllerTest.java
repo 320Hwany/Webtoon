@@ -11,7 +11,10 @@ import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.content.service.ContentService;
 import com.webtoon.member.domain.Member;
+import com.webtoon.member.domain.MemberSession;
+import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.repository.MemberRepository;
+import com.webtoon.member.service.MemberService;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
@@ -65,6 +68,9 @@ public class ControllerTest {
 
     @Autowired
     protected ContentRepository contentRepository;
+
+    @Autowired
+    protected MemberService memberService;
 
     @Autowired
     protected MemberRepository memberRepository;
@@ -135,6 +141,23 @@ public class ControllerTest {
         String loginJson = objectMapper.writeValueAsString(authorLogin);
 
         MockHttpServletRequest request = mockMvc.perform(post("/author/login")
+                        .contentType(APPLICATION_JSON)
+                        .content(loginJson))
+                .andReturn().getRequest();
+
+        HttpSession session = request.getSession();
+        return (MockHttpSession)session;
+    }
+
+    protected MockHttpSession loginMemberSession(Member member) throws Exception {
+        MemberLogin memberLogin = MemberLogin.builder()
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .build();
+
+        String loginJson = objectMapper.writeValueAsString(memberLogin);
+
+        MockHttpServletRequest request = mockMvc.perform(post("/member/login")
                         .contentType(APPLICATION_JSON)
                         .content(loginJson))
                 .andReturn().getRequest();

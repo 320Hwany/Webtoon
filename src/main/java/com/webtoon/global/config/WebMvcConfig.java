@@ -1,6 +1,7 @@
 package com.webtoon.global.config;
 
 import com.webtoon.author.repository.AuthorRepository;
+import com.webtoon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -13,9 +14,11 @@ import java.util.List;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthorRepository authorRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new AuthorArgumentResolver(authorRepository));
+        resolvers.add(new MemberArgumentResolver(memberRepository));
     }
 }
