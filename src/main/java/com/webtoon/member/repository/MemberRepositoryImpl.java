@@ -20,6 +20,12 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public Member getById(Long id) {
+        return memberJpaRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
+    @Override
     public Optional<Member> findByNickName(String nickName) {
         return memberJpaRepository.findByNickName(nickName);
     }

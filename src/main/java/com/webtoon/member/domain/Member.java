@@ -1,6 +1,7 @@
 package com.webtoon.member.domain;
 
 import com.webtoon.member.dto.request.MemberSignup;
+import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +32,12 @@ public class Member extends BaseTimeEntity {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
+    }
+
+    public void update(MemberUpdate memberUpdate) {
+        this.nickName = memberUpdate.getNickName();
+        this.email = memberUpdate.getEmail();
+        this.password = memberUpdate.getPassword();
     }
 
     public static Member getFromMemberSignup(MemberSignup memberSignup) {

@@ -71,8 +71,7 @@ public class ControllerAdvice {
                 .message(e.getMessage())
                 .build();
 
-        Map<String, String> validation = e.getValidation();
-        errorResponse.addValidation(validation);
+        errorResponse.addValidation(e);
         return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
     }
 }

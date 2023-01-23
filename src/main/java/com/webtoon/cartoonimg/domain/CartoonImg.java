@@ -12,7 +12,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 public class CartoonImg {
 
-
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "cartoon_img_id")

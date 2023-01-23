@@ -9,6 +9,8 @@ public interface MemberRepository {
 
     void save(Member member);
 
+    Member getById(Long id);
+
     Optional<Member> findByNickName(String nickName);
 
     Optional<Member> findByEmail(String email);

@@ -1,5 +1,6 @@
 package com.webtoon.member.dto.response;
 
+import com.webtoon.member.domain.Member;
 import com.webtoon.member.domain.MemberSession;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,14 @@ public class MemberResponse {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
+    }
+
+    public static MemberResponse getFromMember(Member member) {
+        return MemberResponse.builder()
+                .nickName(member.getNickName())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .build();
     }
 
     public static MemberResponse getFromMemberSession(MemberSession memberSession) {

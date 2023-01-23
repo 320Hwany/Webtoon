@@ -1,5 +1,6 @@
 package com.webtoon.global.error;
 
+import com.webtoon.cartoon.exception.EnumTypeValidException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,8 @@ public class ErrorResponse {
         validation.put(fieldError.getField(), fieldError.getDefaultMessage());
     }
 
-    public void addValidation(Map<String, String> enumTypeValidation) {
+    public void addValidation(EnumTypeValidException e) {
+        Map<String, String> enumTypeValidation = e.getValidation();
         validation = enumTypeValidation;
     }
 }
