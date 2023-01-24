@@ -1,7 +1,6 @@
 package com.webtoon.member.controller;
 
 import com.webtoon.member.domain.Member;
-import com.webtoon.member.domain.MemberSession;
 import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;

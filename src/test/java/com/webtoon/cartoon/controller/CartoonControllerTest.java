@@ -29,8 +29,8 @@ class CartoonControllerTest extends ControllerTest {
     @DisplayName("작가로 로그인하면 만화를 등록할 수 있습니다 - 성공")
     void save200() throws Exception {
         // given
-        saveAuthorInRepository();
-        MockHttpSession session = loginAuthorSession();
+        Author author = saveAuthorInRepository();
+        MockHttpSession session = loginAuthorSession(author);
 
         CartoonSave cartoonSave = CartoonSave.builder()
                 .title("만화 제목")
@@ -54,8 +54,8 @@ class CartoonControllerTest extends ControllerTest {
     @DisplayName("작가로 로그인해도 조건에 맞지 않으면 만화를 등록할 수 없습니다 - 실패")
     void save400() throws Exception {
         // given
-        saveAuthorInRepository();
-        MockHttpSession session = loginAuthorSession();
+        Author author = saveAuthorInRepository();
+        MockHttpSession session = loginAuthorSession(author);
 
         CartoonSave cartoonSave = CartoonSave.builder()
                 .title("만화 제목")
@@ -282,7 +282,7 @@ class CartoonControllerTest extends ControllerTest {
     void update200() throws Exception {
         // given
         Author author = saveAuthorInRepository();
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
         Cartoon cartoon = saveCartoonInRepository(author);
 
         CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
@@ -308,7 +308,7 @@ class CartoonControllerTest extends ControllerTest {
     void update400() throws Exception {
         // given
         Author author = saveAuthorInRepository();
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
         Cartoon cartoon = saveCartoonInRepository(author);
 
         CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
@@ -358,7 +358,7 @@ class CartoonControllerTest extends ControllerTest {
     void update403() throws Exception {
         // given
         Author author = saveAuthorInRepository();
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
 
         Author anotherAuthor = Author.builder()
                 .nickName("다른 작가 이름")
@@ -391,8 +391,8 @@ class CartoonControllerTest extends ControllerTest {
     void update404() throws Exception {
         // given
         Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
+        saveCartoonInRepository(author);
 
         CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
                 .title("수정 만화 제목")
@@ -417,8 +417,8 @@ class CartoonControllerTest extends ControllerTest {
     void delete200() throws Exception {
         // given
         Author author = saveAuthorInRepository();
+        MockHttpSession session = loginAuthorSession(author);
         Cartoon cartoon = saveCartoonInRepository(author);
-        MockHttpSession session = loginAuthorSession();
 
         // expected
         mockMvc.perform(delete("/cartoon/{cartoonId}", cartoon.getId())
@@ -445,7 +445,7 @@ class CartoonControllerTest extends ControllerTest {
     void delete403() throws Exception {
         // given
         Author author = saveAuthorInRepository();
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
 
         Author anotherAuthor = Author.builder()
                 .nickName("다른 작가 이름")
@@ -468,8 +468,8 @@ class CartoonControllerTest extends ControllerTest {
     void delete404() throws Exception {
         // given
         Author author = saveAuthorInRepository();
+        MockHttpSession session = loginAuthorSession(author);
         Cartoon cartoon = saveCartoonInRepository(author);
-        MockHttpSession session = loginAuthorSession();
 
         // expected
         mockMvc.perform(delete("/cartoon/{cartoonId}", 9999L)

@@ -130,7 +130,8 @@ class AuthorControllerTest extends ControllerTest {
     @DisplayName("로그인되어 있고 조건에 맞으면 회원정보가 수정됩니다 - 성공")
     void update200() throws Exception {
         // given
-        saveAuthorInRepository();
+        Author author = saveAuthorInRepository();
+        MockHttpSession session = loginAuthorSession(author);
 
         AuthorUpdate authorUpdate = AuthorUpdate.builder()
                 .nickName("수정 닉네임")
@@ -139,7 +140,6 @@ class AuthorControllerTest extends ControllerTest {
                 .build();
 
         String authorUpdateJson = objectMapper.writeValueAsString(authorUpdate);
-        MockHttpSession session = loginAuthorSession();
 
         // expected
         mockMvc.perform(patch("/author")
@@ -154,7 +154,8 @@ class AuthorControllerTest extends ControllerTest {
     @DisplayName("로그인을 하더라도 조건에 맞지 않으면 정보를 수정할 수 없습니다 - 실패")
     void update400() throws Exception {
         // given
-        saveAuthorInRepository();
+        Author author = saveAuthorInRepository();
+        MockHttpSession session = loginAuthorSession(author);
 
         AuthorUpdate authorUpdate = AuthorUpdate.builder()
                 .nickName("")
@@ -163,7 +164,6 @@ class AuthorControllerTest extends ControllerTest {
                 .build();
 
         String authorUpdateJson = objectMapper.writeValueAsString(authorUpdate);
-        MockHttpSession session = loginAuthorSession();
 
         // expected
         mockMvc.perform(patch("/author")
@@ -200,8 +200,8 @@ class AuthorControllerTest extends ControllerTest {
     @DisplayName("로그인 후 작가 계정을 삭제할 수 있습니다 - 성공")
     void delete200() throws Exception {
         // given
-        saveAuthorInRepository();
-        MockHttpSession session = loginAuthorSession();
+        Author author = saveAuthorInRepository();
+        MockHttpSession session = loginAuthorSession(author);
 
         // expected
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/author")
@@ -228,8 +228,8 @@ class AuthorControllerTest extends ControllerTest {
     @DisplayName("로그아웃은 로그인을 한 후에 진행가능합니다 - 성공")
     void logout200() throws Exception {
         // given
-        saveAuthorInRepository();
-        MockHttpSession session = loginAuthorSession();
+        Author author = saveAuthorInRepository();
+        MockHttpSession session = loginAuthorSession(author);
 
         // expected
         mockMvc.perform(post("/author/logout")

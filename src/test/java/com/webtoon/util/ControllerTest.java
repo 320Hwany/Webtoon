@@ -132,10 +132,10 @@ public class ControllerTest {
         return member;
     }
 
-    protected MockHttpSession loginAuthorSession() throws Exception {
+    protected MockHttpSession loginAuthorSession(Author author) throws Exception {
         AuthorLogin authorLogin = AuthorLogin.builder()
-                .email("yhwjd99@gmail.com")
-                .password("1234")
+                .email(author.getEmail())
+                .password(author.getPassword())
                 .build();
 
         String loginJson = objectMapper.writeValueAsString(authorLogin);

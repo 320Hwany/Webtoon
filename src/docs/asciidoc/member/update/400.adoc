@@ -1,0 +1,11 @@
+= 회원 조건이 맞지 않으면 회원 수정을 할 수 없습니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/member/update/400/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/member/update/400/http-response.adoc[]

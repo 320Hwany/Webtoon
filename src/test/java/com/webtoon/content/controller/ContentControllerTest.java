@@ -27,7 +27,7 @@ class ContentControllerTest extends ControllerTest {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
@@ -52,7 +52,7 @@ class ContentControllerTest extends ControllerTest {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("")
@@ -99,7 +99,7 @@ class ContentControllerTest extends ControllerTest {
     void save403() throws Exception {
         // given
         Author author = saveAuthorInRepository();
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
 
         Author anotherAuthor = Author.builder()
                 .nickName("다른 작가 이름")
@@ -131,7 +131,7 @@ class ContentControllerTest extends ControllerTest {
     void save404() throws Exception {
         // given
         Author author = saveAuthorInRepository();
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
@@ -186,7 +186,7 @@ class ContentControllerTest extends ControllerTest {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
-        Content content = saveContentInRepository(cartoon);
+        saveContentInRepository(cartoon);
 
         // expected
         mockMvc.perform(get("/content/{cartoonId}/{contentEpisode}",
@@ -202,7 +202,7 @@ class ContentControllerTest extends ControllerTest {
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
         Content content = saveContentInRepository(cartoon);
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
@@ -229,7 +229,7 @@ class ContentControllerTest extends ControllerTest {
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
         Content content = saveContentInRepository(cartoon);
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("")
@@ -289,7 +289,7 @@ class ContentControllerTest extends ControllerTest {
         authorRepository.save(anotherAuthor);
         Cartoon cartoon = saveCartoonInRepository(anotherAuthor);
         Content content = saveContentInRepository(cartoon);
-        MockHttpSession session = loginAuthorSession();
+        MockHttpSession session = loginAuthorSession(author);
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
@@ -315,8 +315,8 @@ class ContentControllerTest extends ControllerTest {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
-        Content content = saveContentInRepository(cartoon);
-        MockHttpSession session = loginAuthorSession();
+        saveContentInRepository(cartoon);
+        MockHttpSession session = loginAuthorSession(author);
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
