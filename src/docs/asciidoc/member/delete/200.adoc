@@ -1,0 +1,11 @@
+= 존재하는 회원이면 회원이 삭제 됩니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/member/delete/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/member/delete/200/http-response.adoc[]

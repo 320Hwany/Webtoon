@@ -10,10 +10,7 @@ import com.webtoon.member.service.MemberService;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -47,5 +44,11 @@ public class MemberController {
         Member member = memberService.update(memberSession, memberUpdate);
         MemberResponse memberResponse = MemberResponse.getFromMember(member);
         return ResponseEntity.ok(memberResponse);
+    }
+
+    @DeleteMapping("/member")
+    public ResponseEntity<Void> delete(@LoginForMember MemberSession memberSession) {
+        memberService.delete(memberSession);
+        return ResponseEntity.ok().build();
     }
 }

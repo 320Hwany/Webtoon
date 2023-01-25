@@ -34,6 +34,12 @@ public class MemberService {
         return member;
     }
 
+    @Transactional
+    public void delete(MemberSession memberSession) {
+        Member member = memberRepository.getById(memberSession.getId());
+        memberRepository.delete(member);
+    }
+
     public MemberSession makeMemberSession(MemberLogin memberLogin) {
         Member member = memberRepository.getByEmailAndPassword(memberLogin.getEmail(), memberLogin.getPassword());
         MemberSession memberSession = MemberSession.getFromMember(member);

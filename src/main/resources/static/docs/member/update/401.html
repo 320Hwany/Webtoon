@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>존재하는 회원이면 회원 수정이 됩니다 - 성공</title>
+<title>로그인을 하지 않으면 회원정보를 수정할 수 없습니다 - 실패</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,7 +438,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>존재하는 회원이면 회원 수정이 됩니다 - 성공</h1>
+<h1>로그인을 하지 않으면 회원정보를 수정할 수 없습니다 - 실패</h1>
 <div class="details">
 <span id="revnumber">version 0.0.1-SNAPSHOT</span>
 </div>
@@ -475,14 +475,14 @@ Host: localhost:8080
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 401 Unauthorized
 Content-Type: application/json
-Content-Length: 96
+Content-Length: 98
 
 {
-  "nickName" : "수정 닉네임",
-  "email" : "yhwjd@naver.com",
-  "password" : "123456789"
+  "statusCode" : "401",
+  "message" : "로그인 후 이용해주세요",
+  "validation" : { }
 }</code></pre>
 </div>
 </div>

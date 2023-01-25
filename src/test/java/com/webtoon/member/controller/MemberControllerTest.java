@@ -12,8 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.http.MediaType.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Transactional
@@ -189,5 +188,20 @@ class MemberControllerTest extends ControllerTest {
                         .content(memberUpdateJson))
                 .andExpect(status().isUnauthorized())
                 .andDo(document("member/update/401"));
+    }
+
+    @Test
+    @DisplayName("존재하는 회원이면 회원이 삭제 됩니다 - 성공")
+    void delete200() throws Exception {
+        // given
+        Member member = saveMemberInRepository();
+        MockHttpSession session = loginMemberSession(member);
+
+        // expected
+        mockMvc.perform(delete("/member")
+                        .session(session)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("member/delete/200"));
     }
 }

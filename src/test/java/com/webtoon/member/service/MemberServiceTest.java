@@ -93,6 +93,41 @@ class MemberServiceTest extends ServiceTest {
                 () -> memberService.update(memberSession, memberUpdate));
     }
 
+    @Test
+    @DisplayName("MemberSession에 맞는 Member가 있다면 Member를 삭제합니다 - 성공")
+    void delete200() {
+        // given
+        Member member = saveMemberInRepository();
+
+        MemberSession memberSession = MemberSession.builder()
+                .id(member.getId())
+                .nickName(member.getNickName())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .build();
+
+        // when
+        memberService.delete(memberSession);
+
+        // then
+        assertThat(memberRepository.count()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("MemberSession에 맞는 Member가 없다면 Member 삭제를 할 수 없습니다 - 실패")
+    void delete404() {
+        // given
+        MemberSession memberSession = MemberSession.builder()
+                .id(1L)
+                .nickName("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        // expected
+        Assertions.assertThrows(MemberNotFoundException.class,
+                () -> memberService.delete(memberSession));
+    }
 
     @Test
     @DisplayName("회원이 존재하면 MemberSession을 생성합니다 - 성공")
