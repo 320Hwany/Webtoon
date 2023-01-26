@@ -1,0 +1,11 @@
+= 존재하는 회원이고 조건에 맞으면 충전이 가능합니다 - 성공
+:toc:
+
+== 요청
+
+include::{snippets}/member/charge/200/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/member/charge/200/http-response.adoc[]

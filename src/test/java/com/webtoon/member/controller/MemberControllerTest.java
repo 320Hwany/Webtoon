@@ -1,6 +1,7 @@
 package com.webtoon.member.controller;
 
 import com.webtoon.member.domain.Member;
+import com.webtoon.member.dto.request.MemberCharge;
 import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;
@@ -203,5 +204,67 @@ class MemberControllerTest extends ControllerTest {
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("member/delete/200"));
+    }
+
+    @Test
+    @DisplayName("존재하는 회원이고 조건에 맞으면 충전이 가능합니다 - 성공")
+    void charge200() throws Exception {
+        // given
+        Member member = saveMemberInRepository();
+        MockHttpSession session = loginMemberSession(member);
+
+        MemberCharge memberCharge = MemberCharge.builder()
+                .chargeAmount(10000)
+                .build();
+
+        String chargeJson = objectMapper.writeValueAsString(memberCharge);
+
+        // expected
+        mockMvc.perform(post("/member/charge")
+                        .session(session)
+                        .contentType(APPLICATION_JSON)
+                        .content(chargeJson))
+                .andExpect(status().isOk())
+                .andDo(document("member/charge/200"));
+    }
+
+    @Test
+    @DisplayName("조건에 맞지 않으면 충전이 되지 않습니다 - 실패")
+    void charge400() throws Exception {
+        // given
+        Member member = saveMemberInRepository();
+        MockHttpSession session = loginMemberSession(member);
+
+        MemberCharge memberCharge = MemberCharge.builder()
+                .chargeAmount(-10000)
+                .build();
+
+        String chargeJson = objectMapper.writeValueAsString(memberCharge);
+
+        // expected
+        mockMvc.perform(post("/member/charge")
+                        .session(session)
+                        .contentType(APPLICATION_JSON)
+                        .content(chargeJson))
+                .andExpect(status().isBadRequest())
+                .andDo(document("member/charge/400"));
+    }
+
+    @Test
+    @DisplayName("로그인을 하지 않으면 충전을 할 수 없습니다 - 실패")
+    void charge401() throws Exception {
+        // given
+        MemberCharge memberCharge = MemberCharge.builder()
+                .chargeAmount(10000)
+                .build();
+
+        String chargeJson = objectMapper.writeValueAsString(memberCharge);
+
+        // expected
+        mockMvc.perform(post("/member/charge")
+                        .contentType(APPLICATION_JSON)
+                        .content(chargeJson))
+                .andExpect(status().isUnauthorized())
+                .andDo(document("member/charge/401"));
     }
 }

@@ -2,6 +2,7 @@ package com.webtoon.member.service;
 
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.domain.MemberSession;
+import com.webtoon.member.dto.request.MemberCharge;
 import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;
@@ -125,9 +126,54 @@ class MemberServiceTest extends ServiceTest {
                 .build();
 
         // expected
-        Assertions.assertThrows(MemberNotFoundException.class,
+        assertThrows(MemberNotFoundException.class,
                 () -> memberService.delete(memberSession));
     }
+
+    @Test
+    @DisplayName("MemberSession에 맞는 Member가 있다면 Coin을 충전할 수 있습니다 - 성공")
+    void chargeCoin200() {
+        // given
+        Member member = saveMemberInRepository();
+
+        MemberSession memberSession = MemberSession.builder()
+                .id(member.getId())
+                .nickName(member.getNickName())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .build();
+
+        MemberCharge memberCharge = MemberCharge.builder()
+                .chargeAmount(10000)
+                .build();
+
+        // when
+        memberService.chargeCoin(memberSession, memberCharge);
+
+        // then
+        assertThat(member.getCoin()).isEqualTo(10000);
+    }
+
+    @Test
+    @DisplayName("MemberSession에 맞는 Member가 없다면 Coin을 충전할 수 없습니다 - 실패")
+    void chargeCoin404() {
+        // given
+        MemberSession memberSession = MemberSession.builder()
+                .id(1L)
+                .nickName("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        MemberCharge memberCharge = MemberCharge.builder()
+                .chargeAmount(10000)
+                .build();
+
+        // expected
+        assertThrows(MemberNotFoundException.class,
+                () -> memberService.chargeCoin(memberSession, memberCharge));
+    }
+
 
     @Test
     @DisplayName("회원이 존재하면 MemberSession을 생성합니다 - 성공")

@@ -27,6 +27,8 @@ public class Member extends BaseTimeEntity {
 
     private String password;
 
+    private int coin;
+
     @Builder
     public Member(String nickName, String email, String password) {
         this.nickName = nickName;
@@ -38,6 +40,10 @@ public class Member extends BaseTimeEntity {
         this.nickName = memberUpdate.getNickName();
         this.email = memberUpdate.getEmail();
         this.password = memberUpdate.getPassword();
+    }
+
+    public void chargeCoin(int chargeAmount) {
+        coin += chargeAmount;
     }
 
     public static Member getFromMemberSignup(MemberSignup memberSignup) {

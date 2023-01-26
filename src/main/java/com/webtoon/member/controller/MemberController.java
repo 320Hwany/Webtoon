@@ -2,6 +2,7 @@ package com.webtoon.member.controller;
 
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.domain.MemberSession;
+import com.webtoon.member.dto.request.MemberCharge;
 import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;
@@ -49,6 +50,13 @@ public class MemberController {
     @DeleteMapping("/member")
     public ResponseEntity<Void> delete(@LoginForMember MemberSession memberSession) {
         memberService.delete(memberSession);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/member/charge")
+    public ResponseEntity<Void> charge(@LoginForMember MemberSession memberSession,
+                                       @RequestBody @Valid MemberCharge memberCharge) {
+        memberService.chargeCoin(memberSession, memberCharge);
         return ResponseEntity.ok().build();
     }
 }

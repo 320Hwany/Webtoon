@@ -4,6 +4,7 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.content.domain.Content;
+import com.webtoon.member.domain.Member;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
@@ -41,6 +42,15 @@ public class DomainTest {
                 .registrationDate(LocalDate.of(2023, 1, 20))
                 .build();
         return content;
+    }
+
+    protected static Member getMember() {
+        Member member = Member.builder()
+                .nickName("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+        return member;
     }
 
     protected static AuthorSession getAuthorSessionFromAuthor(Author author) {

@@ -1,0 +1,11 @@
+= 조건에 맞지 않으면 충전이 되지 않습니다 - 실패
+:toc:
+
+== 요청
+
+include::{snippets}/member/charge/400/http-request.adoc[]
+
+
+== 응답
+
+include::{snippets}/member/charge/400/http-response.adoc[]
