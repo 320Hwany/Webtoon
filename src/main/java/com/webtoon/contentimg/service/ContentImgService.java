@@ -22,13 +22,13 @@ public class ContentImgService {
     @Value("${file.dir}")
     private String imgDir;
 
-    public void imgUploadOnServer(MultipartFile multipartFiles[]) throws IOException {
-        ContentImg.imgUploadOnServer(multipartFiles, imgDir);
+    public void imgUploadOnServer(MultipartFile multipartFile) throws IOException {
+        ContentImg.imgUploadOnServer(multipartFile, imgDir);
     }
 
     @Transactional
-    public void makeContentImg(MultipartFile multipartFiles[], Content content) {
-        ContentImg contentImg = ContentImg.makeContentImg(multipartFiles, content);
+    public void saveContentImg(MultipartFile multipartFile, Content content) {
+        ContentImg contentImg = ContentImg.makeContentImg(multipartFile, content);
         contentImgRepository.save(contentImg);
     }
 }

@@ -34,16 +34,15 @@ public class ContentImg {
         this.content = content;
     }
 
-    public static void imgUploadOnServer(MultipartFile multipartFiles[], String imgDir) throws IOException {
-        String fullPath = imgDir + multipartFiles[0].getOriginalFilename();
-        multipartFiles[0].transferTo(new File(fullPath));
+    public static void imgUploadOnServer(MultipartFile multipartFile, String imgDir) throws IOException {
+        String fullPath = imgDir + multipartFile.getOriginalFilename();
+        multipartFile.transferTo(new File(fullPath));
     }
 
-    public static ContentImg makeContentImg(MultipartFile multipartFiles[], Content content) {
+    public static ContentImg makeContentImg(MultipartFile multipartFile, Content content) {
             return ContentImg.builder()
-                    .imgName(multipartFiles[0].getOriginalFilename())
+                    .imgName(multipartFile.getOriginalFilename())
                     .content(content)
                     .build();
     }
-
 }

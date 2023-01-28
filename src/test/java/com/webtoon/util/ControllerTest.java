@@ -10,6 +10,8 @@ import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.content.service.ContentService;
+import com.webtoon.contentimg.repository.ContentImgRepository;
+import com.webtoon.contentimg.service.ContentImgService;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.member.dto.request.MemberLogin;
@@ -74,6 +76,12 @@ public class ControllerTest {
 
     @Autowired
     protected MemberRepository memberRepository;
+
+    @Autowired
+    protected ContentImgService contentImgService;
+
+    @Autowired
+    protected ContentImgRepository contentImgRepository;
 
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {

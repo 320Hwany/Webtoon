@@ -17,13 +17,13 @@ public class ContentImgController {
     private final ContentImgService contentImgService;
     private final ContentService contentService;
 
-    @PostMapping("/cartoonImg/{contentId}")
-    public ResponseEntity<Void> save(@RequestParam MultipartFile multipartFiles[],
+    @PostMapping("/contentImg/{contentId}")
+    public ResponseEntity<Void> save(@RequestParam MultipartFile multipartFile,
                                      @PathVariable Long contentId) throws IOException {
 
         Content content = contentService.getById(contentId);
-        contentImgService.imgUploadOnServer(multipartFiles);
-        contentImgService.makeContentImg(multipartFiles, content);
+        contentImgService.imgUploadOnServer(multipartFile);
+        contentImgService.saveContentImg(multipartFile, content);
         return ResponseEntity.ok().build();
     }
 }

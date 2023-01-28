@@ -5,4 +5,6 @@ import com.webtoon.contentimg.domain.ContentImg;
 public interface ContentImgRepository {
 
     void save(ContentImg contentImg);
+
+    long count();
 }
