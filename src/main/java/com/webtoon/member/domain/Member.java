@@ -1,14 +1,20 @@
 package com.webtoon.member.domain;
 
+import com.webtoon.content.domain.Content;
 import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;
+import com.webtoon.member.exception.LackOfCoinException;
 import com.webtoon.util.BaseTimeEntity;
+import com.webtoon.util.constant.Constant;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
+
+import static com.webtoon.util.constant.Constant.PAYCOIN;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @NoArgsConstructor
@@ -43,7 +49,16 @@ public class Member extends BaseTimeEntity {
     }
 
     public void chargeCoin(int chargeAmount) {
-        coin += chargeAmount;
+        this.coin += chargeAmount;
+    }
+
+    public void getPreviewContent(LocalDate lockLocalDate) {
+        if (lockLocalDate.isAfter(LocalDate.now())) {
+            if (this.coin < 200) {
+                throw new LackOfCoinException();
+            }
+            this.coin -= PAYCOIN;
+        }
     }
 
     public static Member getFromMemberSignup(MemberSignup memberSignup) {

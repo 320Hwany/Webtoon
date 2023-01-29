@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -37,6 +39,11 @@ public class ContentService {
         Cartoon cartoon = cartoonRepository.getById(cartoonId);
         Content content = Content.getFromContentSaveAndCartoon(contentSave, cartoon);
         return content;
+    }
+
+    public LocalDate getLockLocalDate(Content content) {
+        LocalDate lockLocalDate = content.getLockLocalDate();
+        return lockLocalDate;
     }
 
     public Content findByCartoonIdAndEpisode(Long cartoonId, Integer episode) {

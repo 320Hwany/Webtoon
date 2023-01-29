@@ -1,5 +1,6 @@
 package com.webtoon.member.service;
 
+import com.webtoon.content.domain.Content;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.member.dto.request.MemberCharge;
@@ -8,11 +9,13 @@ import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.member.exception.MemberDuplicationException;
 import com.webtoon.member.repository.MemberRepository;
+import com.webtoon.util.constant.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -45,6 +48,12 @@ public class MemberService {
     public void chargeCoin(MemberSession memberSession, MemberCharge memberCharge) {
         Member member = memberRepository.getById(memberSession.getId());
         member.chargeCoin(memberCharge.getChargeAmount());
+    }
+
+    @Transactional
+    public void getPreviewContent(MemberSession memberSession, LocalDate lockLocalDate) {
+        Member member = memberRepository.getById(memberSession.getId());
+        member.getPreviewContent(lockLocalDate);
     }
 
     public MemberSession makeMemberSession(MemberLogin memberLogin) {

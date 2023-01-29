@@ -1,5 +1,7 @@
 package com.webtoon.member.controller;
 
+import com.webtoon.content.domain.Content;
+import com.webtoon.content.service.ContentService;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.member.dto.request.MemberCharge;
@@ -15,12 +17,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @RestController
 public class MemberController {
 
     private final MemberService memberService;
+    private final ContentService contentService;
 
     @PostMapping("/member/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid MemberSignup memberSignup) {
@@ -57,6 +61,17 @@ public class MemberController {
     public ResponseEntity<Void> charge(@LoginForMember MemberSession memberSession,
                                        @RequestBody @Valid MemberCharge memberCharge) {
         memberService.chargeCoin(memberSession, memberCharge);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/content/lock/{cartoonId}/{contentEpisode}")
+    public ResponseEntity<Void> getPreviewContent(@LoginForMember MemberSession memberSession,
+                                                  @PathVariable Long cartoonId,
+                                                  @PathVariable Integer contentEpisode) {
+
+        Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
+        LocalDate lockLocalDate = contentService.getLockLocalDate(content);
+        memberService.getPreviewContent(memberSession, lockLocalDate);
         return ResponseEntity.ok().build();
     }
 }
