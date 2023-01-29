@@ -1,8 +1,7 @@
 package com.webtoon.cartoon.dto.response;
 
-import com.webtoon.author.domain.Author;
+import com.webtoon.author.dto.response.AuthorResponse;
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 public class CartoonResponse {
 
     private String title;
-    private Author author;
+    private AuthorResponse authorResponse;
 
     private DayOfTheWeek dayOfTheWeek;
 
@@ -29,10 +28,10 @@ public class CartoonResponse {
     private Integer likes;
 
     @Builder
-    public CartoonResponse(String title, Author author, DayOfTheWeek dayOfTheWeek, Progress progress,
+    public CartoonResponse(String title, AuthorResponse authorResponse, DayOfTheWeek dayOfTheWeek, Progress progress,
                            Genre genre, Long rating, Integer likes) {
         this.title = title;
-        this.author = author;
+        this.authorResponse = authorResponse;
         this.dayOfTheWeek = dayOfTheWeek;
         this.progress = progress;
         this.genre = genre;
@@ -43,7 +42,7 @@ public class CartoonResponse {
     public static CartoonResponse getFromCartoon(Cartoon cartoon) {
         return CartoonResponse.builder()
                 .title(cartoon.getTitle())
-                .author(cartoon.getAuthor())
+                .authorResponse(AuthorResponse.getFromAuthor(cartoon.getAuthor()))
                 .dayOfTheWeek(cartoon.getDayOfTheWeek())
                 .progress(cartoon.getProgress())
                 .genre(cartoon.getGenre())

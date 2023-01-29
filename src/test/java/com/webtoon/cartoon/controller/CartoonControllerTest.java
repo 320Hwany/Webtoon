@@ -100,6 +100,8 @@ class CartoonControllerTest extends ControllerTest {
     @DisplayName("입력한 제목을 포함하는 만화 리스트를 한 페이지 보여줍니다 - 성공")
     void getCartoonListByTitle200() throws Exception {
         // given
+        Author author = saveAuthorInRepository();
+
         CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
                 .page(1)
                 .title("만화 제목")
@@ -110,6 +112,7 @@ class CartoonControllerTest extends ControllerTest {
 
         List<Cartoon> cartoonList = IntStream.range(1, 31)
                 .mapToObj(i -> Cartoon.builder()
+                        .author(author)
                         .title("만화 제목 " + i)
                         .likes(i)
                         .build())
@@ -162,6 +165,8 @@ class CartoonControllerTest extends ControllerTest {
     @DisplayName("입력한 장르의 만화 리스트를 보여줍니다 - 성공")
     void getCartoonListByGenre200() throws Exception {
         // given
+        Author author = saveAuthorInRepository();
+
         CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
                 .page(1)
                 .dayOfTheWeek("NONE")
@@ -171,6 +176,7 @@ class CartoonControllerTest extends ControllerTest {
 
         List<Cartoon> cartoonGenreRomanceList = IntStream.range(1, 11)
                 .mapToObj(i -> Cartoon.builder()
+                        .author(author)
                         .title("만화 제목 " + i)
                         .genre(Genre.ROMANCE)
                         .build())
@@ -221,6 +227,8 @@ class CartoonControllerTest extends ControllerTest {
     @DisplayName("좋아요가 많은 순으로 만화 리스트를 한 페이지 보여줍니다 - 성공")
     void getCartoonListOrderByLikes200() throws Exception {
         // given
+        Author author = saveAuthorInRepository();
+
         CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
                 .page(1)
                 .dayOfTheWeek("NONE")
@@ -230,6 +238,7 @@ class CartoonControllerTest extends ControllerTest {
 
         List<Cartoon> cartoonList = IntStream.range(1, 31)
                 .mapToObj(i -> Cartoon.builder()
+                        .author(author)
                         .title("만화 제목 " + i)
                         .likes(i)
                         .build())

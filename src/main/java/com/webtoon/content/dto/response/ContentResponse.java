@@ -1,6 +1,6 @@
 package com.webtoon.content.dto.response;
 
-import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.content.domain.Content;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 public class ContentResponse {
 
-    private Cartoon cartoon;
+    private CartoonResponse cartoonResponse;
 
     private String subTitle;
 
@@ -20,9 +20,9 @@ public class ContentResponse {
     private LocalDate registrationDate;
 
     @Builder
-    public ContentResponse(Cartoon cartoon, String subTitle, Integer episode,
+    public ContentResponse(CartoonResponse cartoonResponse, String subTitle, Integer episode,
                            float rating, LocalDate registrationDate) {
-        this.cartoon = cartoon;
+        this.cartoonResponse = cartoonResponse;
         this.subTitle = subTitle;
         this.episode = episode;
         this.rating = rating;
@@ -31,7 +31,7 @@ public class ContentResponse {
 
     public static ContentResponse getFromContent(Content content) {
         return ContentResponse.builder()
-                .cartoon(content.getCartoon())
+                .cartoonResponse(CartoonResponse.getFromCartoon(content.getCartoon()))
                 .subTitle(content.getSubTitle())
                 .episode(content.getEpisode())
                 .rating(content.getRating())
