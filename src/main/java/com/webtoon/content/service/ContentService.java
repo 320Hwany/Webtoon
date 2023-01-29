@@ -42,8 +42,7 @@ public class ContentService {
     }
 
     public LocalDate getLockLocalDate(Content content) {
-        LocalDate lockLocalDate = content.getLockLocalDate();
-        return lockLocalDate;
+        return content.getLockLocalDate();
     }
 
     public Content findByCartoonIdAndEpisode(Long cartoonId, Integer episode) {

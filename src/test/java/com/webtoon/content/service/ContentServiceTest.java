@@ -110,6 +110,22 @@ class ContentServiceTest extends ServiceTest {
     }
 
     @Test
+    @DisplayName("등록 날짜로부터 2주 지난 날짜로 미리보기 가능한 날짜를 설정합니다")
+    void getLockLocalDate() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+
+        // when
+        LocalDate lockLocalDate = contentService.getLockLocalDate(content);
+        LocalDate registrationDate = content.getRegistrationDate();
+
+        // then
+        assertThat(lockLocalDate).isEqualTo(registrationDate.plusWeeks(2));
+    }
+
+    @Test
     @DisplayName("만화에 대한 에피소드가 존재하면 컨텐츠를 가져옵니다 - 성공")
     void findByCartoonAndEpisode200() {
         // given

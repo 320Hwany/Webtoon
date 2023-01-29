@@ -260,4 +260,21 @@ class MemberServiceTest extends ServiceTest {
         assertThrows(MemberDuplicationException.class,
                 () -> memberService.checkDuplication(memberSignup));
     }
+
+    @Test
+    @DisplayName("이미 가입된 회원이라면 예외가 발생합니다 - 실패")
+    void getPreviewContent() {
+        // given
+        saveMemberInRepository();
+
+        MemberSignup memberSignup = MemberSignup.builder()
+                .nickName("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        // expected
+        assertThrows(MemberDuplicationException.class,
+                () -> memberService.checkDuplication(memberSignup));
+    }
 }

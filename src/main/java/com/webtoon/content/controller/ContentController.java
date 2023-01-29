@@ -8,6 +8,7 @@ import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.content.dto.response.ContentResponse;
 import com.webtoon.content.service.ContentService;
 import com.webtoon.member.domain.MemberSession;
+import com.webtoon.member.service.MemberService;
 import com.webtoon.util.annotation.LoginForAuthor;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,6 +24,7 @@ public class ContentController {
 
     private final ContentService contentService;
     private final CartoonService cartoonService;
+    private final MemberService memberService;
 
     @PostMapping("/content/{cartoonId}")
     public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
@@ -39,6 +42,18 @@ public class ContentController {
                                                       @PathVariable Integer contentEpisode) {
 
         Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
+        ContentResponse contentResponse = ContentResponse.getFromContent(content);
+        return ResponseEntity.ok(contentResponse);
+    }
+
+    @GetMapping("/content/lock/{cartoonId}/{contentEpisode}")
+    public ResponseEntity<ContentResponse> getPreviewContent(@LoginForMember MemberSession memberSession,
+                                                             @PathVariable Long cartoonId,
+                                                             @PathVariable Integer contentEpisode) {
+
+        Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
+        LocalDate lockLocalDate = contentService.getLockLocalDate(content);
+        memberService.validatePreviewContent(memberSession, lockLocalDate);
         ContentResponse contentResponse = ContentResponse.getFromContent(content);
         return ResponseEntity.ok(contentResponse);
     }

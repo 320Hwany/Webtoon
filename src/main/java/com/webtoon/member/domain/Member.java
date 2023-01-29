@@ -52,7 +52,7 @@ public class Member extends BaseTimeEntity {
         this.coin += chargeAmount;
     }
 
-    public void getPreviewContent(LocalDate lockLocalDate) {
+    public void validatePreviewContent(LocalDate lockLocalDate) {
         if (lockLocalDate.isAfter(LocalDate.now())) {
             if (this.coin < 200) {
                 throw new LackOfCoinException();

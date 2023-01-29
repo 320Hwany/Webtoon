@@ -57,4 +57,19 @@ class ContentTest extends DomainTest {
         assertThat(content.getEpisode()).isEqualTo(30);
         assertThat(content.getRegistrationDate()).isEqualTo(LocalDate.of(1999, 3, 20));
     }
+
+    @Test
+    void getLockLocalDate() {
+        // given
+        Author author = getAuthor();
+        Cartoon cartoon = getCartoon(author);
+        Content content = getContent(cartoon);
+
+        // when
+        LocalDate lockLocalDate = content.getLockLocalDate();
+        LocalDate registrationDate = content.getRegistrationDate();
+
+        // then
+        assertThat(lockLocalDate).isEqualTo(registrationDate.plusWeeks(2));
+    }
 }

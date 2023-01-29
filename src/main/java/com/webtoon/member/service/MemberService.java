@@ -9,7 +9,6 @@ import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.member.exception.MemberDuplicationException;
 import com.webtoon.member.repository.MemberRepository;
-import com.webtoon.util.constant.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,9 +50,9 @@ public class MemberService {
     }
 
     @Transactional
-    public void getPreviewContent(MemberSession memberSession, LocalDate lockLocalDate) {
+    public void validatePreviewContent(MemberSession memberSession, LocalDate lockLocalDate) {
         Member member = memberRepository.getById(memberSession.getId());
-        member.getPreviewContent(lockLocalDate);
+        member.validatePreviewContent(lockLocalDate);
     }
 
     public MemberSession makeMemberSession(MemberLogin memberLogin) {

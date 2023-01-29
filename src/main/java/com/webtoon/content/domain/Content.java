@@ -52,8 +52,7 @@ public class Content {
     }
 
     public LocalDate getLockLocalDate() {
-        LocalDate lockLocalDate = registrationDate.plusWeeks(2);
-        return lockLocalDate;
+        return registrationDate.plusWeeks(2);
     }
 
     public static Content getFromContentSaveAndCartoon(ContentSave contentSave, Cartoon cartoon) {

@@ -5,6 +5,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.dto.request.ContentSave;
 import com.webtoon.content.dto.request.ContentUpdate;
+import com.webtoon.member.domain.Member;
 import com.webtoon.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -193,6 +194,25 @@ class ContentControllerTest extends ControllerTest {
                         cartoon.getId(), 9999))
                 .andExpect(status().isNotFound())
                 .andDo(document("content/get/404Episode"));
+    }
+
+    @Test
+    @DisplayName("코인을 지불하여 미리보기 기능을 사용합니다 - 성공")
+    void getPreviewContent200() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+        Member member = saveMemberInRepository();
+        member.chargeCoin(10000);
+        MockHttpSession session = loginMemberSession(member);
+
+        // expected
+        mockMvc.perform(get("/content/lock/{cartoonId}/{contentEpisode}",
+                        cartoon.getId(), content.getEpisode())
+                        .session(session))
+                .andExpect(status().isOk())
+                .andDo(document("content/lock/get/200"));
     }
 
     @Test

@@ -39,7 +39,7 @@ public class DomainTest {
                 .subTitle("만화 부제")
                 .episode(1)
                 .rating(9.8f)
-                .registrationDate(LocalDate.of(2023, 1, 20))
+                .registrationDate(LocalDate.now().minusWeeks(1))
                 .build();
         return content;
     }
