@@ -1,4 +1,4 @@
-package com.webtoon.contentimg.domain;
+package com.webtoon.contentImgInfo.domain;
 
 import com.webtoon.author.domain.Author;
 import com.webtoon.cartoon.domain.Cartoon;
@@ -29,7 +29,7 @@ class ContentImgTest extends DomainTest {
         );
 
         // when
-        ContentImg contentImg = ContentImg.makeContentImg(multipartFile, content);
+        ContentImgInfo contentImg = ContentImgInfo.makeContentImgInfo(multipartFile, content);
 
         // then
         assertThat(contentImg.getImgName()).isEqualTo(multipartFile.getOriginalFilename());

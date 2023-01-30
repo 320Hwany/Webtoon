@@ -1,4 +1,4 @@
-package com.webtoon.contentimg.domain;
+package com.webtoon.contentImgInfo.domain;
 
 import com.webtoon.content.domain.Content;
 import lombok.Builder;
@@ -17,11 +17,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @NoArgsConstructor
 @Entity
-public class ContentImg {
+public class ContentImgInfo {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "cartoon_img_id")
+    @Column(name = "content_img_id")
     private Long id;
     private String imgName;
     @OneToOne(fetch = LAZY)
@@ -29,7 +29,7 @@ public class ContentImg {
     private Content content;
 
     @Builder
-    public ContentImg(String imgName, Content content) {
+    public ContentImgInfo(String imgName, Content content) {
         this.imgName = imgName;
         this.content = content;
     }
@@ -39,8 +39,8 @@ public class ContentImg {
         multipartFile.transferTo(new File(fullPath));
     }
 
-    public static ContentImg makeContentImg(MultipartFile multipartFile, Content content) {
-            return ContentImg.builder()
+    public static ContentImgInfo makeContentImgInfo(MultipartFile multipartFile, Content content) {
+            return ContentImgInfo.builder()
                     .imgName(multipartFile.getOriginalFilename())
                     .content(content)
                     .build();
