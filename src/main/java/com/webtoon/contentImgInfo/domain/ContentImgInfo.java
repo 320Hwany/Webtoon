@@ -1,6 +1,7 @@
 package com.webtoon.contentImgInfo.domain;
 
 import com.webtoon.content.domain.Content;
+import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @NoArgsConstructor
 @Entity
-public class ContentImgInfo {
+public class ContentImgInfo extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

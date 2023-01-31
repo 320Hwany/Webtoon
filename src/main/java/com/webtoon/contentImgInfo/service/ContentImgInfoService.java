@@ -20,10 +20,7 @@ public class ContentImgInfoService {
 
     private final ContentImgInfoRepository contentImgInfoRepository;
 
-    @Value("${file.dir}")
-    private String imgDir;
-
-    public void imgUploadOnServer(MultipartFile multipartFile) throws IOException {
+    public void imgUploadOnServer(MultipartFile multipartFile, String imgDir) throws IOException {
         ContentImgInfo.imgUploadOnServer(multipartFile, imgDir);
     }
 
@@ -38,7 +35,7 @@ public class ContentImgInfoService {
                 .orElseThrow(ContentImgInfoNotFoundException::new);
     }
 
-    public UrlResource getImgFromServer(ContentImgInfo contentImgInfo) throws MalformedURLException {
+    public UrlResource getImgFromServer(ContentImgInfo contentImgInfo, String imgDir) throws MalformedURLException {
         return new UrlResource("file:" + imgDir + contentImgInfo.getImgName());
     }
 }

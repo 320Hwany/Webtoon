@@ -72,19 +72,6 @@ public class Cartoon extends BaseTimeEntity {
                 .build();
     }
 
-    public void update(CartoonUpdate cartoonUpdate) {
-        this.title = cartoonUpdate.getTitle();
-        this.dayOfTheWeek = DayOfTheWeek.valueOf(cartoonUpdate.getDayOfTheWeek());
-        this.progress = Progress.valueOf(cartoonUpdate.getProgress());
-        this.genre = Genre.valueOf(cartoonUpdate.getGenre());
-    }
-
-    public void validateAuthorityForCartoon(AuthorSession authorSession) {
-        if (author.getId() != authorSession.getId()) {
-            throw new CartoonForbiddenException();
-        }
-    }
-
     public static void validateEnumTypeValid(CartoonEnumField cartoonEnumField) {
         Boolean isDayValid = validateDayValid(cartoonEnumField.getDayOfTheWeek());
         Boolean isProgressValid = validateProgressValid(cartoonEnumField.getProgress());
@@ -123,6 +110,19 @@ public class Cartoon extends BaseTimeEntity {
             }
         }
         return false;
+    }
+
+    public void update(CartoonUpdate cartoonUpdate) {
+        this.title = cartoonUpdate.getTitle();
+        this.dayOfTheWeek = DayOfTheWeek.valueOf(cartoonUpdate.getDayOfTheWeek());
+        this.progress = Progress.valueOf(cartoonUpdate.getProgress());
+        this.genre = Genre.valueOf(cartoonUpdate.getGenre());
+    }
+
+    public void validateAuthorityForCartoon(AuthorSession authorSession) {
+        if (author.getId() != authorSession.getId()) {
+            throw new CartoonForbiddenException();
+        }
     }
 
     @Override

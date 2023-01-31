@@ -3,6 +3,7 @@ package com.webtoon.content.domain;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.content.dto.request.ContentSave;
 import com.webtoon.content.dto.request.ContentUpdate;
+import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -17,7 +19,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Content {
+public class Content extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -45,6 +47,15 @@ public class Content {
         this.registrationDate = registrationDate;
     }
 
+    public static Content getFromContentSaveAndCartoon(ContentSave contentSave, Cartoon cartoon) {
+        return Content.builder()
+                .cartoon(cartoon)
+                .subTitle(contentSave.getSubTitle())
+                .episode(contentSave.getEpisode())
+                .registrationDate(contentSave.getRegistrationDate())
+                .build();
+    }
+
     public void update(ContentUpdate contentUpdate) {
         this.subTitle = contentUpdate.getSubTitle();
         this.episode = contentUpdate.getEpisode();
@@ -53,14 +64,5 @@ public class Content {
 
     public LocalDate getLockLocalDate() {
         return registrationDate.plusWeeks(2);
-    }
-
-    public static Content getFromContentSaveAndCartoon(ContentSave contentSave, Cartoon cartoon) {
-        return Content.builder()
-                .cartoon(cartoon)
-                .subTitle(contentSave.getSubTitle())
-                .episode(contentSave.getEpisode())
-                .registrationDate(contentSave.getRegistrationDate())
-                .build();
     }
 }

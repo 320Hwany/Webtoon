@@ -29,11 +29,6 @@ public class MemberSession implements Serializable {
         this.password = password;
     }
 
-    public void makeSession(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.setAttribute("memberSession", this);
-    }
-
     public static MemberSession getFromMember(Member member) {
         return MemberSession.builder()
                 .id(member.getId())
@@ -41,6 +36,11 @@ public class MemberSession implements Serializable {
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .build();
+    }
+
+    public void makeSession(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute("memberSession", this);
     }
 
     @Override

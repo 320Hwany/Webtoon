@@ -10,6 +10,7 @@ import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.content.service.ContentService;
+import com.webtoon.contentImgInfo.domain.ContentImgInfo;
 import com.webtoon.contentImgInfo.repository.ContentImgInfoRepository;
 import com.webtoon.contentImgInfo.service.ContentImgInfoService;
 import com.webtoon.member.domain.Member;
@@ -126,6 +127,16 @@ public class ControllerTest {
 
         contentRepository.save(content);
         return content;
+    }
+
+    protected ContentImgInfo saveContentImgInfoInRepository(Content content) {
+        ContentImgInfo contentImgInfo = ContentImgInfo.builder()
+                .imgName("hello.txt")
+                .content(content)
+                .build();
+
+        contentImgInfoRepository.save(contentImgInfo);
+        return contentImgInfo;
     }
 
     protected Member saveMemberInRepository() {
