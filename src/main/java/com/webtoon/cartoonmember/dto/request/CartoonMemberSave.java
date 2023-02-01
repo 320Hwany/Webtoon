@@ -1,29 +1,24 @@
 package com.webtoon.cartoonmember.dto.request;
 
-import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoonmember.domain.CartoonMember;
-import com.webtoon.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class CartoonMemberSave {
 
-    private Cartoon cartoon;
-    private Member member;
+    private Long cartoonId;
+    private Long memberId;
 
     @Builder
-    public CartoonMemberSave(Cartoon cartoon, Member member) {
-        this.cartoon = cartoon;
-        this.member = member;
+    public CartoonMemberSave(Long cartoonId, Long memberId) {
+        this.cartoonId = cartoonId;
+        this.memberId = memberId;
     }
 
-    public static CartoonMemberSave getFromCartoonAndMember(Cartoon cartoon, Member member) {
+    public static CartoonMemberSave getFromCartoonIdAndMemberId(Long cartoonId, Long memberId) {
         return CartoonMemberSave.builder()
-                .cartoon(cartoon)
-                .member(member)
+                .cartoonId(cartoonId)
+                .memberId(memberId)
                 .build();
     }
 }

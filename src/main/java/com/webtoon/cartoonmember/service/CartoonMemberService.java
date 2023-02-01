@@ -4,6 +4,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
+import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
 import com.webtoon.cartoonmember.repository.CartoonMemberRepository;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.repository.MemberRepository;
@@ -21,14 +22,27 @@ public class CartoonMemberService {
     private final MemberRepository memberRepository;
 
     public CartoonMemberSave getCartoonMemberSaveFromId(Long cartoonId, Long memberId) {
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
-        Member member = memberRepository.getById(memberId);
-        return CartoonMemberSave.getFromCartoonAndMember(cartoon, member);
+        return CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberId);
     }
 
     @Transactional
     public void save(CartoonMemberSave cartoonMemberSave) {
-        CartoonMember cartoonMember = CartoonMember.getFromCartoonMemberSave(cartoonMemberSave);
+        Cartoon cartoon = cartoonRepository.getById(cartoonMemberSave.getCartoonId());
+        Member member = memberRepository.getById(cartoonMemberSave.getMemberId());
+        CartoonMember cartoonMember = CartoonMember.getFromCartoonAndMember(cartoon, member);
         cartoonMemberRepository.save(cartoonMember);
+    }
+
+    @Transactional
+    public void thumbsUp(Long cartoonId, Long memberId) {
+        CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(cartoonId, memberId)
+                .orElseThrow(CartoonMemberNotFoundException::new);
+        cartoonMember.thumbsUp();
+    }
+
+    @Transactional
+    public void addLike(Long cartoonId) {
+        Cartoon cartoon = cartoonRepository.getById(cartoonId);
+        cartoon.addLike();
     }
 }

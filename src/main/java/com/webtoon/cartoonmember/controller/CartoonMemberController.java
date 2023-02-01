@@ -17,12 +17,19 @@ public class CartoonMemberController {
     private final CartoonMemberService cartoonMemberService;
 
     @PostMapping("/read/{cartoonId}")
-    public ResponseEntity<Void> MemberReadCartoon(@LoginForMember MemberSession memberSession,
+    public ResponseEntity<Void> memberReadCartoon(@LoginForMember MemberSession memberSession,
                                                   @PathVariable Long cartoonId) {
-
         CartoonMemberSave cartoonMemberSave =
                 cartoonMemberService.getCartoonMemberSaveFromId(cartoonId, memberSession.getId());
         cartoonMemberService.save(cartoonMemberSave);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/thumbsUp/{cartoonId}")
+    public ResponseEntity<Void> thumbsUp(@LoginForMember MemberSession memberSession,
+                                         @PathVariable Long cartoonId) {
+        cartoonMemberService.thumbsUp(cartoonId, memberSession.getId());
+        cartoonMemberService.addLike(cartoonId);
         return ResponseEntity.ok().build();
     }
 }

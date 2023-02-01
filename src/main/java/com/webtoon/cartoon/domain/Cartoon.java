@@ -47,12 +47,12 @@ public class Cartoon extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    private Long rating;
-    private Integer likes;
+    private int rating;
+    private int likes;
 
     @Builder
     public Cartoon(String title, Author author, DayOfTheWeek dayOfTheWeek, Progress progress,
-                   Genre genre, Long rating, Integer likes) {
+                   Genre genre, int rating, int likes) {
         this.title = title;
         this.author = author;
         this.dayOfTheWeek = dayOfTheWeek;
@@ -112,6 +112,12 @@ public class Cartoon extends BaseTimeEntity {
         return false;
     }
 
+    public void validateAuthorityForCartoon(AuthorSession authorSession) {
+        if (author.getId() != authorSession.getId()) {
+            throw new CartoonForbiddenException();
+        }
+    }
+
     public void update(CartoonUpdate cartoonUpdate) {
         this.title = cartoonUpdate.getTitle();
         this.dayOfTheWeek = DayOfTheWeek.valueOf(cartoonUpdate.getDayOfTheWeek());
@@ -119,9 +125,7 @@ public class Cartoon extends BaseTimeEntity {
         this.genre = Genre.valueOf(cartoonUpdate.getGenre());
     }
 
-    public void validateAuthorityForCartoon(AuthorSession authorSession) {
-        if (author.getId() != authorSession.getId()) {
-            throw new CartoonForbiddenException();
-        }
+    public void addLike() {
+        this.likes += 1;
     }
 }

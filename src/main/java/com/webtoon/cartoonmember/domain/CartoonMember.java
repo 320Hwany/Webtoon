@@ -1,23 +1,25 @@
 package com.webtoon.cartoonmember.domain;
 
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.member.domain.Member;
+import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static java.lang.Boolean.*;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class CartoonMember {
+public class CartoonMember extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = IDENTITY)
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "cartoon_member_id")
     private Long id;
 
@@ -29,18 +31,24 @@ public class CartoonMember {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private Boolean thumbsUp = false;
+    private Boolean thumbsUp;
 
     @Builder
-    public CartoonMember(Cartoon cartoon, Member member) {
+    public CartoonMember(Cartoon cartoon, Member member, Boolean thumbsUp) {
         this.cartoon = cartoon;
         this.member = member;
+        this.thumbsUp = thumbsUp;
     }
 
-    public static CartoonMember getFromCartoonMemberSave(CartoonMemberSave cartoonMemberSave) {
+    public static CartoonMember getFromCartoonAndMember(Cartoon cartoon, Member member) {
         return CartoonMember.builder()
-                .cartoon(cartoonMemberSave.getCartoon())
-                .member(cartoonMemberSave.getMember())
+                .cartoon(cartoon)
+                .member(member)
+                .thumbsUp(FALSE)
                 .build();
+    }
+
+    public void thumbsUp() {
+        this.thumbsUp = TRUE;
     }
 }
