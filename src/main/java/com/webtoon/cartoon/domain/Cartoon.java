@@ -63,7 +63,7 @@ public class Cartoon extends BaseTimeEntity {
     }
 
     public static Cartoon getFromCartoonSaveAndAuthor(CartoonSave cartoonSave, Author author) {
-        return builder()
+        return Cartoon.builder()
                 .title(cartoonSave.getTitle())
                 .author(author)
                 .dayOfTheWeek(DayOfTheWeek.valueOf(cartoonSave.getDayOfTheWeek()))

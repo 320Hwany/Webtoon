@@ -206,14 +206,13 @@ class CartoonServiceTest extends ServiceTest {
                 .genre("ROMANCE")
                 .build();
         // when
-        Cartoon afterUpdate = cartoonService.update(cartoon.getId(), cartoonUpdate);
+        cartoonService.update(cartoon.getId(), cartoonUpdate);
 
         // then
-        assertThat(afterUpdate.getId()).isEqualTo(cartoon.getId());
-        assertThat(afterUpdate.getTitle()).isEqualTo("수정 만화 제목");
-        assertThat(afterUpdate.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.TUE);
-        assertThat(afterUpdate.getProgress()).isEqualTo(Progress.COMPLETE);
-        assertThat(afterUpdate.getGenre()).isEqualTo(Genre.ROMANCE);
+        assertThat(cartoon.getTitle()).isEqualTo("수정 만화 제목");
+        assertThat(cartoon.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.TUE);
+        assertThat(cartoon.getProgress()).isEqualTo(Progress.COMPLETE);
+        assertThat(cartoon.getGenre()).isEqualTo(Genre.ROMANCE);
     }
 
     @Test
