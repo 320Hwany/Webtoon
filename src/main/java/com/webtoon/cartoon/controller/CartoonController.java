@@ -79,7 +79,7 @@ public class CartoonController {
 
     @DeleteMapping("/cartoon/{cartoonId}")
     public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
-                       @PathVariable Long cartoonId) {
+                                       @PathVariable Long cartoonId) {
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
         cartoonService.delete(cartoonId);
         return ResponseEntity.ok().build();

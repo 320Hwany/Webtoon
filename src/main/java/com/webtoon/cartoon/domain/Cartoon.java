@@ -124,20 +124,4 @@ public class Cartoon extends BaseTimeEntity {
             throw new CartoonForbiddenException();
         }
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cartoon cartoon = (Cartoon) o;
-        return Objects.equals(id, cartoon.id) && Objects.equals(title, cartoon.title)
-                && Objects.equals(author, cartoon.author) && dayOfTheWeek == cartoon.dayOfTheWeek
-                && progress == cartoon.progress && genre == cartoon.genre && Objects.equals(rating, cartoon.rating)
-                && Objects.equals(likes, cartoon.likes);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, author, dayOfTheWeek, progress, genre, rating, likes);
-    }
 }

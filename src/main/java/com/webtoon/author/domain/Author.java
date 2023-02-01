@@ -48,18 +48,4 @@ public class Author extends BaseTimeEntity {
         this.email = authorUpdate.getEmail();
         this.password = authorUpdate.getPassword();
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Author author = (Author) o;
-        return Objects.equals(id, author.id) && Objects.equals(nickName, author.nickName)
-                && Objects.equals(email, author.email) && Objects.equals(password, author.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nickName, email, password);
-    }
 }

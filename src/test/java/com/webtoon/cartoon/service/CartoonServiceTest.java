@@ -209,7 +209,11 @@ class CartoonServiceTest extends ServiceTest {
         Cartoon afterUpdate = cartoonService.update(cartoon.getId(), cartoonUpdate);
 
         // then
-        assertThat(afterUpdate).isEqualTo(cartoon);
+        assertThat(afterUpdate.getId()).isEqualTo(cartoon.getId());
+        assertThat(afterUpdate.getTitle()).isEqualTo("수정 만화 제목");
+        assertThat(afterUpdate.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.TUE);
+        assertThat(afterUpdate.getProgress()).isEqualTo(Progress.COMPLETE);
+        assertThat(afterUpdate.getGenre()).isEqualTo(Genre.ROMANCE);
     }
 
     @Test
