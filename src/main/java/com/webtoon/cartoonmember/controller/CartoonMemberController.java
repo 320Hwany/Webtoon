@@ -19,8 +19,9 @@ public class CartoonMemberController {
     @PostMapping("/read/{cartoonId}")
     public ResponseEntity<Void> memberReadCartoon(@LoginForMember MemberSession memberSession,
                                                   @PathVariable Long cartoonId) {
+
         CartoonMemberSave cartoonMemberSave =
-                cartoonMemberService.getCartoonMemberSaveFromId(cartoonId, memberSession.getId());
+                CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
         cartoonMemberService.save(cartoonMemberSave);
         return ResponseEntity.ok().build();
     }

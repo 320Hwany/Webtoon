@@ -35,4 +35,9 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .where(cartoonMember.member.id.eq(memberId))
                 .fetchOne());
     }
+
+    @Override
+    public long count() {
+        return cartoonMemberJpaRepository.count();
+    }
 }

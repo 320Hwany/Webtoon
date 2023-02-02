@@ -11,4 +11,6 @@ public interface CartoonMemberRepository {
     CartoonMember save(CartoonMember cartoonMember);
 
     Optional<CartoonMember> findByCartoonIdAndMemberId(Long cartoonId, Long memberId);
+
+    long count();
 }

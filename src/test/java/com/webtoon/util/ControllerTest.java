@@ -7,6 +7,9 @@ import com.webtoon.author.service.AuthorService;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoon.service.CartoonService;
+import com.webtoon.cartoonmember.domain.CartoonMember;
+import com.webtoon.cartoonmember.repository.CartoonMemberRepository;
+import com.webtoon.cartoonmember.service.CartoonMemberService;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.content.service.ContentService;
@@ -37,6 +40,7 @@ import javax.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 
+import static java.lang.Boolean.FALSE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -82,6 +86,12 @@ public class ControllerTest {
 
     @Autowired
     protected ContentImgInfoRepository contentImgInfoRepository;
+
+    @Autowired
+    protected CartoonMemberRepository cartoonMemberRepository;
+
+    @Autowired
+    protected CartoonMemberService cartoonMemberService;
 
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
@@ -148,6 +158,16 @@ public class ControllerTest {
 
         memberRepository.save(member);
         return member;
+    }
+
+    protected CartoonMember saveCartoonMemberInRepository(Cartoon cartoon, Member member) {
+        CartoonMember cartoonMember = CartoonMember.builder()
+                .cartoon(cartoon)
+                .member(member)
+                .thumbsUp(FALSE)
+                .build();
+
+        return cartoonMemberRepository.save(cartoonMember);
     }
 
     protected MockHttpSession loginAuthorSession(Author author) throws Exception {

@@ -5,6 +5,8 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
+import com.webtoon.cartoonmember.domain.CartoonMember;
+import com.webtoon.cartoonmember.repository.CartoonMemberRepository;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.contentImgInfo.domain.ContentImgInfo;
@@ -18,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+
+import static java.lang.Boolean.FALSE;
 
 @SpringBootTest
 public class ServiceTest {
@@ -36,6 +40,9 @@ public class ServiceTest {
 
     @Autowired
     protected ContentImgInfoRepository contentImgInfoRepository;
+
+    @Autowired
+    protected CartoonMemberRepository cartoonMemberRepository;
 
     protected Author saveAuthorInRepository() {
         Author author = Author.builder()
@@ -92,6 +99,16 @@ public class ServiceTest {
 
         memberRepository.save(member);
         return member;
+    }
+
+    protected CartoonMember saveCartoonMemberInRepository(Cartoon cartoon, Member member) {
+        CartoonMember cartoonMember = CartoonMember.builder()
+                .cartoon(cartoon)
+                .member(member)
+                .thumbsUp(FALSE)
+                .build();
+
+        return cartoonMemberRepository.save(cartoonMember);
     }
 
     protected static AuthorSession getAuthorSessionFromAuthor(Author author) {

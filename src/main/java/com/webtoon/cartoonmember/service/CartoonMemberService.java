@@ -21,10 +21,6 @@ public class CartoonMemberService {
     private final CartoonRepository cartoonRepository;
     private final MemberRepository memberRepository;
 
-    public CartoonMemberSave getCartoonMemberSaveFromId(Long cartoonId, Long memberId) {
-        return CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberId);
-    }
-
     @Transactional
     public void save(CartoonMemberSave cartoonMemberSave) {
         Cartoon cartoon = cartoonRepository.getById(cartoonMemberSave.getCartoonId());
