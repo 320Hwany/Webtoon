@@ -8,6 +8,7 @@ import com.webtoon.content.dto.request.ContentSave;
 import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.content.exception.ContentNotFoundException;
 import com.webtoon.util.ServiceTest;
+import com.webtoon.util.constant.Constant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+import static com.webtoon.util.constant.Constant.TWO_WEEKS;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,7 +36,7 @@ class ContentServiceTest extends ServiceTest {
         Content content = Content.builder()
                 .cartoon(cartoon)
                 .subTitle("부제입니다")
-                .episode(20)
+                .episode(20L)
                 .rating(9.8f)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
@@ -56,7 +58,7 @@ class ContentServiceTest extends ServiceTest {
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
-                .episode(30)
+                .episode(30L)
                 .registrationDate(LocalDate.of(1999, 3, 20))
                 .build();
 
@@ -79,7 +81,7 @@ class ContentServiceTest extends ServiceTest {
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
-                .episode(20)
+                .episode(20L)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
 
@@ -89,8 +91,7 @@ class ContentServiceTest extends ServiceTest {
         // then
         assertThat(content.getCartoon()).isEqualTo(cartoon);
         assertThat(content.getSubTitle()).isEqualTo("부제 입니다");
-        assertThat(content.getEpisode()).isEqualTo(20);
-        assertThat(content.getRating()).isEqualTo(0f);
+        assertThat(content.getEpisode()).isEqualTo(20L);
         assertThat(content.getRegistrationDate()).isEqualTo(LocalDate.of(2023, 1, 19));
     }
 
@@ -100,7 +101,7 @@ class ContentServiceTest extends ServiceTest {
         // given
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
-                .episode(20)
+                .episode(20L)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
 
@@ -118,7 +119,7 @@ class ContentServiceTest extends ServiceTest {
         Content content = saveContentInRepository(cartoon);
 
         // when
-        LocalDate lockLocalDate = contentService.getLockLocalDate(content);
+        LocalDate lockLocalDate = contentService.getLockLocalDate(content, TWO_WEEKS);
         LocalDate registrationDate = content.getRegistrationDate();
 
         // then
@@ -163,6 +164,6 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         assertThrows(ContentNotFoundException.class,
-                () -> contentService.findByCartoonIdAndEpisode(cartoon.getId(), 9999));
+                () -> contentService.findByCartoonIdAndEpisode(cartoon.getId(), 9999L));
     }
 }

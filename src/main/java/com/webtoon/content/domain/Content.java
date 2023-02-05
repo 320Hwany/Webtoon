@@ -13,6 +13,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import static com.webtoon.util.constant.Constant.TWO_WEEKS;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -32,13 +33,13 @@ public class Content extends BaseTimeEntity {
 
     private String subTitle;
 
-    private Integer episode;
-    private float rating;
+    private Long episode;
+    private Float rating;
 
     private LocalDate registrationDate;
 
     @Builder
-    public Content(Cartoon cartoon, String subTitle, Integer episode, float rating,
+    public Content(Cartoon cartoon, String subTitle, Long episode, Float rating,
                    LocalDate registrationDate) {
         this.cartoon = cartoon;
         this.subTitle = subTitle;
@@ -62,7 +63,7 @@ public class Content extends BaseTimeEntity {
         this.registrationDate = contentUpdate.getRegistrationDate();
     }
 
-    public LocalDate getLockLocalDate() {
-        return registrationDate.plusWeeks(2);
+    public LocalDate getLockLocalDate(Long weeks) {
+        return registrationDate.plusWeeks(weeks);
     }
 }

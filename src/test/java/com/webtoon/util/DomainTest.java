@@ -37,7 +37,7 @@ public class DomainTest {
         Content content = Content.builder()
                 .cartoon(cartoon)
                 .subTitle("만화 부제")
-                .episode(1)
+                .episode(1L)
                 .rating(9.8f)
                 .registrationDate(LocalDate.now().minusWeeks(1))
                 .build();

@@ -2,7 +2,6 @@ package com.webtoon.cartoonmember.controller;
 
 import com.webtoon.author.domain.Author;
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.member.domain.Member;
 import com.webtoon.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;

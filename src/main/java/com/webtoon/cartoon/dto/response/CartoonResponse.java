@@ -24,12 +24,12 @@ public class CartoonResponse {
     private Progress progress;
     private Genre genre;
 
-    private Long rating;
-    private Integer likes;
+    private Float rating;
+    private Long likes;
 
     @Builder
     public CartoonResponse(String title, AuthorResponse authorResponse, DayOfTheWeek dayOfTheWeek, Progress progress,
-                           Genre genre, Long rating, Integer likes) {
+                           Genre genre, Float rating, Long likes) {
         this.title = title;
         this.authorResponse = authorResponse;
         this.dayOfTheWeek = dayOfTheWeek;

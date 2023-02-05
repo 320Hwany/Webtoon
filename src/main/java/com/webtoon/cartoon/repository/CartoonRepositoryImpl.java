@@ -9,6 +9,7 @@ import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.util.enumerated.Genre;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.criterion.Projection;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

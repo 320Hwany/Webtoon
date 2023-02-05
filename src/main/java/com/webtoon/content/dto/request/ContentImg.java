@@ -6,7 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 public class ContentImg {
 
-    private String url;
-
     private MultipartFile contentImg;
 }

@@ -22,7 +22,7 @@ public class ContentImgInfo extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "content_img_id")
+    @Column(name = "content_img_info_id")
     private Long id;
     private String imgName;
     @OneToOne(fetch = LAZY)

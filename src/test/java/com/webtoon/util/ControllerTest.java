@@ -20,6 +20,7 @@ import com.webtoon.member.domain.Member;
 import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.repository.MemberRepository;
 import com.webtoon.member.service.MemberService;
+import com.webtoon.util.constant.Constant;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
@@ -40,6 +41,8 @@ import javax.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 
+import static com.webtoon.util.constant.Constant.ZERO_OF_FLOAT;
+import static com.webtoon.util.constant.Constant.ZERO_OF_LONG;
 import static java.lang.Boolean.FALSE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -121,6 +124,8 @@ public class ControllerTest {
                 .dayOfTheWeek(DayOfTheWeek.MON)
                 .progress(Progress.SERIALIZATION)
                 .genre(Genre.ROMANCE)
+                .rating(ZERO_OF_FLOAT)
+                .likes(ZERO_OF_LONG)
                 .build();
         cartoonRepository.save(cartoon);
         return cartoon;
@@ -130,7 +135,7 @@ public class ControllerTest {
         Content content = Content.builder()
                 .cartoon(cartoon)
                 .subTitle("만화 부제")
-                .episode(1)
+                .episode(1L)
                 .rating(9.8f)
                 .registrationDate(LocalDate.of(2023, 1, 20))
                 .build();

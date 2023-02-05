@@ -111,7 +111,7 @@ class CartoonControllerTest extends ControllerTest {
                 .genre("NONE")
                 .build();
 
-        List<Cartoon> cartoonList = IntStream.range(1, 31)
+        List<Cartoon> cartoonList = LongStream.range(1, 31)
                 .mapToObj(i -> Cartoon.builder()
                         .author(author)
                         .title("만화 제목 " + i)
@@ -143,7 +143,7 @@ class CartoonControllerTest extends ControllerTest {
                 .genre("NONE")
                 .build();
 
-        List<Cartoon> cartoonList = IntStream.range(1, 31)
+        List<Cartoon> cartoonList = LongStream.range(1, 31)
                 .mapToObj(i -> Cartoon.builder()
                         .title("만화 제목 " + i)
                         .likes(i)
@@ -237,7 +237,7 @@ class CartoonControllerTest extends ControllerTest {
                 .genre("NONE")
                 .build();
 
-        List<Cartoon> cartoonList = IntStream.range(1, 31)
+        List<Cartoon> cartoonList = LongStream.range(1, 31)
                 .mapToObj(i -> Cartoon.builder()
                         .author(author)
                         .title("만화 제목 " + i)
@@ -268,7 +268,7 @@ class CartoonControllerTest extends ControllerTest {
                 .genre("NONE")
                 .build();
 
-        List<Cartoon> cartoonList = IntStream.range(1, 31)
+        List<Cartoon> cartoonList = LongStream.range(1, 31)
                 .mapToObj(i -> Cartoon.builder()
                         .title("만화 제목 " + i)
                         .likes(i)

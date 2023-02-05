@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 
+import static com.webtoon.util.constant.Constant.TWO_WEEKS;
+
 @RequiredArgsConstructor
 @RestController
 public class ContentController {
@@ -39,7 +41,7 @@ public class ContentController {
 
     @GetMapping("/content/{cartoonId}/{contentEpisode}")
     public ResponseEntity<ContentResponse> getContent(@PathVariable Long cartoonId,
-                                                      @PathVariable Integer contentEpisode) {
+                                                      @PathVariable Long contentEpisode) {
 
         Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
         ContentResponse contentResponse = ContentResponse.getFromContent(content);
@@ -49,10 +51,10 @@ public class ContentController {
     @GetMapping("/content/lock/{cartoonId}/{contentEpisode}")
     public ResponseEntity<ContentResponse> getPreviewContent(@LoginForMember MemberSession memberSession,
                                                              @PathVariable Long cartoonId,
-                                                             @PathVariable Integer contentEpisode) {
+                                                             @PathVariable Long contentEpisode) {
 
         Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
-        LocalDate lockLocalDate = contentService.getLockLocalDate(content);
+        LocalDate lockLocalDate = contentService.getLockLocalDate(content, TWO_WEEKS);
         memberService.validatePreviewContent(memberSession, lockLocalDate);
         ContentResponse contentResponse = ContentResponse.getFromContent(content);
         return ResponseEntity.ok(contentResponse);
@@ -60,7 +62,7 @@ public class ContentController {
 
     @PatchMapping("/content/{cartoonId}/{contentEpisode}")
     public ResponseEntity<Void> update(@LoginForAuthor AuthorSession authorSession,
-                                       @PathVariable Long cartoonId, @PathVariable Integer contentEpisode,
+                                       @PathVariable Long cartoonId, @PathVariable Long contentEpisode,
                                        @RequestBody @Valid ContentUpdate contentUpdate) {
 
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);

@@ -5,10 +5,12 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.content.dto.request.ContentSave;
 import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.util.DomainTest;
+import com.webtoon.util.constant.Constant;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+import static com.webtoon.util.constant.Constant.*;
 import static org.assertj.core.api.Assertions.*;
 
 class ContentTest extends DomainTest {
@@ -21,7 +23,7 @@ class ContentTest extends DomainTest {
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
-                .episode(20)
+                .episode(20L)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
 
@@ -44,7 +46,7 @@ class ContentTest extends DomainTest {
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
-                .episode(30)
+                .episode(30L)
                 .registrationDate(LocalDate.of(1999, 3, 20))
                 .build();
 
@@ -66,7 +68,7 @@ class ContentTest extends DomainTest {
         Content content = getContent(cartoon);
 
         // when
-        LocalDate lockLocalDate = content.getLockLocalDate();
+        LocalDate lockLocalDate = content.getLockLocalDate(TWO_WEEKS);
         LocalDate registrationDate = content.getRegistrationDate();
 
         // then

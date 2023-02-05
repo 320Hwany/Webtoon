@@ -47,12 +47,12 @@ public class Cartoon extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    private int rating;
-    private int likes;
+    private Float rating;
+    private Long likes;
 
     @Builder
     public Cartoon(String title, Author author, DayOfTheWeek dayOfTheWeek, Progress progress,
-                   Genre genre, int rating, int likes) {
+                   Genre genre, Float rating, Long likes) {
         this.title = title;
         this.author = author;
         this.dayOfTheWeek = dayOfTheWeek;
