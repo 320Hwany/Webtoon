@@ -3,7 +3,6 @@ package com.webtoon.cartoonmember.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.author.domain.QAuthor;
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoon.domain.QCartoon;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.domain.QCartoonMember;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +50,7 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .fetchJoin()
                 .where(cartoonMember.member.id.eq(memberId))
                 .where(cartoonMember.thumbsUp.eq(TRUE))
+                .orderBy(cartoonMember.id.desc())
                 .fetch();
     }
 

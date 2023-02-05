@@ -60,7 +60,7 @@ class CartoonMemberControllerTest extends ControllerTest {
         MockHttpSession session = loginMemberSession(member);
 
         // expected
-        mockMvc.perform(post("/cartoonMember/like/{memberId}", member.getId())
+        mockMvc.perform(post("/cartoonMember/like")
                         .session(session))
                 .andExpect(status().isOk())
                 .andDo(document("cartoonMember/like/200"));

@@ -129,4 +129,8 @@ public class Cartoon extends BaseTimeEntity {
     public void addLike() {
         this.likes += 1;
     }
+
+    public void rating(Float rating) {
+        this.rating = (float) (Math.round(rating * 100) / 100.0);
+    }
 }

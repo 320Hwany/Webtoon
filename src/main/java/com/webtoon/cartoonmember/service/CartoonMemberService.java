@@ -1,7 +1,6 @@
 package com.webtoon.cartoonmember.service;
 
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -34,9 +34,14 @@ public class CartoonMemberService {
 
     @Transactional
     public void thumbsUp(Long cartoonId, Long memberId) {
+        CartoonMember cartonMember = getByCartoonIdAndMemberId(cartoonId, memberId);
+        cartonMember.thumbsUp();
+    }
+
+    public CartoonMember getByCartoonIdAndMemberId(Long cartoonId, Long memberId) {
         CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(cartoonId, memberId)
                 .orElseThrow(CartoonMemberNotFoundException::new);
-        cartoonMember.thumbsUp();
+        return cartoonMember;
     }
 
     @Transactional

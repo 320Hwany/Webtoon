@@ -30,6 +30,10 @@ public class CartoonService {
         return cartoonRepository.save(cartoon);
     }
 
+    public Cartoon getById(Long id) {
+        return cartoonRepository.getById(id);
+    }
+
     public List<Cartoon> findAllByTitle(CartoonSearch cartoonSearch) {
         return cartoonRepository.findAllByTitle(cartoonSearch);
     }
@@ -64,5 +68,10 @@ public class CartoonService {
         if (Cartoon.validateGenreValid(genre) == false) {
             throw new EnumTypeValidException(false, false, true);
         }
+    }
+
+    @Transactional
+    public void rating(Cartoon cartoon, Float rating) {
+        cartoon.rating(rating);
     }
 }

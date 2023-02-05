@@ -2,6 +2,8 @@ package com.webtoon.cartoonmember.controller;
 
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
+import com.webtoon.cartoon.service.CartoonService;
+import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.cartoonmember.service.CartoonMemberService;
 import com.webtoon.member.domain.MemberSession;
@@ -19,6 +21,7 @@ import java.util.List;
 public class CartoonMemberController {
 
     private final CartoonMemberService cartoonMemberService;
+    private final CartoonService cartoonService;
 
     @PostMapping("/read/{cartoonId}")
     public ResponseEntity<Void> memberReadCartoon(@LoginForMember MemberSession memberSession,
@@ -38,10 +41,21 @@ public class CartoonMemberController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/cartoonMember/like/{memberId}")
-    public ResponseEntity<List<CartoonResponse>> findLikeListForMember(@PathVariable Long memberId) {
-        List<Cartoon> cartoonList = cartoonMemberService.findLikeListForMember(memberId);
+    @PostMapping("/cartoonMember/like")
+    public ResponseEntity<List<CartoonResponse>> findLikeListForMember(@LoginForMember MemberSession memberSession) {
+        List<Cartoon> cartoonList = cartoonMemberService.findLikeListForMember(memberSession.getId());
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
         return ResponseEntity.ok(cartoonResponseList);
+    }
+
+    @PostMapping("/rating/{cartoonId}/{rating}")
+    public ResponseEntity<Void> rating(@LoginForMember MemberSession memberSession,
+                                       @PathVariable Long cartoonId,
+                                       @PathVariable Float rating) {
+        CartoonMember cartoonMember =
+                cartoonMemberService.getByCartoonIdAndMemberId(cartoonId, memberSession.getId());
+        Cartoon cartoon = cartoonService.getById(cartoonMember.getCartoon().getId());
+        cartoonService.rating(cartoon, rating);
+        return ResponseEntity.ok().build();
     }
 }
