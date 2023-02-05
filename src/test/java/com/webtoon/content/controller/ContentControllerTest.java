@@ -204,7 +204,7 @@ class ContentControllerTest extends ControllerTest {
         Cartoon cartoon = saveCartoonInRepository(author);
         Content content = saveContentInRepository(cartoon);
         Member member = saveMemberInRepository();
-        member.chargeCoin(10000);
+        member.chargeCoin(10000L);
         MockHttpSession session = loginMemberSession(member);
 
         // expected

@@ -1,6 +1,7 @@
 package com.webtoon.cartoonmember.service;
 
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
@@ -11,6 +12,8 @@ import com.webtoon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -40,5 +43,9 @@ public class CartoonMemberService {
     public void addLike(Long cartoonId) {
         Cartoon cartoon = cartoonRepository.getById(cartoonId);
         cartoon.addLike();
+    }
+
+    public List<Cartoon> findLikeListForMember(Long memberId) {
+        return cartoonMemberRepository.findLikeListForMember(memberId);
     }
 }

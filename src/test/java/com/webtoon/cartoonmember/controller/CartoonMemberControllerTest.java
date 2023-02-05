@@ -48,4 +48,21 @@ class CartoonMemberControllerTest extends ControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("cartoonMember/thumbsUp/200"));
     }
+
+    @Test
+    @DisplayName("회원의 좋아요 목록을 찾습니다")
+    void findLikeListForMember() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        saveCartoonMemberInRepository(cartoon, member);
+        MockHttpSession session = loginMemberSession(member);
+
+        // expected
+        mockMvc.perform(post("/cartoonMember/like/{memberId}", member.getId())
+                        .session(session))
+                .andExpect(status().isOk())
+                .andDo(document("cartoonMember/like/200"));
+    }
 }

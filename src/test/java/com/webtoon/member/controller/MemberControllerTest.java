@@ -214,7 +214,7 @@ class MemberControllerTest extends ControllerTest {
         MockHttpSession session = loginMemberSession(member);
 
         MemberCharge memberCharge = MemberCharge.builder()
-                .chargeAmount(10000)
+                .chargeAmount(10000L)
                 .build();
 
         String chargeJson = objectMapper.writeValueAsString(memberCharge);
@@ -236,7 +236,7 @@ class MemberControllerTest extends ControllerTest {
         MockHttpSession session = loginMemberSession(member);
 
         MemberCharge memberCharge = MemberCharge.builder()
-                .chargeAmount(-10000)
+                .chargeAmount(-10000L)
                 .build();
 
         String chargeJson = objectMapper.writeValueAsString(memberCharge);
@@ -255,7 +255,7 @@ class MemberControllerTest extends ControllerTest {
     void charge401() throws Exception {
         // given
         MemberCharge memberCharge = MemberCharge.builder()
-                .chargeAmount(10000)
+                .chargeAmount(10000L)
                 .build();
 
         String chargeJson = objectMapper.writeValueAsString(memberCharge);

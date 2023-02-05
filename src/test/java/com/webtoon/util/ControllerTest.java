@@ -41,8 +41,7 @@ import javax.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 
-import static com.webtoon.util.constant.Constant.ZERO_OF_FLOAT;
-import static com.webtoon.util.constant.Constant.ZERO_OF_LONG;
+import static com.webtoon.util.constant.Constant.*;
 import static java.lang.Boolean.FALSE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -124,8 +123,8 @@ public class ControllerTest {
                 .dayOfTheWeek(DayOfTheWeek.MON)
                 .progress(Progress.SERIALIZATION)
                 .genre(Genre.ROMANCE)
-                .rating(ZERO_OF_FLOAT)
-                .likes(ZERO_OF_LONG)
+                .rating(ZERO_OF_TYPE_FLOAT)
+                .likes(ZERO_OF_TYPE_LONG)
                 .build();
         cartoonRepository.save(cartoon);
         return cartoon;
@@ -159,6 +158,7 @@ public class ControllerTest {
                 .nickName("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
+                .coin(ZERO_OF_TYPE_LONG)
                 .build();
 
         memberRepository.save(member);

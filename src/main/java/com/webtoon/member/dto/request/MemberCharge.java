@@ -11,10 +11,10 @@ import javax.validation.constraints.Min;
 public class MemberCharge {
 
     @Min(value = 0, message = "0코인 이상을 충전해주세요")
-    private Integer chargeAmount;
+    private Long chargeAmount;
 
     @Builder
-    public MemberCharge(Integer chargeAmount) {
+    public MemberCharge(Long chargeAmount) {
         this.chargeAmount = chargeAmount;
     }
 }

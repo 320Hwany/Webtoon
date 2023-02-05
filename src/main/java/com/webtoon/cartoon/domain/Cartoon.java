@@ -17,8 +17,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import java.util.Objects;
-
+import static com.webtoon.util.constant.Constant.*;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -69,6 +68,8 @@ public class Cartoon extends BaseTimeEntity {
                 .dayOfTheWeek(DayOfTheWeek.valueOf(cartoonSave.getDayOfTheWeek()))
                 .progress(Progress.valueOf(cartoonSave.getProgress()))
                 .genre(Genre.valueOf(cartoonSave.getGenre()))
+                .rating(ZERO_OF_TYPE_FLOAT)
+                .likes(ZERO_OF_TYPE_LONG)
                 .build();
     }
 

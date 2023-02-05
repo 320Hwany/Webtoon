@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import static com.webtoon.util.constant.Constant.TWO_WEEKS;
+import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_FLOAT;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -34,9 +35,9 @@ public class Content extends BaseTimeEntity {
     private String subTitle;
 
     private Long episode;
-    private Float rating;
 
     private LocalDate registrationDate;
+    private Float rating;
 
     @Builder
     public Content(Cartoon cartoon, String subTitle, Long episode, Float rating,
@@ -54,6 +55,7 @@ public class Content extends BaseTimeEntity {
                 .subTitle(contentSave.getSubTitle())
                 .episode(contentSave.getEpisode())
                 .registrationDate(contentSave.getRegistrationDate())
+                .rating(ZERO_OF_TYPE_FLOAT)
                 .build();
     }
 

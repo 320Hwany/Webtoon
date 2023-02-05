@@ -4,6 +4,7 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
+import com.webtoon.content.domain.Content;
 import com.webtoon.member.domain.Member;
 import com.webtoon.util.ServiceTest;
 import org.assertj.core.api.Assertions;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static java.lang.Boolean.TRUE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,5 +72,21 @@ class CartoonMemberServiceTest extends ServiceTest {
 
         // then
         assertThat(cartoon.getLikes()).isEqualTo(1);
+    }
+
+    @Test
+    void findLikeListForMember() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        CartoonMember cartoonMember = saveCartoonMemberInRepository(cartoon, member);
+        cartoonMember.thumbsUp();
+
+        // when
+        List<Cartoon> cartoonList = cartoonMemberService.findLikeListForMember(member.getId());
+
+        // then
+        assertThat(cartoonList.size()).isEqualTo(1);
     }
 }

@@ -1,8 +1,5 @@
 package com.webtoon.member.controller;
 
-import com.webtoon.content.domain.Content;
-import com.webtoon.content.dto.response.ContentResponse;
-import com.webtoon.content.service.ContentService;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.member.dto.request.MemberCharge;

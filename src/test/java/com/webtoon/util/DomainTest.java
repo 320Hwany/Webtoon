@@ -5,11 +5,14 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.content.domain.Content;
 import com.webtoon.member.domain.Member;
+import com.webtoon.util.constant.Constant;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 
 import java.time.LocalDate;
+
+import static com.webtoon.util.constant.Constant.*;
 
 public class DomainTest {
 
@@ -49,6 +52,7 @@ public class DomainTest {
                 .nickName("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
+                .coin(ZERO_OF_TYPE_LONG)
                 .build();
         return member;
     }

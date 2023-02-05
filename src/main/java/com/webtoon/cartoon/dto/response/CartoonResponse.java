@@ -46,6 +46,8 @@ public class CartoonResponse {
                 .dayOfTheWeek(cartoon.getDayOfTheWeek())
                 .progress(cartoon.getProgress())
                 .genre(cartoon.getGenre())
+                .rating(cartoon.getRating())
+                .likes(cartoon.getLikes())
                 .build();
     }
 

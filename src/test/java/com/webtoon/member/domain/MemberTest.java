@@ -41,10 +41,10 @@ public class MemberTest extends DomainTest {
         Member member = getMember();
 
         // when
-        member.chargeCoin(10000);
+        member.chargeCoin(10000L);
 
         // then
-        assertThat(member.getCoin()).isEqualTo(10000);
+        assertThat(member.getCoin()).isEqualTo(10000L);
     }
 
     @Test
@@ -52,14 +52,14 @@ public class MemberTest extends DomainTest {
     void validatePreviewContentAfterNowDate() {
         // given
         Member member = getMember();
-        member.chargeCoin(10000);
+        member.chargeCoin(10000L);
         LocalDate lockLocalDate = LocalDate.now().minusWeeks(1);
 
         // when
         member.validatePreviewContent(lockLocalDate);
 
         // then
-        assertThat(member.getCoin()).isEqualTo(10000);
+        assertThat(member.getCoin()).isEqualTo(10000L);
     }
 
     @Test
@@ -67,14 +67,14 @@ public class MemberTest extends DomainTest {
     void validatePreviewContentBeforeNowDate() {
         // given
         Member member = getMember();
-        member.chargeCoin(10000);
+        member.chargeCoin(10000L);
         LocalDate lockLocalDate = LocalDate.now().plusWeeks(1);
 
         // when
         member.validatePreviewContent(lockLocalDate);
 
         // then
-        assertThat(member.getCoin()).isEqualTo(10000 - PAYCOIN);
+        assertThat(member.getCoin()).isEqualTo(10000L - PAYCOIN);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class MemberTest extends DomainTest {
     void LockOfCoin() {
         // given
         Member member = getMember();
-        member.chargeCoin(0);
+        member.chargeCoin(0L);
         LocalDate lockLocalDate = LocalDate.now().plusWeeks(1);
 
         // expected

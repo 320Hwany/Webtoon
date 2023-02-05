@@ -33,7 +33,7 @@ public class CartoonController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/cartoon/title")
+    @PostMapping("/cartoon/title")
     public ResponseEntity<List<CartoonResponse>> getCartoonListByTitle(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
@@ -43,7 +43,7 @@ public class CartoonController {
         return ResponseEntity.ok(cartoonResponseList);
     }
 
-    @GetMapping("/cartoon/genre")
+    @PostMapping("/cartoon/genre")
     public ResponseEntity<List<CartoonResponse>> getCartoonListByGenre(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
         cartoonService.validateGenreValid(cartoonSearchDto.getGenre());
@@ -54,7 +54,7 @@ public class CartoonController {
         return ResponseEntity.ok(cartoonResponseList);
     }
 
-    @GetMapping("/cartoon/likes")
+    @PostMapping("/cartoon/likes")
     public ResponseEntity<List<CartoonResponse>> getCartoonListOrderByLikes(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);

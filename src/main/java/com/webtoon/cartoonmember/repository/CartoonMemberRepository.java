@@ -1,6 +1,7 @@
 package com.webtoon.cartoonmember.repository;
 
 
+import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 
 import java.util.List;
@@ -11,6 +12,8 @@ public interface CartoonMemberRepository {
     CartoonMember save(CartoonMember cartoonMember);
 
     Optional<CartoonMember> findByCartoonIdAndMemberId(Long cartoonId, Long memberId);
+
+    List<Cartoon> findLikeListForMember(Long memberId);
 
     long count();
 }

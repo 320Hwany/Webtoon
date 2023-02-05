@@ -13,6 +13,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 import static com.webtoon.util.constant.Constant.PAYCOIN;
+import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @NoArgsConstructor
@@ -31,13 +32,14 @@ public class Member extends BaseTimeEntity {
 
     private String password;
 
-    private int coin;
+    private Long coin;
 
     @Builder
-    public Member(String nickName, String email, String password) {
+    public Member(String nickName, String email, String password, Long coin) {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
+        this.coin = coin;
     }
 
     public static Member getFromMemberSignup(MemberSignup memberSignup) {
@@ -45,6 +47,7 @@ public class Member extends BaseTimeEntity {
                 .nickName(memberSignup.getNickName())
                 .email(memberSignup.getEmail())
                 .password(memberSignup.getPassword())
+                .coin(ZERO_OF_TYPE_LONG)
                 .build();
     }
 
@@ -54,7 +57,7 @@ public class Member extends BaseTimeEntity {
         this.password = memberUpdate.getPassword();
     }
 
-    public void chargeCoin(int chargeAmount) {
+    public void chargeCoin(Long chargeAmount) {
         this.coin += chargeAmount;
     }
 

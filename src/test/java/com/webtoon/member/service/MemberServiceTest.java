@@ -144,14 +144,14 @@ class MemberServiceTest extends ServiceTest {
                 .build();
 
         MemberCharge memberCharge = MemberCharge.builder()
-                .chargeAmount(10000)
+                .chargeAmount(10000L)
                 .build();
 
         // when
         memberService.chargeCoin(memberSession, memberCharge);
 
         // then
-        assertThat(member.getCoin()).isEqualTo(10000);
+        assertThat(member.getCoin()).isEqualTo(10000L);
     }
 
     @Test
@@ -166,7 +166,7 @@ class MemberServiceTest extends ServiceTest {
                 .build();
 
         MemberCharge memberCharge = MemberCharge.builder()
-                .chargeAmount(10000)
+                .chargeAmount(10000L)
                 .build();
 
         // expected
