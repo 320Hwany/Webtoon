@@ -8,6 +8,7 @@ import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.exception.CartoonForbiddenException;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.util.DomainTest;
+import com.webtoon.util.constant.Constant;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
@@ -48,8 +49,7 @@ class CartoonTest extends DomainTest {
     @DisplayName("만화 정보가 수정됩니다")
     void update() {
         // given
-        Author author = getAuthor();
-        Cartoon cartoon = getCartoon(author);
+        Cartoon cartoon = getCartoon();
 
         CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
                 .title("수정 만화 제목")
@@ -69,11 +69,39 @@ class CartoonTest extends DomainTest {
     }
 
     @Test
+    @DisplayName("소수 둘째 자리까지 평점을 매깁니다")
+    void rating() {
+        // given
+        Cartoon cartoon = Cartoon.builder()
+                .title("만화 제목")
+                .dayOfTheWeek(DayOfTheWeek.MON)
+                .progress(Progress.SERIALIZATION)
+                .genre(Genre.ROMANCE)
+                .rating(Constant.ZERO_OF_TYPE_FLOAT)
+                .build();
+
+        Float rating = 9.825F;
+
+        // when
+        cartoon.rating(rating);
+
+        // then
+        assertThat(cartoon.getRating()).isEqualTo(9.83F);
+    }
+
+    @Test
     @DisplayName("작가의 만화이면 메소드를 통과합니다")
     void checkAuthorityForCartoon200() {
         // given
         Author author = getAuthor();
-        Cartoon cartoon = getCartoon(author);
+        Cartoon cartoon = Cartoon.builder()
+                .author(author)
+                .title("만화 제목")
+                .dayOfTheWeek(DayOfTheWeek.MON)
+                .progress(Progress.SERIALIZATION)
+                .genre(Genre.ROMANCE)
+                .build();
+
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
 
         // expected
@@ -86,7 +114,14 @@ class CartoonTest extends DomainTest {
     void checkAuthorityForCartoon403() {
         // given
         Author author = getAuthor();
-        Cartoon cartoon = getCartoon(author);
+        Cartoon cartoon = Cartoon.builder()
+                .author(author)
+                .title("만화 제목")
+                .dayOfTheWeek(DayOfTheWeek.MON)
+                .progress(Progress.SERIALIZATION)
+                .genre(Genre.ROMANCE)
+                .build();
+
         AuthorSession anotherAuthorSession = AuthorSession.builder()
                 .id(9999L)
                 .nickName("다른 작가")

@@ -25,10 +25,9 @@ public class DomainTest {
         return author;
     }
 
-    protected static Cartoon getCartoon(Author author) {
+    protected static Cartoon getCartoon() {
         Cartoon cartoon = Cartoon.builder()
                 .title("만화 제목")
-                .author(author)
                 .dayOfTheWeek(DayOfTheWeek.MON)
                 .progress(Progress.SERIALIZATION)
                 .genre(Genre.ROMANCE)
@@ -36,9 +35,8 @@ public class DomainTest {
         return cartoon;
     }
 
-    protected static Content getContent(Cartoon cartoon) {
+    protected static Content getContent() {
         Content content = Content.builder()
-                .cartoon(cartoon)
                 .subTitle("만화 부제")
                 .episode(1L)
                 .rating(9.8f)

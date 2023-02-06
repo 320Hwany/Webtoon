@@ -1,11 +1,7 @@
 package com.webtoon.contentImgInfo.domain;
 
-import com.webtoon.author.domain.Author;
-import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.content.domain.Content;
 import com.webtoon.util.DomainTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.UrlResource;
@@ -46,9 +42,7 @@ class ContentImgTest extends DomainTest {
     @DisplayName("만화 이미지에 대한 정보를 생성합니다 - 성공")
     void makeContentImgInfo() {
         // given
-        Author author = getAuthor();
-        Cartoon cartoon = getCartoon(author);
-        Content content = getContent(cartoon);
+        Content content = getContent();
 
         MockMultipartFile multipartFile = new MockMultipartFile(
                 "file",

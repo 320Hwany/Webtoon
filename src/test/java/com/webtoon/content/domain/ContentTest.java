@@ -18,8 +18,7 @@ class ContentTest extends DomainTest {
     @Test
     void getFromContentSaveAndCartoon() {
         // given
-        Author author = getAuthor();
-        Cartoon cartoon = getCartoon(author);
+        Cartoon cartoon = getCartoon();
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
@@ -40,9 +39,7 @@ class ContentTest extends DomainTest {
     @Test
     void update() {
         // given
-        Author author = getAuthor();
-        Cartoon cartoon = getCartoon(author);
-        Content content = getContent(cartoon);
+        Content content = getContent();
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
@@ -54,7 +51,6 @@ class ContentTest extends DomainTest {
         content.update(contentUpdate);
 
         // then
-        assertThat(content.getCartoon()).isEqualTo(cartoon);
         assertThat(content.getSubTitle()).isEqualTo("수정 부제입니다");
         assertThat(content.getEpisode()).isEqualTo(30);
         assertThat(content.getRegistrationDate()).isEqualTo(LocalDate.of(1999, 3, 20));
@@ -63,9 +59,7 @@ class ContentTest extends DomainTest {
     @Test
     void getLockLocalDate() {
         // given
-        Author author = getAuthor();
-        Cartoon cartoon = getCartoon(author);
-        Content content = getContent(cartoon);
+        Content content = getContent();
 
         // when
         LocalDate lockLocalDate = content.getLockLocalDate(TWO_WEEKS);

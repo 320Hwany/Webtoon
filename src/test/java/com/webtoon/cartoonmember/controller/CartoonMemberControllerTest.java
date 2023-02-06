@@ -65,4 +65,21 @@ class CartoonMemberControllerTest extends ControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("cartoonMember/like/200"));
     }
+
+    @Test
+    @DisplayName("회원이 만화 평점을 매깁니다")
+    void rating() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        saveCartoonMemberInRepository(cartoon, member);
+        MockHttpSession session = loginMemberSession(member);
+
+        // expected
+        mockMvc.perform(post("/rating/{cartoonId}/{rating}", cartoon.getId(), 9.82F)
+                        .session(session))
+                .andExpect(status().isOk())
+                .andDo(document("cartoonMember/rating/200"));
+    }
 }

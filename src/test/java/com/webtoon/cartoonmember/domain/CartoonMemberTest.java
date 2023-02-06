@@ -1,6 +1,5 @@
 package com.webtoon.cartoonmember.domain;
 
-import com.webtoon.author.domain.Author;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.member.domain.Member;
 import com.webtoon.util.DomainTest;
@@ -17,8 +16,7 @@ class CartoonMemberTest extends DomainTest {
     @DisplayName("사용자가 좋아요를 누르면 CartoonMember 연결 테이블의 thumbsUp이 True로 바뀐다")
     void thumbsUp() {
         // given
-        Author author = getAuthor();
-        Cartoon cartoon = getCartoon(author);
+        Cartoon cartoon = getCartoon();
         Member member = getMember();
 
         CartoonMember cartoonMember = CartoonMember.builder()

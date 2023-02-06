@@ -3,8 +3,8 @@ package com.webtoon.cartoonmember.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.author.domain.QAuthor;
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.domain.QCartoon;
 import com.webtoon.cartoonmember.domain.CartoonMember;
-import com.webtoon.cartoonmember.domain.QCartoonMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.webtoon.author.domain.QAuthor.author;
-import static com.webtoon.cartoon.domain.QCartoon.cartoon;
 import static com.webtoon.cartoonmember.domain.QCartoonMember.cartoonMember;
 import static com.webtoon.member.domain.QMember.member;
 import static java.lang.Boolean.TRUE;
@@ -33,7 +32,7 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
     @Override
     public Optional<CartoonMember> findByCartoonIdAndMemberId(Long cartoonId, Long memberId) {
         return Optional.ofNullable(jpaQueryFactory.selectFrom(cartoonMember)
-                .leftJoin(cartoonMember.cartoon, cartoon)
+                .leftJoin(cartoonMember.cartoon, QCartoon.cartoon)
                 .fetchJoin()
                 .where(cartoonMember.cartoon.id.eq(cartoonId))
                 .leftJoin(cartoonMember.member, member)
