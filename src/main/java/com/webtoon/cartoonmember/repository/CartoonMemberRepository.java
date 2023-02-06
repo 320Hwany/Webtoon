@@ -13,6 +13,8 @@ public interface CartoonMemberRepository {
 
     Optional<CartoonMember> findByCartoonIdAndMemberId(Long cartoonId, Long memberId);
 
+    List<Cartoon> findAllForMember(Long memberId);
+
     List<Cartoon> findLikeListForMember(Long memberId);
 
     long count();

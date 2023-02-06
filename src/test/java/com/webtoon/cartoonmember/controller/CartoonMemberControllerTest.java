@@ -51,6 +51,23 @@ class CartoonMemberControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("회원의 좋아요 목록을 찾습니다")
+    void findAllForMember() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        saveCartoonMemberInRepository(cartoon, member);
+        MockHttpSession session = loginMemberSession(member);
+
+        // expected
+        mockMvc.perform(post("/cartoonMember/member")
+                        .session(session))
+                .andExpect(status().isOk())
+                .andDo(document("cartoonMember/member/200"));
+    }
+
+    @Test
+    @DisplayName("회원의 좋아요 목록을 찾습니다")
     void findLikeListForMember() throws Exception {
         // given
         Author author = saveAuthorInRepository();
@@ -60,10 +77,10 @@ class CartoonMemberControllerTest extends ControllerTest {
         MockHttpSession session = loginMemberSession(member);
 
         // expected
-        mockMvc.perform(post("/cartoonMember/like")
+        mockMvc.perform(post("/cartoonMember/member/likeList")
                         .session(session))
                 .andExpect(status().isOk())
-                .andDo(document("cartoonMember/like/200"));
+                .andDo(document("cartoonMember/member/likeList/200"));
     }
 
     @Test

@@ -41,7 +41,14 @@ public class CartoonMemberController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/cartoonMember/like")
+    @PostMapping("/cartoonMember/member")
+    public ResponseEntity<List<CartoonResponse>> findAllForMember(@LoginForMember MemberSession memberSession) {
+        List<Cartoon> cartoonList = cartoonMemberService.findAllForMember(memberSession.getId());
+        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
+        return ResponseEntity.ok(cartoonResponseList);
+    }
+
+    @PostMapping("/cartoonMember/member/likeList")
     public ResponseEntity<List<CartoonResponse>> findLikeListForMember(@LoginForMember MemberSession memberSession) {
         List<Cartoon> cartoonList = cartoonMemberService.findLikeListForMember(memberSession.getId());
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);

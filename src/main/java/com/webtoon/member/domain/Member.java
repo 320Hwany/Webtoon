@@ -15,9 +15,10 @@ import java.time.LocalDate;
 import static com.webtoon.util.constant.Constant.PAYCOIN;
 import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;
 import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
 
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor(access = PROTECTED)
 @Entity
 public class Member extends BaseTimeEntity {
 

@@ -107,6 +107,21 @@ class CartoonMemberServiceTest extends ServiceTest {
     }
 
     @Test
+    void findAllForMember() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        saveCartoonMemberInRepository(cartoon, member);
+
+        // when
+        List<Cartoon> cartoonList = cartoonMemberService.findAllForMember(member.getId());
+
+        // then
+        assertThat(cartoonList.size()).isEqualTo(1);
+    }
+
+    @Test
     void findLikeListForMember() {
         // given
         Author author = saveAuthorInRepository();

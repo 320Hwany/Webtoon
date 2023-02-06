@@ -50,6 +50,10 @@ public class CartoonMemberService {
         cartoon.addLike();
     }
 
+    public List<Cartoon> findAllForMember(Long memberId) {
+        return cartoonMemberRepository.findAllForMember(memberId);
+    }
+
     public List<Cartoon> findLikeListForMember(Long memberId) {
         return cartoonMemberRepository.findLikeListForMember(memberId);
     }

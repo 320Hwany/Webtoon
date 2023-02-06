@@ -14,9 +14,10 @@ import java.io.IOException;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @Entity
 public class ContentImgInfo extends BaseTimeEntity {
 

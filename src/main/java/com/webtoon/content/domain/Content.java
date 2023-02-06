@@ -17,9 +17,10 @@ import static com.webtoon.util.constant.Constant.TWO_WEEKS;
 import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_FLOAT;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @Entity
 public class Content extends BaseTimeEntity {
 

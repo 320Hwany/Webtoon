@@ -20,9 +20,10 @@ import javax.persistence.*;
 import static com.webtoon.util.constant.Constant.*;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @Entity
 public class Cartoon extends BaseTimeEntity {
 
