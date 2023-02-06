@@ -47,12 +47,12 @@ public class Cartoon extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    private Float rating;
+    private double rating;
     private Long likes;
 
     @Builder
     public Cartoon(String title, Author author, DayOfTheWeek dayOfTheWeek, Progress progress,
-                   Genre genre, Float rating, Long likes) {
+                   Genre genre, double rating, Long likes) {
         this.title = title;
         this.author = author;
         this.dayOfTheWeek = dayOfTheWeek;
@@ -131,7 +131,7 @@ public class Cartoon extends BaseTimeEntity {
         this.likes += 1;
     }
 
-    public void rating(Float rating) {
-        this.rating = (float) (Math.round(rating * 100) / 100.0);
+    public void rating(double rating) {
+        this.rating = Double.parseDouble((String.format("%.2f", rating)));
     }
 }

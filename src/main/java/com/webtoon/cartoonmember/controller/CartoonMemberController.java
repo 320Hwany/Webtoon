@@ -23,7 +23,7 @@ public class CartoonMemberController {
     private final CartoonMemberService cartoonMemberService;
     private final CartoonService cartoonService;
 
-    @PostMapping("/read/{cartoonId}")
+    @PostMapping("/cartoonMember/read/{cartoonId}")
     public ResponseEntity<Void> memberReadCartoon(@LoginForMember MemberSession memberSession,
                                                   @PathVariable Long cartoonId) {
 
@@ -33,7 +33,7 @@ public class CartoonMemberController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/thumbsUp/{cartoonId}")
+    @PostMapping("/cartoonMember/thumbsUp/{cartoonId}")
     public ResponseEntity<Void> thumbsUp(@LoginForMember MemberSession memberSession,
                                          @PathVariable Long cartoonId) {
         cartoonMemberService.thumbsUp(cartoonId, memberSession.getId());
@@ -43,7 +43,7 @@ public class CartoonMemberController {
 
     @PostMapping("/cartoonMember/member")
     public ResponseEntity<List<CartoonResponse>> findAllForMember(@LoginForMember MemberSession memberSession) {
-        List<Cartoon> cartoonList = cartoonMemberService.findAllForMember(memberSession.getId());
+        List<Cartoon> cartoonList = cartoonMemberService.findAllCartoonByMemberId(memberSession.getId());
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
         return ResponseEntity.ok(cartoonResponseList);
     }
@@ -55,14 +55,15 @@ public class CartoonMemberController {
         return ResponseEntity.ok(cartoonResponseList);
     }
 
-    @PostMapping("/rating/{cartoonId}/{rating}")
+    @PostMapping("/cartoonMember/rating/{cartoonId}/{rating}")
     public ResponseEntity<Void> rating(@LoginForMember MemberSession memberSession,
                                        @PathVariable Long cartoonId,
-                                       @PathVariable Float rating) {
-        CartoonMember cartoonMember =
-                cartoonMemberService.getByCartoonIdAndMemberId(cartoonId, memberSession.getId());
-        Cartoon cartoon = cartoonService.getById(cartoonMember.getCartoon().getId());
-        cartoonService.rating(cartoon, rating);
+                                       @PathVariable double rating) {
+
+        List<Cartoon> cartoonList = cartoonMemberService.findAllCartoonByCartoonId(cartoonId);
+        double ratingAvg = cartoonMemberService.calculateRatingAvg(cartoonList, rating);
+        Cartoon cartoon = cartoonService.getById(cartoonId);
+        cartoonService.rating(cartoon, ratingAvg);
         return ResponseEntity.ok().build();
     }
 }

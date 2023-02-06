@@ -26,7 +26,7 @@ class CartoonMemberControllerTest extends ControllerTest {
         MockHttpSession session = loginMemberSession(member);
 
         // expected
-        mockMvc.perform(post("/read/{cartoonId}", cartoon.getId())
+        mockMvc.perform(post("/cartoonMember/read/{cartoonId}", cartoon.getId())
                         .session(session))
                 .andExpect(status().isOk())
                 .andDo(document("cartoonMember/read/200"));
@@ -43,7 +43,7 @@ class CartoonMemberControllerTest extends ControllerTest {
         MockHttpSession session = loginMemberSession(member);
 
         // expected
-        mockMvc.perform(post("/thumbsUp/{cartoonId}", cartoon.getId())
+        mockMvc.perform(post("/cartoonMember/thumbsUp/{cartoonId}", cartoon.getId())
                         .session(session))
                 .andExpect(status().isOk())
                 .andDo(document("cartoonMember/thumbsUp/200"));
@@ -94,7 +94,8 @@ class CartoonMemberControllerTest extends ControllerTest {
         MockHttpSession session = loginMemberSession(member);
 
         // expected
-        mockMvc.perform(post("/rating/{cartoonId}/{rating}", cartoon.getId(), 9.82F)
+        mockMvc.perform(post("/cartoonMember/rating/{cartoonId}/{rating}",
+                        cartoon.getId(), 9.82F)
                         .session(session))
                 .andExpect(status().isOk())
                 .andDo(document("cartoonMember/rating/200"));

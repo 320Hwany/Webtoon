@@ -50,8 +50,20 @@ public class CartoonMemberService {
         cartoon.addLike();
     }
 
-    public List<Cartoon> findAllForMember(Long memberId) {
-        return cartoonMemberRepository.findAllForMember(memberId);
+    @Transactional
+    public double calculateRatingAvg(List<Cartoon> cartoonList, double rating) {
+        double sum = cartoonList.stream().mapToDouble(i -> i.getRating()).sum();
+        int size = cartoonList.size();
+        double avg = (sum + rating) / size;
+        return avg;
+    }
+
+    public List<Cartoon> findAllCartoonByMemberId(Long memberId) {
+        return cartoonMemberRepository.findAllCartoonByMemberId(memberId);
+    }
+
+    public List<Cartoon> findAllCartoonByCartoonId(Long cartoonId) {
+        return cartoonMemberRepository.findAllCartoonByCartoonId(cartoonId);
     }
 
     public List<Cartoon> findLikeListForMember(Long memberId) {

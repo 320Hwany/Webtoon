@@ -14,4 +14,9 @@ public class ContentMemberRepositoryImpl implements ContentMemberRepository {
     public ContentMember save(ContentMember contentMember) {
         return contentMemberJpaRepository.save(contentMember);
     }
+
+    @Override
+    public long count() {
+        return contentMemberJpaRepository.count();
+    }
 }

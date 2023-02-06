@@ -11,6 +11,7 @@ import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.contentImgInfo.domain.ContentImgInfo;
 import com.webtoon.contentImgInfo.repository.ContentImgInfoRepository;
+import com.webtoon.contentmember.repository.ContentMemberRepository;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.repository.MemberRepository;
 import com.webtoon.util.enumerated.DayOfTheWeek;
@@ -45,6 +46,9 @@ public class ServiceTest {
 
     @Autowired
     protected CartoonMemberRepository cartoonMemberRepository;
+
+    @Autowired
+    protected ContentMemberRepository contentMemberRepository;
 
     protected Author saveAuthorInRepository() {
         Author author = Author.builder()

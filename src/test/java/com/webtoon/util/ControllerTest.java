@@ -16,6 +16,9 @@ import com.webtoon.content.service.ContentService;
 import com.webtoon.contentImgInfo.domain.ContentImgInfo;
 import com.webtoon.contentImgInfo.repository.ContentImgInfoRepository;
 import com.webtoon.contentImgInfo.service.ContentImgInfoService;
+import com.webtoon.contentmember.domain.ContentMember;
+import com.webtoon.contentmember.repository.ContentMemberRepository;
+import com.webtoon.contentmember.service.ContentMemberService;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.repository.MemberRepository;
@@ -95,6 +98,12 @@ public class ControllerTest {
     @Autowired
     protected CartoonMemberService cartoonMemberService;
 
+    @Autowired
+    protected ContentMemberRepository contentMemberRepository;
+
+    @Autowired
+    protected ContentMemberService contentMemberService;
+
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
@@ -143,16 +152,6 @@ public class ControllerTest {
         return content;
     }
 
-    protected ContentImgInfo saveContentImgInfoInRepository(Content content) {
-        ContentImgInfo contentImgInfo = ContentImgInfo.builder()
-                .imgName("hello.txt")
-                .content(content)
-                .build();
-
-        contentImgInfoRepository.save(contentImgInfo);
-        return contentImgInfo;
-    }
-
     protected Member saveMemberInRepository() {
         Member member = Member.builder()
                 .nickName("회원 닉네임")
@@ -173,6 +172,15 @@ public class ControllerTest {
                 .build();
 
         return cartoonMemberRepository.save(cartoonMember);
+    }
+
+    protected ContentMember saveContentMemberInRepository(Content content, Member member) {
+        ContentMember contentMember = ContentMember.builder()
+                .content(content)
+                .member(member)
+                .build();
+
+        return contentMemberRepository.save(contentMember);
     }
 
     protected MockHttpSession loginAuthorSession(Author author) throws Exception {

@@ -16,9 +16,9 @@ public class ContentMemberController {
 
     private final ContentMemberService contentMemberService;
 
-    @PostMapping("/read/{contentId}")
+    @PostMapping("/contentMember/read/{contentId}")
     public ResponseEntity<Void> memberReadContent(@LoginForMember MemberSession memberSession,
-                                            @PathVariable Long contentId) {
+                                                  @PathVariable Long contentId) {
 
         ContentMemberSave contentMemberSave =
                 ContentMemberSave.getFromContentIdAndMemberId(contentId, memberSession.getId());

@@ -71,7 +71,7 @@ public class CartoonService {
     }
 
     @Transactional
-    public void rating(Cartoon cartoon, Float rating) {
+    public void rating(Cartoon cartoon, double rating) {
         cartoon.rating(rating);
     }
 }

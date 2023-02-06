@@ -1,11 +1,9 @@
 package com.webtoon.cartoonmember.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.webtoon.author.domain.QAuthor;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.QCartoon;
 import com.webtoon.cartoonmember.domain.CartoonMember;
-import com.webtoon.cartoonmember.domain.QCartoonMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -43,12 +41,22 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
     }
 
     @Override
-    public List<Cartoon> findAllForMember(Long memberId) {
+    public List<Cartoon> findAllCartoonByMemberId(Long memberId) {
         return jpaQueryFactory.select(cartoonMember.cartoon)
                 .from(cartoonMember)
                 .leftJoin(cartoonMember.cartoon.author, author)
                 .fetchJoin()
                 .where(cartoonMember.member.id.eq(memberId))
+                .fetch();
+    }
+
+    @Override
+    public List<Cartoon> findAllCartoonByCartoonId(Long cartoonId) {
+        return jpaQueryFactory.select(cartoonMember.cartoon)
+                .from(cartoonMember)
+                .leftJoin(cartoonMember.cartoon.author, author)
+                .fetchJoin()
+                .where(cartoonMember.cartoon.id.eq(cartoonId))
                 .fetch();
     }
 

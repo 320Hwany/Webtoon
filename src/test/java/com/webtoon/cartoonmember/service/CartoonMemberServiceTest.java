@@ -115,7 +115,7 @@ class CartoonMemberServiceTest extends ServiceTest {
         saveCartoonMemberInRepository(cartoon, member);
 
         // when
-        List<Cartoon> cartoonList = cartoonMemberService.findAllForMember(member.getId());
+        List<Cartoon> cartoonList = cartoonMemberService.findAllCartoonByMemberId(member.getId());
 
         // then
         assertThat(cartoonList.size()).isEqualTo(1);

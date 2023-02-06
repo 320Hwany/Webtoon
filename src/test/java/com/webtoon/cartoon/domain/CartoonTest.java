@@ -80,13 +80,13 @@ class CartoonTest extends DomainTest {
                 .rating(Constant.ZERO_OF_TYPE_FLOAT)
                 .build();
 
-        Float rating = 9.825F;
+        double rating = 9.825;
 
         // when
         cartoon.rating(rating);
 
         // then
-        assertThat(cartoon.getRating()).isEqualTo(9.83F);
+        assertThat(cartoon.getRating()).isEqualTo(9.83);
     }
 
     @Test
