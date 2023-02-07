@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,12 +35,13 @@ public class ContentImgInfoController {
     }
 
     @GetMapping("/contentImg/{contentId}")
-    public ResponseEntity<UrlResource> getContentImg(@PathVariable Long contentId) throws MalformedURLException {
+    public ResponseEntity<UrlResource> getContentImg(@PathVariable Long contentId) throws IOException {
         ContentImgInfo contentImgInfo = contentImgInfoService.getByContentId(contentId);
         UrlResource contentImg = contentImgInfoService.getImgFromServer(contentImgInfo, imgDir);
+        MediaType mediaType = contentImgInfoService.getMediaType(contentImgInfo, imgDir);
 
         return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_PNG)
+                .contentType(mediaType)
                 .body(contentImg);
     }
 }

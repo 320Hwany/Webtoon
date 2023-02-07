@@ -5,6 +5,8 @@ import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.util.DomainTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpSession;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AuthorTest extends DomainTest {
+
 
     @Test
     @DisplayName("AuthorSignup 으로 부터 Author 를 생성합니다")
