@@ -15,7 +15,7 @@ public interface CartoonMemberRepository {
 
     List<Cartoon> findAllCartoonByMemberId(Long memberId);
 
-    List<Cartoon> findAllCartoonByCartoonId(Long cartoonId);
+    int findAllCartoonSizeByCartoonIdWhereRated(Long cartoonId);
 
     List<Cartoon> findLikeListForMember(Long memberId);
 

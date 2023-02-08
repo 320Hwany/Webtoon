@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -51,19 +54,20 @@ public class CartoonMemberService {
     }
 
     @Transactional
-    public double calculateRatingAvg(List<Cartoon> cartoonList, double rating) {
-        double sum = cartoonList.stream().mapToDouble(i -> i.getRating()).sum();
-        int size = cartoonList.size();
-        double avg = (sum + rating) / size;
-        return avg;
+    public Boolean isRated(CartoonMember cartoonMember) {
+        if(cartoonMember.getRated() == FALSE){
+            cartoonMember.isRated();
+            return true;
+        }
+        return false;
     }
 
     public List<Cartoon> findAllCartoonByMemberId(Long memberId) {
         return cartoonMemberRepository.findAllCartoonByMemberId(memberId);
     }
 
-    public List<Cartoon> findAllCartoonByCartoonId(Long cartoonId) {
-        return cartoonMemberRepository.findAllCartoonByCartoonId(cartoonId);
+    public int findAllCartoonByCartoonIdWhereRated(Long cartoonId) {
+        return cartoonMemberRepository.findAllCartoonSizeByCartoonIdWhereRated(cartoonId);
     }
 
     public List<Cartoon> findLikeListForMember(Long memberId) {

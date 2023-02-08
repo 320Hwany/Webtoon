@@ -71,7 +71,9 @@ public class CartoonService {
     }
 
     @Transactional
-    public void rating(Cartoon cartoon, double rating) {
-        cartoon.rating(rating);
+    public void calculateRatingAvg(Long cartoonId, int cartoonListSize, double rating) {
+        Cartoon cartoon = cartoonRepository.getById(cartoonId);
+        double sum = cartoon.calculateSum(cartoonListSize);
+        cartoon.rating((sum + rating) / cartoonListSize);
     }
 }

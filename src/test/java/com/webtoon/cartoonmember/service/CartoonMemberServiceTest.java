@@ -15,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.lang.Boolean.TRUE;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -136,4 +139,23 @@ class CartoonMemberServiceTest extends ServiceTest {
         // then
         assertThat(cartoonList.size()).isEqualTo(1);
     }
+
+//    @Test
+//    void calculateRatingAvg() {
+//        // given
+//        List<Cartoon> cartoonList = IntStream.range(1, 10)
+//                .mapToObj(i -> Cartoon.builder()
+//                        .rating(i)
+//                        .build())
+//                .collect(Collectors.toList());
+//
+//        for (Cartoon cartoon : cartoonList) {
+//            System.out.println(cartoon.getRating());
+//        }
+//        // when
+//        double ratingAvg = cartoonMemberService.calculateRatingAvg(cartoonList, 10);
+//
+//        //
+//        assertThat(ratingAvg).isEqualTo(5.5);
+//    }
 }

@@ -34,11 +34,14 @@ public class CartoonMember extends BaseTimeEntity {
 
     private Boolean thumbsUp;
 
+    private Boolean rated;
+
     @Builder
-    public CartoonMember(Cartoon cartoon, Member member, Boolean thumbsUp) {
+    public CartoonMember(Cartoon cartoon, Member member, Boolean thumbsUp, Boolean rated) {
         this.cartoon = cartoon;
         this.member = member;
         this.thumbsUp = thumbsUp;
+        this.rated = rated;
     }
 
     public static CartoonMember getFromCartoonAndMember(Cartoon cartoon, Member member) {
@@ -46,10 +49,15 @@ public class CartoonMember extends BaseTimeEntity {
                 .cartoon(cartoon)
                 .member(member)
                 .thumbsUp(FALSE)
+                .rated(FALSE)
                 .build();
     }
 
     public void thumbsUp() {
         this.thumbsUp = TRUE;
+    }
+
+    public void isRated() {
+        this.rated = TRUE;
     }
 }

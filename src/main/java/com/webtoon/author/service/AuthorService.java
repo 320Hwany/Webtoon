@@ -8,6 +8,7 @@ import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.exception.AuthorDuplicationException;
 import com.webtoon.author.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

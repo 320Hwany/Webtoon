@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.QCartoon;
 import com.webtoon.cartoonmember.domain.CartoonMember;
+import com.webtoon.cartoonmember.domain.QCartoonMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -51,13 +52,16 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
     }
 
     @Override
-    public List<Cartoon> findAllCartoonByCartoonId(Long cartoonId) {
-        return jpaQueryFactory.select(cartoonMember.cartoon)
+    public int findAllCartoonSizeByCartoonIdWhereRated(Long cartoonId) {
+        List<Cartoon> cartoonList = jpaQueryFactory.select(cartoonMember.cartoon)
                 .from(cartoonMember)
                 .leftJoin(cartoonMember.cartoon.author, author)
                 .fetchJoin()
                 .where(cartoonMember.cartoon.id.eq(cartoonId))
+                .where(cartoonMember.rated.eq(TRUE))
                 .fetch();
+
+        return cartoonList.size();
     }
 
     @Override

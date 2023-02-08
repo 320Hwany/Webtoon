@@ -3,6 +3,7 @@ package com.webtoon.cartoonmember.controller;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.service.CartoonService;
+import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.cartoonmember.service.CartoonMemberService;
 import com.webtoon.member.domain.MemberSession;
@@ -58,11 +59,12 @@ public class CartoonMemberController {
     public ResponseEntity<Void> rating(@LoginForMember MemberSession memberSession,
                                        @PathVariable Long cartoonId,
                                        @PathVariable double rating) {
-
-        List<Cartoon> cartoonList = cartoonMemberService.findAllCartoonByCartoonId(cartoonId);
-        Cartoon cartoon = cartoonService.getById(cartoonId);
-        double ratingAvg = cartoonMemberService.calculateRatingAvg(cartoonList, rating);
-        cartoonService.rating(cartoon, ratingAvg);
+        CartoonMember cartoonMember
+                = cartoonMemberService.getByCartoonIdAndMemberId(cartoonId, memberSession.getId());
+        if (cartoonMemberService.isRated(cartoonMember)) {
+            int cartoonListSize = cartoonMemberService.findAllCartoonByCartoonIdWhereRated(cartoonId);
+            cartoonService.calculateRatingAvg(cartoonId, cartoonListSize, rating);
+        }
         return ResponseEntity.ok().build();
     }
 }
