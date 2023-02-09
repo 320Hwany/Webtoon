@@ -207,6 +207,21 @@ class MemberControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("로그아웃에 성공합니다")
+    void logout200() throws Exception {
+        // given
+        Member member = saveMemberInRepository();
+        MockHttpSession session = loginMemberSession(member);
+
+
+        // expected
+        mockMvc.perform(post("/member/logout")
+                        .session(session))
+                .andExpect(status().isOk())
+                .andDo(document("member/logout/200"));
+    }
+
+    @Test
     @DisplayName("존재하는 회원이고 조건에 맞으면 충전이 가능합니다 - 성공")
     void charge200() throws Exception {
         // given

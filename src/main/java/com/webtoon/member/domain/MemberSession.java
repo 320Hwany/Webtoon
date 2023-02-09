@@ -43,16 +43,10 @@ public class MemberSession implements Serializable {
         session.setAttribute("memberSession", this);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MemberSession that = (MemberSession) o;
-        return Objects.equals(id, that.id) && Objects.equals(nickName, that.nickName) && Objects.equals(email, that.email) && Objects.equals(password, that.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nickName, email, password);
+    public void invalidate(HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
     }
 }

@@ -72,4 +72,8 @@ public class MemberService {
     public void makeSessionForMemberSession(MemberSession memberSession, HttpServletRequest request) {
         memberSession.makeSession(request);
     }
+
+    public void logout(MemberSession memberSession, HttpServletRequest httpServletRequest) {
+        memberSession.invalidate(httpServletRequest);
+    }
 }

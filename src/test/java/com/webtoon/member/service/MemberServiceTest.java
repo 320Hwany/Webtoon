@@ -277,4 +277,24 @@ class MemberServiceTest extends ServiceTest {
         assertThrows(MemberDuplicationException.class,
                 () -> memberService.checkDuplication(memberSignup));
     }
+
+    @Test
+    void logout() {
+        // given
+        MemberSession memberSession = MemberSession.builder()
+                .id(1L)
+                .nickName("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
+
+        // when
+        memberService.logout(memberSession, httpServletRequest);
+
+        // then
+        HttpSession session = httpServletRequest.getSession(false);
+        assertThat(session).isNull();
+    }
 }

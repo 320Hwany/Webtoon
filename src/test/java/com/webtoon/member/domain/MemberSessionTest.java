@@ -31,4 +31,24 @@ class MemberSessionTest extends DomainTest {
         MemberSession findMemberSession = (MemberSession) session.getAttribute("memberSession");
         assertThat(memberSession).isEqualTo(findMemberSession);
     }
+
+    @Test
+    void invalidate() {
+        // given
+        MemberSession memberSession = MemberSession.builder()
+                .id(1L)
+                .nickName("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
+
+        // when
+        memberSession.invalidate(httpServletRequest);
+
+        // then
+        HttpSession session = httpServletRequest.getSession(false);
+        assertThat(session).isNull();
+    }
 }

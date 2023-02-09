@@ -54,6 +54,13 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/member/logout")
+    public ResponseEntity<Void> logout(@LoginForMember MemberSession memberSession,
+                                       HttpServletRequest httpServletRequest) {
+        memberService.logout(memberSession, httpServletRequest);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/member/charge")
     public ResponseEntity<Void> charge(@LoginForMember MemberSession memberSession,
                                        @RequestBody @Valid MemberCharge memberCharge) {
