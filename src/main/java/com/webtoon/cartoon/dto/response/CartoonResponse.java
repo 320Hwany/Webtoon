@@ -25,11 +25,11 @@ public class CartoonResponse {
     private Genre genre;
 
     private double rating;
-    private Long likes;
+    private long likes;
 
     @Builder
     public CartoonResponse(String title, AuthorResponse authorResponse, DayOfTheWeek dayOfTheWeek, Progress progress,
-                           Genre genre, double rating, Long likes) {
+                           Genre genre, double rating, long likes) {
         this.title = title;
         this.authorResponse = authorResponse;
         this.dayOfTheWeek = dayOfTheWeek;

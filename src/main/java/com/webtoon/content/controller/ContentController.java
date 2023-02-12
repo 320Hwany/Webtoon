@@ -41,7 +41,7 @@ public class ContentController {
 
     @GetMapping("/content/{cartoonId}/{contentEpisode}")
     public ResponseEntity<ContentResponse> getContent(@PathVariable Long cartoonId,
-                                                      @PathVariable Long contentEpisode) {
+                                                      @PathVariable int contentEpisode) {
 
         Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
         ContentResponse contentResponse = ContentResponse.getFromContent(content);
@@ -51,7 +51,7 @@ public class ContentController {
     @GetMapping("/content/lock/{cartoonId}/{contentEpisode}")
     public ResponseEntity<ContentResponse> getPreviewContent(@LoginForMember MemberSession memberSession,
                                                              @PathVariable Long cartoonId,
-                                                             @PathVariable Long contentEpisode) {
+                                                             @PathVariable int contentEpisode) {
 
         Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
         LocalDate lockLocalDate = contentService.getLockLocalDate(content, TWO_WEEKS);
@@ -62,7 +62,7 @@ public class ContentController {
 
     @PatchMapping("/content/{cartoonId}/{contentEpisode}")
     public ResponseEntity<Void> update(@LoginForAuthor AuthorSession authorSession,
-                                       @PathVariable Long cartoonId, @PathVariable Long contentEpisode,
+                                       @PathVariable Long cartoonId, @PathVariable int contentEpisode,
                                        @RequestBody @Valid ContentUpdate contentUpdate) {
 
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);

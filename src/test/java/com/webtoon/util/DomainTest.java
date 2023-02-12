@@ -38,8 +38,8 @@ public class DomainTest {
     protected static Content getContent() {
         Content content = Content.builder()
                 .subTitle("만화 부제")
-                .episode(1L)
-                .rating(9.8f)
+                .episode(1)
+                .rating(9.8)
                 .registrationDate(LocalDate.now().minusWeeks(1))
                 .build();
         return content;

@@ -32,12 +32,12 @@ public class CartoonMember extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private Boolean thumbsUp;
+    private boolean thumbsUp;
 
-    private Boolean rated;
+    private boolean rated;
 
     @Builder
-    public CartoonMember(Cartoon cartoon, Member member, Boolean thumbsUp, Boolean rated) {
+    public CartoonMember(Cartoon cartoon, Member member, boolean thumbsUp, boolean rated) {
         this.cartoon = cartoon;
         this.member = member;
         this.thumbsUp = thumbsUp;
@@ -48,16 +48,16 @@ public class CartoonMember extends BaseTimeEntity {
         return CartoonMember.builder()
                 .cartoon(cartoon)
                 .member(member)
-                .thumbsUp(FALSE)
-                .rated(FALSE)
+                .thumbsUp(false)
+                .rated(false)
                 .build();
     }
 
     public void thumbsUp() {
-        this.thumbsUp = TRUE;
+        this.thumbsUp = true;
     }
 
-    public void isRated() {
-        this.rated = TRUE;
+    public void rated() {
+        this.rated = true;
     }
 }

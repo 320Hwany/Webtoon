@@ -48,11 +48,11 @@ public class Cartoon extends BaseTimeEntity {
     private Genre genre;
 
     private double rating;
-    private Long likes;
+    private long likes;
 
     @Builder
     public Cartoon(String title, Author author, DayOfTheWeek dayOfTheWeek, Progress progress,
-                   Genre genre, double rating, Long likes) {
+                   Genre genre, double rating, long likes) {
         this.title = title;
         this.author = author;
         this.dayOfTheWeek = dayOfTheWeek;
@@ -69,7 +69,7 @@ public class Cartoon extends BaseTimeEntity {
                 .dayOfTheWeek(DayOfTheWeek.valueOf(cartoonSave.getDayOfTheWeek()))
                 .progress(Progress.valueOf(cartoonSave.getProgress()))
                 .genre(Genre.valueOf(cartoonSave.getGenre()))
-                .rating(ZERO_OF_TYPE_FLOAT)
+                .rating(ZERO_OF_TYPE_DOUBLE)
                 .likes(ZERO_OF_TYPE_LONG)
                 .build();
     }
@@ -84,7 +84,7 @@ public class Cartoon extends BaseTimeEntity {
         }
     }
 
-    public static Boolean validateDayValid(String inputDayOfWeek) {
+    public static boolean validateDayValid(String inputDayOfWeek) {
         DayOfTheWeek[] DayList = DayOfTheWeek.values();
         for (DayOfTheWeek day : DayList) {
             if (inputDayOfWeek.equals(day.getValue())) {
@@ -94,7 +94,7 @@ public class Cartoon extends BaseTimeEntity {
         return false;
     }
 
-    public static Boolean validateProgressValid(String inputProgress) {
+    public static boolean validateProgressValid(String inputProgress) {
         Progress[] progressList = Progress.values();
         for (Progress progress : progressList) {
             if (inputProgress.equals(progress.getValue())) {
@@ -104,7 +104,7 @@ public class Cartoon extends BaseTimeEntity {
         return false;
     }
 
-    public static Boolean validateGenreValid(String inputGenre) {
+    public static boolean validateGenreValid(String inputGenre) {
         Genre[] genreList = Genre.values();
         for (Genre genre : genreList) {
             if (inputGenre.equals(genre.getValue())) {
@@ -136,6 +136,6 @@ public class Cartoon extends BaseTimeEntity {
     }
 
     public void rating(double rating) {
-        this.rating = rating;
+        this.rating = Math.round(rating * 100) / 100.0;
     }
 }

@@ -14,9 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -55,8 +52,8 @@ public class CartoonMemberService {
 
     @Transactional
     public Boolean isRated(CartoonMember cartoonMember) {
-        if(cartoonMember.getRated() == FALSE){
-            cartoonMember.isRated();
+        if(cartoonMember.isRated() == false){
+            cartoonMember.rated();
             return true;
         }
         return false;

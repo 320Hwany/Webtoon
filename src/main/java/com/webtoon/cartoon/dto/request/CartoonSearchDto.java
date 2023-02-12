@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 public class CartoonSearchDto {
 
     @Min(value = 1, message = "1 이상의 페이지를 입력해주세요")
-    private Integer page;
+    private int page;
 
     private String title;
 
@@ -25,7 +25,7 @@ public class CartoonSearchDto {
     private String genre;
 
     @Builder
-    public CartoonSearchDto(Integer page, String title, String nickName,
+    public CartoonSearchDto(int page, String title, String nickName,
                             String dayOfTheWeek, String progress, String genre) {
         this.page = page;
         this.title = title;

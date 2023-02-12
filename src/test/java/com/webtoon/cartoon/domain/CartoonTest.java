@@ -68,26 +68,26 @@ class CartoonTest extends DomainTest {
         assertThat(cartoon.getGenre()).isEqualTo(Genre.ACTION);
     }
 
-//    @Test
-//    @DisplayName("소수 둘째 자리까지 평점을 매깁니다")
-//    void rating() {
-//        // given
-//        Cartoon cartoon = Cartoon.builder()
-//                .title("만화 제목")
-//                .dayOfTheWeek(DayOfTheWeek.MON)
-//                .progress(Progress.SERIALIZATION)
-//                .genre(Genre.ROMANCE)
-//                .rating(Constant.ZERO_OF_TYPE_FLOAT)
-//                .build();
-//
-//        double rating = 9.825;
-//
-//        // when
-//        cartoon.rating(rating);
-//
-//        // then
-//        assertThat(cartoon.getRating()).isEqualTo(9.83);
-//    }
+    @Test
+    @DisplayName("소수 둘째 자리까지 평점을 매깁니다")
+    void rating() {
+        // given
+        Cartoon cartoon = Cartoon.builder()
+                .title("만화 제목")
+                .dayOfTheWeek(DayOfTheWeek.MON)
+                .progress(Progress.SERIALIZATION)
+                .genre(Genre.ROMANCE)
+                .rating(Constant.ZERO_OF_TYPE_DOUBLE)
+                .build();
+
+        double rating = 9.8253;
+
+        // when
+        cartoon.rating(rating);
+
+        // then
+        assertThat(cartoon.getRating()).isEqualTo(9.83);
+    }
 
     @Test
     @DisplayName("작가의 만화이면 메소드를 통과합니다")

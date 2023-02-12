@@ -22,13 +22,13 @@ class CartoonMemberTest extends DomainTest {
         CartoonMember cartoonMember = CartoonMember.builder()
                 .cartoon(cartoon)
                 .member(member)
-                .thumbsUp(FALSE)
+                .thumbsUp(false)
                 .build();
 
         // when
         cartoonMember.thumbsUp();
 
         // then
-        Assertions.assertThat(cartoonMember.getThumbsUp()).isEqualTo(TRUE);
+        Assertions.assertThat(cartoonMember.isThumbsUp()).isEqualTo(true);
     }
 }

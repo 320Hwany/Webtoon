@@ -33,7 +33,7 @@ public class Member extends BaseTimeEntity {
 
     private String password;
 
-    private Long coin;
+    private long coin;
 
     @Builder
     public Member(String nickName, String email, String password, Long coin) {
@@ -58,7 +58,7 @@ public class Member extends BaseTimeEntity {
         this.password = memberUpdate.getPassword();
     }
 
-    public void chargeCoin(Long chargeAmount) {
+    public void chargeCoin(long chargeAmount) {
         this.coin += chargeAmount;
     }
 

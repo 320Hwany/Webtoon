@@ -23,7 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 
 import static com.webtoon.util.constant.Constant.*;
-import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_FLOAT;
 import static java.lang.Boolean.FALSE;
 
 @SpringBootTest
@@ -68,7 +67,7 @@ public class ServiceTest {
                 .dayOfTheWeek(DayOfTheWeek.MON)
                 .progress(Progress.SERIALIZATION)
                 .genre(Genre.ROMANCE)
-                .rating(ZERO_OF_TYPE_FLOAT)
+                .rating(ZERO_OF_TYPE_DOUBLE)
                 .likes(ZERO_OF_TYPE_LONG)
                 .build();
         cartoonRepository.save(cartoon);
@@ -79,8 +78,8 @@ public class ServiceTest {
         Content content = Content.builder()
                 .cartoon(cartoon)
                 .subTitle("만화 부제")
-                .episode(1L)
-                .rating(9.8f)
+                .episode(1)
+                .rating(9.8)
                 .registrationDate(LocalDate.of(2023, 1, 20))
                 .build();
 
@@ -114,7 +113,7 @@ public class ServiceTest {
         CartoonMember cartoonMember = CartoonMember.builder()
                 .cartoon(cartoon)
                 .member(member)
-                .thumbsUp(FALSE)
+                .thumbsUp(false)
                 .build();
 
         return cartoonMemberRepository.save(cartoonMember);

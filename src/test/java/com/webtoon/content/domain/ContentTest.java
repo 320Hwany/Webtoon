@@ -22,7 +22,7 @@ class ContentTest extends DomainTest {
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
-                .episode(20L)
+                .episode(20)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
 
@@ -43,7 +43,7 @@ class ContentTest extends DomainTest {
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
-                .episode(30L)
+                .episode(30)
                 .registrationDate(LocalDate.of(1999, 3, 20))
                 .build();
 

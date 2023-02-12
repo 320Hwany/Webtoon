@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CartoonSearch {
 
-    private final Integer limit = 20;
-    private Integer page;
+    private final int limit = 20;
+    private int page;
     private String title;
     private String nickName;
 
@@ -44,7 +44,7 @@ public class CartoonSearch {
                 .build();
     }
 
-    public Integer getOffset() {
+    public int getOffset() {
         return Math.max(page - 1, 0) * limit;
     }
 }

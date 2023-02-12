@@ -92,7 +92,7 @@ class CartoonMemberServiceTest extends ServiceTest {
         cartoonMemberService.thumbsUp(cartoon.getId(), member.getId());
 
         // then
-        assertThat(cartoonMember.getThumbsUp()).isEqualTo(TRUE);
+        assertThat(cartoonMember.isThumbsUp()).isEqualTo(true);
     }
 
     @Test
@@ -139,23 +139,4 @@ class CartoonMemberServiceTest extends ServiceTest {
         // then
         assertThat(cartoonList.size()).isEqualTo(1);
     }
-
-//    @Test
-//    void calculateRatingAvg() {
-//        // given
-//        List<Cartoon> cartoonList = IntStream.range(1, 10)
-//                .mapToObj(i -> Cartoon.builder()
-//                        .rating(i)
-//                        .build())
-//                .collect(Collectors.toList());
-//
-//        for (Cartoon cartoon : cartoonList) {
-//            System.out.println(cartoon.getRating());
-//        }
-//        // when
-//        double ratingAvg = cartoonMemberService.calculateRatingAvg(cartoonList, 10);
-//
-//        //
-//        assertThat(ratingAvg).isEqualTo(5.5);
-//    }
 }

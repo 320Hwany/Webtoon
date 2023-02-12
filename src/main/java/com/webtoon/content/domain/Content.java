@@ -13,8 +13,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import static com.webtoon.util.constant.Constant.TWO_WEEKS;
-import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_FLOAT;
+import static com.webtoon.util.constant.Constant.*;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -35,13 +34,13 @@ public class Content extends BaseTimeEntity {
 
     private String subTitle;
 
-    private Long episode;
+    private int episode;
 
     private LocalDate registrationDate;
-    private Float rating;
+    private double rating;
 
     @Builder
-    public Content(Cartoon cartoon, String subTitle, Long episode, Float rating,
+    public Content(Cartoon cartoon, String subTitle, int episode, double rating,
                    LocalDate registrationDate) {
         this.cartoon = cartoon;
         this.subTitle = subTitle;
@@ -56,7 +55,7 @@ public class Content extends BaseTimeEntity {
                 .subTitle(contentSave.getSubTitle())
                 .episode(contentSave.getEpisode())
                 .registrationDate(contentSave.getRegistrationDate())
-                .rating(ZERO_OF_TYPE_FLOAT)
+                .rating(ZERO_OF_TYPE_DOUBLE)
                 .build();
     }
 
@@ -66,7 +65,7 @@ public class Content extends BaseTimeEntity {
         this.registrationDate = contentUpdate.getRegistrationDate();
     }
 
-    public LocalDate getLockLocalDate(Long weeks) {
+    public LocalDate getLockLocalDate(long weeks) {
         return registrationDate.plusWeeks(weeks);
     }
 }

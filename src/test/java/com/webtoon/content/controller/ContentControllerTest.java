@@ -32,7 +32,7 @@ class ContentControllerTest extends ControllerTest {
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
-                .episode(20L)
+                .episode(20)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
 
@@ -57,7 +57,7 @@ class ContentControllerTest extends ControllerTest {
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("")
-                .episode(-1L)
+                .episode(-1)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
 
@@ -81,7 +81,7 @@ class ContentControllerTest extends ControllerTest {
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
-                .episode(20L)
+                .episode(20)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
 
@@ -110,7 +110,7 @@ class ContentControllerTest extends ControllerTest {
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
-                .episode(20L)
+                .episode(20)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
 
@@ -136,7 +136,7 @@ class ContentControllerTest extends ControllerTest {
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
-                .episode(20L)
+                .episode(20)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
 
@@ -226,7 +226,7 @@ class ContentControllerTest extends ControllerTest {
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
-                .episode(30L)
+                .episode(30)
                 .registrationDate(LocalDate.of(1999, 3, 20))
                 .build();
 
@@ -253,7 +253,7 @@ class ContentControllerTest extends ControllerTest {
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("")
-                .episode(-10L)
+                .episode(-10)
                 .registrationDate(null)
                 .build();
 
@@ -279,7 +279,7 @@ class ContentControllerTest extends ControllerTest {
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
-                .episode(30L)
+                .episode(30)
                 .registrationDate(LocalDate.of(1999, 3, 20))
                 .build();
 
@@ -313,7 +313,7 @@ class ContentControllerTest extends ControllerTest {
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
-                .episode(30L)
+                .episode(30)
                 .registrationDate(LocalDate.of(1999, 3, 20))
                 .build();
 
@@ -340,7 +340,7 @@ class ContentControllerTest extends ControllerTest {
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
-                .episode(30L)
+                .episode(30)
                 .registrationDate(LocalDate.of(1999, 3, 20))
                 .build();
 

@@ -14,14 +14,14 @@ public class ContentResponse {
 
     private String subTitle;
 
-    private Long episode;
-    private float rating;
+    private int episode;
+    private double rating;
 
     private LocalDate registrationDate;
 
     @Builder
-    public ContentResponse(CartoonResponse cartoonResponse, String subTitle, Long episode,
-                           float rating, LocalDate registrationDate) {
+    public ContentResponse(CartoonResponse cartoonResponse, String subTitle, int episode,
+                           double rating, LocalDate registrationDate) {
         this.cartoonResponse = cartoonResponse;
         this.subTitle = subTitle;
         this.episode = episode;

@@ -32,7 +32,7 @@ public class ContentRepositoryImpl implements ContentRepository {
     }
 
     @Override
-    public Optional<Content> findByCartoonIdAndEpisode(Long cartoonId, Long episode) {
+    public Optional<Content> findByCartoonIdAndEpisode(Long cartoonId, int episode) {
         return Optional.ofNullable(jpaQueryFactory.selectFrom(content)
                 .leftJoin(content.cartoon, cartoon)
                 .fetchJoin()

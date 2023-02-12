@@ -36,7 +36,7 @@ class ContentServiceTest extends ServiceTest {
         Content content = Content.builder()
                 .cartoon(cartoon)
                 .subTitle("부제입니다")
-                .episode(20L)
+                .episode(20)
                 .rating(9.8f)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
@@ -58,7 +58,7 @@ class ContentServiceTest extends ServiceTest {
 
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
-                .episode(30L)
+                .episode(30)
                 .registrationDate(LocalDate.of(1999, 3, 20))
                 .build();
 
@@ -81,7 +81,7 @@ class ContentServiceTest extends ServiceTest {
 
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
-                .episode(20L)
+                .episode(20)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
 
@@ -101,7 +101,7 @@ class ContentServiceTest extends ServiceTest {
         // given
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제 입니다")
-                .episode(20L)
+                .episode(20)
                 .registrationDate(LocalDate.of(2023, 1, 19))
                 .build();
 
@@ -164,6 +164,6 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         assertThrows(ContentNotFoundException.class,
-                () -> contentService.findByCartoonIdAndEpisode(cartoon.getId(), 9999L));
+                () -> contentService.findByCartoonIdAndEpisode(cartoon.getId(), 9999));
     }
 }

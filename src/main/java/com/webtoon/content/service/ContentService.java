@@ -41,11 +41,11 @@ public class ContentService {
         return content;
     }
 
-    public LocalDate getLockLocalDate(Content content, Long weeks) {
+    public LocalDate getLockLocalDate(Content content, long weeks) {
         return content.getLockLocalDate(weeks);
     }
 
-    public Content findByCartoonIdAndEpisode(Long cartoonId, Long episode) {
+    public Content findByCartoonIdAndEpisode(Long cartoonId, int episode) {
         return contentRepository.findByCartoonIdAndEpisode(cartoonId, episode)
                 .orElseThrow(ContentNotFoundException::new);
     }

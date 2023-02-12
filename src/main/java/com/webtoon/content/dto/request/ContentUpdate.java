@@ -18,14 +18,14 @@ public class ContentUpdate {
     private String subTitle;
 
     @Min(value = 0, message = "몇 화인지를 입력해주세요")
-    private Long episode;
+    private int episode;
 
     @NotNull(message = "변경할 등록 날짜를 입력해주세요")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate registrationDate;
 
     @Builder
-    public ContentUpdate(String subTitle, Long episode, LocalDate registrationDate) {
+    public ContentUpdate(String subTitle, int episode, LocalDate registrationDate) {
         this.subTitle = subTitle;
         this.episode = episode;
         this.registrationDate = registrationDate;
