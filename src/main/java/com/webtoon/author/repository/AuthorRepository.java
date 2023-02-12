@@ -15,6 +15,7 @@ public interface AuthorRepository {
     Optional<Author> findByNickName(String nickName);
     List<Author> findAllByNickName(String nickName);
 
+    Author getByEmail(String email);
     Optional<Author> findByEmail(String email);
 
     Author getByEmailAndPassword(String email, String password);

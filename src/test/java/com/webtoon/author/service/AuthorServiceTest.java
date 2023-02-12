@@ -83,7 +83,7 @@ class AuthorServiceTest extends ServiceTest {
         // then
         assertThat(afterUpdate.getNickName()).isEqualTo("수정 닉네임");
         assertThat(afterUpdate.getEmail()).isEqualTo("수정 이메일");
-        assertThat(afterUpdate.getPassword()).isEqualTo("4321");
+        assertThat(passwordEncoder.matches("4321", author.getPassword())).isTrue();
     }
 
     @Test
@@ -184,7 +184,7 @@ class AuthorServiceTest extends ServiceTest {
 
         AuthorLogin authorLogin = AuthorLogin.builder()
                 .email(author.getEmail())
-                .password(author.getPassword())
+                .password("1234")
                 .build();
 
         // when

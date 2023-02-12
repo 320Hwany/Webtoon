@@ -7,8 +7,10 @@ import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.exception.AuthorDuplicationException;
 import com.webtoon.author.repository.AuthorRepository;
+import com.webtoon.member.exception.MemberUnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +24,11 @@ import java.util.Optional;
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void signup(AuthorSignup authorSignup) {
-        Author author = Author.getFromAuthorSignup(authorSignup);
+        Author author = Author.getFromAuthorSignup(authorSignup, passwordEncoder);
         authorRepository.save(author);
     }
 
@@ -36,7 +39,7 @@ public class AuthorService {
     @Transactional
     public Author update(AuthorSession authorSession, AuthorUpdate authorUpdate) {
         Author author = authorRepository.getById(authorSession.getId());
-        author.update(authorUpdate);
+        author.update(authorUpdate, passwordEncoder);
         return author;
     }
 
@@ -55,9 +58,12 @@ public class AuthorService {
     }
 
     public AuthorSession makeAuthorSession(AuthorLogin authorLogin) {
-        Author author = authorRepository.getByEmailAndPassword(authorLogin.getEmail(), authorLogin.getPassword());
-        AuthorSession authorSession = AuthorSession.getFromAuthor(author);
-        return authorSession;
+        Author author = authorRepository.getByEmail(authorLogin.getEmail());
+        if (passwordEncoder.matches(authorLogin.getPassword(), author.getPassword())) {
+            AuthorSession authorSession = AuthorSession.getFromAuthor(author);
+            return authorSession;
+        }
+        throw new MemberUnauthorizedException();
     }
 
     public void makeSessionForAuthorSession(AuthorSession authorSession, HttpServletRequest request) {

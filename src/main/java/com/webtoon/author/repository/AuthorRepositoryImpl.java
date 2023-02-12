@@ -42,6 +42,12 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
+    public Author getByEmail(String email) {
+        return authorJpaRepository.findByEmail(email)
+                .orElseThrow(AuthorNotFoundException::new);
+    }
+
+    @Override
     public Optional<Author> findByEmail(String email) {
         return authorJpaRepository.findByEmail(email);
     }

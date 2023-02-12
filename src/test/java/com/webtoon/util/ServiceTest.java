@@ -19,6 +19,7 @@ import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
@@ -49,11 +50,14 @@ public class ServiceTest {
     @Autowired
     protected ContentMemberRepository contentMemberRepository;
 
+    @Autowired
+    protected PasswordEncoder passwordEncoder;
+
     protected Author saveAuthorInRepository() {
         Author author = Author.builder()
                 .nickName("작가 이름")
                 .email("yhwjd99@gmail.com")
-                .password("1234")
+                .password(passwordEncoder.encode("1234"))
                 .build();
 
         authorRepository.save(author);
