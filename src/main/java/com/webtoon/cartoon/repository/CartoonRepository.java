@@ -2,9 +2,7 @@ package com.webtoon.cartoon.repository;
 
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.cartoon.dto.request.CartoonSearchDto;
-import com.webtoon.util.enumerated.Genre;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 

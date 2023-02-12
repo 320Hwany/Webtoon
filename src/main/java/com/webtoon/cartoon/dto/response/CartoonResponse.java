@@ -8,6 +8,7 @@ import com.webtoon.util.enumerated.Progress;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,6 +53,12 @@ public class CartoonResponse {
     }
 
     public static List<CartoonResponse> getFromCartoonList(List<Cartoon> cartoonList) {
+        return cartoonList.stream()
+                .map(CartoonResponse::getFromCartoon)
+                .collect(Collectors.toList());
+    }
+
+    public static List<CartoonResponse> getFromCartoonList(Slice<Cartoon> cartoonList) {
         return cartoonList.stream()
                 .map(CartoonResponse::getFromCartoon)
                 .collect(Collectors.toList());

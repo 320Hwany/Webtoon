@@ -12,6 +12,7 @@ import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.exception.CartoonForbiddenException;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.cartoon.repository.CartoonJpaRepository;
 import com.webtoon.util.ServiceTest;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
@@ -20,6 +21,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -131,7 +135,7 @@ class CartoonServiceTest extends ServiceTest {
     void findAllByGenre200() {
         // given
         CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(1)
+                .page(0)
                 .dayOfTheWeek("NONE")
                 .progress("NONE")
                 .genre("ROMANCE")

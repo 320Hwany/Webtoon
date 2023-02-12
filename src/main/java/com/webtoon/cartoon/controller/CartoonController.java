@@ -11,6 +11,7 @@ import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +51,6 @@ public class CartoonController {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<Cartoon> cartoonList = cartoonService.findAllByGenre(cartoonSearch);
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-
         return ResponseEntity.ok(cartoonResponseList);
     }
 

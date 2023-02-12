@@ -10,6 +10,9 @@ import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.util.enumerated.Genre;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.criterion.Projection;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -48,14 +51,9 @@ public class CartoonRepositoryImpl implements CartoonRepository {
 
     @Override
     public List<Cartoon> findAllByGenre(CartoonSearch cartoonSearch) {
-        return jpaQueryFactory.selectFrom(cartoon)
-                .leftJoin(cartoon.author, author)
-                .fetchJoin()
-                .where(cartoon.genre.eq(cartoonSearch.getGenre()))
-                .limit(cartoonSearch.getLimit())
-                .offset(cartoonSearch.getOffset())
-                .orderBy(cartoon.likes.desc())
-                .fetch();
+        PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
+                Sort.by(Sort.Direction.DESC, "id"));
+        return cartoonJpaRepository.findAllByGenre(cartoonSearch.getGenre(), pageRequest);
     }
 
     @Override
