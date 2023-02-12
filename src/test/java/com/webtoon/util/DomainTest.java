@@ -9,12 +9,16 @@ import com.webtoon.util.constant.Constant;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
 import static com.webtoon.util.constant.Constant.*;
 
 public class DomainTest {
+
+    protected PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     protected static Author getAuthor() {
         Author author = Author.builder()

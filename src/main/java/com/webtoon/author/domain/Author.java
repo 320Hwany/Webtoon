@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -36,17 +37,17 @@ public class Author extends BaseTimeEntity {
         this.password = password;
     }
 
-    public static Author getFromAuthorSignup(AuthorSignup authorSignup) {
+    public static Author getFromAuthorSignup(AuthorSignup authorSignup, PasswordEncoder passwordEncoder) {
         return Author.builder()
                 .nickName(authorSignup.getNickName())
                 .email(authorSignup.getEmail())
-                .password(authorSignup.getPassword())
+                .password(passwordEncoder.encode(authorSignup.getPassword()))
                 .build();
     }
 
-    public void update(AuthorUpdate authorUpdate) {
+    public void update(AuthorUpdate authorUpdate, PasswordEncoder passwordEncoder) {
         this.nickName = authorUpdate.getNickName();
         this.email = authorUpdate.getEmail();
-        this.password = authorUpdate.getPassword();
+        this.password = passwordEncoder.encode(authorUpdate.getPassword());
     }
 }

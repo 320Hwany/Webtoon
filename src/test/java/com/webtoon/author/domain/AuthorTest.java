@@ -27,12 +27,12 @@ class AuthorTest extends DomainTest {
                 .build();
 
         // when
-        Author author = Author.getFromAuthorSignup(authorSignup);
+        Author author = Author.getFromAuthorSignup(authorSignup, passwordEncoder);
 
         // then
         assertThat(author.getNickName()).isEqualTo("작가 닉네임");
         assertThat(author.getEmail()).isEqualTo("yhwjd99@gmail.com");
-        assertThat(author.getPassword()).isEqualTo("1234");
+        assertThat(passwordEncoder.matches("1234", author.getPassword())).isTrue();
     }
 
     @Test
@@ -48,12 +48,12 @@ class AuthorTest extends DomainTest {
                 .build();
 
         // when
-        author.update(authorUpdate);
+        author.update(authorUpdate, passwordEncoder);
 
         // then
         assertThat(author.getId()).isEqualTo(author.getId());
         assertThat(author.getNickName()).isEqualTo("수정 닉네임");
         assertThat(author.getEmail()).isEqualTo("수정 이메일");
-        assertThat(author.getPassword()).isEqualTo("4321");
+        assertThat(passwordEncoder.matches("4321", author.getPassword())).isTrue();
     }
 }

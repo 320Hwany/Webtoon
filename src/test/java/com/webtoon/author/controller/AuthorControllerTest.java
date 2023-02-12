@@ -63,7 +63,7 @@ class AuthorControllerTest extends ControllerTest {
 
         AuthorLogin authorLogin = AuthorLogin.builder()
                 .email(author.getEmail())
-                .password(author.getPassword())
+                .password("1234")
                 .build();
 
         String authorLoginJson = objectMapper.writeValueAsString(authorLogin);
