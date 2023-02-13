@@ -10,6 +10,7 @@ import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.util.enumerated.Genre;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.criterion.Projection;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
@@ -40,13 +41,12 @@ public class CartoonRepositoryImpl implements CartoonRepository {
 
     @Override
     public List<Cartoon> findAllByTitle(CartoonSearch cartoonSearch) {
-        return jpaQueryFactory.selectFrom(cartoon)
-                .leftJoin(cartoon.author, author)
-                .fetchJoin()
-                .where(cartoon.title.contains(cartoonSearch.getTitle()))
-                .limit(cartoonSearch.getLimit())
-                .offset(cartoonSearch.getOffset())
-                .fetch();
+        PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
+                Sort.by(Sort.Direction.DESC, "id"));
+        Page<Cartoon> cartoonPage =
+                cartoonJpaRepository.findAllByTitleContains(cartoonSearch.getTitle(), pageRequest);
+        List<Cartoon> cartoonList = cartoonPage.getContent();
+        return cartoonList;
     }
 
     @Override
@@ -58,13 +58,11 @@ public class CartoonRepositoryImpl implements CartoonRepository {
 
     @Override
     public List<Cartoon> findAllOrderByLikes(CartoonSearch cartoonSearch) {
-        return jpaQueryFactory.selectFrom(cartoon)
-                .leftJoin(cartoon.author, author)
-                .fetchJoin()
-                .limit(cartoonSearch.getLimit())
-                .offset(cartoonSearch.getOffset())
-                .orderBy(cartoon.likes.desc())
-                .fetch();
+        PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
+                Sort.by(Sort.Direction.DESC, "likes"));
+        Page<Cartoon> cartoonPage = cartoonJpaRepository.findAll(pageRequest);
+        List<Cartoon> cartoonList = cartoonPage.getContent();
+        return cartoonList;
     }
 
     @Override

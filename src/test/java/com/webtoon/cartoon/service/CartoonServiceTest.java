@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
@@ -97,7 +98,7 @@ class CartoonServiceTest extends ServiceTest {
     void findAllByTitle200() {
         // given
         CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(1)
+                .page(0)
                 .title("만화 제목")
                 .dayOfTheWeek("NONE")
                 .progress("NONE")
@@ -125,7 +126,7 @@ class CartoonServiceTest extends ServiceTest {
 
         // then
         assertThat(onePageCartoonList.size()).isEqualTo(10);
-        assertThat(onePageCartoonList.get(0).getTitle()).isEqualTo("만화 제목 1");
+        assertThat(onePageCartoonList.get(0).getTitle()).isEqualTo("만화 제목 10");
     }
 
 
@@ -172,7 +173,7 @@ class CartoonServiceTest extends ServiceTest {
     void findAllOrderByLikes200() {
         // given
         CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(1)
+                .page(0)
                 .dayOfTheWeek("NONE")
                 .progress("NONE")
                 .genre("NONE")
