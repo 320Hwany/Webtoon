@@ -9,6 +9,7 @@ import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.cartoon.repository.CartoonRepository;
+import com.webtoon.util.enumerated.Genre;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
@@ -67,7 +68,7 @@ public class CartoonService {
     }
 
     public void validateGenreValid(String genre) {
-        if (Cartoon.validateGenreValid(genre) == false) {
+        if (Genre.validateValid(genre) == false) {
             throw new EnumTypeValidException(false, false, true);
         }
     }

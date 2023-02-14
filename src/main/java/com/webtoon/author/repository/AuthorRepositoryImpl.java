@@ -1,9 +1,7 @@
 package com.webtoon.author.repository;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
-import com.webtoon.author.domain.QAuthor;
 import com.webtoon.author.exception.AuthorNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -16,7 +14,6 @@ import java.util.Optional;
 public class AuthorRepositoryImpl implements AuthorRepository {
 
     private final AuthorJpaRepository authorJpaRepository;
-    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public void save(Author author) {
@@ -35,10 +32,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public List<Author> findAllByNickName(String nickName) {
-        return jpaQueryFactory.selectFrom(QAuthor.author)
-                .where(QAuthor.author.nickName.contains(nickName))
-                .fetch();
+    public List<Author> findAllByNickNameContains(String nickName) {
+        return authorJpaRepository.findAllByNickNameContains(nickName);
     }
 
     @Override
@@ -50,12 +45,6 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     @Override
     public Optional<Author> findByEmail(String email) {
         return authorJpaRepository.findByEmail(email);
-    }
-
-    @Override
-    public Author getByEmailAndPassword(String email, String password) {
-        return authorJpaRepository.findByEmailAndPassword(email, password)
-                .orElseThrow(AuthorNotFoundException::new);
     }
 
     @Override

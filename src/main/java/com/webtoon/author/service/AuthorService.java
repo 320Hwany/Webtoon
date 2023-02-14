@@ -32,8 +32,8 @@ public class AuthorService {
         authorRepository.save(author);
     }
 
-    public List<Author> findAllByNickName(String nickName) {
-        return authorRepository.findAllByNickName(nickName);
+    public List<Author> findAllByNickNameContains(String nickName) {
+        return authorRepository.findAllByNickNameContains(nickName);
     }
 
     @Transactional

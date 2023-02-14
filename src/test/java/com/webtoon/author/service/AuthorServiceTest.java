@@ -52,7 +52,7 @@ class AuthorServiceTest extends ServiceTest {
         Author author = saveAuthorInRepository();
 
         // when
-        List<Author> authorList = authorService.findAllByNickName(author.getNickName());
+        List<Author> authorList = authorService.findAllByNickNameContains("작가");
 
         // then
         assertThat(authorList.get(0)).isEqualTo(author);

@@ -171,8 +171,8 @@ class CartoonTest extends DomainTest {
         String inputDayOfWeekFalse = "조건에 맞지 않은 요일";
 
         // when
-        Boolean booleanTrue = Cartoon.validateDayValid(inputDayOfWeekTrue);
-        Boolean booleanFalse = Cartoon.validateDayValid(inputDayOfWeekFalse);
+        Boolean booleanTrue = DayOfTheWeek.validateValid(inputDayOfWeekTrue);
+        Boolean booleanFalse = DayOfTheWeek.validateValid(inputDayOfWeekFalse);
 
         // then
         assertThat(booleanTrue).isTrue();
@@ -187,8 +187,8 @@ class CartoonTest extends DomainTest {
         String inputProgressFalse = "조건에 맞지 않은 진행상황";
 
         // when
-        Boolean booleanTrue = Cartoon.validateProgressValid(inputProgressTrue);
-        Boolean booleanFalse = Cartoon.validateProgressValid(inputProgressFalse);
+        Boolean booleanTrue = Progress.validateValid(inputProgressTrue);
+        Boolean booleanFalse = Progress.validateValid(inputProgressFalse);
 
         // then
         assertThat(booleanTrue).isTrue();
@@ -203,8 +203,8 @@ class CartoonTest extends DomainTest {
         String inputGenreFalse = "조건에 맞지 않은 장르";
 
         // when
-        Boolean booleanTrue = Cartoon.validateGenreValid(inputGenreTrue);
-        Boolean booleanFalse = Cartoon.validateGenreValid(inputGenreFalse);
+        Boolean booleanTrue = Genre.validateValid(inputGenreTrue);
+        Boolean booleanFalse = Genre.validateValid(inputGenreFalse);
 
         // then
         assertThat(booleanTrue).isTrue();

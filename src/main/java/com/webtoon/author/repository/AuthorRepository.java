@@ -13,12 +13,10 @@ public interface AuthorRepository {
 
     Author getById(Long id);
     Optional<Author> findByNickName(String nickName);
-    List<Author> findAllByNickName(String nickName);
+    List<Author> findAllByNickNameContains(String nickName);
 
     Author getByEmail(String email);
     Optional<Author> findByEmail(String email);
-
-    Author getByEmailAndPassword(String email, String password);
 
     void validateAuthorPresent(AuthorSession authorSession);
 

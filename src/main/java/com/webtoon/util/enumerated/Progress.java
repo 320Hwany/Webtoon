@@ -1,7 +1,7 @@
 package com.webtoon.util.enumerated;
 
 
-public enum Progress implements EnumModel{
+public enum Progress implements EnumModel {
 
     SERIALIZATION("SERIALIZATION"),
     ONBREAK("ONBREAK"),
@@ -15,12 +15,17 @@ public enum Progress implements EnumModel{
     }
 
     @Override
-    public String getKey() {
-        return name();
-    }
-
-    @Override
     public String getValue() {
         return value;
+    }
+
+    public static boolean validateValid(String inputProgress) {
+        Progress[] progressList = values();
+        for (Progress progress : progressList) {
+            if (inputProgress.equals(progress.getValue())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

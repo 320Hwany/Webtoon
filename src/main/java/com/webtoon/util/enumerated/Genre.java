@@ -17,12 +17,17 @@ public enum Genre implements EnumModel {
     }
 
     @Override
-    public String getKey() {
-        return name();
-    }
-
-    @Override
     public String getValue() {
         return value;
+    }
+
+    public static boolean validateValid(String inputGenre) {
+        Genre[] genreList = values();
+        for (Genre genre : genreList) {
+            if (inputGenre.equals(genre.getValue())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

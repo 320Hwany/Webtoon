@@ -14,7 +14,6 @@ public class EnumTypeValidException extends RuntimeException {
 
     private Map<String, String> validation = new HashMap<>();
 
-
     public EnumTypeValidException(Boolean isDayValid, Boolean isProgressValid, Boolean isGenreValid) {
         super(MESSAGE);
         if (isDayValid == false) {
@@ -23,7 +22,7 @@ public class EnumTypeValidException extends RuntimeException {
         if (isProgressValid == false) {
             validation.put("Progress", "현재 진행 상황을 잘못 입력하였습니다");
         }
-        if (isProgressValid == false) {
+        if (isGenreValid == false) {
             validation.put("Genre", "장르를 잘못 입력하였습니다");
         }
     }

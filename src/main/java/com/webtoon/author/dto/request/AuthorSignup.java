@@ -1,16 +1,12 @@
 package com.webtoon.author.dto.request;
 
-import com.webtoon.author.domain.Author;
-import com.webtoon.author.dto.response.AuthorResponse;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-@NoArgsConstructor
 public class AuthorSignup {
 
     @NotBlank(message = "닉네임을 입력해주세요")

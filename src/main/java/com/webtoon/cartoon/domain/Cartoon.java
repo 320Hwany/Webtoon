@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.util.List;
+
 import static com.webtoon.util.constant.Constant.*;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -75,43 +77,13 @@ public class Cartoon extends BaseTimeEntity {
     }
 
     public static void validateEnumTypeValid(CartoonEnumField cartoonEnumField) {
-        Boolean isDayValid = validateDayValid(cartoonEnumField.getDayOfTheWeek());
-        Boolean isProgressValid = validateProgressValid(cartoonEnumField.getProgress());
-        Boolean isGenreValid = validateGenreValid(cartoonEnumField.getGenre());
+        Boolean isDayValid = DayOfTheWeek.validateValid(cartoonEnumField.getDayOfTheWeek());
+        Boolean isProgressValid = Progress.validateValid(cartoonEnumField.getProgress());
+        Boolean isGenreValid = Genre.validateValid(cartoonEnumField.getGenre());
 
         if ((isDayValid == false) || (isProgressValid == false) || (isGenreValid == false)) {
             throw new EnumTypeValidException(isDayValid, isProgressValid, isGenreValid);
         }
-    }
-
-    public static boolean validateDayValid(String inputDayOfWeek) {
-        DayOfTheWeek[] DayList = DayOfTheWeek.values();
-        for (DayOfTheWeek day : DayList) {
-            if (inputDayOfWeek.equals(day.getValue())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean validateProgressValid(String inputProgress) {
-        Progress[] progressList = Progress.values();
-        for (Progress progress : progressList) {
-            if (inputProgress.equals(progress.getValue())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean validateGenreValid(String inputGenre) {
-        Genre[] genreList = Genre.values();
-        for (Genre genre : genreList) {
-            if (inputGenre.equals(genre.getValue())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void validateAuthorityForCartoon(AuthorSession authorSession) {

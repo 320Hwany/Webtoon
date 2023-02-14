@@ -58,7 +58,7 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .leftJoin(cartoonMember.cartoon.author, author)
                 .fetchJoin()
                 .where(cartoonMember.cartoon.id.eq(cartoonId))
-                .where(cartoonMember.rated.eq(TRUE))
+                .where(cartoonMember.rated.eq(true))
                 .fetch();
 
         return cartoonList.size();
@@ -71,7 +71,7 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .leftJoin(cartoonMember.cartoon.author, author)
                 .fetchJoin()
                 .where(cartoonMember.member.id.eq(memberId))
-                .where(cartoonMember.thumbsUp.eq(TRUE))
+                .where(cartoonMember.thumbsUp.eq(true))
                 .orderBy(cartoonMember.id.desc())
                 .fetch();
     }

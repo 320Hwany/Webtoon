@@ -46,18 +46,4 @@ public class AuthorSession implements Serializable {
         HttpSession session = request.getSession(false);
         session.invalidate();
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AuthorSession that = (AuthorSession) o;
-        return Objects.equals(id, that.id) && Objects.equals(nickName, that.nickName)
-                && Objects.equals(email, that.email) && Objects.equals(password, that.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nickName, email, password);
-    }
 }

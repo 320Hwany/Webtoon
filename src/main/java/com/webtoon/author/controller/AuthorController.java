@@ -40,7 +40,7 @@ public class AuthorController {
 
     @GetMapping("/author/nickName")
     public ResponseEntity<List<AuthorResponse>> getAuthorByNickName(@RequestParam String nickName) {
-        List<Author> authorList = authorService.findAllByNickName(nickName);
+        List<Author> authorList = authorService.findAllByNickNameContains(nickName);
         List<AuthorResponse> authorResponseList = AuthorResponse.getFromAuthorList(authorList);
         return ResponseEntity.ok(authorResponseList);
     }
