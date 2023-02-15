@@ -6,6 +6,7 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.dto.response.AuthorResponse;
+import com.webtoon.author.dto.response.AuthorResult;
 import com.webtoon.author.service.AuthorService;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Key;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -39,16 +41,17 @@ public class AuthorController {
     }
 
     @GetMapping("/author/nickName")
-    public ResponseEntity<List<AuthorResponse>> getAuthorByNickName(@RequestParam String nickName) {
+    public ResponseEntity<AuthorResult> getAuthorByNickName(@RequestParam String nickName) {
         List<Author> authorList = authorService.findAllByNickNameContains(nickName);
         List<AuthorResponse> authorResponseList = AuthorResponse.getFromAuthorList(authorList);
-        return ResponseEntity.ok(authorResponseList);
+        return ResponseEntity.ok(new AuthorResult(authorResponseList));
     }
 
     @PatchMapping("/author")
     public ResponseEntity<AuthorResponse> update(@LoginForAuthor AuthorSession authorSession,
                                                  @RequestBody @Valid AuthorUpdate authorUpdate) {
-        Author author = authorService.update(authorSession, authorUpdate);
+        authorService.update(authorSession, authorUpdate);
+        Author author = authorService.getById(authorSession.getId());
         AuthorResponse authorResponse = AuthorResponse.getFromAuthor(author);
         return ResponseEntity.ok(authorResponse);
     }

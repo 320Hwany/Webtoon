@@ -1,6 +1,7 @@
 package com.webtoon.cartoonmember.controller;
 
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.dto.response.CartoonListResult;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.cartoonmember.domain.CartoonMember;
@@ -10,6 +11,7 @@ import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,18 +43,18 @@ public class CartoonMemberController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/cartoonMember/member")
-    public ResponseEntity<List<CartoonResponse>> findAllForMember(@LoginForMember MemberSession memberSession) {
+    @GetMapping("/cartoonMember/member")
+    public ResponseEntity<CartoonListResult> findAllForMember(@LoginForMember MemberSession memberSession) {
         List<Cartoon> cartoonList = cartoonMemberService.findAllCartoonByMemberId(memberSession.getId());
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-        return ResponseEntity.ok(cartoonResponseList);
+        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList));
     }
 
-    @PostMapping("/cartoonMember/member/likeList")
-    public ResponseEntity<List<CartoonResponse>> findLikeListForMember(@LoginForMember MemberSession memberSession) {
+    @GetMapping("/cartoonMember/member/likeList")
+    public ResponseEntity<CartoonListResult> findLikeListForMember(@LoginForMember MemberSession memberSession) {
         List<Cartoon> cartoonList = cartoonMemberService.findLikeListForMember(memberSession.getId());
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-        return ResponseEntity.ok(cartoonResponseList);
+        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList));
     }
 
     @PostMapping("/cartoonMember/rating/{cartoonId}/{rating}")

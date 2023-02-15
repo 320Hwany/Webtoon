@@ -78,11 +78,11 @@ class AuthorServiceTest extends ServiceTest {
                 .build();
 
         // when
-        Author afterUpdate = authorService.update(authorSession, authorUpdate);
+        authorService.update(authorSession, authorUpdate);
 
         // then
-        assertThat(afterUpdate.getNickName()).isEqualTo("수정 닉네임");
-        assertThat(afterUpdate.getEmail()).isEqualTo("수정 이메일");
+        assertThat(author.getNickName()).isEqualTo("수정 닉네임");
+        assertThat(author.getEmail()).isEqualTo("수정 이메일");
         assertThat(passwordEncoder.matches("4321", author.getPassword())).isTrue();
     }
 

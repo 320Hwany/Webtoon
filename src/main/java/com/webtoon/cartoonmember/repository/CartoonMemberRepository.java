@@ -3,7 +3,6 @@ package com.webtoon.cartoonmember.repository;
 
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoonmember.domain.CartoonMember;
-import com.webtoon.member.domain.Member;
 
 import java.util.List;
 import java.util.Optional;

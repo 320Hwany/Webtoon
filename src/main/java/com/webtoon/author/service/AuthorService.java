@@ -37,10 +37,13 @@ public class AuthorService {
     }
 
     @Transactional
-    public Author update(AuthorSession authorSession, AuthorUpdate authorUpdate) {
+    public void update(AuthorSession authorSession, AuthorUpdate authorUpdate) {
         Author author = authorRepository.getById(authorSession.getId());
         author.update(authorUpdate, passwordEncoder);
-        return author;
+    }
+
+    public Author getById(Long authorId) {
+        return authorRepository.getById(authorId);
     }
 
     @Transactional

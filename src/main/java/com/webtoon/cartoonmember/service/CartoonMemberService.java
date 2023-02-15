@@ -51,7 +51,7 @@ public class CartoonMemberService {
     }
 
     @Transactional
-    public Boolean isRated(CartoonMember cartoonMember) {
+    public boolean isRated(CartoonMember cartoonMember) {
         if(cartoonMember.isRated() == false){
             cartoonMember.rated();
             return true;

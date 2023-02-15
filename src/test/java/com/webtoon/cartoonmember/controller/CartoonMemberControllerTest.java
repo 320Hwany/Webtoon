@@ -10,6 +10,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,7 +61,7 @@ class CartoonMemberControllerTest extends ControllerTest {
         MockHttpSession session = loginMemberSession(member);
 
         // expected
-        mockMvc.perform(post("/cartoonMember/member")
+        mockMvc.perform(get("/cartoonMember/member")
                         .session(session))
                 .andExpect(status().isOk())
                 .andDo(document("cartoonMember/member/200"));
@@ -77,7 +78,7 @@ class CartoonMemberControllerTest extends ControllerTest {
         MockHttpSession session = loginMemberSession(member);
 
         // expected
-        mockMvc.perform(post("/cartoonMember/member/likeList")
+        mockMvc.perform(get("/cartoonMember/member/likeList")
                         .session(session))
                 .andExpect(status().isOk())
                 .andDo(document("cartoonMember/member/likeList/200"));

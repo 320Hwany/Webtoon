@@ -14,20 +14,17 @@ public class AuthorResponse {
 
     private String nickName;
     private String email;
-    private String password;
 
     @Builder
-    public AuthorResponse(String nickName, String email, String password) {
+    public AuthorResponse(String nickName, String email) {
         this.nickName = nickName;
         this.email = email;
-        this.password = password;
     }
 
     public static AuthorResponse getFromAuthorSession(AuthorSession authorSession) {
         return AuthorResponse.builder()
                 .nickName(authorSession.getNickName())
                 .email(authorSession.getEmail())
-                .password(authorSession.getPassword())
                 .build();
     }
 
@@ -35,7 +32,6 @@ public class AuthorResponse {
         return AuthorResponse.builder()
                 .nickName(author.getNickName())
                 .email(author.getEmail())
-                .password(author.getPassword())
                 .build();
     }
 

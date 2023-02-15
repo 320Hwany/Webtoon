@@ -10,20 +10,17 @@ public class MemberResponse {
 
     private String nickName;
     private String email;
-    private String password;
 
     @Builder
-    public MemberResponse(String nickName, String email, String password) {
+    public MemberResponse(String nickName, String email) {
         this.nickName = nickName;
         this.email = email;
-        this.password = password;
     }
 
     public static MemberResponse getFromMember(Member member) {
         return MemberResponse.builder()
                 .nickName(member.getNickName())
                 .email(member.getEmail())
-                .password(member.getPassword())
                 .build();
     }
 
@@ -31,7 +28,6 @@ public class MemberResponse {
         return MemberResponse.builder()
                 .nickName(memberSession.getNickName())
                 .email(memberSession.getEmail())
-                .password(memberSession.getPassword())
                 .build();
     }
 }

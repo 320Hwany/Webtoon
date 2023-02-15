@@ -8,6 +8,7 @@ import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
+import com.webtoon.cartoon.dto.response.CartoonListResult;
 import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
@@ -34,33 +35,34 @@ public class CartoonController {
     }
 
     @PostMapping("/cartoon/title")
-    public ResponseEntity<List<CartoonResponse>> getCartoonListByTitle(
+    public ResponseEntity<CartoonListResult> getCartoonListByTitle(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<Cartoon> cartoonList = cartoonService.findAllByTitle(cartoonSearch);
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
 
-        return ResponseEntity.ok(cartoonResponseList);
+        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList));
     }
 
     @PostMapping("/cartoon/genre")
-    public ResponseEntity<List<CartoonResponse>> getCartoonListByGenre(
+    public ResponseEntity<CartoonListResult> getCartoonListByGenre(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
         cartoonService.validateGenreValid(cartoonSearchDto.getGenre());
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<Cartoon> cartoonList = cartoonService.findAllByGenre(cartoonSearch);
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-        return ResponseEntity.ok(cartoonResponseList);
+
+        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList));
     }
 
     @PostMapping("/cartoon/likes")
-    public ResponseEntity<List<CartoonResponse>> getCartoonListOrderByLikes(
+    public ResponseEntity<CartoonListResult> getCartoonListOrderByLikes(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<Cartoon> cartoonList = cartoonService.findAllOrderByLikes(cartoonSearch);
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
 
-        return ResponseEntity.ok(cartoonResponseList);
+        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList));
     }
 
     @PatchMapping("/cartoon/{cartoonId}")

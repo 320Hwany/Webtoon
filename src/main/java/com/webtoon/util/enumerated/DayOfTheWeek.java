@@ -10,7 +10,7 @@ public enum DayOfTheWeek implements EnumModel {
     FRI("FRI"),
     SAT("SAT"),
     SUN("SUN"),
-    NONE(null);
+    NONE("NONE");
 
     private String value;
 

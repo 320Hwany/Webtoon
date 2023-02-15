@@ -1,7 +1,6 @@
 package com.webtoon.content.repository;
 
 import com.webtoon.content.domain.Content;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 

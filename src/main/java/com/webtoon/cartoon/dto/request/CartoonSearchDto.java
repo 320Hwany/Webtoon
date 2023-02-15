@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CartoonSearchDto {
 
-    @Min(value = 1, message = "1 이상의 페이지를 입력해주세요")
+    @Min(value = 0, message = "0 이상의 페이지를 입력해주세요")
     private int page;
 
     private String title;
