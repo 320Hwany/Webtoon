@@ -16,7 +16,7 @@ class MemberSessionTest extends DomainTest {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
@@ -37,7 +37,7 @@ class MemberSessionTest extends DomainTest {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();

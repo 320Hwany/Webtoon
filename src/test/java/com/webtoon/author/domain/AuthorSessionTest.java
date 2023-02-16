@@ -21,7 +21,7 @@ public class AuthorSessionTest extends DomainTest {
         AuthorSession authorSession = AuthorSession.getFromAuthor(author);
 
         // then
-        assertThat(authorSession.getNickName()).isEqualTo("작가 닉네임");
+        assertThat(authorSession.getNickname()).isEqualTo("작가 닉네임");
         assertThat(authorSession.getEmail()).isEqualTo("yhwjd99@gmail.com");
         assertThat(authorSession.getPassword()).isEqualTo("1234");
     }
@@ -31,7 +31,7 @@ public class AuthorSessionTest extends DomainTest {
     void makeSession() {
         // given
         AuthorSession authorSession = AuthorSession.builder()
-                .nickName("작가 닉네임")
+                .nickname("작가 닉네임")
                 .email("yhwjd99@gmail.com")
                 .password("1234")
                 .build();
@@ -53,7 +53,7 @@ public class AuthorSessionTest extends DomainTest {
     void invalidateSession() {
         // given
         AuthorSession authorSession = AuthorSession.builder()
-                .nickName("작가 닉네임")
+                .nickname("작가 닉네임")
                 .email("yhwjd99@gmail.com")
                 .password("1234")
                 .build();

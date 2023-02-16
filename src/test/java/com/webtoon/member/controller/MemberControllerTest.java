@@ -25,7 +25,7 @@ class MemberControllerTest extends ControllerTest {
     void signup200() throws Exception {
         // given
         MemberSignup memberSignup = MemberSignup.builder()
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd99@gmail.com")
                 .password("1234")
                 .build();
@@ -45,7 +45,7 @@ class MemberControllerTest extends ControllerTest {
     void signup400() throws Exception {
         // given
         MemberSignup memberSignup = MemberSignup.builder()
-                .nickName("")
+                .nickname("")
                 .email("yhwjd99")
                 .password("")
                 .build();
@@ -129,7 +129,7 @@ class MemberControllerTest extends ControllerTest {
         MockHttpSession session = loginMemberSession(member);
 
         MemberUpdate memberUpdate = MemberUpdate.builder()
-                .nickName("수정 닉네임")
+                .nickname("수정 닉네임")
                 .email("yhwjd@naver.com")
                 .password("123456789")
                 .build();
@@ -153,7 +153,7 @@ class MemberControllerTest extends ControllerTest {
         MockHttpSession session = loginMemberSession(member);
 
         MemberUpdate memberUpdate = MemberUpdate.builder()
-                .nickName("")
+                .nickname("")
                 .email("yhwjd@naver.com")
                 .password("123456789")
                 .build();
@@ -176,7 +176,7 @@ class MemberControllerTest extends ControllerTest {
         Member member = saveMemberInRepository();
 
         MemberUpdate memberUpdate = MemberUpdate.builder()
-                .nickName("수정 닉네임")
+                .nickname("수정 닉네임")
                 .email("yhwjd@naver.com")
                 .password("123456789")
                 .build();

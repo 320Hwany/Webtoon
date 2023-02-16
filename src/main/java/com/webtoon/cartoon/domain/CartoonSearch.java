@@ -15,7 +15,7 @@ public class CartoonSearch {
     private final int limit = 20;
     private int page;
     private String title;
-    private String nickName;
+    private String nickname;
 
     private DayOfTheWeek dayOfTheWeek;
 
@@ -23,11 +23,11 @@ public class CartoonSearch {
     private Genre genre;
 
     @Builder
-    public CartoonSearch(Integer page, String title, String nickName,
+    public CartoonSearch(Integer page, String title, String nickname,
                          DayOfTheWeek dayOfTheWeek, Progress progress, Genre genre) {
         this.page = page;
         this.title = title;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.dayOfTheWeek = dayOfTheWeek;
         this.progress = progress;
         this.genre = genre;
@@ -37,7 +37,7 @@ public class CartoonSearch {
         return CartoonSearch.builder()
                 .page(cartoonSearchDto.getPage())
                 .title(cartoonSearchDto.getTitle())
-                .nickName(cartoonSearchDto.getNickName())
+                .nickname(cartoonSearchDto.getNickname())
                 .dayOfTheWeek(DayOfTheWeek.valueOf(cartoonSearchDto.getDayOfTheWeek()))
                 .progress(Progress.valueOf(cartoonSearchDto.getProgress()))
                 .genre(Genre.valueOf(cartoonSearchDto.getGenre()))

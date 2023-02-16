@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface AuthorJpaRepository extends JpaRepository<Author, Long> {
 
-    Optional<Author> findByNickName(String nickName);
+    Optional<Author> findBynickname(String nickname);
     Optional<Author> findByEmail(String email);
-    List<Author> findAllByNickNameContains(String nickName);
+    List<Author> findAllBynicknameContains(String nickname);
 }

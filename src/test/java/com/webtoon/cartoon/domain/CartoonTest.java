@@ -124,7 +124,7 @@ class CartoonTest extends DomainTest {
 
         AuthorSession anotherAuthorSession = AuthorSession.builder()
                 .id(9999L)
-                .nickName("다른 작가")
+                .nickname("다른 작가")
                 .email("yhwjd@naver.com")
                 .password("4321")
                 .build();

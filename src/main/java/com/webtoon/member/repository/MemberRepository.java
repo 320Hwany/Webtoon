@@ -11,7 +11,7 @@ public interface MemberRepository {
 
     Member getById(Long id);
 
-    Optional<Member> findByNickName(String nickName);
+    Optional<Member> findBynickname(String nickname);
 
     Optional<Member> findByEmail(String email);
 

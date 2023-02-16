@@ -7,6 +7,7 @@ import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.exception.AuthorDuplicationException;
 import com.webtoon.author.exception.AuthorNotFoundException;
+import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.util.ServiceTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +34,7 @@ class AuthorServiceTest extends ServiceTest {
     void signup200() {
         // given
         AuthorSignup authorSignup = AuthorSignup.builder()
-                .nickName("작가 닉네임")
+                .nickname("작가 닉네임")
                 .email("yhwjd99@gmail.com")
                 .password("1234")
                 .build();
@@ -47,12 +48,12 @@ class AuthorServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("입력한 닉네임이 포함된 작가를 검색합니다 - 성공")
-    void findAllByNickName200() {
+    void findAllBynickname200() {
         // given
         Author author = saveAuthorInRepository();
 
         // when
-        List<Author> authorList = authorService.findAllByNickNameContains("작가");
+        List<Author> authorList = authorService.findAllBynicknameContains("작가");
 
         // then
         assertThat(authorList.get(0)).isEqualTo(author);
@@ -66,13 +67,13 @@ class AuthorServiceTest extends ServiceTest {
 
         AuthorSession authorSession = AuthorSession.builder()
                 .id(author.getId())
-                .nickName(author.getNickName())
+                .nickname(author.getNickname())
                 .email(author.getEmail())
                 .password(author.getPassword())
                 .build();
 
         AuthorUpdate authorUpdate = AuthorUpdate.builder()
-                .nickName("수정 닉네임")
+                .nickname("수정 닉네임")
                 .email("수정 이메일")
                 .password("4321")
                 .build();
@@ -81,7 +82,7 @@ class AuthorServiceTest extends ServiceTest {
         authorService.update(authorSession, authorUpdate);
 
         // then
-        assertThat(author.getNickName()).isEqualTo("수정 닉네임");
+        assertThat(author.getNickname()).isEqualTo("수정 닉네임");
         assertThat(author.getEmail()).isEqualTo("수정 이메일");
         assertThat(passwordEncoder.matches("4321", author.getPassword())).isTrue();
     }
@@ -92,13 +93,13 @@ class AuthorServiceTest extends ServiceTest {
         // given
         AuthorSession authorSession = AuthorSession.builder()
                 .id(1L)
-                .nickName("DB에 없는 회원")
+                .nickname("DB에 없는 회원")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
 
         AuthorUpdate authorUpdate = AuthorUpdate.builder()
-                .nickName("수정 닉네임")
+                .nickname("수정 닉네임")
                 .email("수정 이메일")
                 .password("4321")
                 .build();
@@ -109,14 +110,16 @@ class AuthorServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("작가 계정이 삭제됩니다 - 성공")
+    @DisplayName("작가 계정을 삭제하면 작가의 만화가 모두 삭제됩니다 - 성공")
     void delete200() {
         // given
         Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        author.getCartoonList().add(cartoon);
 
         AuthorSession authorSession = AuthorSession.builder()
                 .id(author.getId())
-                .nickName(author.getNickName())
+                .nickname(author.getNickname())
                 .email(author.getEmail())
                 .password(author.getPassword())
                 .build();
@@ -125,8 +128,8 @@ class AuthorServiceTest extends ServiceTest {
         authorService.delete(authorSession);
 
         // then
-        Optional<Author> optionalAuthor = authorRepository.findByNickName(author.getNickName());
-        assertThat(optionalAuthor).isEmpty();
+        assertThat(authorRepository.count()).isEqualTo(0);
+        assertThat(cartoonRepository.count()).isEqualTo(0);
     }
 
     @Test
@@ -135,7 +138,7 @@ class AuthorServiceTest extends ServiceTest {
         // given
         AuthorSession authorSession = AuthorSession.builder()
                 .id(1L)
-                .nickName("DB에 없는 회원")
+                .nickname("DB에 없는 회원")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
@@ -150,7 +153,7 @@ class AuthorServiceTest extends ServiceTest {
     void checkDuplication200() {
         // given
         AuthorSignup authorSignup = AuthorSignup.builder()
-                .nickName("새로운 회원")
+                .nickname("새로운 회원")
                 .email("yhwjd99@gmail.com")
                 .password("4321")
                 .build();
@@ -166,7 +169,7 @@ class AuthorServiceTest extends ServiceTest {
         Author author = saveAuthorInRepository();
 
         AuthorSignup authorSignup = AuthorSignup.builder()
-                .nickName(author.getNickName())
+                .nickname(author.getNickname())
                 .email(author.getEmail())
                 .password(author.getPassword())
                 .build();
@@ -213,7 +216,7 @@ class AuthorServiceTest extends ServiceTest {
     void makeSessionForAuthorSession200() {
         // given
         AuthorSession authorSession = AuthorSession.builder()
-                .nickName("작가 이름")
+                .nickname("작가 이름")
                 .email("yhwjd99@gmail.com")
                 .password("1234")
                 .build();
@@ -233,7 +236,7 @@ class AuthorServiceTest extends ServiceTest {
     void invalidateSession200() {
         // given
         AuthorSession authorSession = AuthorSession.builder()
-                .nickName("작가 이름")
+                .nickname("작가 이름")
                 .email("yhwjd99@gmail.com")
                 .password("1234")
                 .build();

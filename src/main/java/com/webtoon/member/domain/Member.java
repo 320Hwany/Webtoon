@@ -28,7 +28,7 @@ public class Member extends BaseTimeEntity {
     @Column(name = "member_id")
     private Long id;
 
-    private String nickName;
+    private String nickname;
 
     private String email;
 
@@ -37,8 +37,8 @@ public class Member extends BaseTimeEntity {
     private long coin;
 
     @Builder
-    public Member(String nickName, String email, String password, Long coin) {
-        this.nickName = nickName;
+    public Member(String nickname, String email, String password, Long coin) {
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.coin = coin;
@@ -46,7 +46,7 @@ public class Member extends BaseTimeEntity {
 
     public static Member getFromMemberSignup(MemberSignup memberSignup, PasswordEncoder passwordEncoder) {
         return Member.builder()
-                .nickName(memberSignup.getNickName())
+                .nickname(memberSignup.getNickname())
                 .email(memberSignup.getEmail())
                 .password(passwordEncoder.encode(memberSignup.getPassword()))
                 .coin(ZERO_OF_TYPE_LONG)
@@ -54,7 +54,7 @@ public class Member extends BaseTimeEntity {
     }
 
     public void update(MemberUpdate memberUpdate, PasswordEncoder passwordEncoder) {
-        this.nickName = memberUpdate.getNickName();
+        this.nickname = memberUpdate.getNickname();
         this.email = memberUpdate.getEmail();
         this.password = passwordEncoder.encode(memberUpdate.getPassword());
     }

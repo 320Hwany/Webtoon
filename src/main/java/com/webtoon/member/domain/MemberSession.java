@@ -15,16 +15,16 @@ public class MemberSession implements Serializable {
 
     private Long id;
 
-    private String nickName;
+    private String nickname;
 
     private String email;
 
     private String password;
 
     @Builder
-    public MemberSession(Long id, String nickName, String email, String password) {
+    public MemberSession(Long id, String nickname, String email, String password) {
         this.id = id;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
     }
@@ -32,7 +32,7 @@ public class MemberSession implements Serializable {
     public static MemberSession getFromMember(Member member) {
         return MemberSession.builder()
                 .id(member.getId())
-                .nickName(member.getNickName())
+                .nickname(member.getNickname())
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .build();

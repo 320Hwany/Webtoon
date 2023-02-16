@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 public class AuthorUpdate {
 
     @NotBlank(message = "닉네임을 입력해주세요")
-    private String nickName;
+    private String nickname;
 
     @Email(message = "이메일을 입력해주세요")
     private String email;
@@ -20,8 +20,8 @@ public class AuthorUpdate {
     private String password;
 
     @Builder
-    public AuthorUpdate(String nickName, String email, String password) {
-        this.nickName = nickName;
+    public AuthorUpdate(String nickname, String email, String password) {
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
     }

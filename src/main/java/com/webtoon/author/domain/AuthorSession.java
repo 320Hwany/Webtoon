@@ -15,15 +15,15 @@ public class AuthorSession implements Serializable {
 
     private Long id;
 
-    private String nickName;
+    private String nickname;
 
     private String email;
     private String password;
 
     @Builder
-    public AuthorSession(Long id, String nickName, String email, String password) {
+    public AuthorSession(Long id, String nickname, String email, String password) {
         this.id = id;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
     }
@@ -31,7 +31,7 @@ public class AuthorSession implements Serializable {
     public static AuthorSession getFromAuthor(Author author) {
         return AuthorSession.builder()
                 .id(author.getId())
-                .nickName(author.getNickName())
+                .nickname(author.getNickname())
                 .email(author.getEmail())
                 .password(author.getPassword())
                 .build();

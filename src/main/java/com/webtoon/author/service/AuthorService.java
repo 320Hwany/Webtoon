@@ -32,8 +32,8 @@ public class AuthorService {
         authorRepository.save(author);
     }
 
-    public List<Author> findAllByNickNameContains(String nickName) {
-        return authorRepository.findAllByNickNameContains(nickName);
+    public List<Author> findAllBynicknameContains(String nickname) {
+        return authorRepository.findAllBynicknameContains(nickname);
     }
 
     @Transactional
@@ -53,9 +53,9 @@ public class AuthorService {
     }
 
     public void checkDuplication(AuthorSignup authorSignup) {
-        Optional<Author> findAuthorByNickName = authorRepository.findByNickName(authorSignup.getNickName());
+        Optional<Author> findAuthorBynickname = authorRepository.findBynickname(authorSignup.getNickname());
         Optional<Author> findAuthorByEmail = authorRepository.findByEmail(authorSignup.getEmail());
-        if (findAuthorByNickName.isPresent() || findAuthorByEmail.isPresent()) {
+        if (findAuthorBynickname.isPresent() || findAuthorByEmail.isPresent()) {
             throw new AuthorDuplicationException();
         }
     }

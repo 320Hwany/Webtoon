@@ -103,7 +103,7 @@ class ContentControllerTest extends ControllerTest {
         MockHttpSession session = loginAuthorSession(author);
 
         Author anotherAuthor = Author.builder()
-                .nickName("다른 작가 이름")
+                .nickname("다른 작가 이름")
                 .email("yhwjd@naver.com")
                 .password("4321")
                 .build();
@@ -301,7 +301,7 @@ class ContentControllerTest extends ControllerTest {
         Author author = saveAuthorInRepository();
 
         Author anotherAuthor = Author.builder()
-                .nickName("다른 작가 이름")
+                .nickname("다른 작가 이름")
                 .email("yhwjd@naver.com")
                 .password("4321")
                 .build();

@@ -11,8 +11,6 @@ import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.util.enumerated.Genre;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +45,10 @@ public class CartoonService {
 
     public List<Cartoon> findAllOrderByLikes(CartoonSearch cartoonSearch) {
         return cartoonRepository.findAllOrderByLikes(cartoonSearch);
+    }
+
+    public List<Cartoon> findAllByAuthornickname(CartoonSearch cartoonSearch) {
+        return cartoonRepository.findAllByAuthornickname(cartoonSearch);
     }
 
     @Transactional

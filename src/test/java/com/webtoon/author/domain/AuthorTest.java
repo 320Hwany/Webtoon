@@ -21,7 +21,7 @@ class AuthorTest extends DomainTest {
     void getFromAuthorSignup() {
         // given
         AuthorSignup authorSignup = AuthorSignup.builder()
-                .nickName("작가 닉네임")
+                .nickname("작가 닉네임")
                 .email("yhwjd99@gmail.com")
                 .password("1234")
                 .build();
@@ -30,7 +30,7 @@ class AuthorTest extends DomainTest {
         Author author = Author.getFromAuthorSignup(authorSignup, passwordEncoder);
 
         // then
-        assertThat(author.getNickName()).isEqualTo("작가 닉네임");
+        assertThat(author.getNickname()).isEqualTo("작가 닉네임");
         assertThat(author.getEmail()).isEqualTo("yhwjd99@gmail.com");
         assertThat(passwordEncoder.matches("1234", author.getPassword())).isTrue();
     }
@@ -42,7 +42,7 @@ class AuthorTest extends DomainTest {
         Author author = getAuthor();
 
         AuthorUpdate authorUpdate = AuthorUpdate.builder()
-                .nickName("수정 닉네임")
+                .nickname("수정 닉네임")
                 .email("수정 이메일")
                 .password("4321")
                 .build();
@@ -52,7 +52,7 @@ class AuthorTest extends DomainTest {
 
         // then
         assertThat(author.getId()).isEqualTo(author.getId());
-        assertThat(author.getNickName()).isEqualTo("수정 닉네임");
+        assertThat(author.getNickname()).isEqualTo("수정 닉네임");
         assertThat(author.getEmail()).isEqualTo("수정 이메일");
         assertThat(passwordEncoder.matches("4321", author.getPassword())).isTrue();
     }

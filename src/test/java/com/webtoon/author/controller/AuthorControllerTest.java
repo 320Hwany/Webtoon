@@ -24,7 +24,7 @@ class AuthorControllerTest extends ControllerTest {
     @DisplayName("작가 회원가입 - 성공")
     void signup200() throws Exception {
         AuthorSignup authorSignup = AuthorSignup.builder()
-                .nickName("작가 이름")
+                .nickname("작가 이름")
                 .email("yhwjd99@gmail.com")
                 .password("1234")
                 .build();
@@ -42,7 +42,7 @@ class AuthorControllerTest extends ControllerTest {
     @DisplayName("조건에 맞지 않으면 작가 회원가입이 되지 않습니다- 실패")
     void signup400() throws Exception {
         AuthorSignup authorSignup = AuthorSignup.builder()
-                .nickName("")
+                .nickname("")
                 .email("abc")
                 .password("")
                 .build();
@@ -114,13 +114,13 @@ class AuthorControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("작가 닉네임으로 작가를 검색합니다 - 성공")
-    void findAllByNickName200() throws Exception {
+    void findAllBynickname200() throws Exception {
         // given
         Author author = saveAuthorInRepository();
 
         // expected
-        mockMvc.perform(get("/author/nickName")
-                        .param("nickName", author.getNickName()))
+        mockMvc.perform(get("/author/nickname")
+                        .param("nickname", author.getNickname()))
                 .andExpect(status().isOk())
                 .andDo(document("author/get/nickname/200"));
     }
@@ -134,7 +134,7 @@ class AuthorControllerTest extends ControllerTest {
         MockHttpSession session = loginAuthorSession(author);
 
         AuthorUpdate authorUpdate = AuthorUpdate.builder()
-                .nickName("수정 닉네임")
+                .nickname("수정 닉네임")
                 .email("yhwjd@naver.com")
                 .password("4321")
                 .build();
@@ -158,7 +158,7 @@ class AuthorControllerTest extends ControllerTest {
         MockHttpSession session = loginAuthorSession(author);
 
         AuthorUpdate authorUpdate = AuthorUpdate.builder()
-                .nickName("")
+                .nickname("")
                 .email("abc")
                 .password("")
                 .build();
@@ -181,7 +181,7 @@ class AuthorControllerTest extends ControllerTest {
         saveAuthorInRepository();
 
         AuthorUpdate authorUpdate = AuthorUpdate.builder()
-                .nickName("수정 닉네임")
+                .nickname("수정 닉네임")
                 .email("yhwjd@naver.com")
                 .password("4321")
                 .build();

@@ -120,7 +120,7 @@ public class ControllerTest {
 
     protected Author saveAuthorInRepository() {
         Author author = Author.builder()
-                .nickName("작가 이름")
+                .nickname("작가 이름")
                 .email("yhwjd99@gmail.com")
                 .password(passwordEncoder.encode("1234"))
                 .build();
@@ -158,7 +158,7 @@ public class ControllerTest {
 
     protected Member saveMemberInRepository() {
         Member member = Member.builder()
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .coin(ZERO_OF_TYPE_LONG)

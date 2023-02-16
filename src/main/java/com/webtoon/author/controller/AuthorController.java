@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.security.Key;
 import java.util.List;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -40,9 +40,9 @@ public class AuthorController {
         return ResponseEntity.ok(authorResponse);
     }
 
-    @GetMapping("/author/nickName")
-    public ResponseEntity<AuthorResult> getAuthorByNickName(@RequestParam String nickName) {
-        List<Author> authorList = authorService.findAllByNickNameContains(nickName);
+    @GetMapping("/author/nickname")
+    public ResponseEntity<AuthorResult> getAuthorBynickname(@RequestParam String nickname) {
+        List<Author> authorList = authorService.findAllBynicknameContains(nickname);
         List<AuthorResponse> authorResponseList = AuthorResponse.getFromAuthorList(authorList);
         return ResponseEntity.ok(new AuthorResult(authorResponseList));
     }

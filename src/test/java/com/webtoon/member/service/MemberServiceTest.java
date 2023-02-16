@@ -32,7 +32,7 @@ class MemberServiceTest extends ServiceTest {
     void signup() {
         // given
         MemberSignup memberSignup = MemberSignup.builder()
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
@@ -52,13 +52,13 @@ class MemberServiceTest extends ServiceTest {
 
         MemberSession memberSession = MemberSession.builder()
                 .id(member.getId())
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
 
         MemberUpdate memberUpdate = MemberUpdate.builder()
-                .nickName("수정 회원 닉네임")
+                .nickname("수정 회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("123456789")
                 .build();
@@ -67,7 +67,7 @@ class MemberServiceTest extends ServiceTest {
         Member findMember = memberService.update(memberSession, memberUpdate);
 
         // then
-        assertThat(findMember.getNickName()).isEqualTo(memberUpdate.getNickName());
+        assertThat(findMember.getNickname()).isEqualTo(memberUpdate.getNickname());
         assertThat(findMember.getEmail()).isEqualTo(memberUpdate.getEmail());
         assertThat(passwordEncoder.matches("123456789", member.getPassword())).isTrue();
     }
@@ -78,13 +78,13 @@ class MemberServiceTest extends ServiceTest {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
 
         MemberUpdate memberUpdate = MemberUpdate.builder()
-                .nickName("수정 회원 닉네임")
+                .nickname("수정 회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("123456789")
                 .build();
@@ -102,7 +102,7 @@ class MemberServiceTest extends ServiceTest {
 
         MemberSession memberSession = MemberSession.builder()
                 .id(member.getId())
-                .nickName(member.getNickName())
+                .nickname(member.getNickname())
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .build();
@@ -120,7 +120,7 @@ class MemberServiceTest extends ServiceTest {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
@@ -138,7 +138,7 @@ class MemberServiceTest extends ServiceTest {
 
         MemberSession memberSession = MemberSession.builder()
                 .id(member.getId())
-                .nickName(member.getNickName())
+                .nickname(member.getNickname())
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .build();
@@ -160,7 +160,7 @@ class MemberServiceTest extends ServiceTest {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
@@ -235,7 +235,7 @@ class MemberServiceTest extends ServiceTest {
     void checkDuplication200() {
         // given
         MemberSignup memberSignup = MemberSignup.builder()
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
@@ -251,7 +251,7 @@ class MemberServiceTest extends ServiceTest {
         saveMemberInRepository();
 
         MemberSignup memberSignup = MemberSignup.builder()
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
@@ -268,7 +268,7 @@ class MemberServiceTest extends ServiceTest {
         saveMemberInRepository();
 
         MemberSignup memberSignup = MemberSignup.builder()
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
@@ -283,7 +283,7 @@ class MemberServiceTest extends ServiceTest {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();

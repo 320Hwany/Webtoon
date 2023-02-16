@@ -19,7 +19,7 @@ public class CartoonSearchTest extends DomainTest {
         CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
                 .page(1)
                 .title("찾는 만화 제목")
-                .nickName("작가 닉네임")
+                .nickname("작가 닉네임")
                 .dayOfTheWeek("MON")
                 .progress("SERIALIZATION")
                 .genre("ROMANCE")
@@ -32,7 +32,7 @@ public class CartoonSearchTest extends DomainTest {
         assertThat(cartoonSearch.getLimit()).isEqualTo(20);
         assertThat(cartoonSearch.getPage()).isEqualTo(1);
         assertThat(cartoonSearch.getTitle()).isEqualTo("찾는 만화 제목");
-        assertThat(cartoonSearch.getNickName()).isEqualTo("작가 닉네임");
+        assertThat(cartoonSearch.getNickname()).isEqualTo("작가 닉네임");
         assertThat(cartoonSearch.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.MON);
         assertThat(cartoonSearch.getProgress()).isEqualTo(Progress.SERIALIZATION);
         assertThat(cartoonSearch.getGenre()).isEqualTo(Genre.ROMANCE);
@@ -45,7 +45,7 @@ public class CartoonSearchTest extends DomainTest {
         CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
                 .page(2)
                 .title("찾는 만화 제목")
-                .nickName("작가 닉네임")
+                .nickname("작가 닉네임")
                 .dayOfTheWeek("MON")
                 .progress("SERIALIZATION")
                 .genre("ROMANCE")

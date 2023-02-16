@@ -8,25 +8,25 @@ import lombok.Getter;
 @Getter
 public class MemberResponse {
 
-    private String nickName;
+    private String nickname;
     private String email;
 
     @Builder
-    public MemberResponse(String nickName, String email) {
-        this.nickName = nickName;
+    public MemberResponse(String nickname, String email) {
+        this.nickname = nickname;
         this.email = email;
     }
 
     public static MemberResponse getFromMember(Member member) {
         return MemberResponse.builder()
-                .nickName(member.getNickName())
+                .nickname(member.getNickname())
                 .email(member.getEmail())
                 .build();
     }
 
     public static MemberResponse getFromMemberSession(MemberSession memberSession) {
         return MemberResponse.builder()
-                .nickName(memberSession.getNickName())
+                .nickname(memberSession.getNickname())
                 .email(memberSession.getEmail())
                 .build();
     }

@@ -19,9 +19,14 @@ import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 import static com.webtoon.util.constant.Constant.*;
 import static java.lang.Boolean.FALSE;
@@ -53,9 +58,10 @@ public class ServiceTest {
     @Autowired
     protected PasswordEncoder passwordEncoder;
 
+
     protected Author saveAuthorInRepository() {
         Author author = Author.builder()
-                .nickName("작가 이름")
+                .nickname("작가 이름")
                 .email("yhwjd99@gmail.com")
                 .password(passwordEncoder.encode("1234"))
                 .build();
@@ -103,7 +109,7 @@ public class ServiceTest {
 
     protected Member saveMemberInRepository() {
         Member member = Member.builder()
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .coin(ZERO_OF_TYPE_LONG)
@@ -126,7 +132,7 @@ public class ServiceTest {
     protected static AuthorSession getAuthorSessionFromAuthor(Author author) {
         AuthorSession authorSession = AuthorSession.builder()
                 .id(author.getId())
-                .nickName(author.getNickName())
+                .nickname(author.getNickname())
                 .email(author.getEmail())
                 .password(author.getPassword())
                 .build();

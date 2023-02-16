@@ -25,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -67,6 +68,7 @@ class CartoonServiceTest extends ServiceTest {
         assertThat(cartoon.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.MON);
         assertThat(cartoon.getProgress()).isEqualTo(Progress.SERIALIZATION);
         assertThat(cartoon.getGenre()).isEqualTo(Genre.ROMANCE);
+        assertThat(author.getCartoonList().contains(cartoon)).isTrue();
     }
 
     @Test
@@ -82,7 +84,7 @@ class CartoonServiceTest extends ServiceTest {
 
         AuthorSession authorSession = AuthorSession.builder()
                 .id(1L)
-                .nickName("DB에 없는 회원")
+                .nickname("DB에 없는 회원")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .build();
@@ -144,14 +146,12 @@ class CartoonServiceTest extends ServiceTest {
 
         List<Cartoon> cartoonGenreRomanceList = IntStream.range(1, 11)
                 .mapToObj(i -> Cartoon.builder()
-                        .title("만화 제목 " + i)
                         .genre(Genre.ROMANCE)
                         .build())
                 .collect(Collectors.toList());
 
         List<Cartoon> cartoonGenreAcitonList = IntStream.range(11, 16)
                 .mapToObj(i -> Cartoon.builder()
-                        .title("만화 제목 " + i)
                         .genre(Genre.ACTION)
                         .build())
                 .collect(Collectors.toList());
@@ -181,7 +181,6 @@ class CartoonServiceTest extends ServiceTest {
 
         List<Cartoon> cartoonList = LongStream.range(1, 31)
                 .mapToObj(i -> Cartoon.builder()
-                        .title("만화 제목 " + i)
                         .likes(i)
                         .build())
                 .collect(Collectors.toList());
@@ -195,6 +194,54 @@ class CartoonServiceTest extends ServiceTest {
         // then
         assertThat(onePageCartoonList.size()).isEqualTo(20);
         assertThat(onePageCartoonList.get(0).getLikes()).isEqualTo(30);
+    }
+
+    @Test
+    @DisplayName("작가의 이름으로 작가의 모든 만화를 가져옵니다 - 성공")
+    @Transactional
+    void findAllByAuthornickname() {
+        // given
+        Author author = Author.builder()
+                .nickname("작가 이름")
+                .build();
+
+        Author anotherAuthor = Author.builder()
+                .nickname("다른 작가")
+                .build();
+
+        authorRepository.save(author);
+        authorRepository.save(anotherAuthor);
+
+        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+                .page(0)
+                .nickname("작가 이름")
+                .dayOfTheWeek("NONE")
+                .progress("NONE")
+                .genre("NONE")
+                .build();
+
+        List<Cartoon> cartoonListForAuthor = IntStream.range(1, 11)
+                .mapToObj(i -> Cartoon.builder()
+                        .author(author)
+                        .build())
+                .collect(Collectors.toList());
+
+        List<Cartoon> cartoonListForAnotherAuthor = IntStream.range(11, 16)
+                .mapToObj(i -> Cartoon.builder()
+                        .author(anotherAuthor)
+                        .build())
+                .collect(Collectors.toList());
+
+        cartoonRepository.saveAll(cartoonListForAuthor);
+        cartoonRepository.saveAll(cartoonListForAnotherAuthor);
+
+        // when
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        List<Cartoon> onePageCartoonList = cartoonService.findAllByAuthornickname(cartoonSearch);
+
+        // then
+        assertThat(onePageCartoonList.size()).isEqualTo(10);
+        assertThat(onePageCartoonList.get(0).getAuthor()).isEqualTo(author);
     }
 
     @Test
@@ -280,7 +327,7 @@ class CartoonServiceTest extends ServiceTest {
         Cartoon cartoon = saveCartoonInRepository(author);
         AuthorSession anotherAuthorSession = AuthorSession.builder()
                 .id(9999L)
-                .nickName("다른 회원")
+                .nickname("다른 회원")
                 .email("yhwjd@naver.com")
                 .password("4321")
                 .build();

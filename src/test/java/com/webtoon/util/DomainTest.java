@@ -21,7 +21,7 @@ public class DomainTest {
 
     protected static Author getAuthor() {
         Author author = Author.builder()
-                .nickName("작가 닉네임")
+                .nickname("작가 닉네임")
                 .email("yhwjd99@gmail.com")
                 .password("1234")
                 .build();
@@ -50,7 +50,7 @@ public class DomainTest {
 
     protected static Member getMember() {
         Member member = Member.builder()
-                .nickName("회원 닉네임")
+                .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
                 .coin(ZERO_OF_TYPE_LONG)
@@ -61,7 +61,7 @@ public class DomainTest {
     protected static AuthorSession getAuthorSessionFromAuthor(Author author) {
         AuthorSession authorSession = AuthorSession.builder()
                 .id(author.getId())
-                .nickName(author.getNickName())
+                .nickname(author.getNickname())
                 .email(author.getEmail())
                 .password(author.getPassword())
                 .build();

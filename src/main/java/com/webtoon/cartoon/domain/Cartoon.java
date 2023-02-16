@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import java.util.List;
 
 import static com.webtoon.util.constant.Constant.*;
 import static javax.persistence.FetchType.LAZY;
@@ -65,7 +64,7 @@ public class Cartoon extends BaseTimeEntity {
     }
 
     public static Cartoon getFromCartoonSaveAndAuthor(CartoonSave cartoonSave, Author author) {
-        return Cartoon.builder()
+        Cartoon cartoon = Cartoon.builder()
                 .title(cartoonSave.getTitle())
                 .author(author)
                 .dayOfTheWeek(DayOfTheWeek.valueOf(cartoonSave.getDayOfTheWeek()))
@@ -74,6 +73,9 @@ public class Cartoon extends BaseTimeEntity {
                 .rating(ZERO_OF_TYPE_DOUBLE)
                 .likes(ZERO_OF_TYPE_LONG)
                 .build();
+
+        author.getCartoonList().add(cartoon);
+        return cartoon;
     }
 
     public static void validateEnumTypeValid(CartoonEnumField cartoonEnumField) {

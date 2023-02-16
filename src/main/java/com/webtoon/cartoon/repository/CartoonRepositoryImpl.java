@@ -1,7 +1,10 @@
 package com.webtoon.cartoon.repository;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.webtoon.author.domain.QAuthor;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.domain.QCartoon;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +15,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.webtoon.author.domain.QAuthor.author;
+import static com.webtoon.cartoon.domain.QCartoon.*;
 import static org.springframework.data.domain.Sort.Direction.*;
 
 
@@ -20,6 +25,7 @@ import static org.springframework.data.domain.Sort.Direction.*;
 public class CartoonRepositoryImpl implements CartoonRepository {
 
     private final CartoonJpaRepository cartoonJpaRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public Cartoon save(Cartoon cartoon) {
@@ -55,6 +61,17 @@ public class CartoonRepositoryImpl implements CartoonRepository {
         Page<Cartoon> cartoonPage = cartoonJpaRepository.findAll(pageRequest);
         List<Cartoon> cartoonList = cartoonPage.getContent();
         return cartoonList;
+    }
+
+    @Override
+    public List<Cartoon> findAllByAuthornickname(CartoonSearch cartoonSearch) {
+        return jpaQueryFactory.selectFrom(cartoon)
+                .leftJoin(cartoon.author, author)
+                .fetchJoin()
+                .where(cartoon.author.nickname.eq(cartoonSearch.getNickname()))
+                .limit(cartoonSearch.getLimit())
+                .offset(cartoonSearch.getOffset())
+                .fetch();
     }
 
     @Override

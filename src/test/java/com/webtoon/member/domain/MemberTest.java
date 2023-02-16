@@ -21,7 +21,7 @@ public class MemberTest extends DomainTest {
         Member member = getMember();
 
         MemberUpdate memberUpdate = MemberUpdate.builder()
-                .nickName("수정 회원 닉네임")
+                .nickname("수정 회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("123456789")
                 .build();
@@ -30,7 +30,7 @@ public class MemberTest extends DomainTest {
         member.update(memberUpdate, passwordEncoder);
 
         // then
-        assertThat(member.getNickName()).isEqualTo(memberUpdate.getNickName());
+        assertThat(member.getNickname()).isEqualTo(memberUpdate.getNickname());
         assertThat(member.getEmail()).isEqualTo(memberUpdate.getEmail());
         assertThat(passwordEncoder.matches("123456789", member.getPassword())).isTrue();
     }
