@@ -5,12 +5,11 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.content.domain.Content;
 import com.webtoon.member.domain.Member;
-import com.webtoon.util.constant.Constant;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 import java.time.LocalDate;
 
@@ -18,7 +17,7 @@ import static com.webtoon.util.constant.Constant.*;
 
 public class DomainTest {
 
-    protected PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    protected PasswordEncoder passwordEncoder = new SCryptPasswordEncoder();
 
     protected static Author getAuthor() {
         Author author = Author.builder()

@@ -10,6 +10,7 @@ import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.member.exception.MemberDuplicationException;
 import com.webtoon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,17 +24,18 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void signup(MemberSignup memberSignup) {
-        Member member = Member.getFromMemberSignup(memberSignup);
+        Member member = Member.getFromMemberSignup(memberSignup, passwordEncoder);
         memberRepository.save(member);
     }
 
     @Transactional
     public Member update(MemberSession memberSession, MemberUpdate memberUpdate) {
         Member member = memberRepository.getById(memberSession.getId());
-        member.update(memberUpdate);
+        member.update(memberUpdate, passwordEncoder);
         return member;
     }
 

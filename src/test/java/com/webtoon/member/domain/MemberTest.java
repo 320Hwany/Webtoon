@@ -27,12 +27,12 @@ public class MemberTest extends DomainTest {
                 .build();
 
         // when
-        member.update(memberUpdate);
+        member.update(memberUpdate, passwordEncoder);
 
         // then
         assertThat(member.getNickName()).isEqualTo(memberUpdate.getNickName());
         assertThat(member.getEmail()).isEqualTo(memberUpdate.getEmail());
-        assertThat(member.getPassword()).isEqualTo(memberUpdate.getPassword());
+        assertThat(passwordEncoder.matches("123456789", member.getPassword())).isTrue();
     }
 
     @Test

@@ -7,6 +7,7 @@ import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -43,19 +44,19 @@ public class Member extends BaseTimeEntity {
         this.coin = coin;
     }
 
-    public static Member getFromMemberSignup(MemberSignup memberSignup) {
+    public static Member getFromMemberSignup(MemberSignup memberSignup, PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .nickName(memberSignup.getNickName())
                 .email(memberSignup.getEmail())
-                .password(memberSignup.getPassword())
+                .password(passwordEncoder.encode(memberSignup.getPassword()))
                 .coin(ZERO_OF_TYPE_LONG)
                 .build();
     }
 
-    public void update(MemberUpdate memberUpdate) {
+    public void update(MemberUpdate memberUpdate, PasswordEncoder passwordEncoder) {
         this.nickName = memberUpdate.getNickName();
         this.email = memberUpdate.getEmail();
-        this.password = memberUpdate.getPassword();
+        this.password = passwordEncoder.encode(memberUpdate.getPassword());
     }
 
     public void chargeCoin(long chargeAmount) {

@@ -69,7 +69,7 @@ class MemberServiceTest extends ServiceTest {
         // then
         assertThat(findMember.getNickName()).isEqualTo(memberUpdate.getNickName());
         assertThat(findMember.getEmail()).isEqualTo(memberUpdate.getEmail());
-        assertThat(findMember.getPassword()).isEqualTo(memberUpdate.getPassword());
+        assertThat(passwordEncoder.matches("123456789", member.getPassword())).isTrue();
     }
 
     @Test
