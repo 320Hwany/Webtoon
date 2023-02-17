@@ -5,9 +5,12 @@ import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
+import com.webtoon.author.dto.response.AuthorCartoonResponse;
 import com.webtoon.author.dto.response.AuthorResponse;
 import com.webtoon.author.dto.response.AuthorResult;
 import com.webtoon.author.service.AuthorService;
+import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,11 +43,13 @@ public class AuthorController {
         return ResponseEntity.ok(authorResponse);
     }
 
-    @GetMapping("/author/nickname")
-    public ResponseEntity<AuthorResult> getAuthorBynickname(@RequestParam String nickname) {
-        List<Author> authorList = authorService.findAllBynicknameContains(nickname);
-        List<AuthorResponse> authorResponseList = AuthorResponse.getFromAuthorList(authorList);
-        return ResponseEntity.ok(new AuthorResult(authorResponseList));
+    @PostMapping("/author/nickname")
+    public ResponseEntity<AuthorResult> getAuthorByNickname(@RequestBody CartoonSearchDto cartoonSearchDto) {
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        List<AuthorCartoonResponse> authorCartoonResponseList =
+                authorService.findAllByNicknameContains(cartoonSearch);
+
+        return ResponseEntity.ok(new AuthorResult(authorCartoonResponseList));
     }
 
     @PatchMapping("/author")

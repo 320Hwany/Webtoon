@@ -4,6 +4,7 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
+import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.util.ControllerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -114,15 +115,26 @@ class AuthorControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("작가 닉네임으로 작가를 검색합니다 - 성공")
-    void findAllBynickname200() throws Exception {
+    void findAllByNickname200() throws Exception {
         // given
-        Author author = saveAuthorInRepository();
+        saveAuthorInRepository();
+
+        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+                .page(0)
+                .nickname("작가 이름")
+                .dayOfTheWeek("NONE")
+                .progress("NONE")
+                .genre("NONE")
+                .build();
+
+        String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
 
         // expected
-        mockMvc.perform(get("/author/nickname")
-                        .param("nickname", author.getNickname()))
+        mockMvc.perform(post("/author/nickname")
+                        .contentType(APPLICATION_JSON)
+                        .content(cartoonSearchDtoJson))
                 .andExpect(status().isOk())
-                .andDo(document("author/get/nickname/200"));
+                .andDo(document("author/nickname/200"));
     }
 
 

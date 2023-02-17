@@ -3,6 +3,7 @@ package com.webtoon.author.repository;
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.domain.CartoonSearch;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,10 +14,13 @@ public interface AuthorRepository {
     void save(Author author);
 
     Author getById(Long id);
-    Optional<Author> findBynickname(String nickname);
-    List<Author> findAllBynicknameContains(String nickname);
+
+    Optional<Author> findByNickname(String nickname);
+
+    List<Author> findAllByNicknameContains(CartoonSearch cartoonSearch);
 
     Author getByEmail(String email);
+
     Optional<Author> findByEmail(String email);
 
     void validateAuthorPresent(AuthorSession authorSession);

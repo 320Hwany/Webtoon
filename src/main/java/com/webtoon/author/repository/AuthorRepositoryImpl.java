@@ -5,23 +5,26 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.domain.QAuthor;
 import com.webtoon.author.exception.AuthorNotFoundException;
-import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.domain.QCartoon;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.webtoon.author.domain.QAuthor.*;
-import static com.webtoon.cartoon.domain.QCartoon.*;
+import static com.webtoon.author.domain.QAuthor.author;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+
 
 @RequiredArgsConstructor
 @Repository
 public class AuthorRepositoryImpl implements AuthorRepository {
 
     private final AuthorJpaRepository authorJpaRepository;
-    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public void save(Author author) {
@@ -35,13 +38,15 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public Optional<Author> findBynickname(String nickname) {
-        return authorJpaRepository.findBynickname(nickname);
+    public Optional<Author> findByNickname(String nickname) {
+        return authorJpaRepository.findByNickname(nickname);
     }
 
     @Override
-    public List<Author> findAllBynicknameContains(String nickname) {
-        return authorJpaRepository.findAllBynicknameContains(nickname);
+    public List<Author> findAllByNicknameContains(CartoonSearch cartoonSearch) {
+        PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
+                Sort.by(DESC, "id"));
+        return authorJpaRepository.findAllByNicknameContains(cartoonSearch.getNickname(), pageRequest);
     }
 
     @Override
@@ -60,7 +65,6 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         authorJpaRepository.findById(authorSession.getId())
                 .orElseThrow(AuthorNotFoundException::new);
     }
-
 
     @Override
     public void delete(Author author) {

@@ -34,16 +34,6 @@ public class CartoonController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/cartoon/author/nickname")
-    public ResponseEntity<CartoonListResult> getCartoonListByAuthornickname(
-            @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonService.findAllByAuthornickname(cartoonSearch);
-        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-
-        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList));
-    }
-
     @PostMapping("/cartoon/title")
     public ResponseEntity<CartoonListResult> getCartoonListByTitle(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {

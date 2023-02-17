@@ -5,9 +5,13 @@ import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
+import com.webtoon.author.dto.response.AuthorCartoonResponse;
 import com.webtoon.author.exception.AuthorDuplicationException;
 import com.webtoon.author.exception.AuthorNotFoundException;
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.dto.request.CartoonSearchDto;
+import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.util.ServiceTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -48,15 +52,31 @@ class AuthorServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("입력한 닉네임이 포함된 작가를 검색합니다 - 성공")
-    void findAllBynickname200() {
+    void findAllByNickname200() {
         // given
         Author author = saveAuthorInRepository();
+        saveCartoonInRepository(author);
+
+        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+                .page(0)
+                .nickname("작가 이름")
+                .dayOfTheWeek("NONE")
+                .progress("NONE")
+                .genre("NONE")
+                .build();
+
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
 
         // when
-        List<Author> authorList = authorService.findAllBynicknameContains("작가");
+        List<AuthorCartoonResponse> authorCartoonResponseList = 
+                authorService.findAllByNicknameContains(cartoonSearch);
 
         // then
-        assertThat(authorList.get(0)).isEqualTo(author);
+        AuthorCartoonResponse authorCartoonResponse = authorCartoonResponseList.get(0);
+        List<CartoonResponse> cartoonResponseList = authorCartoonResponse.getCartoonResponseList();
+
+        assertThat(authorCartoonResponseList.size()).isEqualTo(1);
+        assertThat(cartoonResponseList.size()).isEqualTo(1);
     }
 
     @Test

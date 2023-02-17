@@ -197,54 +197,6 @@ class CartoonServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("작가의 이름으로 작가의 모든 만화를 가져옵니다 - 성공")
-    @Transactional
-    void findAllByAuthornickname() {
-        // given
-        Author author = Author.builder()
-                .nickname("작가 이름")
-                .build();
-
-        Author anotherAuthor = Author.builder()
-                .nickname("다른 작가")
-                .build();
-
-        authorRepository.save(author);
-        authorRepository.save(anotherAuthor);
-
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(0)
-                .nickname("작가 이름")
-                .dayOfTheWeek("NONE")
-                .progress("NONE")
-                .genre("NONE")
-                .build();
-
-        List<Cartoon> cartoonListForAuthor = IntStream.range(1, 11)
-                .mapToObj(i -> Cartoon.builder()
-                        .author(author)
-                        .build())
-                .collect(Collectors.toList());
-
-        List<Cartoon> cartoonListForAnotherAuthor = IntStream.range(11, 16)
-                .mapToObj(i -> Cartoon.builder()
-                        .author(anotherAuthor)
-                        .build())
-                .collect(Collectors.toList());
-
-        cartoonRepository.saveAll(cartoonListForAuthor);
-        cartoonRepository.saveAll(cartoonListForAnotherAuthor);
-
-        // when
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> onePageCartoonList = cartoonService.findAllByAuthornickname(cartoonSearch);
-
-        // then
-        assertThat(onePageCartoonList.size()).isEqualTo(10);
-        assertThat(onePageCartoonList.get(0).getAuthor()).isEqualTo(author);
-    }
-
-    @Test
     @DisplayName("만화가 존재하면 수정에 성공합니다")
     @Transactional
     void update200() {

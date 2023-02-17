@@ -64,7 +64,7 @@ public class MemberService {
     }
 
     public void checkDuplication(MemberSignup memberSignup) {
-        Optional<Member> findMemberBynickname = memberRepository.findBynickname(memberSignup.getNickname());
+        Optional<Member> findMemberBynickname = memberRepository.findByNickname(memberSignup.getNickname());
         Optional<Member> findMemberByEmail = memberRepository.findByEmail(memberSignup.getEmail());
         if (findMemberBynickname.isPresent() || findMemberByEmail.isPresent()) {
             throw new MemberDuplicationException();

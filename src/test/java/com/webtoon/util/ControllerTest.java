@@ -139,6 +139,8 @@ public class ControllerTest {
                 .rating(ZERO_OF_TYPE_DOUBLE)
                 .likes(ZERO_OF_TYPE_LONG)
                 .build();
+
+        author.getCartoonList().add(cartoon);
         cartoonRepository.save(cartoon);
         return cartoon;
     }

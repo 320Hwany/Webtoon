@@ -98,54 +98,6 @@ class CartoonControllerTest extends ControllerTest {
     }
 
     @Test
-    @DisplayName("작가의 이름으로 작가가 그린 모든 만화를 가져옵니다 - 성공")
-    void getCartoonListByAuthornickname() throws Exception {
-        // given
-        Author author = Author.builder()
-                .nickname("작가 이름")
-                .build();
-
-        Author anotherAuthor = Author.builder()
-                .nickname("다른 작가")
-                .build();
-
-        authorRepository.save(author);
-        authorRepository.save(anotherAuthor);
-
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(0)
-                .nickname("작가 이름")
-                .dayOfTheWeek("NONE")
-                .progress("NONE")
-                .genre("NONE")
-                .build();
-
-        List<Cartoon> cartoonListForAuthor = IntStream.range(1, 11)
-                .mapToObj(i -> Cartoon.builder()
-                        .author(author)
-                        .build())
-                .collect(Collectors.toList());
-
-        List<Cartoon> cartoonListForAnotherAuthor = IntStream.range(11, 16)
-                .mapToObj(i -> Cartoon.builder()
-                        .author(anotherAuthor)
-                        .build())
-                .collect(Collectors.toList());
-
-        cartoonRepository.saveAll(cartoonListForAuthor);
-        cartoonRepository.saveAll(cartoonListForAnotherAuthor);
-
-        String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
-
-        // expected
-        mockMvc.perform(post("/cartoon/author/nickname")
-                        .contentType(APPLICATION_JSON)
-                        .content(cartoonSearchDtoJson))
-                .andExpect(status().isOk())
-                .andDo(document("cartoon/author/nickname/200"));
-    }
-
-    @Test
     @DisplayName("입력한 제목을 포함하는 만화 리스트를 한 페이지 보여줍니다 - 성공")
     void getCartoonListByTitle200() throws Exception {
         // given

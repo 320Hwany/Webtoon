@@ -5,11 +5,12 @@ import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
+import com.webtoon.author.dto.response.AuthorCartoonResponse;
 import com.webtoon.author.exception.AuthorDuplicationException;
 import com.webtoon.author.repository.AuthorRepository;
+import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.member.exception.MemberUnauthorizedException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -32,8 +34,11 @@ public class AuthorService {
         authorRepository.save(author);
     }
 
-    public List<Author> findAllBynicknameContains(String nickname) {
-        return authorRepository.findAllBynicknameContains(nickname);
+    public List<AuthorCartoonResponse> findAllByNicknameContains(CartoonSearch cartoonSearch) {
+        List<Author> authorList = authorRepository.findAllByNicknameContains(cartoonSearch);
+        return authorList.stream()
+                .map(AuthorCartoonResponse::getFromAuthor)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -53,9 +58,9 @@ public class AuthorService {
     }
 
     public void checkDuplication(AuthorSignup authorSignup) {
-        Optional<Author> findAuthorBynickname = authorRepository.findBynickname(authorSignup.getNickname());
+        Optional<Author> findAuthorByNickname = authorRepository.findByNickname(authorSignup.getNickname());
         Optional<Author> findAuthorByEmail = authorRepository.findByEmail(authorSignup.getEmail());
-        if (findAuthorBynickname.isPresent() || findAuthorByEmail.isPresent()) {
+        if (findAuthorByNickname.isPresent() || findAuthorByEmail.isPresent()) {
             throw new AuthorDuplicationException();
         }
     }

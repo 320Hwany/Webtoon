@@ -47,10 +47,6 @@ public class CartoonService {
         return cartoonRepository.findAllOrderByLikes(cartoonSearch);
     }
 
-    public List<Cartoon> findAllByAuthornickname(CartoonSearch cartoonSearch) {
-        return cartoonRepository.findAllByAuthornickname(cartoonSearch);
-    }
-
     @Transactional
     public Cartoon update(Long cartoonId, CartoonUpdate cartoonUpdate) {
         Cartoon cartoon = cartoonRepository.getById(cartoonId);

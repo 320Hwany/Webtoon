@@ -1,7 +1,6 @@
 package com.webtoon.content.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.webtoon.author.domain.QAuthor;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.exception.ContentNotFoundException;
 import lombok.RequiredArgsConstructor;

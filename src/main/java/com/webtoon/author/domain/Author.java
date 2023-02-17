@@ -31,6 +31,7 @@ public class Author extends BaseTimeEntity {
     private String nickname;
 
     private String email;
+
     private String password;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)

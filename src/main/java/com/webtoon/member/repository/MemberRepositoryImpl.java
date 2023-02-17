@@ -26,8 +26,8 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findBynickname(String nickname) {
-        return memberJpaRepository.findBynickname(nickname);
+    public Optional<Member> findByNickname(String nickname) {
+        return memberJpaRepository.findByNickname(nickname);
     }
 
     @Override
