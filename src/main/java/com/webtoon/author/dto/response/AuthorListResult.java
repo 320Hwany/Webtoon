@@ -5,7 +5,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class AuthorResult<T> {
+public class AuthorListResult<T> {
 
-    private T authorList;
+    private long count;
+
+    private T authorResponseList;
 }

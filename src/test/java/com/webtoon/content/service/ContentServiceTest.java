@@ -86,28 +86,13 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         // when
-        Content content = contentService.getContentFromContentSaveAndCartoonId(contentSave, cartoon.getId());
+        Content content = contentService.getContentFromContentSaveAndCartoon(contentSave, cartoon);
 
         // then
         assertThat(content.getCartoon()).isEqualTo(cartoon);
         assertThat(content.getSubTitle()).isEqualTo("부제 입니다");
         assertThat(content.getEpisode()).isEqualTo(20L);
         assertThat(content.getRegistrationDate()).isEqualTo(LocalDate.of(2023, 1, 19));
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 만화라면 getContentFromContentSaveAndCartoonId로 가져올 수 없습니다 - 실패")
-    void getContentFromContentSaveAndCartoonId404() {
-        // given
-        ContentSave contentSave = ContentSave.builder()
-                .subTitle("부제 입니다")
-                .episode(20)
-                .registrationDate(LocalDate.of(2023, 1, 19))
-                .build();
-
-        // expected
-        assertThrows(CartoonNotFoundException.class,
-                () -> contentService.getContentFromContentSaveAndCartoonId(contentSave, 9999L));
     }
 
     @Test

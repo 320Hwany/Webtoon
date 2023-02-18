@@ -11,11 +11,11 @@ public interface MemberRepository {
 
     Member getById(Long id);
 
+    Member getByEmail(String email);
+
     Optional<Member> findByNickname(String nickname);
 
     Optional<Member> findByEmail(String email);
-
-    Member getByEmailAndPassword(String email, String password);
 
     void validateMemberPresent(MemberSession memberSession);
 

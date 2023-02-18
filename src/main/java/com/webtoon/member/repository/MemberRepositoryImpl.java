@@ -26,6 +26,12 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public Member getByEmail(String email) {
+        return memberJpaRepository.findByEmail(email)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
+    @Override
     public Optional<Member> findByNickname(String nickname) {
         return memberJpaRepository.findByNickname(nickname);
     }
@@ -33,12 +39,6 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public Optional<Member> findByEmail(String email) {
         return memberJpaRepository.findByEmail(email);
-    }
-
-    @Override
-    public Member getByEmailAndPassword(String email, String password) {
-        return memberJpaRepository.findByEmailAndPassword(email, password)
-                .orElseThrow(MemberNotFoundException::new);
     }
 
     @Override

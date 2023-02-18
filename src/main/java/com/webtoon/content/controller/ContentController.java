@@ -1,6 +1,7 @@
 package com.webtoon.content.controller;
 
 import com.webtoon.author.domain.AuthorSession;
+import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.dto.request.ContentSave;
@@ -32,8 +33,9 @@ public class ContentController {
     public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
                                      @PathVariable Long cartoonId,
                                      @RequestBody @Valid ContentSave contentSave) {
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
-        Content content = contentService.getContentFromContentSaveAndCartoonId(contentSave, cartoonId);
+        Cartoon cartoon = cartoonService.getById(cartoonId);
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoon);
+        Content content = contentService.getContentFromContentSaveAndCartoon(contentSave, cartoon);
         contentService.save(content);
 
         return ResponseEntity.ok().build();
@@ -65,7 +67,8 @@ public class ContentController {
                                        @PathVariable Long cartoonId, @PathVariable int contentEpisode,
                                        @RequestBody @Valid ContentUpdate contentUpdate) {
 
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
+        Cartoon cartoon = cartoonService.getById(cartoonId);
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoon);
         Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
         contentService.update(content, contentUpdate);
         return ResponseEntity.ok().build();

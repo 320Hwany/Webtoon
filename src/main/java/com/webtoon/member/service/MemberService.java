@@ -8,6 +8,7 @@ import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.member.exception.MemberDuplicationException;
+import com.webtoon.member.exception.MemberUnauthorizedException;
 import com.webtoon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,15 +59,18 @@ public class MemberService {
     }
 
     public MemberSession makeMemberSession(MemberLogin memberLogin) {
-        Member member = memberRepository.getByEmailAndPassword(memberLogin.getEmail(), memberLogin.getPassword());
-        MemberSession memberSession = MemberSession.getFromMember(member);
-        return memberSession;
+        Member member = memberRepository.getByEmail(memberLogin.getEmail());
+        if (passwordEncoder.matches(memberLogin.getPassword(), member.getPassword())) {
+            MemberSession memberSession = MemberSession.getFromMember(member);
+            return memberSession;
+        }
+        throw new MemberUnauthorizedException();
     }
 
     public void checkDuplication(MemberSignup memberSignup) {
-        Optional<Member> findMemberBynickname = memberRepository.findByNickname(memberSignup.getNickname());
+        Optional<Member> findMemberByNickname = memberRepository.findByNickname(memberSignup.getNickname());
         Optional<Member> findMemberByEmail = memberRepository.findByEmail(memberSignup.getEmail());
-        if (findMemberBynickname.isPresent() || findMemberByEmail.isPresent()) {
+        if (findMemberByNickname.isPresent() || findMemberByEmail.isPresent()) {
             throw new MemberDuplicationException();
         }
     }

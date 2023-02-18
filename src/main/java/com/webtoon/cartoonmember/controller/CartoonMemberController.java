@@ -38,8 +38,11 @@ public class CartoonMemberController {
     @PostMapping("/cartoonMember/thumbsUp/{cartoonId}")
     public ResponseEntity<Void> thumbsUp(@LoginForMember MemberSession memberSession,
                                          @PathVariable Long cartoonId) {
-        cartoonMemberService.thumbsUp(cartoonId, memberSession.getId());
-        cartoonMemberService.addLike(cartoonId);
+        CartoonMember cartoonMember =
+                cartoonMemberService.getByCartoonIdAndMemberId(cartoonId, memberSession.getId());
+        cartoonMemberService.thumbsUp(cartoonMember);
+        Cartoon cartoon = cartoonService.getById(cartoonId);
+        cartoonService.addLike(cartoon);
         return ResponseEntity.ok().build();
     }
 
@@ -47,14 +50,14 @@ public class CartoonMemberController {
     public ResponseEntity<CartoonListResult> findAllForMember(@LoginForMember MemberSession memberSession) {
         List<Cartoon> cartoonList = cartoonMemberService.findAllCartoonByMemberId(memberSession.getId());
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList));
+        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
     @GetMapping("/cartoonMember/member/likeList")
     public ResponseEntity<CartoonListResult> findLikeListForMember(@LoginForMember MemberSession memberSession) {
         List<Cartoon> cartoonList = cartoonMemberService.findLikeListForMember(memberSession.getId());
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList));
+        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
     @PostMapping("/cartoonMember/rating/{cartoonId}/{rating}")

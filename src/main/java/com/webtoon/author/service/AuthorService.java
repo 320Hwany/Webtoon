@@ -7,6 +7,7 @@ import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.dto.response.AuthorCartoonResponse;
 import com.webtoon.author.exception.AuthorDuplicationException;
+import com.webtoon.author.exception.AuthorUnauthorizedException;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.member.exception.MemberUnauthorizedException;
@@ -42,8 +43,7 @@ public class AuthorService {
     }
 
     @Transactional
-    public void update(AuthorSession authorSession, AuthorUpdate authorUpdate) {
-        Author author = authorRepository.getById(authorSession.getId());
+    public void update(Author author, AuthorUpdate authorUpdate) {
         author.update(authorUpdate, passwordEncoder);
     }
 
@@ -52,8 +52,7 @@ public class AuthorService {
     }
 
     @Transactional
-    public void delete(AuthorSession authorSession) {
-        Author author = authorRepository.getById(authorSession.getId());
+    public void delete(Author author) {
         authorRepository.delete(author);
     }
 
@@ -71,7 +70,7 @@ public class AuthorService {
             AuthorSession authorSession = AuthorSession.getFromAuthor(author);
             return authorSession;
         }
-        throw new MemberUnauthorizedException();
+        throw new AuthorUnauthorizedException();
     }
 
     public void makeSessionForAuthorSession(AuthorSession authorSession, HttpServletRequest request) {

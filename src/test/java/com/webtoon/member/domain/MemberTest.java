@@ -1,6 +1,5 @@
 package com.webtoon.member.domain;
 
-import com.webtoon.member.dto.request.MemberCharge;
 import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.member.exception.LackOfCoinException;
 import com.webtoon.util.DomainTest;
@@ -13,7 +12,7 @@ import java.time.LocalDate;
 import static com.webtoon.util.constant.Constant.PAYCOIN;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MemberTest extends DomainTest {
+class MemberTest extends DomainTest {
 
     @Test
     void update() {

@@ -79,9 +79,9 @@ public class Cartoon extends BaseTimeEntity {
     }
 
     public static void validateEnumTypeValid(CartoonEnumField cartoonEnumField) {
-        Boolean isDayValid = DayOfTheWeek.validateValid(cartoonEnumField.getDayOfTheWeek());
-        Boolean isProgressValid = Progress.validateValid(cartoonEnumField.getProgress());
-        Boolean isGenreValid = Genre.validateValid(cartoonEnumField.getGenre());
+        boolean isDayValid = DayOfTheWeek.validateValid(cartoonEnumField.getDayOfTheWeek());
+        boolean isProgressValid = Progress.validateValid(cartoonEnumField.getProgress());
+        boolean isGenreValid = Genre.validateValid(cartoonEnumField.getGenre());
 
         if ((isDayValid == false) || (isProgressValid == false) || (isGenreValid == false)) {
             throw new EnumTypeValidException(isDayValid, isProgressValid, isGenreValid);

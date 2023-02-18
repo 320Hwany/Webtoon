@@ -5,6 +5,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.QCartoon;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.domain.QCartoonMember;
+import com.webtoon.member.domain.QMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -41,12 +42,14 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .fetchOne());
     }
 
+    // todo 쿼리 두방
     @Override
     public List<Cartoon> findAllCartoonByMemberId(Long memberId) {
         return jpaQueryFactory.select(cartoonMember.cartoon)
                 .from(cartoonMember)
                 .leftJoin(cartoonMember.cartoon.author, author)
                 .fetchJoin()
+                .leftJoin(cartoonMember.member, member)
                 .where(cartoonMember.member.id.eq(memberId))
                 .fetch();
     }

@@ -110,12 +110,14 @@ class CartoonServiceTest extends ServiceTest {
         List<Cartoon> cartoonListKr = IntStream.range(1, 11)
                 .mapToObj(i -> Cartoon.builder()
                         .title("만화 제목 " + i)
+                        .likes(i)
                         .build())
                 .collect(Collectors.toList());
 
         List<Cartoon> cartoonListEn = IntStream.range(1, 11)
                 .mapToObj(i -> Cartoon.builder()
                         .title("cartoon title " + i)
+                        .likes(i)
                         .build())
                 .collect(Collectors.toList());
 
@@ -197,6 +199,44 @@ class CartoonServiceTest extends ServiceTest {
     }
 
     @Test
+    @DisplayName("입력한 요일에 맞는 만화를 좋아요 많은 순으로 보여줍니다 - 성공")
+    @Transactional
+    void findAllByDayOfTheWeek() {
+        // given
+        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+                .page(0)
+                .dayOfTheWeek("MON")
+                .progress("NONE")
+                .genre("NONE")
+                .build();
+
+        List<Cartoon> cartoonMonList = LongStream.range(1, 21)
+                .mapToObj(i -> Cartoon.builder()
+                        .likes(i)
+                        .dayOfTheWeek(DayOfTheWeek.MON)
+                        .build())
+                .collect(Collectors.toList());
+
+        List<Cartoon> cartoonTueList = LongStream.range(21, 31)
+                .mapToObj(i -> Cartoon.builder()
+                        .likes(i)
+                        .dayOfTheWeek(DayOfTheWeek.TUE)
+                        .build())
+                .collect(Collectors.toList());
+
+        cartoonRepository.saveAll(cartoonMonList);
+        cartoonRepository.saveAll(cartoonTueList);
+
+        // when
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        List<Cartoon> onePageCartoonList = cartoonService.findAllByDayOfTheWeek(cartoonSearch);
+
+        // then
+        assertThat(onePageCartoonList.size()).isEqualTo(20);
+        assertThat(onePageCartoonList.get(0).getLikes()).isEqualTo(20);
+    }
+
+    @Test
     @DisplayName("만화가 존재하면 수정에 성공합니다")
     @Transactional
     void update200() {
@@ -211,29 +251,13 @@ class CartoonServiceTest extends ServiceTest {
                 .genre("ROMANCE")
                 .build();
         // when
-        cartoonService.update(cartoon.getId(), cartoonUpdate);
+        cartoonService.update(cartoon, cartoonUpdate);
 
         // then
         assertThat(cartoon.getTitle()).isEqualTo("수정 만화 제목");
         assertThat(cartoon.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.TUE);
         assertThat(cartoon.getProgress()).isEqualTo(Progress.COMPLETE);
         assertThat(cartoon.getGenre()).isEqualTo(Genre.ROMANCE);
-    }
-
-    @Test
-    @DisplayName("만화가 존재하지 않으면 수정할 수 없습니다 - 실패")
-    void update404() {
-        // given
-        CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
-                .title("수정 만화 제목")
-                .dayOfTheWeek("TUE")
-                .progress("COMPLETE")
-                .genre("ROMANCE")
-                .build();
-
-        // expected
-        assertThrows(CartoonNotFoundException.class,
-                () -> cartoonService.update(9999L,  cartoonUpdate));
     }
 
     @Test
@@ -244,20 +268,11 @@ class CartoonServiceTest extends ServiceTest {
         Cartoon cartoon = saveCartoonInRepository(author);
 
         // when
-        cartoonService.delete(cartoon.getId());
+        cartoonService.delete(cartoon);
 
         // then
         assertThat(cartoonRepository.count()).isEqualTo(0L);
     }
-
-    @Test
-    @DisplayName("만화가 존재하지 않으면 만화를 예외가 발생합니다 - 실패")
-    void delete404() {
-        // expected
-        assertThrows(CartoonNotFoundException.class,
-                () -> cartoonService.delete(1L));
-    }
-
 
     @Test
     @DisplayName("작가가 만화에 대한 접근 권한이 있는면 메소드를 통과합니다 - 성공")
@@ -268,7 +283,7 @@ class CartoonServiceTest extends ServiceTest {
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
 
         // expected
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoon.getId());
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoon);
     }
 
     @Test
@@ -286,7 +301,7 @@ class CartoonServiceTest extends ServiceTest {
 
         // expected
         assertThrows(CartoonForbiddenException.class,
-                () -> cartoonService.validateAuthorityForCartoon(anotherAuthorSession, cartoon.getId()));
+                () -> cartoonService.validateAuthorityForCartoon(anotherAuthorSession, cartoon));
     }
 
     @Test
@@ -302,5 +317,19 @@ class CartoonServiceTest extends ServiceTest {
         // expected
         assertThrows(EnumTypeValidException.class,
                 () -> cartoonService.validateGenreValid("존재하지 않는 장르"));
+    }
+
+    @Test
+    @DisplayName("좋아요를 누르면 Cartoon의 좋아요 개수가 1 증가합니다")
+    void addLike() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+
+        // when
+        cartoonService.addLike(cartoon);
+
+        // then
+        assertThat(cartoon.getLikes()).isEqualTo(1);
     }
 }

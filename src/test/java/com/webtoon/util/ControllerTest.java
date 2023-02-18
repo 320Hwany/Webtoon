@@ -162,7 +162,7 @@ public class ControllerTest {
         Member member = Member.builder()
                 .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
-                .password("1234")
+                .password(passwordEncoder.encode("1234"))
                 .coin(ZERO_OF_TYPE_LONG)
                 .build();
 
@@ -210,7 +210,7 @@ public class ControllerTest {
     protected MockHttpSession loginMemberSession(Member member) throws Exception {
         MemberLogin memberLogin = MemberLogin.builder()
                 .email(member.getEmail())
-                .password(member.getPassword())
+                .password("1234")
                 .build();
 
         String loginJson = objectMapper.writeValueAsString(memberLogin);

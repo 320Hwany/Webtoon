@@ -47,21 +47,21 @@ public class CartoonService {
         return cartoonRepository.findAllOrderByLikes(cartoonSearch);
     }
 
-    @Transactional
-    public Cartoon update(Long cartoonId, CartoonUpdate cartoonUpdate) {
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
-        cartoon.update(cartoonUpdate);
-        return cartoon;
+    public List<Cartoon> findAllByDayOfTheWeek(CartoonSearch cartoonSearch) {
+        return cartoonRepository.findAllByDayOfTheWeek(cartoonSearch);
     }
 
     @Transactional
-    public void delete(Long cartoonId) {
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
+    public void update(Cartoon cartoon, CartoonUpdate cartoonUpdate) {
+        cartoon.update(cartoonUpdate);
+    }
+
+    @Transactional
+    public void delete(Cartoon cartoon) {
         cartoonRepository.delete(cartoon);
     }
 
-    public void validateAuthorityForCartoon(AuthorSession authorSession, Long cartoonId) {
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
+    public void validateAuthorityForCartoon(AuthorSession authorSession, Cartoon cartoon) {
         cartoon.validateAuthorityForCartoon(authorSession);
     }
 
@@ -69,6 +69,11 @@ public class CartoonService {
         if (Genre.validateValid(genre) == false) {
             throw new EnumTypeValidException(false, false, true);
         }
+    }
+
+    @Transactional
+    public void addLike(Cartoon cartoon) {
+        cartoon.addLike();
     }
 
     @Transactional

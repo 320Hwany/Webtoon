@@ -34,7 +34,7 @@ public class CartoonRepositoryImpl implements CartoonRepository {
     @Override
     public List<Cartoon> findAllByTitle(CartoonSearch cartoonSearch) {
         PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
-                Sort.by(DESC, "id"));
+                Sort.by(DESC, "likes"));
         List<Cartoon> cartoonList =
                 cartoonJpaRepository.findAllByTitleContains(cartoonSearch.getTitle(), pageRequest);
         return cartoonList;
@@ -43,7 +43,7 @@ public class CartoonRepositoryImpl implements CartoonRepository {
     @Override
     public List<Cartoon> findAllByGenre(CartoonSearch cartoonSearch) {
         PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
-                Sort.by(DESC, "id"));
+                Sort.by(DESC, "likes"));
         return cartoonJpaRepository.findAllByGenre(cartoonSearch.getGenre(), pageRequest);
     }
 
@@ -53,6 +53,15 @@ public class CartoonRepositoryImpl implements CartoonRepository {
                 Sort.by(DESC, "likes"));
         Page<Cartoon> cartoonPage = cartoonJpaRepository.findAll(pageRequest);
         List<Cartoon> cartoonList = cartoonPage.getContent();
+        return cartoonList;
+    }
+
+    @Override
+    public List<Cartoon> findAllByDayOfTheWeek(CartoonSearch cartoonSearch) {
+        PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
+                Sort.by(DESC, "likes"));
+        List<Cartoon> cartoonList =
+                cartoonJpaRepository.findAllByDayOfTheWeek(cartoonSearch.getDayOfTheWeek(), pageRequest);
         return cartoonList;
     }
 

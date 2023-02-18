@@ -18,6 +18,8 @@ public interface CartoonRepository {
 
     List<Cartoon> findAllOrderByLikes(CartoonSearch cartoonSearch);
 
+    List<Cartoon> findAllByDayOfTheWeek(CartoonSearch cartoonSearch);
+
     void delete(Cartoon cartoon);
 
     void saveAll(List<Cartoon> cartoonList);

@@ -85,13 +85,6 @@ class AuthorServiceTest extends ServiceTest {
         // given
         Author author = saveAuthorInRepository();
 
-        AuthorSession authorSession = AuthorSession.builder()
-                .id(author.getId())
-                .nickname(author.getNickname())
-                .email(author.getEmail())
-                .password(author.getPassword())
-                .build();
-
         AuthorUpdate authorUpdate = AuthorUpdate.builder()
                 .nickname("수정 닉네임")
                 .email("수정 이메일")
@@ -99,34 +92,12 @@ class AuthorServiceTest extends ServiceTest {
                 .build();
 
         // when
-        authorService.update(authorSession, authorUpdate);
+        authorService.update(author, authorUpdate);
 
         // then
         assertThat(author.getNickname()).isEqualTo("수정 닉네임");
         assertThat(author.getEmail()).isEqualTo("수정 이메일");
         assertThat(passwordEncoder.matches("4321", author.getPassword())).isTrue();
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 작가 계정이면 수정이 되지 않습니다 - 실패")
-    void update404() {
-        // given
-        AuthorSession authorSession = AuthorSession.builder()
-                .id(1L)
-                .nickname("DB에 없는 회원")
-                .email("yhwjd@naver.com")
-                .password("1234")
-                .build();
-
-        AuthorUpdate authorUpdate = AuthorUpdate.builder()
-                .nickname("수정 닉네임")
-                .email("수정 이메일")
-                .password("4321")
-                .build();
-
-        // expected
-        assertThrows(AuthorNotFoundException.class,
-                () -> authorService.update(authorSession, authorUpdate));
     }
 
     @Test
@@ -137,35 +108,12 @@ class AuthorServiceTest extends ServiceTest {
         Cartoon cartoon = saveCartoonInRepository(author);
         author.getCartoonList().add(cartoon);
 
-        AuthorSession authorSession = AuthorSession.builder()
-                .id(author.getId())
-                .nickname(author.getNickname())
-                .email(author.getEmail())
-                .password(author.getPassword())
-                .build();
-
         // when
-        authorService.delete(authorSession);
+        authorService.delete(author);
 
         // then
         assertThat(authorRepository.count()).isEqualTo(0);
         assertThat(cartoonRepository.count()).isEqualTo(0);
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 작가 계정이면 삭제할 수 없습니다 - 실패")
-    void delete404() {
-        // given
-        AuthorSession authorSession = AuthorSession.builder()
-                .id(1L)
-                .nickname("DB에 없는 회원")
-                .email("yhwjd@naver.com")
-                .password("1234")
-                .build();
-
-        // expected
-        assertThrows(AuthorNotFoundException.class,
-                () -> authorService.delete(authorSession));
     }
 
     @Test

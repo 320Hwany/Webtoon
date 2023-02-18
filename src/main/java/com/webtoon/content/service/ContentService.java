@@ -35,8 +35,7 @@ public class ContentService {
         return contentRepository.getById(id);
     }
 
-    public Content getContentFromContentSaveAndCartoonId(ContentSave contentSave, Long cartoonId) {
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
+    public Content getContentFromContentSaveAndCartoon(ContentSave contentSave, Cartoon cartoon) {
         Content content = Content.getFromContentSaveAndCartoon(contentSave, cartoon);
         return content;
     }

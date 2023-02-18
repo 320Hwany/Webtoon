@@ -89,24 +89,10 @@ class CartoonMemberServiceTest extends ServiceTest {
         CartoonMember cartoonMember = saveCartoonMemberInRepository(cartoon, member);
 
         // when
-        cartoonMemberService.thumbsUp(cartoon.getId(), member.getId());
+        cartoonMemberService.thumbsUp(cartoonMember);
 
         // then
         assertThat(cartoonMember.isThumbsUp()).isEqualTo(true);
-    }
-
-    @Test
-    @DisplayName("좋아요를 누르면 Cartoon의 좋아요 개수가 1 증가합니다")
-    void addLike() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-
-        // when
-        cartoonMemberService.addLike(cartoon.getId());
-
-        // then
-        assertThat(cartoon.getLikes()).isEqualTo(1);
     }
 
     @Test

@@ -7,7 +7,7 @@ import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.dto.response.AuthorCartoonResponse;
 import com.webtoon.author.dto.response.AuthorResponse;
-import com.webtoon.author.dto.response.AuthorResult;
+import com.webtoon.author.dto.response.AuthorListResult;
 import com.webtoon.author.service.AuthorService;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
@@ -44,19 +44,19 @@ public class AuthorController {
     }
 
     @PostMapping("/author/nickname")
-    public ResponseEntity<AuthorResult> getAuthorByNickname(@RequestBody CartoonSearchDto cartoonSearchDto) {
+    public ResponseEntity<AuthorListResult> getAuthorByNickname(@RequestBody CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<AuthorCartoonResponse> authorCartoonResponseList =
                 authorService.findAllByNicknameContains(cartoonSearch);
 
-        return ResponseEntity.ok(new AuthorResult(authorCartoonResponseList));
+        return ResponseEntity.ok(new AuthorListResult(authorCartoonResponseList.size(), authorCartoonResponseList));
     }
 
     @PatchMapping("/author")
     public ResponseEntity<AuthorResponse> update(@LoginForAuthor AuthorSession authorSession,
                                                  @RequestBody @Valid AuthorUpdate authorUpdate) {
-        authorService.update(authorSession, authorUpdate);
         Author author = authorService.getById(authorSession.getId());
+        authorService.update(author, authorUpdate);
         AuthorResponse authorResponse = AuthorResponse.getFromAuthor(author);
         return ResponseEntity.ok(authorResponse);
     }
@@ -64,7 +64,8 @@ public class AuthorController {
     @DeleteMapping("/author")
     public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
                                        HttpServletRequest httpServletRequest) {
-        authorService.delete(authorSession);
+        Author author = authorService.getById(authorSession.getId());
+        authorService.delete(author);
         authorService.invalidateSession(authorSession, httpServletRequest);
         return ResponseEntity.ok().build();
     }

@@ -33,21 +33,14 @@ public class CartoonMemberService {
     }
 
     @Transactional
-    public void thumbsUp(Long cartoonId, Long memberId) {
-        CartoonMember cartonMember = getByCartoonIdAndMemberId(cartoonId, memberId);
-        cartonMember.thumbsUp();
+    public void thumbsUp(CartoonMember cartoonMember) {
+        cartoonMember.thumbsUp();
     }
 
     public CartoonMember getByCartoonIdAndMemberId(Long cartoonId, Long memberId) {
         CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(cartoonId, memberId)
                 .orElseThrow(CartoonMemberNotFoundException::new);
         return cartoonMember;
-    }
-
-    @Transactional
-    public void addLike(Long cartoonId) {
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
-        cartoon.addLike();
     }
 
     @Transactional

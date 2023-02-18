@@ -7,5 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CartoonListResult<T> {
 
+    private long count;
+
     private T cartoonResponseList;
 }
