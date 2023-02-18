@@ -13,7 +13,6 @@ import com.webtoon.cartoonmember.service.CartoonMemberService;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.content.service.ContentService;
-import com.webtoon.contentImgInfo.domain.ContentImgInfo;
 import com.webtoon.contentImgInfo.repository.ContentImgInfoRepository;
 import com.webtoon.contentImgInfo.service.ContentImgInfoService;
 import com.webtoon.contentmember.domain.ContentMember;
@@ -23,7 +22,6 @@ import com.webtoon.member.domain.Member;
 import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.repository.MemberRepository;
 import com.webtoon.member.service.MemberService;
-import com.webtoon.util.constant.Constant;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
@@ -46,7 +44,6 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 
 import static com.webtoon.util.constant.Constant.*;
-import static java.lang.Boolean.FALSE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -198,7 +195,7 @@ public class ControllerTest {
 
         String loginJson = objectMapper.writeValueAsString(authorLogin);
 
-        MockHttpServletRequest request = mockMvc.perform(post("/author/login")
+        MockHttpServletRequest request = mockMvc.perform(post("/static/author/login")
                         .contentType(APPLICATION_JSON)
                         .content(loginJson))
                 .andReturn().getRequest();

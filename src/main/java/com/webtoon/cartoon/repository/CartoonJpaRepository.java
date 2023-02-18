@@ -13,15 +13,15 @@ import java.util.List;
 public interface CartoonJpaRepository extends JpaRepository<Cartoon, Long> {
 
 
-    @EntityGraph(attributePaths = {"author"})
+    @EntityGraph(attributePaths = {"static/author"})
     Page<Cartoon> findAll(Pageable pageable);
 
-    @EntityGraph(attributePaths = {"author"})
+    @EntityGraph(attributePaths = {"static/author"})
     List<Cartoon> findAllByGenre(Genre genre, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"author"})
+    @EntityGraph(attributePaths = {"static/author"})
     List<Cartoon> findAllByTitleContains(String title, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"author"})
+    @EntityGraph(attributePaths = {"static/author"})
     List<Cartoon> findAllByDayOfTheWeek(DayOfTheWeek dayOfTheWeek, Pageable pageable);
 }
