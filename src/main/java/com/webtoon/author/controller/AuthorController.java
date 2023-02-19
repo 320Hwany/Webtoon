@@ -8,6 +8,7 @@ import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.dto.response.AuthorCartoonResponse;
 import com.webtoon.author.dto.response.AuthorResponse;
 import com.webtoon.author.dto.response.AuthorListResult;
+import com.webtoon.author.service.AuthorTransactionService;
 import com.webtoon.author.service.AuthorService;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
@@ -26,6 +27,7 @@ import java.util.List;
 public class AuthorController {
 
     private final AuthorService authorService;
+    private final AuthorTransactionService authorTransactionService;
 
     @PostMapping("/author/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid AuthorSignup authorSignup) {
@@ -47,7 +49,7 @@ public class AuthorController {
     public ResponseEntity<AuthorListResult> getAuthorListByNickname(@RequestBody CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<AuthorCartoonResponse> authorCartoonResponseList =
-                authorService.findAllByNicknameContains(cartoonSearch);
+                authorTransactionService.findAllByNicknameContains(cartoonSearch);
 
         return ResponseEntity.ok(new AuthorListResult(authorCartoonResponseList.size(), authorCartoonResponseList));
     }
@@ -55,8 +57,7 @@ public class AuthorController {
     @PatchMapping("/author")
     public ResponseEntity<AuthorResponse> update(@LoginForAuthor AuthorSession authorSession,
                                                  @RequestBody @Valid AuthorUpdate authorUpdate) {
-        Author author = authorService.getById(authorSession.getId());
-        authorService.update(author, authorUpdate);
+        Author author = authorTransactionService.updateTransactionSet(authorSession.getId(), authorUpdate);
         AuthorResponse authorResponse = AuthorResponse.getFromAuthor(author);
         return ResponseEntity.ok(authorResponse);
     }
@@ -64,8 +65,7 @@ public class AuthorController {
     @DeleteMapping("/author")
     public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
                                        HttpServletRequest httpServletRequest) {
-        Author author = authorService.getById(authorSession.getId());
-        authorService.delete(author);
+        authorTransactionService.deleteTransactionSet(authorSession.getId());
         authorService.invalidateSession(authorSession, httpServletRequest);
         return ResponseEntity.ok().build();
     }

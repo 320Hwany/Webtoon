@@ -3,10 +3,9 @@ package com.webtoon.cartoonmember.controller;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.dto.response.CartoonListResult;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
-import com.webtoon.cartoon.service.CartoonService;
-import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.cartoonmember.service.CartoonMemberService;
+import com.webtoon.cartoonmember.service.CartoonMemberTransactionalService;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ import java.util.List;
 public class CartoonMemberController {
 
     private final CartoonMemberService cartoonMemberService;
-    private final CartoonService cartoonService;
+    private final CartoonMemberTransactionalService cartoonMemberTransactionalService;
 
     @PostMapping("/cartoonMember/read/{cartoonId}")
     public ResponseEntity<Void> memberReadCartoon(@LoginForMember MemberSession memberSession,
@@ -31,18 +30,15 @@ public class CartoonMemberController {
 
         CartoonMemberSave cartoonMemberSave =
                 CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
-        cartoonMemberService.save(cartoonMemberSave);
+        cartoonMemberTransactionalService.saveTransactionSet(cartoonMemberSave);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/cartoonMember/thumbsUp/{cartoonId}")
     public ResponseEntity<Void> thumbsUp(@LoginForMember MemberSession memberSession,
                                          @PathVariable Long cartoonId) {
-        CartoonMember cartoonMember =
-                cartoonMemberService.getByCartoonIdAndMemberId(cartoonId, memberSession.getId());
-        cartoonMemberService.thumbsUp(cartoonMember);
-        Cartoon cartoon = cartoonService.getById(cartoonId);
-        cartoonService.addLike(cartoon);
+
+        cartoonMemberTransactionalService.thumbsUpTransactionSet(cartoonId, memberSession.getId());
         return ResponseEntity.ok().build();
     }
 
@@ -64,12 +60,9 @@ public class CartoonMemberController {
     public ResponseEntity<Void> rating(@LoginForMember MemberSession memberSession,
                                        @PathVariable Long cartoonId,
                                        @PathVariable double rating) {
-        CartoonMember cartoonMember
-                = cartoonMemberService.getByCartoonIdAndMemberId(cartoonId, memberSession.getId());
-        if (cartoonMemberService.isRated(cartoonMember)) {
-            int cartoonListSize = cartoonMemberService.findAllCartoonByCartoonIdWhereRated(cartoonId);
-            cartoonService.calculateRatingAvg(cartoonId, cartoonListSize, rating);
-        }
+        System.out.println("=====================");
+        cartoonMemberTransactionalService.ratingTransactionSet(cartoonId, memberSession.getId(), rating);
+        System.out.println("=====================");
         return ResponseEntity.ok().build();
     }
 }

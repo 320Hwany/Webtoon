@@ -23,7 +23,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Transactional
 class CartoonControllerTest extends ControllerTest {
 
     @Test
@@ -288,6 +287,39 @@ class CartoonControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("입력한 요일에 맞는 만화 리스트를 가져옵니다")
+    void getCartoonListByDay200() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+
+        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+                .page(1)
+                .dayOfTheWeek("MON")
+                .progress("NONE")
+                .genre("NONE")
+                .build();
+
+        List<Cartoon> cartoonList = LongStream.range(1, 31)
+                .mapToObj(i -> Cartoon.builder()
+                        .author(author)
+                        .title("만화 제목 " + i)
+                        .likes(i)
+                        .build())
+                .collect(Collectors.toList());
+
+        cartoonRepository.saveAll(cartoonList);
+
+        String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
+
+        // expected
+        mockMvc.perform(post("/cartoon/day")
+                        .contentType(APPLICATION_JSON)
+                        .content(cartoonSearchDtoJson))
+                .andExpect(status().isOk())
+                .andDo(document("cartoon/get/day/200"));
+    }
+
+    @Test
     @DisplayName("작가로 로그인하면 만화를 수정할 수 있습니다 - 성공")
     void update200() throws Exception {
         // given
@@ -375,6 +407,8 @@ class CartoonControllerTest extends ControllerTest {
                 .email("yhwjd@naver.com")
                 .password("4321")
                 .build();
+
+        authorRepository.save(anotherAuthor);
         Cartoon cartoon = saveCartoonInRepository(anotherAuthor);
 
         CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
@@ -384,7 +418,6 @@ class CartoonControllerTest extends ControllerTest {
                 .genre("ROMANCE")
                 .build();
 
-        authorRepository.save(anotherAuthor);
         String cartoonUpdateJson = objectMapper.writeValueAsString(cartoonUpdate);
 
         // expected

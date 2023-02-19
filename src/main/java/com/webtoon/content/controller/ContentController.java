@@ -34,7 +34,7 @@ public class ContentController {
                                      @PathVariable Long cartoonId,
                                      @RequestBody @Valid ContentSave contentSave) {
         Cartoon cartoon = cartoonService.getById(cartoonId);
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoon);
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
         Content content = contentService.getContentFromContentSaveAndCartoon(contentSave, cartoon);
         contentService.save(content);
 
@@ -67,8 +67,7 @@ public class ContentController {
                                        @PathVariable Long cartoonId, @PathVariable int contentEpisode,
                                        @RequestBody @Valid ContentUpdate contentUpdate) {
 
-        Cartoon cartoon = cartoonService.getById(cartoonId);
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoon);
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
         Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
         contentService.update(content, contentUpdate);
         return ResponseEntity.ok().build();

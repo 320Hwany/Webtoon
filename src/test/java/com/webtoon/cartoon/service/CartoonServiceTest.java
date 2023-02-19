@@ -44,6 +44,9 @@ class CartoonServiceTest extends ServiceTest {
     @Autowired
     private CartoonService cartoonService;
 
+    @Autowired
+    private CartoonTransactionService cartoonTransactionService;
+
     @Test
     @DisplayName("AuthorSession과 id값이 일치하는 Author로 만화를 등록합니다 - 성공")
     void save200() {
@@ -59,7 +62,7 @@ class CartoonServiceTest extends ServiceTest {
                 .build();
 
         // when
-        Cartoon cartoon = cartoonService.save(cartoonSave, authorSession);
+        Cartoon cartoon = cartoonTransactionService.saveTransactionSet(cartoonSave, authorSession);
 
         // then
         assertThat(cartoonRepository.count()).isEqualTo(1L);
@@ -90,7 +93,7 @@ class CartoonServiceTest extends ServiceTest {
 
         // expected
         assertThrows(AuthorNotFoundException.class,
-                () -> cartoonService.save(cartoonSave, authorSession));
+                () -> cartoonTransactionService.saveTransactionSet(cartoonSave, authorSession));
     }
 
     @Test
@@ -250,7 +253,7 @@ class CartoonServiceTest extends ServiceTest {
                 .genre("ROMANCE")
                 .build();
         // when
-        cartoonService.update(cartoon, cartoonUpdate);
+        cartoonTransactionService.updateTransactionSet(cartoon.getId(), cartoonUpdate);
 
         // then
         assertThat(cartoon.getTitle()).isEqualTo("수정 만화 제목");
@@ -267,7 +270,7 @@ class CartoonServiceTest extends ServiceTest {
         Cartoon cartoon = saveCartoonInRepository(author);
 
         // when
-        cartoonService.delete(cartoon);
+        cartoonTransactionService.deleteTransactionSet(cartoon.getId());
 
         // then
         assertThat(cartoonRepository.count()).isEqualTo(0L);
@@ -282,7 +285,7 @@ class CartoonServiceTest extends ServiceTest {
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
 
         // expected
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoon);
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoon.getId());
     }
 
     @Test
@@ -300,7 +303,7 @@ class CartoonServiceTest extends ServiceTest {
 
         // expected
         assertThrows(CartoonForbiddenException.class,
-                () -> cartoonService.validateAuthorityForCartoon(anotherAuthorSession, cartoon));
+                () -> cartoonService.validateAuthorityForCartoon(anotherAuthorSession, cartoon.getId()));
     }
 
     @Test

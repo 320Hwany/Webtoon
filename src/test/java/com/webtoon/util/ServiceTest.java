@@ -33,7 +33,6 @@ import static com.webtoon.util.constant.Constant.*;
 import static java.lang.Boolean.FALSE;
 
 @AcceptanceTest
-@SpringBootTest
 public class ServiceTest {
 
     @Autowired

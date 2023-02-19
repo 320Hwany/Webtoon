@@ -13,16 +13,13 @@ import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.util.ServiceTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,6 +28,9 @@ class AuthorServiceTest extends ServiceTest {
 
     @Autowired
     private AuthorService authorService;
+
+    @Autowired
+    private AuthorTransactionService authorTransactionService;
 
     @Test
     @DisplayName("회원가입이 성공합니다")
@@ -68,7 +68,7 @@ class AuthorServiceTest extends ServiceTest {
 
         // when
         List<AuthorCartoonResponse> authorCartoonResponseList = 
-                authorService.findAllByNicknameContains(cartoonSearch);
+                authorTransactionService.findAllByNicknameContains(cartoonSearch);
 
         // then
         AuthorCartoonResponse authorCartoonResponse = authorCartoonResponseList.get(0);
@@ -91,12 +91,12 @@ class AuthorServiceTest extends ServiceTest {
                 .build();
 
         // when
-        authorService.update(author, authorUpdate);
+        Author findAuthor = authorTransactionService.updateTransactionSet(author.getId(), authorUpdate);
 
         // then
-        assertThat(author.getNickname()).isEqualTo("수정 닉네임");
-        assertThat(author.getEmail()).isEqualTo("수정 이메일");
-        assertThat(passwordEncoder.matches("4321", author.getPassword())).isTrue();
+        assertThat(findAuthor.getNickname()).isEqualTo("수정 닉네임");
+        assertThat(findAuthor.getEmail()).isEqualTo("수정 이메일");
+        assertThat(passwordEncoder.matches("4321", findAuthor.getPassword())).isTrue();
     }
 
     @Test
@@ -108,7 +108,7 @@ class AuthorServiceTest extends ServiceTest {
         author.getCartoonList().add(cartoon);
 
         // when
-        authorService.delete(author);
+        authorTransactionService.deleteTransactionSet(author.getId());
 
         // then
         assertThat(authorRepository.count()).isEqualTo(0);

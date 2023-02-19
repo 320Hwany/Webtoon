@@ -149,9 +149,10 @@ class MemberServiceTest extends ServiceTest {
 
         // when
         memberService.chargeCoin(memberSession, memberCharge);
+        Member findMember = memberRepository.getById(memberSession.getId());
 
         // then
-        assertThat(member.getCoin()).isEqualTo(10000L);
+        assertThat(findMember.getCoin()).isEqualTo(10000L);
     }
 
     @Test

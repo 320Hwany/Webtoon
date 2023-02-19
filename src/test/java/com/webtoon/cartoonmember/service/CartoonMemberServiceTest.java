@@ -23,6 +23,9 @@ class CartoonMemberServiceTest extends ServiceTest {
     @Autowired
     private CartoonMemberService cartoonMemberService;
 
+    @Autowired
+    private CartoonMemberTransactionalService cartoonMemberTransactionalService;
+
 
     @Test
     @DisplayName("CartoonMemberSave 정보로부터 CartoonMember를 저장합니다")
@@ -38,60 +41,14 @@ class CartoonMemberServiceTest extends ServiceTest {
                 .build();
 
         // when
-        cartoonMemberService.save(cartoonMemberSave);
+        cartoonMemberTransactionalService.saveTransactionSet(cartoonMemberSave);
 
         // then
         assertThat(cartoonMemberRepository.count()).isEqualTo(1L);
     }
 
     @Test
-    @DisplayName("만화 아이디, 회원 아이디로 만화 - 회원 연결 관계를 찾습니다")
-    void getByCartoonIdAndMemberId200() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        Member member = saveMemberInRepository();
-        CartoonMember cartoonMember = saveCartoonMemberInRepository(cartoon, member);
-
-        // when
-        CartoonMember findCartoonMember =
-                cartoonMemberService.getByCartoonIdAndMemberId(cartoon.getId(), member.getId());
-
-        // then
-        assertThat(cartoonMember.getId()).isEqualTo(findCartoonMember.getId());
-    }
-
-    @Test
-    @DisplayName("만화 - 회원 연결관계가 없다면 예외가 발생합니다")
-    void getByCartoonIdAndMemberId404() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        Member member = saveMemberInRepository();
-
-        // expected
-        assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.getByCartoonIdAndMemberId(cartoon.getId(), member.getId()));
-    }
-
-    @Test
-    @DisplayName("좋아요를 누르면 CartoonMember의 thumbsUp 필드가 true로 변경됩니다")
-    void thumbsUp() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        Member member = saveMemberInRepository();
-        CartoonMember cartoonMember = saveCartoonMemberInRepository(cartoon, member);
-
-        // when
-        cartoonMemberService.thumbsUp(cartoonMember);
-
-        // then
-        assertThat(cartoonMember.isThumbsUp()).isEqualTo(true);
-    }
-
-    @Test
-    void findAllForMember() {
+    void findAllCartoonByMemberId() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -124,5 +81,27 @@ class CartoonMemberServiceTest extends ServiceTest {
 
         // then
         assertThat(cartoonList.size()).isEqualTo(1);
+    }
+
+    @Test
+    void ratingTransactionSet() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        CartoonMember cartoonMember = CartoonMember.builder()
+                .cartoon(cartoon)
+                .member(member)
+                .rated(false)
+                .build();
+
+        cartoonMemberRepository.save(cartoonMember);
+
+        // when
+        cartoonMemberTransactionalService.ratingTransactionSet(cartoon.getId(), member.getId(), 9.8);
+
+        // then
+        Cartoon findCartoon = cartoonRepository.getById(cartoon.getId());
+        assertThat(findCartoon.getRating()).isEqualTo(9.8);
     }
 }

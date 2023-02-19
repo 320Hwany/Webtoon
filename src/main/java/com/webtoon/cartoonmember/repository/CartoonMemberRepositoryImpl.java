@@ -55,16 +55,12 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
     }
 
     @Override
-    public int findAllCartoonSizeByCartoonIdWhereRated(Long cartoonId) {
-        List<Cartoon> cartoonList = jpaQueryFactory.select(cartoonMember.cartoon)
+    public long findCartoonSizeWhereRated(Long cartoonId) {
+        return jpaQueryFactory.select(cartoonMember.count())
                 .from(cartoonMember)
-                .leftJoin(cartoonMember.cartoon.author, author)
-                .fetchJoin()
                 .where(cartoonMember.cartoon.id.eq(cartoonId))
                 .where(cartoonMember.rated.eq(true))
-                .fetch();
-
-        return cartoonList.size();
+                .fetchOne();
     }
 
     @Override

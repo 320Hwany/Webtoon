@@ -10,6 +10,7 @@ import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.dto.response.CartoonListResult;
 import com.webtoon.cartoon.service.CartoonService;
+import com.webtoon.cartoon.service.CartoonTransactionService;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +24,14 @@ import java.util.List;
 public class CartoonController {
 
     private final CartoonService cartoonService;
+    private final CartoonTransactionService cartoonTransactionService;
 
     @PostMapping("/cartoon")
     public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
                                      @RequestBody @Valid CartoonSave cartoonSave) {
         CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonSave(cartoonSave);
         Cartoon.validateEnumTypeValid(cartoonEnumField);
-        cartoonService.save(cartoonSave, authorSession);
+        cartoonTransactionService.saveTransactionSet(cartoonSave, authorSession);
 
         return ResponseEntity.ok().build();
     }
@@ -40,7 +42,6 @@ public class CartoonController {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<Cartoon> cartoonList = cartoonService.findAllByTitle(cartoonSearch);
         List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
@@ -76,25 +77,22 @@ public class CartoonController {
     }
 
     @PatchMapping("/cartoon/{cartoonId}")
-    public ResponseEntity<CartoonResponse> update(@LoginForAuthor AuthorSession authorSession,
+    public ResponseEntity<Void> update(@LoginForAuthor AuthorSession authorSession,
                                                   @PathVariable Long cartoonId,
                                                   @RequestBody @Valid CartoonUpdate cartoonUpdate) {
         CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonUpdate(cartoonUpdate);
         Cartoon.validateEnumTypeValid(cartoonEnumField);
-        Cartoon cartoon = cartoonService.getById(cartoonId);
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoon);
-        cartoonService.update(cartoon, cartoonUpdate);
-        CartoonResponse cartoonResponse = CartoonResponse.getFromCartoon(cartoon);
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
+        cartoonTransactionService.updateTransactionSet(cartoonId, cartoonUpdate);
 
-        return ResponseEntity.ok(cartoonResponse);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/cartoon/{cartoonId}")
     public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
                                        @PathVariable Long cartoonId) {
-        Cartoon cartoon = cartoonService.getById(cartoonId);
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoon);
-        cartoonService.delete(cartoon);
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
+        cartoonTransactionService.deleteTransactionSet(cartoonId);
         return ResponseEntity.ok().build();
     }
 }

@@ -97,7 +97,7 @@ class CartoonMemberControllerTest extends ControllerTest {
 
         // expected
         mockMvc.perform(post("/cartoonMember/rating/{cartoonId}/{rating}",
-                        cartoon.getId(), 9.82F)
+                        cartoon.getId(), 9.82)
                         .session(session))
                 .andExpect(status().isOk())
                 .andDo(document("cartoonMember/rating/200"));

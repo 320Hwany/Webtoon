@@ -50,7 +50,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
-@SpringBootTest
 @AutoConfigureMockMvc
 @AcceptanceTest
 @ExtendWith(RestDocumentationExtension.class)

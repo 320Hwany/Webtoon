@@ -34,25 +34,8 @@ public class AuthorService {
         authorRepository.save(author);
     }
 
-    public List<AuthorCartoonResponse> findAllByNicknameContains(CartoonSearch cartoonSearch) {
-        List<Author> authorList = authorRepository.findAllByNicknameContains(cartoonSearch);
-        return authorList.stream()
-                .map(AuthorCartoonResponse::getFromAuthor)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void update(Author author, AuthorUpdate authorUpdate) {
-        author.update(authorUpdate, passwordEncoder);
-    }
-
     public Author getById(Long authorId) {
         return authorRepository.getById(authorId);
-    }
-
-    @Transactional
-    public void delete(Author author) {
-        authorRepository.delete(author);
     }
 
     public void checkDuplication(AuthorSignup authorSignup) {
