@@ -7,6 +7,7 @@ import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.util.ControllerTest;
 import com.webtoon.util.enumerated.Genre;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
@@ -24,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Transactional
 class CartoonControllerTest extends ControllerTest {
-
 
     @Test
     @DisplayName("작가로 로그인하면 만화를 등록할 수 있습니다 - 성공")

@@ -35,6 +35,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -51,6 +52,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AcceptanceTest
 @ExtendWith(RestDocumentationExtension.class)
 public class ControllerTest {
 
@@ -195,7 +197,7 @@ public class ControllerTest {
 
         String loginJson = objectMapper.writeValueAsString(authorLogin);
 
-        MockHttpServletRequest request = mockMvc.perform(post("/static/author/login")
+        MockHttpServletRequest request = mockMvc.perform(post("/author/login")
                         .contentType(APPLICATION_JSON)
                         .content(loginJson))
                 .andReturn().getRequest();

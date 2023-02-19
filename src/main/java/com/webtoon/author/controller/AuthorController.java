@@ -44,7 +44,7 @@ public class AuthorController {
     }
 
     @PostMapping("/author/nickname")
-    public ResponseEntity<AuthorListResult> getAuthorByNickname(@RequestBody CartoonSearchDto cartoonSearchDto) {
+    public ResponseEntity<AuthorListResult> getAuthorListByNickname(@RequestBody CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<AuthorCartoonResponse> authorCartoonResponseList =
                 authorService.findAllByNicknameContains(cartoonSearch);

@@ -22,6 +22,8 @@ public interface CartoonRepository {
 
     void delete(Cartoon cartoon);
 
+    void deleteAll();
+
     void saveAll(List<Cartoon> cartoonList);
 
     long count();

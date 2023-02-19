@@ -10,6 +10,7 @@ import com.webtoon.member.exception.MemberDuplicationException;
 import com.webtoon.member.exception.MemberNotFoundException;
 import com.webtoon.util.ServiceTest;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import javax.servlet.http.HttpSession;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
 class MemberServiceTest extends ServiceTest {
 
     @Autowired
@@ -69,7 +69,7 @@ class MemberServiceTest extends ServiceTest {
         // then
         assertThat(findMember.getNickname()).isEqualTo(memberUpdate.getNickname());
         assertThat(findMember.getEmail()).isEqualTo(memberUpdate.getEmail());
-        assertThat(passwordEncoder.matches("123456789", member.getPassword())).isTrue();
+        assertThat(passwordEncoder.matches("123456789", findMember.getPassword())).isTrue();
     }
 
     @Test

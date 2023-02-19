@@ -20,5 +20,8 @@ public interface MemberRepository {
     void validateMemberPresent(MemberSession memberSession);
 
     void delete(Member member);
+
+    void deleteAll();
+
     long count();
 }

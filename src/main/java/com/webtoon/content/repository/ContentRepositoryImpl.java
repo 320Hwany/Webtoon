@@ -43,4 +43,9 @@ public class ContentRepositoryImpl implements ContentRepository {
                 .where(cartoon.author.id.eq(author.id))
                 .fetchOne());
     }
+
+    @Override
+    public void deleteAll() {
+        contentJpaRepository.deleteAll();
+    }
 }

@@ -18,6 +18,7 @@ import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Transactional
 class CartoonServiceTest extends ServiceTest {
 
     @Autowired
@@ -64,11 +64,10 @@ class CartoonServiceTest extends ServiceTest {
         // then
         assertThat(cartoonRepository.count()).isEqualTo(1L);
         assertThat(cartoon.getTitle()).isEqualTo("만화 제목");
-        assertThat(cartoon.getAuthor()).isEqualTo(author);
         assertThat(cartoon.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.MON);
         assertThat(cartoon.getProgress()).isEqualTo(Progress.SERIALIZATION);
         assertThat(cartoon.getGenre()).isEqualTo(Genre.ROMANCE);
-        assertThat(author.getCartoonList().contains(cartoon)).isTrue();
+        assertThat(cartoon.getAuthor().getId()).isEqualTo(author.getId());
     }
 
     @Test

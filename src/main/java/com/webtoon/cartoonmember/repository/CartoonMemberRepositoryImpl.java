@@ -80,6 +80,11 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
     }
 
     @Override
+    public void deleteAll() {
+        cartoonMemberJpaRepository.deleteAll();
+    }
+
+    @Override
     public long count() {
         return cartoonMemberJpaRepository.count();
     }

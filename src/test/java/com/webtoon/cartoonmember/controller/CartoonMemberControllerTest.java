@@ -4,6 +4,7 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.member.domain.Member;
 import com.webtoon.util.ControllerTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;

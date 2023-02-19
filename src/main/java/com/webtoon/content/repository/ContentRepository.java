@@ -11,4 +11,6 @@ public interface ContentRepository {
     Content getById(Long id);
 
     Optional<Content> findByCartoonIdAndEpisode(Long cartoonId, int episode);
+
+    void deleteAll();
 }

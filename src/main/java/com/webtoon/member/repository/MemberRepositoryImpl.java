@@ -53,6 +53,11 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public void deleteAll() {
+        memberJpaRepository.deleteAll();
+    }
+
+    @Override
     public long count() {
         return memberJpaRepository.count();
     }

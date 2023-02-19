@@ -71,6 +71,11 @@ public class CartoonRepositoryImpl implements CartoonRepository {
     }
 
     @Override
+    public void deleteAll() {
+        cartoonJpaRepository.deleteAll();
+    }
+
+    @Override
     public void saveAll(List<Cartoon> cartoonList) {
         cartoonJpaRepository.saveAll(cartoonList);
     }

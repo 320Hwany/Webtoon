@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -31,6 +32,7 @@ import java.util.List;
 import static com.webtoon.util.constant.Constant.*;
 import static java.lang.Boolean.FALSE;
 
+@AcceptanceTest
 @SpringBootTest
 public class ServiceTest {
 

@@ -19,4 +19,9 @@ public class ContentMemberRepositoryImpl implements ContentMemberRepository {
     public long count() {
         return contentMemberJpaRepository.count();
     }
+
+    @Override
+    public void deleteAll() {
+        contentMemberJpaRepository.deleteAll();
+    }
 }

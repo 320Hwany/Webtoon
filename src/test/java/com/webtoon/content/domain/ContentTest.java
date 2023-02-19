@@ -1,11 +1,9 @@
 package com.webtoon.content.domain;
 
-import com.webtoon.author.domain.Author;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.content.dto.request.ContentSave;
 import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.util.DomainTest;
-import com.webtoon.util.constant.Constant;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

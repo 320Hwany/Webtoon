@@ -19,5 +19,7 @@ public interface CartoonMemberRepository {
 
     List<Cartoon> findLikeListForMember(Long memberId);
 
+    void deleteAll();
+
     long count();
 }

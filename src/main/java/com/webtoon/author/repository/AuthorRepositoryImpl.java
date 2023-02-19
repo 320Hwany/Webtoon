@@ -72,6 +72,11 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
+    public void deleteAll() {
+        authorJpaRepository.deleteAll();
+    }
+
+    @Override
     public long count() {
         return authorJpaRepository.count();
     }

@@ -5,6 +5,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.content.domain.Content;
 import com.webtoon.member.domain.Member;
 import com.webtoon.util.ControllerTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
@@ -16,7 +17,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Transactional
 class ContentMemberControllerTest extends ControllerTest {
-
 
     @Test
     @DisplayName("회원이 만화 내용을 읽습니다 - 성공")

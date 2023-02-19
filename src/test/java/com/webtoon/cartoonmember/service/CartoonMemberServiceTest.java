@@ -5,29 +5,24 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
-import com.webtoon.content.domain.Content;
 import com.webtoon.member.domain.Member;
 import com.webtoon.util.ServiceTest;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import static java.lang.Boolean.TRUE;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Transactional
 class CartoonMemberServiceTest extends ServiceTest {
 
     @Autowired
     private CartoonMemberService cartoonMemberService;
+
 
     @Test
     @DisplayName("CartoonMemberSave 정보로부터 CartoonMember를 저장합니다")
@@ -63,7 +58,7 @@ class CartoonMemberServiceTest extends ServiceTest {
                 cartoonMemberService.getByCartoonIdAndMemberId(cartoon.getId(), member.getId());
 
         // then
-        assertThat(cartoonMember).isEqualTo(findCartoonMember);
+        assertThat(cartoonMember.getId()).isEqualTo(findCartoonMember.getId());
     }
 
     @Test
@@ -116,11 +111,16 @@ class CartoonMemberServiceTest extends ServiceTest {
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
         Member member = saveMemberInRepository();
-        CartoonMember cartoonMember = saveCartoonMemberInRepository(cartoon, member);
-        cartoonMember.thumbsUp();
+        CartoonMember cartoonMember = CartoonMember.builder()
+                .cartoon(cartoon)
+                .member(member)
+                .thumbsUp(true)
+                .build();
+
+        cartoonMemberRepository.save(cartoonMember);
 
         // when
-        List<Cartoon> cartoonList = cartoonMemberService.findLikeListForMember(member.getId());
+        List<Cartoon> cartoonList = cartoonMemberService.findLikeListForMember(cartoonMember.getMember().getId());
 
         // then
         assertThat(cartoonList.size()).isEqualTo(1);

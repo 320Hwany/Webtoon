@@ -6,6 +6,7 @@ import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.util.ControllerTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
@@ -18,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Transactional
 class MemberControllerTest extends ControllerTest {
-
 
     @Test
     @DisplayName("조건이 맞으면 회원가입이 됩니다 - 성공")

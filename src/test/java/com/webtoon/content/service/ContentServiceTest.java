@@ -9,6 +9,7 @@ import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.content.exception.ContentNotFoundException;
 import com.webtoon.util.ServiceTest;
 import com.webtoon.util.constant.Constant;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,11 @@ import static com.webtoon.util.constant.Constant.TWO_WEEKS;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
 class ContentServiceTest extends ServiceTest {
 
     @Autowired
     protected ContentService contentService;
+
 
     @Test
     @DisplayName("Content를 저장합니다 - 성공")
@@ -123,7 +124,7 @@ class ContentServiceTest extends ServiceTest {
         Content findContent = contentService.findByCartoonIdAndEpisode(cartoon.getId(), content.getEpisode());
 
         // then
-        assertThat(findContent).isEqualTo(content);
+        assertThat(findContent.getId()).isEqualTo(content.getId());
     }
 
     @Test

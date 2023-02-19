@@ -10,7 +10,6 @@ import com.webtoon.author.exception.AuthorDuplicationException;
 import com.webtoon.author.exception.AuthorUnauthorizedException;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.member.exception.MemberUnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

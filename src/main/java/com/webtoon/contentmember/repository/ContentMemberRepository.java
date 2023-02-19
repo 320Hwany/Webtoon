@@ -9,4 +9,6 @@ public interface ContentMemberRepository {
     ContentMember save(ContentMember contentMember);
 
     long count();
+
+    void deleteAll();
 }
