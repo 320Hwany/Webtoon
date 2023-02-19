@@ -28,26 +28,6 @@ class CartoonMemberServiceTest extends ServiceTest {
 
 
     @Test
-    @DisplayName("CartoonMemberSave 정보로부터 CartoonMember를 저장합니다")
-    void save() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        Member member = saveMemberInRepository();
-
-        CartoonMemberSave cartoonMemberSave = CartoonMemberSave.builder()
-                .cartoonId(cartoon.getId())
-                .memberId(member.getId())
-                .build();
-
-        // when
-        cartoonMemberTransactionalService.saveTransactionSet(cartoonMemberSave);
-
-        // then
-        assertThat(cartoonMemberRepository.count()).isEqualTo(1L);
-    }
-
-    @Test
     void findAllCartoonByMemberId() {
         // given
         Author author = saveAuthorInRepository();
@@ -77,10 +57,50 @@ class CartoonMemberServiceTest extends ServiceTest {
         cartoonMemberRepository.save(cartoonMember);
 
         // when
-        List<Cartoon> cartoonList = cartoonMemberService.findLikeListForMember(cartoonMember.getMember().getId());
+        List<Cartoon> cartoonList = cartoonMemberService.findLikeListForMember(member.getId());
 
         // then
         assertThat(cartoonList.size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("CartoonMemberSave 정보로부터 CartoonMember를 저장합니다")
+    void saveTransactionSet() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+
+        CartoonMemberSave cartoonMemberSave = CartoonMemberSave.builder()
+                .cartoonId(cartoon.getId())
+                .memberId(member.getId())
+                .build();
+
+        // when
+        cartoonMemberTransactionalService.saveTransactionSet(cartoonMemberSave);
+
+        // then
+        assertThat(cartoonMemberRepository.count()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("회원이 만화를 좋아요를 누르면 만화는 좋아요 수가 올라가고 연결 테이블에는 thumbsUp이 true가 됩니다")
+    void thumbsUpTransactionSet() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        CartoonMember cartoonMember = saveCartoonMemberInRepository(cartoon, member);
+
+        // when
+        cartoonMemberTransactionalService.thumbsUpTransactionSet(cartoon.getId(), member.getId());
+
+        // then
+        Cartoon findCartoon = cartoonRepository.getById(cartoon.getId());
+        CartoonMember findCartoonMember = cartoonMemberRepository.getById(cartoonMember.getId());
+
+        assertThat(findCartoon.getLikes()).isEqualTo(1);
+        assertThat(findCartoonMember.isThumbsUp()).isEqualTo(true);
     }
 
     @Test

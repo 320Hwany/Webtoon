@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CartoonMemberTest extends DomainTest {
 
     @Test
-    @DisplayName("사용자가 좋아요를 누르면 CartoonMember 연결 테이블의 thumbsUp이 True로 바뀐다")
+    @DisplayName("thumbsUp 메소드를 실행하면 thumbsUp이 true로 바뀐다")
     void thumbsUp() {
         // given
         Cartoon cartoon = getCartoon();
@@ -30,5 +30,25 @@ class CartoonMemberTest extends DomainTest {
 
         // then
         Assertions.assertThat(cartoonMember.isThumbsUp()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("rated 메소드를 실행하면 rated가 true로 바뀐다")
+    void rated() {
+        // given
+        Cartoon cartoon = getCartoon();
+        Member member = getMember();
+
+        CartoonMember cartoonMember = CartoonMember.builder()
+                .cartoon(cartoon)
+                .member(member)
+                .rated(false)
+                .build();
+
+        // when
+        cartoonMember.rated();
+
+        // then
+        Assertions.assertThat(cartoonMember.isRated()).isEqualTo(true);
     }
 }

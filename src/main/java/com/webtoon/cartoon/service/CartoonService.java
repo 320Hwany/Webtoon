@@ -3,7 +3,6 @@ package com.webtoon.cartoon.service;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.util.enumerated.Genre;
@@ -54,12 +53,5 @@ public class CartoonService {
     @Transactional
     public void addLike(Cartoon cartoon) {
         cartoon.addLike();
-    }
-
-    @Transactional
-    public void calculateRatingAvg(Long cartoonId, int cartoonListSize, double rating) {
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
-        double sum = cartoon.calculateSum(cartoonListSize);
-        cartoon.rating((sum + rating) / cartoonListSize);
     }
 }

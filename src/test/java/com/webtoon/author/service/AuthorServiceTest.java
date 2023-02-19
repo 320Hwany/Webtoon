@@ -13,6 +13,7 @@ import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.util.ServiceTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ class AuthorServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("회원가입이 성공합니다")
-    void signup200() {
+    void signup() {
         // given
         AuthorSignup authorSignup = AuthorSignup.builder()
                 .nickname("작가 닉네임")
@@ -47,72 +48,6 @@ class AuthorServiceTest extends ServiceTest {
 
         // then
         assertThat(authorRepository.count()).isEqualTo(1L);
-    }
-
-    @Test
-    @DisplayName("입력한 닉네임이 포함된 작가를 검색합니다 - 성공")
-    void findAllByNickname200() {
-        // given
-        Author author = saveAuthorInRepository();
-        saveCartoonInRepository(author);
-
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(0)
-                .nickname("작가 이름")
-                .dayOfTheWeek("NONE")
-                .progress("NONE")
-                .genre("NONE")
-                .build();
-
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-
-        // when
-        List<AuthorCartoonResponse> authorCartoonResponseList = 
-                authorTransactionService.findAllByNicknameContains(cartoonSearch);
-
-        // then
-        AuthorCartoonResponse authorCartoonResponse = authorCartoonResponseList.get(0);
-        List<CartoonResponse> cartoonResponseList = authorCartoonResponse.getCartoonResponseList();
-
-        assertThat(authorCartoonResponseList.size()).isEqualTo(1);
-        assertThat(cartoonResponseList.size()).isEqualTo(1);
-    }
-
-    @Test
-    @DisplayName("작가 정보가 수정됩니다 - 성공")
-    void update200() {
-        // given
-        Author author = saveAuthorInRepository();
-
-        AuthorUpdate authorUpdate = AuthorUpdate.builder()
-                .nickname("수정 닉네임")
-                .email("수정 이메일")
-                .password("4321")
-                .build();
-
-        // when
-        Author findAuthor = authorTransactionService.updateTransactionSet(author.getId(), authorUpdate);
-
-        // then
-        assertThat(findAuthor.getNickname()).isEqualTo("수정 닉네임");
-        assertThat(findAuthor.getEmail()).isEqualTo("수정 이메일");
-        assertThat(passwordEncoder.matches("4321", findAuthor.getPassword())).isTrue();
-    }
-
-    @Test
-    @DisplayName("작가 계정을 삭제하면 작가의 만화가 모두 삭제됩니다 - 성공")
-    void delete200() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        author.getCartoonList().add(cartoon);
-
-        // when
-        authorTransactionService.deleteTransactionSet(author.getId());
-
-        // then
-        assertThat(authorRepository.count()).isEqualTo(0);
-        assertThat(cartoonRepository.count()).isEqualTo(0);
     }
 
     @Test
@@ -180,7 +115,7 @@ class AuthorServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("AuthorSession 의 세션을 생성합니다")
-    void makeSessionForAuthorSession200() {
+    void makeSessionForAuthorSession() {
         // given
         AuthorSession authorSession = AuthorSession.builder()
                 .nickname("작가 이름")
@@ -200,7 +135,7 @@ class AuthorServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("AuthorSession 의 세션을 삭제합니다")
-    void invalidateSession200() {
+    void invalidateSession() {
         // given
         AuthorSession authorSession = AuthorSession.builder()
                 .nickname("작가 이름")
@@ -216,5 +151,94 @@ class AuthorServiceTest extends ServiceTest {
         // then
         HttpSession session = httpServletRequest.getSession(false);
         assertThat(session).isNull();
+    }
+
+    @Test
+    @DisplayName("AuthorId로 작가 회원을 찾고 들어온 정보로 수정합니다")
+    void updateTransactionSet200() {
+        // given
+        Author author = saveAuthorInRepository();
+
+        AuthorUpdate authorUpdate = AuthorUpdate.builder()
+                .nickname("수정 닉네임")
+                .email("수정 이메일")
+                .password("4321")
+                .build();
+
+        // when
+        Author findAuthor = authorTransactionService.updateTransactionSet(author.getId(), authorUpdate);
+
+        // then
+        assertThat(findAuthor.getNickname()).isEqualTo("수정 닉네임");
+        assertThat(findAuthor.getEmail()).isEqualTo("수정 이메일");
+        assertThat(passwordEncoder.matches("4321", findAuthor.getPassword())).isTrue();
+    }
+
+    @Test
+    @DisplayName("AuthorId와 일치하는 작가 회원이 없다면 예외가 발생합니다")
+    void updateTransactionSet404() {
+        // given
+        AuthorUpdate authorUpdate = AuthorUpdate.builder()
+                .nickname("수정 닉네임")
+                .email("수정 이메일")
+                .password("4321")
+                .build();
+
+        // expected
+        Assertions.assertThrows(AuthorNotFoundException.class,
+                () -> authorTransactionService.updateTransactionSet(9999L, authorUpdate));
+    }
+
+    @Test
+    @DisplayName("AuthorId로 작가 회원을 찾고 작가를 삭제합니다")
+    void deleteTransactionSet200() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        author.getCartoonList().add(cartoon);
+
+        // when
+        authorTransactionService.deleteTransactionSet(author.getId());
+
+        // then
+        assertThat(authorRepository.count()).isEqualTo(0);
+        assertThat(cartoonRepository.count()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("AuthorId와 일치하는 작가가 없다면 예외가 발생합니다")
+    void deleteTransactionSet404() {
+        // expected
+        Assertions.assertThrows(AuthorNotFoundException.class,
+                () -> authorTransactionService.deleteTransactionSet(1L));
+    }
+
+    @Test
+    @DisplayName("입력한 닉네임이 포함된 작가를 검색하여 입력한 정보에 맞는 페이지를 반환합니다 - 성공")
+    void findAllByNicknameContains() {
+        // given
+        Author author = saveAuthorInRepository();
+        saveCartoonInRepository(author);
+
+        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+                .page(0)
+                .nickname("작가 이름")
+                .dayOfTheWeek("NONE")
+                .progress("NONE")
+                .genre("NONE")
+                .build();
+
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+
+        // when
+        List<AuthorCartoonResponse> authorCartoonResponseList = 
+                authorTransactionService.findAllByNicknameContains(cartoonSearch);
+
+        // then
+        AuthorCartoonResponse authorCartoonResponse = authorCartoonResponseList.get(0);
+        List<CartoonResponse> cartoonResponseList = authorCartoonResponse.getCartoonResponseList();
+
+        assertThat(authorCartoonResponseList.size()).isEqualTo(1);
+        assertThat(cartoonResponseList.size()).isEqualTo(1);
     }
 }

@@ -20,10 +20,10 @@ public class CartoonTransactionService {
     private final AuthorRepository authorRepository;
 
     @Transactional
-    public Cartoon saveTransactionSet(CartoonSave cartoonSave, AuthorSession authorSession) {
+    public void saveTransactionSet(CartoonSave cartoonSave, AuthorSession authorSession) {
         Author author = authorRepository.getById(authorSession.getId());
         Cartoon cartoon = Cartoon.getFromCartoonSaveAndAuthor(cartoonSave, author);
-        return cartoonRepository.save(cartoon);
+        cartoonRepository.save(cartoon);
     }
 
     @Transactional

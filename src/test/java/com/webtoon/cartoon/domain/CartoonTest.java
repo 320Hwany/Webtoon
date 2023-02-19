@@ -44,6 +44,25 @@ class CartoonTest extends DomainTest {
         assertThat(cartoon.getGenre()).isEqualTo(Genre.ROMANCE);
     }
 
+    @Test
+    @DisplayName("소수 둘째 자리까지 평점을 매깁니다")
+    void addLike() {
+        // given
+        Cartoon cartoon = Cartoon.builder()
+                .title("만화 제목")
+                .dayOfTheWeek(DayOfTheWeek.MON)
+                .progress(Progress.SERIALIZATION)
+                .genre(Genre.ROMANCE)
+                .rating(Constant.ZERO_OF_TYPE_DOUBLE)
+                .likes(10)
+                .build();
+
+        // when
+        cartoon.addLike();
+
+        // then
+        assertThat(cartoon.getLikes()).isEqualTo(11);
+    }
 
     @Test
     @DisplayName("만화 정보가 수정됩니다")
@@ -83,10 +102,30 @@ class CartoonTest extends DomainTest {
         double rating = 9.8253;
 
         // when
-        cartoon.rating(rating);
+        cartoon.rating(rating, 0);
 
         // then
         assertThat(cartoon.getRating()).isEqualTo(9.83);
+    }
+
+    @Test
+    @DisplayName("만화 리스트의 수로 평점의 합을 구합니다")
+    void calculateSum() {
+        // given
+        Cartoon cartoon = Cartoon.builder()
+                .title("만화 제목")
+                .dayOfTheWeek(DayOfTheWeek.MON)
+                .progress(Progress.SERIALIZATION)
+                .genre(Genre.ROMANCE)
+                .rating(9.8)
+                .build();
+        long cartoonListSize = 10;
+
+        // when
+        double sum = cartoon.calculateSum(cartoonListSize);
+
+        // then
+        assertThat(sum).isEqualTo(98);
     }
 
     @Test

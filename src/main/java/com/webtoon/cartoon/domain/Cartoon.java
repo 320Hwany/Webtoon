@@ -105,11 +105,12 @@ public class Cartoon extends BaseTimeEntity {
         this.likes += 1;
     }
 
-    public double calculateSum(long cartoonListSize) {
-        return (cartoonListSize * rating);
+    public void rating(double rating, long cartoonListSize) {
+        double sum = calculateSum(cartoonListSize);
+        this.rating = Math.round((sum + rating) / (cartoonListSize + 1) * 100) / 100.0;
     }
 
-    public void rating(double rating) {
-        this.rating = Math.round(rating * 100) / 100.0;
+    public double calculateSum(long cartoonListSize) {
+        return (cartoonListSize * rating);
     }
 }

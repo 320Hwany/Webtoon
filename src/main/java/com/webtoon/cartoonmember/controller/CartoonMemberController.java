@@ -60,9 +60,7 @@ public class CartoonMemberController {
     public ResponseEntity<Void> rating(@LoginForMember MemberSession memberSession,
                                        @PathVariable Long cartoonId,
                                        @PathVariable double rating) {
-        System.out.println("=====================");
         cartoonMemberTransactionalService.ratingTransactionSet(cartoonId, memberSession.getId(), rating);
-        System.out.println("=====================");
         return ResponseEntity.ok().build();
     }
 }

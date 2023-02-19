@@ -47,8 +47,7 @@ public class CartoonMemberTransactionalService {
         if (cartoonMember.isRated() == false) {
             long cartoonListSize = cartoonMemberRepository.findCartoonSizeWhereRated(cartoonId);
             Cartoon cartoon = cartoonMember.getCartoon();
-            double sum = cartoon.calculateSum(cartoonListSize);
-            cartoon.rating((sum + rating) / (cartoonListSize + 1));
+            cartoon.rating(rating, cartoonListSize);
             cartoonMember.rated();
         }
     }

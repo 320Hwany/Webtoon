@@ -4,21 +4,16 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.dto.request.AuthorSignup;
-import com.webtoon.author.dto.request.AuthorUpdate;
-import com.webtoon.author.dto.response.AuthorCartoonResponse;
 import com.webtoon.author.exception.AuthorDuplicationException;
 import com.webtoon.author.exception.AuthorUnauthorizedException;
 import com.webtoon.author.repository.AuthorRepository;
-import com.webtoon.cartoon.domain.CartoonSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -32,10 +27,6 @@ public class AuthorService {
     public void signup(AuthorSignup authorSignup) {
         Author author = Author.getFromAuthorSignup(authorSignup, passwordEncoder);
         authorRepository.save(author);
-    }
-
-    public Author getById(Long authorId) {
-        return authorRepository.getById(authorId);
     }
 
     public void checkDuplication(AuthorSignup authorSignup) {

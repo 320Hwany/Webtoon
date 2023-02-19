@@ -5,6 +5,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.QCartoon;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.domain.QCartoonMember;
+import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
 import com.webtoon.member.domain.QMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -28,6 +29,12 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
     @Override
     public CartoonMember save(CartoonMember cartoonMember) {
         return cartoonMemberJpaRepository.save(cartoonMember);
+    }
+
+    @Override
+    public CartoonMember getById(Long cartoonMemberId) {
+        return cartoonMemberJpaRepository.findById(cartoonMemberId)
+                .orElseThrow(CartoonMemberNotFoundException::new);
     }
 
     @Override
@@ -60,7 +67,7 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .from(cartoonMember)
                 .where(cartoonMember.cartoon.id.eq(cartoonId))
                 .where(cartoonMember.rated.eq(true))
-                .fetchOne();
+                .fetchOne().longValue();
     }
 
     @Override
