@@ -24,7 +24,7 @@ public class ContentImgInfoRepositoryImpl implements ContentImgInfoRepository {
     }
 
     @Override
-    public Optional<ContentImgInfo> getByContentId(Long contentId) {
+    public Optional<ContentImgInfo> findByContentId(Long contentId) {
         return Optional.ofNullable(
                 jpaQueryFactory.selectFrom(contentImgInfo)
                 .leftJoin(contentImgInfo.content, content)

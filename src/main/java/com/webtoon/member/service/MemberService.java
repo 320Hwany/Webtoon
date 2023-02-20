@@ -33,25 +33,6 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    @Transactional
-    public Member update(MemberSession memberSession, MemberUpdate memberUpdate) {
-        Member member = memberRepository.getById(memberSession.getId());
-        member.update(memberUpdate, passwordEncoder);
-        return member;
-    }
-
-    @Transactional
-    public void delete(MemberSession memberSession) {
-        Member member = memberRepository.getById(memberSession.getId());
-        memberRepository.delete(member);
-    }
-
-    @Transactional
-    public void chargeCoin(MemberSession memberSession, MemberCharge memberCharge) {
-        Member member = memberRepository.getById(memberSession.getId());
-        member.chargeCoin(memberCharge.getChargeAmount());
-    }
-
     public MemberSession makeMemberSession(MemberLogin memberLogin) {
         Member member = memberRepository.getByEmail(memberLogin.getEmail());
         if (passwordEncoder.matches(memberLogin.getPassword(), member.getPassword())) {

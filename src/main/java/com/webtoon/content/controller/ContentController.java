@@ -36,9 +36,9 @@ public class ContentController {
     }
 
     @GetMapping("/content/{cartoonId}/{contentEpisode}")
-    public ResponseEntity<ContentResponse> getContent(@LoginForMember MemberSession memberSession,
-                                                      @PathVariable Long cartoonId,
-                                                      @PathVariable int contentEpisode) {
+    public ResponseEntity<ContentResponse> getPreviewContent(@LoginForMember MemberSession memberSession,
+                                                             @PathVariable Long cartoonId,
+                                                             @PathVariable int contentEpisode) {
 
         ContentGet contentGet = ContentGet.getFromIdAndEpisode(memberSession.getId(), cartoonId, contentEpisode);
         Content content = contentTransactionService.getContentTransactionSet(contentGet);

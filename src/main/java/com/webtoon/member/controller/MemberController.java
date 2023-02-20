@@ -8,6 +8,7 @@ import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.member.dto.response.MemberResponse;
 import com.webtoon.member.service.MemberService;
+import com.webtoon.member.service.MemberTransactionService;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberTransactionService memberTransactionService;
 
     @PostMapping("/member/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid MemberSignup memberSignup) {
@@ -42,14 +44,14 @@ public class MemberController {
     @PatchMapping("/member")
     public ResponseEntity<MemberResponse> update(@LoginForMember MemberSession memberSession,
                                                  @RequestBody @Valid MemberUpdate memberUpdate) {
-        Member member = memberService.update(memberSession, memberUpdate);
+        Member member = memberTransactionService.updateTransactionSet(memberSession, memberUpdate);
         MemberResponse memberResponse = MemberResponse.getFromMember(member);
         return ResponseEntity.ok(memberResponse);
     }
 
     @DeleteMapping("/member")
     public ResponseEntity<Void> delete(@LoginForMember MemberSession memberSession) {
-        memberService.delete(memberSession);
+        memberTransactionService.deleteTransactionSet(memberSession);
         return ResponseEntity.ok().build();
     }
 
@@ -63,7 +65,7 @@ public class MemberController {
     @PostMapping("/member/charge")
     public ResponseEntity<Void> charge(@LoginForMember MemberSession memberSession,
                                        @RequestBody @Valid MemberCharge memberCharge) {
-        memberService.chargeCoin(memberSession, memberCharge);
+        memberTransactionService.chargeCoinTransactionSet(memberSession, memberCharge);
         return ResponseEntity.ok().build();
     }
 }

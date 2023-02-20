@@ -20,10 +20,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
-@Transactional
 class ContentImgInfoServiceTest extends ServiceTest {
 
     @Autowired
@@ -87,7 +87,7 @@ class ContentImgInfoServiceTest extends ServiceTest {
         ContentImgInfo contentImgInfo = contentImgInfoService.getByContentId(content.getId());
 
         // then
-        assertThat(contentImgInfo.getContent()).isEqualTo(content);
+        assertThat(contentImgInfo.getContent().getId()).isEqualTo(content.getId());
     }
 
     @Test

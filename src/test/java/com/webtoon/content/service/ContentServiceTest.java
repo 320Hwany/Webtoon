@@ -206,8 +206,8 @@ class ContentServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("Content를 수정합니다 - 성공")
-    void update200() {
+    @DisplayName("입력한 정보로 컨텐츠를 찾고 컨텐츠를 수정합니다")
+    void updateTransactionSet200() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -237,32 +237,23 @@ class ContentServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("만화에 대한 에피소드가 존재하면 컨텐츠를 가져옵니다")
-    void findByCartoonAndEpisode200() {
+    @DisplayName("입력한 정보에 맞는 컨텐츠가 없다면 예외가 발생합니다")
+    void updateTransactionSet404() {
         // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        Content content = saveContentInRepository(cartoon);
+        ContentUpdate contentUpdate = ContentUpdate.builder()
+                .subTitle("수정 부제입니다")
+                .episode(30)
+                .registrationDate(LocalDate.of(1999, 3, 20))
+                .build();
 
-        // when
-        Content findContent = contentService.findByCartoonIdAndEpisode(cartoon.getId(), content.getEpisode());
-
-        // then
-        assertThat(findContent.getId()).isEqualTo(content.getId());
-    }
-
-    @Test
-    @DisplayName("만화가 존재하지 않거나 에피소드가 존재하지 않으면 예외가 발생합니다")
-    void findByCartoonAndEpisode404() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        Content content = saveContentInRepository(cartoon);
+        ContentUpdateSet contentUpdateSet = ContentUpdateSet.builder()
+                .cartoonId(9999L)
+                .contentEpisode(9999)
+                .contentUpdate(contentUpdate)
+                .build();
 
         // expected
         assertThrows(ContentNotFoundException.class,
-                () -> contentService.findByCartoonIdAndEpisode(9999L, content.getEpisode()));
-        assertThrows(ContentNotFoundException.class,
-                () -> contentService.findByCartoonIdAndEpisode(cartoon.getId(), 9999));
+                () -> contentTransactionService.updateTransactionSet(contentUpdateSet));
     }
 }

@@ -25,7 +25,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class MemberServiceTest extends ServiceTest {
 
     @Autowired
-    protected MemberService memberService;
+    private MemberService memberService;
+
+    @Autowired
+    private MemberTransactionService memberTransactionService;
 
     @Test
     @DisplayName("회원이 저장됩니다 - 성공")
@@ -46,7 +49,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("memberSession에 맞는 member의 정보가 수정됩니다 - 성공")
-    void update200() {
+    void updateTransactionSet200() {
         // given
         Member member = saveMemberInRepository();
 
@@ -64,7 +67,7 @@ class MemberServiceTest extends ServiceTest {
                 .build();
 
         // when
-        Member findMember = memberService.update(memberSession, memberUpdate);
+        Member findMember = memberTransactionService.updateTransactionSet(memberSession, memberUpdate);
 
         // then
         assertThat(findMember.getNickname()).isEqualTo(memberUpdate.getNickname());
@@ -74,7 +77,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("memberSession에 맞는 member가 없으면 정보를 수정할 수 없습니다 - 실패")
-    void update404() {
+    void updateTransactionSet404() {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
@@ -91,12 +94,12 @@ class MemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(MemberNotFoundException.class,
-                () -> memberService.update(memberSession, memberUpdate));
+                () -> memberTransactionService.updateTransactionSet(memberSession, memberUpdate));
     }
 
     @Test
     @DisplayName("MemberSession에 맞는 Member가 있다면 Member를 삭제합니다 - 성공")
-    void delete200() {
+    void deleteTransactionSet200() {
         // given
         Member member = saveMemberInRepository();
 
@@ -108,7 +111,7 @@ class MemberServiceTest extends ServiceTest {
                 .build();
 
         // when
-        memberService.delete(memberSession);
+        memberTransactionService.deleteTransactionSet(memberSession);
 
         // then
         assertThat(memberRepository.count()).isEqualTo(0);
@@ -116,7 +119,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("MemberSession에 맞는 Member가 없다면 Member 삭제를 할 수 없습니다 - 실패")
-    void delete404() {
+    void deleteTransactionSet404() {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
@@ -127,12 +130,12 @@ class MemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(MemberNotFoundException.class,
-                () -> memberService.delete(memberSession));
+                () -> memberTransactionService.deleteTransactionSet(memberSession));
     }
 
     @Test
     @DisplayName("MemberSession에 맞는 Member가 있다면 Coin을 충전할 수 있습니다 - 성공")
-    void chargeCoin200() {
+    void chargeCoinTransactionSet200() {
         // given
         Member member = saveMemberInRepository();
 
@@ -148,7 +151,7 @@ class MemberServiceTest extends ServiceTest {
                 .build();
 
         // when
-        memberService.chargeCoin(memberSession, memberCharge);
+        memberTransactionService.chargeCoinTransactionSet(memberSession, memberCharge);
         Member findMember = memberRepository.getById(memberSession.getId());
 
         // then
@@ -157,7 +160,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("MemberSession에 맞는 Member가 없다면 Coin을 충전할 수 없습니다 - 실패")
-    void chargeCoin404() {
+    void chargeCoinTransactionSet404() {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
@@ -172,7 +175,7 @@ class MemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(MemberNotFoundException.class,
-                () -> memberService.chargeCoin(memberSession, memberCharge));
+                () -> memberTransactionService.chargeCoinTransactionSet(memberSession, memberCharge));
     }
 
 

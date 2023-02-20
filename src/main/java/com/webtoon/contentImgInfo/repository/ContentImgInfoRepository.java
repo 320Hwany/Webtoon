@@ -8,7 +8,7 @@ public interface ContentImgInfoRepository {
 
     void save(ContentImgInfo contentImgInfo);
 
-    Optional<ContentImgInfo> getByContentId(Long contentId);
+    Optional<ContentImgInfo> findByContentId(Long contentId);
 
     long count();
 }

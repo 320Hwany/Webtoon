@@ -4,6 +4,7 @@ import com.webtoon.content.domain.Content;
 import com.webtoon.content.service.ContentService;
 import com.webtoon.contentImgInfo.domain.ContentImgInfo;
 import com.webtoon.contentImgInfo.service.ContentImgInfoService;
+import com.webtoon.contentImgInfo.service.ContentImgInfoTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
@@ -19,7 +20,7 @@ import java.io.IOException;
 public class ContentImgInfoController {
 
     private final ContentImgInfoService contentImgInfoService;
-    private final ContentService contentService;
+    private final ContentImgInfoTransactionService contentImgInfoTransactionService;
 
     @Value("${file.dir}")
     private String imgDir;
@@ -28,9 +29,8 @@ public class ContentImgInfoController {
     public ResponseEntity<Void> save(@RequestParam MultipartFile multipartFile,
                                      @PathVariable Long contentId) throws IOException {
 
-        Content content = contentService.getById(contentId);
         contentImgInfoService.imgUploadOnServer(multipartFile, imgDir);
-        contentImgInfoService.saveContentImgInfo(multipartFile, content);
+        contentImgInfoTransactionService.saveTransactionSet(contentId, multipartFile);
         return ResponseEntity.ok().build();
     }
 

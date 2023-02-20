@@ -5,6 +5,7 @@ import com.webtoon.contentImgInfo.domain.ContentImgInfo;
 import com.webtoon.contentImgInfo.exception.ContentImgInfoNotFoundException;
 import com.webtoon.contentImgInfo.repository.ContentImgInfoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class ContentImgInfoService {
     }
 
     public ContentImgInfo getByContentId(Long contentId) {
-        return contentImgInfoRepository.getByContentId(contentId)
+        return contentImgInfoRepository.findByContentId(contentId)
                 .orElseThrow(ContentImgInfoNotFoundException::new);
     }
 
