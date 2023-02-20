@@ -48,4 +48,9 @@ public class ContentRepositoryImpl implements ContentRepository {
     public void deleteAll() {
         contentJpaRepository.deleteAll();
     }
+
+    @Override
+    public long count() {
+        return contentJpaRepository.count();
+    }
 }

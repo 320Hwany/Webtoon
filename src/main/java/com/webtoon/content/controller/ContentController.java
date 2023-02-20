@@ -1,15 +1,15 @@
 package com.webtoon.content.controller;
 
 import com.webtoon.author.domain.AuthorSession;
-import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.service.CartoonService;
 import com.webtoon.content.domain.Content;
+import com.webtoon.content.dto.request.ContentGet;
 import com.webtoon.content.dto.request.ContentSave;
 import com.webtoon.content.dto.request.ContentUpdate;
+import com.webtoon.content.dto.request.ContentUpdateSet;
 import com.webtoon.content.dto.response.ContentResponse;
-import com.webtoon.content.service.ContentService;
+import com.webtoon.content.service.ContentTransactionService;
 import com.webtoon.member.domain.MemberSession;
-import com.webtoon.member.service.MemberService;
 import com.webtoon.util.annotation.LoginForAuthor;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
@@ -17,47 +17,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 
-import static com.webtoon.util.constant.Constant.TWO_WEEKS;
 
 @RequiredArgsConstructor
 @RestController
 public class ContentController {
 
-    private final ContentService contentService;
+    private final ContentTransactionService contentTransactionService;
     private final CartoonService cartoonService;
-    private final MemberService memberService;
 
     @PostMapping("/content/{cartoonId}")
     public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
                                      @PathVariable Long cartoonId,
                                      @RequestBody @Valid ContentSave contentSave) {
-        Cartoon cartoon = cartoonService.getById(cartoonId);
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
-        Content content = contentService.getContentFromContentSaveAndCartoon(contentSave, cartoon);
-        contentService.save(content);
-
+        contentTransactionService.saveTransactionSet(cartoonId, contentSave);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/content/{cartoonId}/{contentEpisode}")
-    public ResponseEntity<ContentResponse> getContent(@PathVariable Long cartoonId,
+    public ResponseEntity<ContentResponse> getContent(@LoginForMember MemberSession memberSession,
+                                                      @PathVariable Long cartoonId,
                                                       @PathVariable int contentEpisode) {
 
-        Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
-        ContentResponse contentResponse = ContentResponse.getFromContent(content);
-        return ResponseEntity.ok(contentResponse);
-    }
-
-    @GetMapping("/content/lock/{cartoonId}/{contentEpisode}")
-    public ResponseEntity<ContentResponse> getPreviewContent(@LoginForMember MemberSession memberSession,
-                                                             @PathVariable Long cartoonId,
-                                                             @PathVariable int contentEpisode) {
-
-        Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
-        LocalDate lockLocalDate = contentService.getLockLocalDate(content, TWO_WEEKS);
-        memberService.validatePreviewContent(memberSession, lockLocalDate);
+        ContentGet contentGet = ContentGet.getFromIdAndEpisode(memberSession.getId(), cartoonId, contentEpisode);
+        Content content = contentTransactionService.getContentTransactionSet(contentGet);
         ContentResponse contentResponse = ContentResponse.getFromContent(content);
         return ResponseEntity.ok(contentResponse);
     }
@@ -68,8 +52,9 @@ public class ContentController {
                                        @RequestBody @Valid ContentUpdate contentUpdate) {
 
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
-        Content content = contentService.findByCartoonIdAndEpisode(cartoonId, contentEpisode);
-        contentService.update(content, contentUpdate);
+        ContentUpdateSet contentUpdateSet =
+                ContentUpdateSet.getFromIdAndEpisode(cartoonId, contentEpisode, contentUpdate);
+        contentTransactionService.updateTransactionSet(contentUpdateSet);
         return ResponseEntity.ok().build();
     }
 }

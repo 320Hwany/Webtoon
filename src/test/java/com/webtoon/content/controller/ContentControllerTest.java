@@ -160,10 +160,13 @@ class ContentControllerTest extends ControllerTest {
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
         Content content = saveContentInRepository(cartoon);
+        Member member = saveMemberInRepository();
+        MockHttpSession session = loginMemberSession(member);
 
         // expected
         mockMvc.perform(get("/content/{cartoonId}/{contentEpisode}",
-                        cartoon.getId(), content.getEpisode()))
+                        cartoon.getId(), content.getEpisode())
+                        .session(session))
                 .andExpect(status().isOk())
                 .andDo(document("content/get/200"));
     }
@@ -175,10 +178,13 @@ class ContentControllerTest extends ControllerTest {
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
         Content content = saveContentInRepository(cartoon);
+        Member member = saveMemberInRepository();
+        MockHttpSession session = loginMemberSession(member);
 
         // expected
         mockMvc.perform(get("/content/{cartoonId}/{contentEpisode}",
-                        9999L, content.getEpisode()))
+                        9999L, content.getEpisode())
+                        .session(session))
                 .andExpect(status().isNotFound())
                 .andDo(document("content/get/404Cartoon"));
     }
@@ -190,31 +196,15 @@ class ContentControllerTest extends ControllerTest {
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
         saveContentInRepository(cartoon);
-
-        // expected
-        mockMvc.perform(get("/content/{cartoonId}/{contentEpisode}",
-                        cartoon.getId(), 9999))
-                .andExpect(status().isNotFound())
-                .andDo(document("content/get/404Episode"));
-    }
-
-    @Test
-    @DisplayName("코인을 지불하여 미리보기 기능을 사용합니다 - 성공")
-    void getPreviewContent200() throws Exception {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        Content content = saveContentInRepository(cartoon);
         Member member = saveMemberInRepository();
-        member.chargeCoin(10000L);
         MockHttpSession session = loginMemberSession(member);
 
         // expected
-        mockMvc.perform(get("/content/lock/{cartoonId}/{contentEpisode}",
-                        cartoon.getId(), content.getEpisode())
+        mockMvc.perform(get("/content/{cartoonId}/{contentEpisode}",
+                        cartoon.getId(), 9999)
                         .session(session))
-                .andExpect(status().isOk())
-                .andDo(document("content/lock/get/200"));
+                .andExpect(status().isNotFound())
+                .andDo(document("content/get/404Episode"));
     }
 
     @Test

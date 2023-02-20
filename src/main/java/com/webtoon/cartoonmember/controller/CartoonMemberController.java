@@ -3,7 +3,9 @@ package com.webtoon.cartoonmember.controller;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.dto.response.CartoonListResult;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
+import com.webtoon.cartoonmember.dto.request.CartoonMemberRating;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
+import com.webtoon.cartoonmember.dto.request.CartoonMemberThumbsUp;
 import com.webtoon.cartoonmember.service.CartoonMemberService;
 import com.webtoon.cartoonmember.service.CartoonMemberTransactionalService;
 import com.webtoon.member.domain.MemberSession;
@@ -38,7 +40,9 @@ public class CartoonMemberController {
     public ResponseEntity<Void> thumbsUp(@LoginForMember MemberSession memberSession,
                                          @PathVariable Long cartoonId) {
 
-        cartoonMemberTransactionalService.thumbsUpTransactionSet(cartoonId, memberSession.getId());
+        CartoonMemberThumbsUp cartoonMemberThumbsUp =
+                CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
+        cartoonMemberTransactionalService.thumbsUpTransactionSet(cartoonMemberThumbsUp);
         return ResponseEntity.ok().build();
     }
 
@@ -60,7 +64,9 @@ public class CartoonMemberController {
     public ResponseEntity<Void> rating(@LoginForMember MemberSession memberSession,
                                        @PathVariable Long cartoonId,
                                        @PathVariable double rating) {
-        cartoonMemberTransactionalService.ratingTransactionSet(cartoonId, memberSession.getId(), rating);
+        CartoonMemberRating cartoonMemberRating =
+                CartoonMemberRating.getFromIdAndRating(cartoonId, memberSession.getId(), rating);
+        cartoonMemberTransactionalService.ratingTransactionSet(cartoonMemberRating);
         return ResponseEntity.ok().build();
     }
 }

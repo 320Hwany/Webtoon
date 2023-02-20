@@ -52,12 +52,6 @@ public class MemberService {
         member.chargeCoin(memberCharge.getChargeAmount());
     }
 
-    @Transactional
-    public void validatePreviewContent(MemberSession memberSession, LocalDate lockLocalDate) {
-        Member member = memberRepository.getById(memberSession.getId());
-        member.validatePreviewContent(lockLocalDate);
-    }
-
     public MemberSession makeMemberSession(MemberLogin memberLogin) {
         Member member = memberRepository.getByEmail(memberLogin.getEmail());
         if (passwordEncoder.matches(memberLogin.getPassword(), member.getPassword())) {

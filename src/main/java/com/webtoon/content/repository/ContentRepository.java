@@ -13,4 +13,6 @@ public interface ContentRepository {
     Optional<Content> findByCartoonIdAndEpisode(Long cartoonId, int episode);
 
     void deleteAll();
+
+    long count();
 }

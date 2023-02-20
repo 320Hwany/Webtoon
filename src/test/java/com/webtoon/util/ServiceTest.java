@@ -93,7 +93,7 @@ public class ServiceTest {
                 .subTitle("만화 부제")
                 .episode(1)
                 .rating(9.8)
-                .registrationDate(LocalDate.of(2023, 1, 20))
+                .registrationDate(LocalDate.now())
                 .build();
 
         contentRepository.save(content);
