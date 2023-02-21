@@ -7,6 +7,7 @@ import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -34,13 +35,17 @@ public class Member extends BaseTimeEntity {
 
     private String password;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;
+
     private long coin;
 
     @Builder
-    public Member(String nickname, String email, String password, Long coin) {
+    public Member(String nickname, String email, String password, LocalDate birthDate, long coin) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+        this.birthDate = birthDate;
         this.coin = coin;
     }
 
@@ -49,6 +54,7 @@ public class Member extends BaseTimeEntity {
                 .nickname(memberSignup.getNickname())
                 .email(memberSignup.getEmail())
                 .password(passwordEncoder.encode(memberSignup.getPassword()))
+                .birthDate(memberSignup.getBirthDate())
                 .coin(ZERO_OF_TYPE_LONG)
                 .build();
     }
@@ -70,5 +76,10 @@ public class Member extends BaseTimeEntity {
             }
             this.coin -= PAYCOIN;
         }
+    }
+
+    public int getYear() {
+        int year = birthDate.getYear();
+        return year;
     }
 }

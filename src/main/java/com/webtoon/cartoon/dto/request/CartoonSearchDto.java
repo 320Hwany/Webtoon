@@ -19,17 +19,20 @@ public class CartoonSearchDto {
 
     private String nickname;
 
+    private long ageRange;
+
     private String dayOfTheWeek;
 
     private String progress;
     private String genre;
 
     @Builder
-    public CartoonSearchDto(int page, String title, String nickname,
+    public CartoonSearchDto(int page, String title, String nickname, long ageRange,
                             String dayOfTheWeek, String progress, String genre) {
         this.page = page;
         this.title = title;
         this.nickname = nickname;
+        this.ageRange = ageRange;
         this.dayOfTheWeek = dayOfTheWeek;
         this.progress = progress;
         this.genre = genre;

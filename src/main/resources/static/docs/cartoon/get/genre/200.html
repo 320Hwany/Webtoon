@@ -458,13 +458,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /cartoon/genre HTTP/1.1
 Content-Type: application/json
-Content-Length: 128
+Content-Length: 146
 Host: localhost:8080
 
 {
   "page" : 1,
   "title" : null,
-  "nickName" : null,
+  "nickname" : null,
+  "ageRange" : 0,
   "dayOfTheWeek" : "NONE",
   "progress" : "NONE",
   "genre" : "ROMANCE"
@@ -480,129 +481,12 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 2583
+Content-Length: 48
 
-[ {
-  "title" : "만화 제목 1",
-  "authorResponse" : {
-    "nickName" : "작가 이름",
-    "email" : "yhwjd99@gmail.com",
-    "password" : "1234"
-  },
-  "dayOfTheWeek" : null,
-  "progress" : null,
-  "genre" : "ROMANCE",
-  "rating" : 0.0,
-  "likes" : 0
-}, {
-  "title" : "만화 제목 2",
-  "authorResponse" : {
-    "nickName" : "작가 이름",
-    "email" : "yhwjd99@gmail.com",
-    "password" : "1234"
-  },
-  "dayOfTheWeek" : null,
-  "progress" : null,
-  "genre" : "ROMANCE",
-  "rating" : 0.0,
-  "likes" : 0
-}, {
-  "title" : "만화 제목 3",
-  "authorResponse" : {
-    "nickName" : "작가 이름",
-    "email" : "yhwjd99@gmail.com",
-    "password" : "1234"
-  },
-  "dayOfTheWeek" : null,
-  "progress" : null,
-  "genre" : "ROMANCE",
-  "rating" : 0.0,
-  "likes" : 0
-}, {
-  "title" : "만화 제목 4",
-  "authorResponse" : {
-    "nickName" : "작가 이름",
-    "email" : "yhwjd99@gmail.com",
-    "password" : "1234"
-  },
-  "dayOfTheWeek" : null,
-  "progress" : null,
-  "genre" : "ROMANCE",
-  "rating" : 0.0,
-  "likes" : 0
-}, {
-  "title" : "만화 제목 5",
-  "authorResponse" : {
-    "nickName" : "작가 이름",
-    "email" : "yhwjd99@gmail.com",
-    "password" : "1234"
-  },
-  "dayOfTheWeek" : null,
-  "progress" : null,
-  "genre" : "ROMANCE",
-  "rating" : 0.0,
-  "likes" : 0
-}, {
-  "title" : "만화 제목 6",
-  "authorResponse" : {
-    "nickName" : "작가 이름",
-    "email" : "yhwjd99@gmail.com",
-    "password" : "1234"
-  },
-  "dayOfTheWeek" : null,
-  "progress" : null,
-  "genre" : "ROMANCE",
-  "rating" : 0.0,
-  "likes" : 0
-}, {
-  "title" : "만화 제목 7",
-  "authorResponse" : {
-    "nickName" : "작가 이름",
-    "email" : "yhwjd99@gmail.com",
-    "password" : "1234"
-  },
-  "dayOfTheWeek" : null,
-  "progress" : null,
-  "genre" : "ROMANCE",
-  "rating" : 0.0,
-  "likes" : 0
-}, {
-  "title" : "만화 제목 8",
-  "authorResponse" : {
-    "nickName" : "작가 이름",
-    "email" : "yhwjd99@gmail.com",
-    "password" : "1234"
-  },
-  "dayOfTheWeek" : null,
-  "progress" : null,
-  "genre" : "ROMANCE",
-  "rating" : 0.0,
-  "likes" : 0
-}, {
-  "title" : "만화 제목 9",
-  "authorResponse" : {
-    "nickName" : "작가 이름",
-    "email" : "yhwjd99@gmail.com",
-    "password" : "1234"
-  },
-  "dayOfTheWeek" : null,
-  "progress" : null,
-  "genre" : "ROMANCE",
-  "rating" : 0.0,
-  "likes" : 0
-}, {
-  "title" : "만화 제목 10",
-  "authorResponse" : {
-    "nickName" : "작가 이름",
-    "email" : "yhwjd99@gmail.com",
-    "password" : "1234"
-  },
-  "dayOfTheWeek" : null,
-  "progress" : null,
-  "genre" : "ROMANCE",
-  "rating" : 0.0,
-  "likes" : 0
-} ]</code></pre>
+{
+  "count" : 0,
+  "cartoonResponseList" : [ ]
+}</code></pre>
 </div>
 </div>
 </div>

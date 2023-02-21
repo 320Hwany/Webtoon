@@ -458,13 +458,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /member/signup HTTP/1.1
 Content-Type: application/json
-Content-Length: 63
+Content-Length: 85
 Host: localhost:8080
 
 {
-  "nickName" : "",
+  "nickname" : "",
   "email" : "yhwjd99",
-  "password" : ""
+  "password" : "",
+  "birthDate" : null
 }</code></pre>
 </div>
 </div>
@@ -484,7 +485,7 @@ Content-Length: 248
   "message" : "잘못된 요청입니다",
   "validation" : {
     "password" : "비밀번호를 입력해주세요",
-    "nickName" : "닉네임을 입력해주세요",
+    "nickname" : "닉네임을 입력해주세요",
     "email" : "이메일을 입력해주세요"
   }
 }</code></pre>

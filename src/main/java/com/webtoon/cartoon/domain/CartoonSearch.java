@@ -17,17 +17,20 @@ public class CartoonSearch {
     private String title;
     private String nickname;
 
+    private long ageRange;
+
     private DayOfTheWeek dayOfTheWeek;
 
     private Progress progress;
     private Genre genre;
 
     @Builder
-    public CartoonSearch(Integer page, String title, String nickname,
+    public CartoonSearch(Integer page, String title, String nickname, long ageRange,
                          DayOfTheWeek dayOfTheWeek, Progress progress, Genre genre) {
         this.page = page;
         this.title = title;
         this.nickname = nickname;
+        this.ageRange = ageRange;
         this.dayOfTheWeek = dayOfTheWeek;
         this.progress = progress;
         this.genre = genre;
@@ -38,6 +41,7 @@ public class CartoonSearch {
                 .page(cartoonSearchDto.getPage())
                 .title(cartoonSearchDto.getTitle())
                 .nickname(cartoonSearchDto.getNickname())
+                .ageRange(cartoonSearchDto.getAgeRange())
                 .dayOfTheWeek(DayOfTheWeek.valueOf(cartoonSearchDto.getDayOfTheWeek()))
                 .progress(Progress.valueOf(cartoonSearchDto.getProgress()))
                 .genre(Genre.valueOf(cartoonSearchDto.getGenre()))

@@ -2,6 +2,7 @@ package com.webtoon.cartoonmember.repository;
 
 
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
 
@@ -21,6 +22,8 @@ public interface CartoonMemberRepository {
     long findCartoonSizeWhereRated(Long cartoonId);
 
     List<Cartoon> findLikeListForMember(Long memberId);
+
+    List<Cartoon> findAllByMemberAge(CartoonSearch cartoonSearch);
 
     void deleteAll();
 
