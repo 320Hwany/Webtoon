@@ -27,7 +27,7 @@ public class ContentTransactionService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void saveTransactionSet(Long cartoonId, ContentSave contentSave) {
+    public void saveSet(Long cartoonId, ContentSave contentSave) {
         Cartoon cartoon = cartoonRepository.getById(cartoonId);
         Content content = Content.getFromContentSaveAndCartoon(contentSave, cartoon);
         contentRepository.save(content);
@@ -45,7 +45,7 @@ public class ContentTransactionService {
     }
 
     @Transactional
-    public void updateTransactionSet(ContentUpdateSet contentUpdateSet) {
+    public void updateSet(ContentUpdateSet contentUpdateSet) {
         Content content =
                 contentRepository.findByCartoonIdAndEpisode(contentUpdateSet.getCartoonId(),
                                 contentUpdateSet.getContentEpisode()).orElseThrow(ContentNotFoundException::new);

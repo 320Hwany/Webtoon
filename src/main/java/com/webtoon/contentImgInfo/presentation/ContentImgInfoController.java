@@ -28,7 +28,7 @@ public class ContentImgInfoController {
                                      @PathVariable Long contentId) throws IOException {
 
         contentImgInfoService.imgUploadOnServer(multipartFile, imgDir);
-        contentImgInfoTransactionService.saveTransactionSet(contentId, multipartFile);
+        contentImgInfoTransactionService.saveSet(contentId, multipartFile);
         return ResponseEntity.ok().build();
     }
 

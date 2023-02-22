@@ -33,7 +33,7 @@ class ContentServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("cartoonId, ContentSave로부터 그 만화에 해당하는 컨텐츠를 추가합니다")
-    void saveTransactionSet200() {
+    void saveSet200() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -45,7 +45,7 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         // when
-        contentTransactionService.saveTransactionSet(cartoon.getId(), contentSave);
+        contentTransactionService.saveSet(cartoon.getId(), contentSave);
 
         // then
         assertThat(contentRepository.count()).isEqualTo(1);
@@ -53,7 +53,7 @@ class ContentServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("cartoonId에 해당하는 만화가 없다면 예외가 발생합니다")
-    void saveTransactionSet404() {
+    void saveSet404() {
         // given
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제입니다")
@@ -63,7 +63,7 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         Assertions.assertThrows(CartoonNotFoundException.class,
-                () -> contentTransactionService.saveTransactionSet(9999L, contentSave));
+                () -> contentTransactionService.saveSet(9999L, contentSave));
     }
 
     @Test
@@ -203,7 +203,7 @@ class ContentServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("입력한 정보로 컨텐츠를 찾고 컨텐츠를 수정합니다")
-    void updateTransactionSet200() {
+    void updateSet200() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -222,7 +222,7 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         // when
-        contentTransactionService.updateTransactionSet(contentUpdateSet);
+        contentTransactionService.updateSet(contentUpdateSet);
 
         // then
         Content findContent = contentRepository.getById(content.getId());
@@ -234,7 +234,7 @@ class ContentServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("입력한 정보에 맞는 컨텐츠가 없다면 예외가 발생합니다")
-    void updateTransactionSet404() {
+    void updateSet404() {
         // given
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
@@ -250,6 +250,6 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         assertThrows(ContentNotFoundException.class,
-                () -> contentTransactionService.updateTransactionSet(contentUpdateSet));
+                () -> contentTransactionService.updateSet(contentUpdateSet));
     }
 }

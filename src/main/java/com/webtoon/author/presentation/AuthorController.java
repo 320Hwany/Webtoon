@@ -1,6 +1,5 @@
 package com.webtoon.author.presentation;
 
-import com.webtoon.author.domain.Author;
 import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.dto.request.AuthorSignup;
@@ -10,7 +9,6 @@ import com.webtoon.author.dto.response.AuthorResponse;
 import com.webtoon.author.dto.response.AuthorListResult;
 import com.webtoon.author.application.AuthorTransactionService;
 import com.webtoon.author.application.AuthorService;
-import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
@@ -31,42 +29,36 @@ public class AuthorController {
 
     @PostMapping("/author/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid AuthorSignup authorSignup) {
-        authorService.checkDuplication(authorSignup);
-        authorService.signup(authorSignup);
+        authorTransactionService.signupSet(authorSignup);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/author/login")
     public ResponseEntity<AuthorResponse> login(@RequestBody @Valid AuthorLogin authorLogin,
                                                 HttpServletRequest httpServletRequest) {
-        AuthorSession authorSession = authorService.makeAuthorSession(authorLogin);
-        authorService.makeSessionForAuthorSession(authorSession, httpServletRequest);
-        AuthorResponse authorResponse = AuthorResponse.getFromAuthorSession(authorSession);
+        AuthorResponse authorResponse = authorTransactionService.loginSet(authorLogin, httpServletRequest);
         return ResponseEntity.ok(authorResponse);
     }
 
     @PostMapping("/author/nickname")
     public ResponseEntity<AuthorListResult> getAuthorListByNickname(@RequestBody CartoonSearchDto cartoonSearchDto) {
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<AuthorCartoonResponse> authorCartoonResponseList =
-                authorTransactionService.findAllByNicknameContains(cartoonSearch);
-
+                authorTransactionService.findAllByNicknameContains(cartoonSearchDto);
         return ResponseEntity.ok(new AuthorListResult(authorCartoonResponseList.size(), authorCartoonResponseList));
     }
 
     @PatchMapping("/author")
     public ResponseEntity<AuthorResponse> update(@LoginForAuthor AuthorSession authorSession,
                                                  @RequestBody @Valid AuthorUpdate authorUpdate) {
-        Author author = authorTransactionService.updateTransactionSet(authorSession.getId(), authorUpdate);
-        AuthorResponse authorResponse = AuthorResponse.getFromAuthor(author);
+        AuthorResponse authorResponse =
+                authorTransactionService.updateSet(authorSession.getId(), authorUpdate);
         return ResponseEntity.ok(authorResponse);
     }
 
     @DeleteMapping("/author")
     public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
                                        HttpServletRequest httpServletRequest) {
-        authorTransactionService.deleteTransactionSet(authorSession.getId());
-        authorService.invalidateSession(authorSession, httpServletRequest);
+        authorTransactionService.deleteSet(authorSession, httpServletRequest);
         return ResponseEntity.ok().build();
     }
 

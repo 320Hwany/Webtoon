@@ -18,7 +18,7 @@ public class ContentImgInfoTransactionService {
     private final ContentService contentService;
 
     @Transactional
-    public void saveTransactionSet(Long contentId, MultipartFile multipartFile) {
+    public void saveSet(Long contentId, MultipartFile multipartFile) {
         Content content = contentService.getById(contentId);
         ContentImgInfo contentImgInfo = ContentImgInfo.makeContentImgInfo(multipartFile, content);
         contentImgInfoRepository.save(contentImgInfo);

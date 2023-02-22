@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,13 +26,17 @@ public class CartoonMemberTransactionalService {
     private final CartoonMemberRepository cartoonMemberRepository;
     private final CartoonRepository cartoonRepository;
     private final MemberRepository memberRepository;
+    private final CartoonMemberService cartoonMemberService;
 
     @Transactional
-    public void saveTransactionSet(CartoonMemberSave cartoonMemberSave) {
+    public void saveSet(CartoonMemberSave cartoonMemberSave, boolean alreadyRead) {
         Cartoon cartoon = cartoonRepository.getById(cartoonMemberSave.getCartoonId());
         Member member = memberRepository.getById(cartoonMemberSave.getMemberId());
         CartoonMember cartoonMember = CartoonMember.getFromCartoonAndMember(cartoon, member);
-        cartoonMemberRepository.save(cartoonMember);
+        if (!cartoonMemberService.validateAlreadyRead(cartoonMemberSave.getCartoonId(), cartoonMemberSave.getMemberId())) {
+            cartoonMemberRepository.save(cartoonMember);
+        }
+        cartoonMember.updateReadDate(LocalDateTime.now());
     }
 
     @Transactional

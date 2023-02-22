@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
+
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -35,6 +37,8 @@ public class CartoonMember extends BaseTimeEntity {
 
     private boolean rated;
 
+    private LocalDateTime lastReadDate;
+
     @Builder
     public CartoonMember(Cartoon cartoon, Member member, boolean thumbsUp, boolean rated) {
         this.cartoon = cartoon;
@@ -58,5 +62,9 @@ public class CartoonMember extends BaseTimeEntity {
 
     public void rated() {
         this.rated = true;
+    }
+
+    public void updateReadDate(LocalDateTime localDateTime) {
+        this.lastReadDate = localDateTime;
     }
 }

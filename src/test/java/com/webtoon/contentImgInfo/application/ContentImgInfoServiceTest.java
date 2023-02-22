@@ -111,7 +111,7 @@ class ContentImgInfoServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("만화 이미지에 대한 정보를 저장합니다 - 성공")
-    void saveTransactionSet() {
+    void saveSet() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -125,7 +125,7 @@ class ContentImgInfoServiceTest extends ServiceTest {
         );
 
         // when
-        contentImgInfoTransactionService.saveTransactionSet(content.getId(), multipartFile);
+        contentImgInfoTransactionService.saveSet(content.getId(), multipartFile);
 
         // then
         assertThat(contentImgInfoRepository.count()).isEqualTo(1L);

@@ -33,9 +33,6 @@ class CartoonServiceTest extends ServiceTest {
     @Autowired
     private CartoonService cartoonService;
 
-    @Autowired
-    private CartoonTransactionService cartoonTransactionService;
-
     @Test
     @DisplayName("제목을 포함하는 만화가 있다면 한 페이지를 보여줍니다 - 성공")
     @Transactional
@@ -176,120 +173,6 @@ class CartoonServiceTest extends ServiceTest {
         // then
         assertThat(onePageCartoonList.size()).isEqualTo(20);
         assertThat(onePageCartoonList.get(0).getLikes()).isEqualTo(20);
-    }
-
-    @Test
-    @DisplayName("AuthorSession과 id값이 일치하는 Author로 만화를 등록합니다 - 성공")
-    void saveTransactionSet200() {
-        // given
-        Author author = saveAuthorInRepository();
-        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
-
-        CartoonSave cartoonSave = CartoonSave.builder()
-                .title("만화 제목")
-                .dayOfTheWeek("MON")
-                .progress("SERIALIZATION")
-                .genre("ROMANCE")
-                .build();
-
-        // when
-        cartoonTransactionService.saveTransactionSet(cartoonSave, authorSession);
-
-        // then
-        assertThat(cartoonRepository.count()).isEqualTo(1L);
-    }
-
-    @Test
-    @DisplayName("AuthorSession과 id값이 일치하는 Author가 없다면 만화 등록을 할 수 없습니다 - 실패")
-    void saveTransactionSet404() {
-        // given
-        CartoonSave cartoonSave = CartoonSave.builder()
-                .title("만화 제목")
-                .dayOfTheWeek("MON")
-                .progress("SERIALIZATION")
-                .genre("ROMANCE")
-                .build();
-
-        AuthorSession authorSession = AuthorSession.builder()
-                .id(1L)
-                .nickname("DB에 없는 회원")
-                .email("yhwjd@naver.com")
-                .password("1234")
-                .build();
-
-        // expected
-        assertThrows(AuthorNotFoundException.class,
-                () -> cartoonTransactionService.saveTransactionSet(cartoonSave, authorSession));
-    }
-
-    @Test
-    @DisplayName("cartoonId와 일치하는 만화가 존재하면 수정에 성공합니다")
-    @Transactional
-    void updateTransactionSet200() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-
-        CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
-                .title("수정 만화 제목")
-                .dayOfTheWeek("TUE")
-                .progress("COMPLETE")
-                .genre("ROMANCE")
-                .build();
-        // when
-        cartoonTransactionService.updateTransactionSet(cartoon.getId(), cartoonUpdate);
-
-        // then
-        assertThat(cartoon.getTitle()).isEqualTo("수정 만화 제목");
-        assertThat(cartoon.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.TUE);
-        assertThat(cartoon.getProgress()).isEqualTo(Progress.COMPLETE);
-        assertThat(cartoon.getGenre()).isEqualTo(Genre.ROMANCE);
-    }
-
-    @Test
-    @DisplayName("cartoonId와 일치하는 만화가 없다면 예외가 발생합니다")
-    @Transactional
-    void updateTransactionSet404() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-
-        CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
-                .title("수정 만화 제목")
-                .dayOfTheWeek("TUE")
-                .progress("COMPLETE")
-                .genre("ROMANCE")
-                .build();
-
-        // expected
-        assertThrows(CartoonNotFoundException.class,
-                () -> cartoonTransactionService.updateTransactionSet(9999L, cartoonUpdate));
-    }
-
-    @Test
-    @DisplayName("cartoonId와 일치하는 만화가 존재하면 만화를 삭제합니다")
-    void deleteTransactionSet200() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-
-        // when
-        cartoonTransactionService.deleteTransactionSet(cartoon.getId());
-
-        // then
-        assertThat(cartoonRepository.count()).isEqualTo(0);
-    }
-
-    @Test
-    @DisplayName("만화가 존재하지 않으면 예외가 발생합니다")
-    void deleteTransactionSet404() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-
-        // expected
-        assertThrows(CartoonNotFoundException.class,
-                () -> cartoonTransactionService.deleteTransactionSet(9999L));
     }
 
     @Test

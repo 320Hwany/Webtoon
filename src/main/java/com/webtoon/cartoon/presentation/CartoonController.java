@@ -2,11 +2,7 @@ package com.webtoon.cartoon.presentation;
 
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.cartoon.dto.request.CartoonEnumField;
-import com.webtoon.cartoon.dto.request.CartoonSave;
-import com.webtoon.cartoon.dto.request.CartoonSearchDto;
-import com.webtoon.cartoon.dto.request.CartoonUpdate;
+import com.webtoon.cartoon.dto.request.*;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.dto.response.CartoonListResult;
 import com.webtoon.cartoon.application.CartoonService;
@@ -31,17 +27,14 @@ public class CartoonController {
                                      @RequestBody @Valid CartoonSave cartoonSave) {
         CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonSave(cartoonSave);
         Cartoon.validateEnumTypeValid(cartoonEnumField);
-        cartoonTransactionService.saveTransactionSet(cartoonSave, authorSession);
-
+        cartoonTransactionService.saveSet(cartoonSave, authorSession);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/cartoon/title")
     public ResponseEntity<CartoonListResult> getCartoonListByTitle(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonService.findAllByTitle(cartoonSearch);
-        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
+        List<CartoonResponse> cartoonResponseList = cartoonTransactionService.findAllByTitleSet(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
@@ -49,42 +42,32 @@ public class CartoonController {
     public ResponseEntity<CartoonListResult> getCartoonListByGenre(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
         cartoonService.validateGenreValid(cartoonSearchDto.getGenre());
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonService.findAllByGenre(cartoonSearch);
-        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-
+        List<CartoonResponse> cartoonResponseList = cartoonTransactionService.findAllByGenreSet(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
     @PostMapping("/cartoon/likes")
     public ResponseEntity<CartoonListResult> getCartoonListOrderByLikes(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonService.findAllOrderByLikes(cartoonSearch);
-        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-
+        List<CartoonResponse> cartoonResponseList = cartoonTransactionService.findAllOrderByLikes(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
     @PostMapping("/cartoon/day")
     public ResponseEntity<CartoonListResult> getCartoonListByDay(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonService.findAllByDayOfTheWeek(cartoonSearch);
-        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-
+        List<CartoonResponse> cartoonResponseList = cartoonTransactionService.findAllByDayOfTheWeek(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
     @PatchMapping("/cartoon/{cartoonId}")
     public ResponseEntity<Void> update(@LoginForAuthor AuthorSession authorSession,
-                                                  @PathVariable Long cartoonId,
-                                                  @RequestBody @Valid CartoonUpdate cartoonUpdate) {
+                                       @PathVariable Long cartoonId,
+                                       @RequestBody @Valid CartoonUpdate cartoonUpdate) {
         CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonUpdate(cartoonUpdate);
         Cartoon.validateEnumTypeValid(cartoonEnumField);
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
-        cartoonTransactionService.updateTransactionSet(cartoonId, cartoonUpdate);
-
+        cartoonTransactionService.updateSet(cartoonUpdate, cartoonId);
         return ResponseEntity.ok().build();
     }
 
@@ -92,7 +75,7 @@ public class CartoonController {
     public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
                                        @PathVariable Long cartoonId) {
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
-        cartoonTransactionService.deleteTransactionSet(cartoonId);
+        cartoonTransactionService.deleteSet(cartoonId);
         return ResponseEntity.ok().build();
     }
 }

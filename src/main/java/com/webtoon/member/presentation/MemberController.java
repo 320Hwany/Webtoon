@@ -44,14 +44,14 @@ public class MemberController {
     @PatchMapping("/member")
     public ResponseEntity<MemberResponse> update(@LoginForMember MemberSession memberSession,
                                                  @RequestBody @Valid MemberUpdate memberUpdate) {
-        Member member = memberTransactionService.updateTransactionSet(memberSession, memberUpdate);
+        Member member = memberTransactionService.updateSet(memberSession, memberUpdate);
         MemberResponse memberResponse = MemberResponse.getFromMember(member);
         return ResponseEntity.ok(memberResponse);
     }
 
     @DeleteMapping("/member")
     public ResponseEntity<Void> delete(@LoginForMember MemberSession memberSession) {
-        memberTransactionService.deleteTransactionSet(memberSession);
+        memberTransactionService.deleteSet(memberSession);
         return ResponseEntity.ok().build();
     }
 

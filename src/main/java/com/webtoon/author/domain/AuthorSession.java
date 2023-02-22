@@ -44,6 +44,8 @@ public class AuthorSession implements Serializable {
 
     public void invalidateSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        session.invalidate();
+        if (session != null) {
+            session.invalidate();
+        }
     }
 }

@@ -19,6 +19,11 @@ public class CartoonService {
 
     private final CartoonRepository cartoonRepository;
 
+    @Transactional
+    public void save(Cartoon cartoon) {
+        cartoonRepository.save(cartoon);
+    }
+
     public Cartoon getById(Long id) {
         return cartoonRepository.getById(id);
     }
@@ -48,6 +53,11 @@ public class CartoonService {
         if (Genre.validateValid(genre) == false) {
             throw new EnumTypeValidException(false, false, true);
         }
+    }
+
+    @Transactional
+    public void delete(Cartoon cartoon) {
+        cartoonRepository.delete(cartoon);
     }
 
     @Transactional

@@ -31,7 +31,7 @@ public class ContentController {
                                      @PathVariable Long cartoonId,
                                      @RequestBody @Valid ContentSave contentSave) {
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
-        contentTransactionService.saveTransactionSet(cartoonId, contentSave);
+        contentTransactionService.saveSet(cartoonId, contentSave);
         return ResponseEntity.ok().build();
     }
 
@@ -54,7 +54,7 @@ public class ContentController {
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
         ContentUpdateSet contentUpdateSet =
                 ContentUpdateSet.getFromIdAndEpisode(cartoonId, contentEpisode, contentUpdate);
-        contentTransactionService.updateTransactionSet(contentUpdateSet);
+        contentTransactionService.updateSet(contentUpdateSet);
         return ResponseEntity.ok().build();
     }
 }

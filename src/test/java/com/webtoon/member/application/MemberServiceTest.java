@@ -46,7 +46,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("memberSession에 맞는 member의 정보가 수정됩니다 - 성공")
-    void updateTransactionSet200() {
+    void updateSet200() {
         // given
         Member member = saveMemberInRepository();
 
@@ -64,7 +64,7 @@ class MemberServiceTest extends ServiceTest {
                 .build();
 
         // when
-        Member findMember = memberTransactionService.updateTransactionSet(memberSession, memberUpdate);
+        Member findMember = memberTransactionService.updateSet(memberSession, memberUpdate);
 
         // then
         assertThat(findMember.getNickname()).isEqualTo(memberUpdate.getNickname());
@@ -74,7 +74,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("memberSession에 맞는 member가 없으면 정보를 수정할 수 없습니다 - 실패")
-    void updateTransactionSet404() {
+    void updateSet404() {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
@@ -91,12 +91,12 @@ class MemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(MemberNotFoundException.class,
-                () -> memberTransactionService.updateTransactionSet(memberSession, memberUpdate));
+                () -> memberTransactionService.updateSet(memberSession, memberUpdate));
     }
 
     @Test
     @DisplayName("MemberSession에 맞는 Member가 있다면 Member를 삭제합니다 - 성공")
-    void deleteTransactionSet200() {
+    void deleteSet200() {
         // given
         Member member = saveMemberInRepository();
 
@@ -108,7 +108,7 @@ class MemberServiceTest extends ServiceTest {
                 .build();
 
         // when
-        memberTransactionService.deleteTransactionSet(memberSession);
+        memberTransactionService.deleteSet(memberSession);
 
         // then
         assertThat(memberRepository.count()).isEqualTo(0);
@@ -116,7 +116,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("MemberSession에 맞는 Member가 없다면 Member 삭제를 할 수 없습니다 - 실패")
-    void deleteTransactionSet404() {
+    void deleteSet404() {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
@@ -127,7 +127,7 @@ class MemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(MemberNotFoundException.class,
-                () -> memberTransactionService.deleteTransactionSet(memberSession));
+                () -> memberTransactionService.deleteSet(memberSession));
     }
 
     @Test

@@ -65,8 +65,66 @@ class CartoonMemberServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("CartoonMemberSave 정보로부터 CartoonMember를 저장합니다")
-    void saveTransactionSet200() {
+    @DisplayName("이미 읽은 만화라면 true를 반환합니다")
+    void validateAlreadyReadTrue() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        CartoonMember cartoonMember = CartoonMember.builder()
+                .cartoon(cartoon)
+                .member(member)
+                .thumbsUp(true)
+                .build();
+
+        cartoonMemberRepository.save(cartoonMember);
+
+        // when
+        boolean alreadyRead = cartoonMemberService.validateAlreadyRead(cartoon.getId(), member.getId());
+
+        // then
+        assertThat(alreadyRead).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("이미 읽은 만화가 아니라면 false를 반환합니다")
+    void validateAlreadyReadFalse() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+
+        // when
+        boolean alreadyRead = cartoonMemberService.validateAlreadyRead(cartoon.getId(), member.getId());
+
+        // then
+        assertThat(alreadyRead).isEqualTo(false);
+    }
+
+    @Test
+    @DisplayName("처음읽는 만화라면 CartoonMemberSave 정보로부터 CartoonMember를 저장합니다")
+    void saveSet200() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+
+
+        CartoonMemberSave cartoonMemberSave = CartoonMemberSave.builder()
+                .cartoonId(cartoon.getId())
+                .memberId(member.getId())
+                .build();
+
+        // when
+        cartoonMemberTransactionalService.saveSet(cartoonMemberSave, false);
+
+        // then
+        assertThat(cartoonMemberRepository.count()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("처음읽는 만화가 아니라면 CartoonMember의 마지막으로 읽은 날짜만 업데이트합니다")
+    void saveSetAlreadyRead() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -77,16 +135,25 @@ class CartoonMemberServiceTest extends ServiceTest {
                 .memberId(member.getId())
                 .build();
 
+        CartoonMember cartoonMember = CartoonMember.builder()
+                .cartoon(cartoon)
+                .member(member)
+                .thumbsUp(true)
+                .build();
+
+        cartoonMemberRepository.save(cartoonMember);
+
         // when
-        cartoonMemberTransactionalService.saveTransactionSet(cartoonMemberSave);
+        cartoonMemberTransactionalService.saveSet(cartoonMemberSave, true);
 
         // then
         assertThat(cartoonMemberRepository.count()).isEqualTo(1);
+        assertThat(cartoonMember.getLastModifiedDateTime()).isNotNull();
     }
 
     @Test
     @DisplayName("cartoonId, memberId 각각과 일치하는 만화, 회원이 없다면 예외가 발생합니다")
-    void saveTransactionSet404() {
+    void saveSet404() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -104,9 +171,11 @@ class CartoonMemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(CartoonNotFoundException.class,
-                () -> cartoonMemberTransactionalService.saveTransactionSet(cartoonMemberSaveWithoutCartoon));
+                () -> cartoonMemberTransactionalService
+                        .saveSet(cartoonMemberSaveWithoutCartoon,false));
         assertThrows(MemberNotFoundException.class,
-                () -> cartoonMemberTransactionalService.saveTransactionSet(cartoonMemberSaveWithoutMember));
+                () -> cartoonMemberTransactionalService
+                        .saveSet(cartoonMemberSaveWithoutMember,false));
     }
 
     @Test

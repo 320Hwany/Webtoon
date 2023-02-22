@@ -1,14 +1,10 @@
 package com.webtoon.cartoonmember.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.webtoon.author.domain.QAuthor;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.cartoon.domain.QCartoon;
 import com.webtoon.cartoonmember.domain.CartoonMember;
-import com.webtoon.cartoonmember.domain.QCartoonMember;
 import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
-import com.webtoon.member.domain.QMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,7 +17,6 @@ import static com.webtoon.author.domain.QAuthor.author;
 import static com.webtoon.cartoon.domain.QCartoon.*;
 import static com.webtoon.cartoonmember.domain.QCartoonMember.cartoonMember;
 import static com.webtoon.member.domain.QMember.member;
-import static java.lang.Boolean.TRUE;
 
 
 @RequiredArgsConstructor
@@ -104,6 +99,7 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                         LocalDate.now().minusYears(cartoonSearch.getAgeRange() + 8)))
                 .where(cartoonMember.thumbsUp.eq(true))
                 .fetch();
+
 
         return null;
     }

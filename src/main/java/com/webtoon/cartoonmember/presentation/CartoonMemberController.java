@@ -2,17 +2,14 @@ package com.webtoon.cartoonmember.presentation;
 
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.response.CartoonListResult;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
-import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberRating;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberThumbsUp;
 import com.webtoon.cartoonmember.application.CartoonMemberService;
 import com.webtoon.cartoonmember.application.CartoonMemberTransactionalService;
-import com.webtoon.cartoonmember.dto.response.CartoonMemberListResult;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +32,8 @@ public class CartoonMemberController {
 
         CartoonMemberSave cartoonMemberSave =
                 CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
-        cartoonMemberTransactionalService.saveTransactionSet(cartoonMemberSave);
+        boolean alreadyRead = cartoonMemberService.validateAlreadyRead(cartoonId, memberSession.getId());
+        cartoonMemberTransactionalService.saveSet(cartoonMemberSave, alreadyRead);
         return ResponseEntity.ok().build();
     }
 

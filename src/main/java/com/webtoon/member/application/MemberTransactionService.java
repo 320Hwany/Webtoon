@@ -19,14 +19,14 @@ public class MemberTransactionService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Member updateTransactionSet(MemberSession memberSession, MemberUpdate memberUpdate) {
+    public Member updateSet(MemberSession memberSession, MemberUpdate memberUpdate) {
         Member member = memberRepository.getById(memberSession.getId());
         member.update(memberUpdate, passwordEncoder);
         return member;
     }
 
     @Transactional
-    public void deleteTransactionSet(MemberSession memberSession) {
+    public void deleteSet(MemberSession memberSession) {
         Member member = memberRepository.getById(memberSession.getId());
         memberRepository.delete(member);
     }
