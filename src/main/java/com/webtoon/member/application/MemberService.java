@@ -23,12 +23,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
-    public void signup(MemberSignup memberSignup) {
-        Member member = Member.getFromMemberSignup(memberSignup, passwordEncoder);
-        memberRepository.save(member);
-    }
-
     public MemberSession makeMemberSession(MemberLogin memberLogin) {
         Member member = memberRepository.getByEmail(memberLogin.getEmail());
         if (passwordEncoder.matches(memberLogin.getPassword(), member.getPassword())) {
@@ -52,5 +46,19 @@ public class MemberService {
 
     public void logout(MemberSession memberSession, HttpServletRequest httpServletRequest) {
         memberSession.invalidate(httpServletRequest);
+    }
+
+    public Member getById(Long memberId) {
+        return memberRepository.getById(memberId);
+    }
+
+    @Transactional
+    public void save(Member member) {
+        memberRepository.save(member);
+    }
+
+    @Transactional
+    public void delete(Member member) {
+        memberRepository.delete(member);
     }
 }

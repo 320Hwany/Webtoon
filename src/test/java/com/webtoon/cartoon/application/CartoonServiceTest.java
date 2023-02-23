@@ -176,7 +176,7 @@ class CartoonServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("작가가 만화에 대한 접근 권한이 있는면 메소드를 통과합니다 - 성공")
+    @DisplayName("작가가 만화에 대한 접근 권한이 있으면 메소드를 통과합니다 - 성공")
     void checkAuthorityForCartoon200() {
         // given
         Author author = saveAuthorInRepository();

@@ -29,7 +29,7 @@ public class CartoonMemberTransactionalService {
     private final CartoonMemberService cartoonMemberService;
 
     @Transactional
-    public void saveSet(CartoonMemberSave cartoonMemberSave, boolean alreadyRead) {
+    public void saveSet(CartoonMemberSave cartoonMemberSave) {
         Cartoon cartoon = cartoonRepository.getById(cartoonMemberSave.getCartoonId());
         Member member = memberRepository.getById(cartoonMemberSave.getMemberId());
         CartoonMember cartoonMember = CartoonMember.getFromCartoonAndMember(cartoon, member);
@@ -41,9 +41,8 @@ public class CartoonMemberTransactionalService {
 
     @Transactional
     public void thumbsUpTransactionSet(CartoonMemberThumbsUp cartoonMemberThumbsUp) {
-        CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(
-                cartoonMemberThumbsUp.getCartoonId(),
-                cartoonMemberThumbsUp.getMemberId()).orElseThrow(CartoonMemberNotFoundException::new);
+        CartoonMember cartoonMember = cartoonMemberService.findByCartoonIdAndMemberId(
+                cartoonMemberThumbsUp.getCartoonId(), cartoonMemberThumbsUp.getMemberId());
         cartoonMember.thumbsUp();
         Cartoon cartoon = cartoonMember.getCartoon();
         cartoon.addLike();
@@ -51,13 +50,11 @@ public class CartoonMemberTransactionalService {
 
     @Transactional
     public void ratingTransactionSet(CartoonMemberRating cartoonMemberRating) {
-        CartoonMember cartoonMember = cartoonMemberRepository
-                .findByCartoonIdAndMemberId(cartoonMemberRating.getCartoonId(), cartoonMemberRating.getMemberId())
-                .orElseThrow(CartoonMemberNotFoundException::new);
+        CartoonMember cartoonMember = cartoonMemberService.findByCartoonIdAndMemberId(
+                cartoonMemberRating.getCartoonId(), cartoonMemberRating.getMemberId());
 
-        if (cartoonMember.isRated() == false) {
-            long cartoonListSize = cartoonMemberRepository
-                    .findCartoonSizeWhereRated(cartoonMemberRating.getCartoonId());
+        if (!cartoonMember.isRated()) {
+            long cartoonListSize = cartoonMemberService.findCartoonSizeWhereRated(cartoonMemberRating.getCartoonId());
             Cartoon cartoon = cartoonMember.getCartoon();
             cartoon.rating(cartoonMemberRating.getRating(), cartoonListSize);
             cartoonMember.rated();

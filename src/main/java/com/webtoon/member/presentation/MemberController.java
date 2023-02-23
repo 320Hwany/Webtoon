@@ -26,8 +26,7 @@ public class MemberController {
 
     @PostMapping("/member/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid MemberSignup memberSignup) {
-        memberService.checkDuplication(memberSignup);
-        memberService.signup(memberSignup);
+        memberTransactionService.signupSet(memberSignup);
         return ResponseEntity.ok().build();
     }
 

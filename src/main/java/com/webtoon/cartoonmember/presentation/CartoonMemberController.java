@@ -32,15 +32,13 @@ public class CartoonMemberController {
 
         CartoonMemberSave cartoonMemberSave =
                 CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
-        boolean alreadyRead = cartoonMemberService.validateAlreadyRead(cartoonId, memberSession.getId());
-        cartoonMemberTransactionalService.saveSet(cartoonMemberSave, alreadyRead);
+        cartoonMemberTransactionalService.saveSet(cartoonMemberSave);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/cartoonMember/thumbsUp/{cartoonId}")
     public ResponseEntity<Void> thumbsUp(@LoginForMember MemberSession memberSession,
                                          @PathVariable Long cartoonId) {
-
         CartoonMemberThumbsUp cartoonMemberThumbsUp =
                 CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
         cartoonMemberTransactionalService.thumbsUpTransactionSet(cartoonMemberThumbsUp);

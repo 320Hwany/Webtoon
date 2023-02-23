@@ -85,13 +85,13 @@ public class Cartoon extends BaseTimeEntity {
         boolean isProgressValid = Progress.validateValid(cartoonEnumField.getProgress());
         boolean isGenreValid = Genre.validateValid(cartoonEnumField.getGenre());
 
-        if ((isDayValid == false) || (isProgressValid == false) || (isGenreValid == false)) {
-            throw new EnumTypeValidException(isDayValid, isProgressValid, isGenreValid);
+        if ((!isDayValid) || (!isProgressValid) || (!isGenreValid)) {
+                throw new EnumTypeValidException(isDayValid, isProgressValid, isGenreValid);
         }
     }
 
     public void validateAuthorityForCartoon(AuthorSession authorSession) {
-        if (author.getId().longValue() != authorSession.getId().longValue()) {
+        if (author == null || !author.getId().equals(authorSession.getId())) {
             throw new CartoonForbiddenException();
         }
     }

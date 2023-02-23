@@ -50,7 +50,7 @@ public class CartoonService {
     }
 
     public void validateGenreValid(String genre) {
-        if (Genre.validateValid(genre) == false) {
+        if (!Genre.validateValid(genre)) {
             throw new EnumTypeValidException(false, false, true);
         }
     }

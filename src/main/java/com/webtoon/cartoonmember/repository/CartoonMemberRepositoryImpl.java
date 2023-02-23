@@ -51,7 +51,6 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .fetchOne());
     }
 
-    // todo 쿼리 두방
     @Override
     public List<Cartoon> findAllCartoonByMemberId(Long memberId) {
         return jpaQueryFactory.select(cartoonMember.cartoon)

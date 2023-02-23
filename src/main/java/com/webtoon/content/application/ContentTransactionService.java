@@ -48,7 +48,7 @@ public class ContentTransactionService {
     public void updateSet(ContentUpdateSet contentUpdateSet) {
         Content content =
                 contentRepository.findByCartoonIdAndEpisode(contentUpdateSet.getCartoonId(),
-                                contentUpdateSet.getContentEpisode()).orElseThrow(ContentNotFoundException::new);
+                        contentUpdateSet.getContentEpisode()).orElseThrow(ContentNotFoundException::new);
         content.update(contentUpdateSet.getContentUpdate());
     }
 }

@@ -32,11 +32,17 @@ public class CartoonMemberService {
         return cartoonMemberRepository.findAllByMemberAge(cartoonSearch);
     }
 
+    public CartoonMember findByCartoonIdAndMemberId(Long cartoonId, Long memberId) {
+        return cartoonMemberRepository.findByCartoonIdAndMemberId(cartoonId, memberId)
+                .orElseThrow(CartoonMemberNotFoundException::new);
+    }
+
+    public long findCartoonSizeWhereRated(Long cartoonId) {
+        return cartoonMemberRepository.findCartoonSizeWhereRated(cartoonId);
+    }
+
     public boolean validateAlreadyRead(Long cartoonId, Long memberId) {
         Optional<CartoonMember> cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(cartoonId, memberId);
-        if (cartoonMember.isPresent()) {
-            return true;
-        }
-        return false;
+        return cartoonMember.isPresent();
     }
 }

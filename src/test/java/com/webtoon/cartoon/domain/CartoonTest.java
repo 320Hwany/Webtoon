@@ -45,23 +45,16 @@ class CartoonTest extends DomainTest {
     }
 
     @Test
-    @DisplayName("소수 둘째 자리까지 평점을 매깁니다")
-    void addLike() {
+    @DisplayName("만화에 대한 작가 정보가 없거나 다른 작가라면 예외가 발생합니다")
+    void validateAuthorityForCartoon() {
         // given
-        Cartoon cartoon = Cartoon.builder()
-                .title("만화 제목")
-                .dayOfTheWeek(DayOfTheWeek.MON)
-                .progress(Progress.SERIALIZATION)
-                .genre(Genre.ROMANCE)
-                .rating(Constant.ZERO_OF_TYPE_DOUBLE)
-                .likes(10)
-                .build();
+        Author author = getAuthor();
+        Cartoon cartoon = getCartoon();
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
 
         // when
-        cartoon.addLike();
-
-        // then
-        assertThat(cartoon.getLikes()).isEqualTo(11);
+        assertThrows(CartoonForbiddenException.class,
+                () -> cartoon.validateAuthorityForCartoon(authorSession));
     }
 
     @Test
@@ -85,6 +78,26 @@ class CartoonTest extends DomainTest {
         assertThat(cartoon.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.TUE);
         assertThat(cartoon.getProgress()).isEqualTo(Progress.COMPLETE);
         assertThat(cartoon.getGenre()).isEqualTo(Genre.ACTION);
+    }
+
+    @Test
+    @DisplayName("소수 둘째 자리까지 평점을 매깁니다")
+    void addLike() {
+        // given
+        Cartoon cartoon = Cartoon.builder()
+                .title("만화 제목")
+                .dayOfTheWeek(DayOfTheWeek.MON)
+                .progress(Progress.SERIALIZATION)
+                .genre(Genre.ROMANCE)
+                .rating(Constant.ZERO_OF_TYPE_DOUBLE)
+                .likes(10)
+                .build();
+
+        // when
+        cartoon.addLike();
+
+        // then
+        assertThat(cartoon.getLikes()).isEqualTo(11);
     }
 
     @Test
@@ -126,51 +139,6 @@ class CartoonTest extends DomainTest {
 
         // then
         assertThat(sum).isEqualTo(98);
-    }
-
-    @Test
-    @DisplayName("작가의 만화이면 메소드를 통과합니다")
-    void checkAuthorityForCartoon200() {
-        // given
-        Author author = getAuthor();
-        Cartoon cartoon = Cartoon.builder()
-                .author(author)
-                .title("만화 제목")
-                .dayOfTheWeek(DayOfTheWeek.MON)
-                .progress(Progress.SERIALIZATION)
-                .genre(Genre.ROMANCE)
-                .build();
-
-        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
-
-        // expected
-        cartoon.validateAuthorityForCartoon(authorSession);
-    }
-
-
-    @Test
-    @DisplayName("작가의 만화가 아니면 접근 권한 예외가 발생합니다")
-    void checkAuthorityForCartoon403() {
-        // given
-        Author author = getAuthor();
-        Cartoon cartoon = Cartoon.builder()
-                .author(author)
-                .title("만화 제목")
-                .dayOfTheWeek(DayOfTheWeek.MON)
-                .progress(Progress.SERIALIZATION)
-                .genre(Genre.ROMANCE)
-                .build();
-
-        AuthorSession anotherAuthorSession = AuthorSession.builder()
-                .id(9999L)
-                .nickname("다른 작가")
-                .email("yhwjd@naver.com")
-                .password("4321")
-                .build();
-
-        // expected
-        assertThrows(CartoonForbiddenException.class,
-                () -> cartoon.validateAuthorityForCartoon(anotherAuthorSession));
     }
 
     @Test
