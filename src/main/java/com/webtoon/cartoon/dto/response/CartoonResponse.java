@@ -5,6 +5,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class CartoonResponse {
 
     private String title;
@@ -28,18 +31,6 @@ public class CartoonResponse {
 
     private double rating;
     private long likes;
-
-    @Builder
-    public CartoonResponse(String title, AuthorResponse authorResponse, DayOfTheWeek dayOfTheWeek, Progress progress,
-                           Genre genre, double rating, long likes) {
-        this.title = title;
-        this.authorResponse = authorResponse;
-        this.dayOfTheWeek = dayOfTheWeek;
-        this.progress = progress;
-        this.genre = genre;
-        this.rating = rating;
-        this.likes = likes;
-    }
 
     public static CartoonResponse getFromCartoon(Cartoon cartoon) {
         return CartoonResponse.builder()

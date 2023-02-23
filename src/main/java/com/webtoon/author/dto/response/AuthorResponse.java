@@ -4,6 +4,7 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,16 +14,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthorResponse {
 
     private String nickname;
     private String email;
-
-    @Builder
-    public AuthorResponse(String nickname, String email) {
-        this.nickname = nickname;
-        this.email = email;
-    }
 
     public static AuthorResponse getFromAuthorSession(AuthorSession authorSession) {
         return AuthorResponse.builder()

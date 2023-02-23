@@ -1,5 +1,6 @@
 package com.webtoon.member.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,9 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class MemberSignup {
 
     @NotBlank(message = "닉네임을 입력해주세요")
@@ -24,12 +27,4 @@ public class MemberSignup {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
-
-    @Builder
-    public MemberSignup(String nickname, String email, String password, LocalDate birthDate) {
-        this.nickname = nickname;
-        this.email = email;
-        this.password = password;
-        this.birthDate = birthDate;
-    }
 }

@@ -1,5 +1,6 @@
 package com.webtoon.content.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class ContentSave {
 
     @NotBlank(message = "부제를 입력해주세요")
@@ -23,11 +26,4 @@ public class ContentSave {
     @NotNull(message = "등록 날짜를 입력해주세요")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate registrationDate;
-
-    @Builder
-    public ContentSave(String subTitle, int episode, LocalDate registrationDate) {
-        this.subTitle = subTitle;
-        this.episode = episode;
-        this.registrationDate = registrationDate;
-    }
 }

@@ -26,8 +26,6 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
     private final CartoonMemberJpaRepository cartoonMemberJpaRepository;
     private final JPAQueryFactory jpaQueryFactory;
 
-    private final JdbcTemplate jdbcTemplate;
-
     @Override
     public CartoonMember save(CartoonMember cartoonMember) {
         return cartoonMemberJpaRepository.save(cartoonMember);
@@ -66,8 +64,8 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
     public long findCartoonSizeWhereRated(Long cartoonId) {
         return jpaQueryFactory.select(cartoonMember.count())
                 .from(cartoonMember)
-                .where(cartoonMember.cartoon.id.eq(cartoonId))
-                .where(cartoonMember.rated.eq(true))
+                .where(cartoonMember.cartoon.id.eq(cartoonId),
+                        cartoonMember.rated.eq(true))
                 .fetchOne().longValue();
     }
 
@@ -92,9 +90,8 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .fetchJoin()
                 .leftJoin(cartoon.author, author)
                 .fetchJoin()
-                .where(cartoonMember.member.birthDate.before(
-                        LocalDate.now().minusYears(cartoonSearch.getAgeRange() - 1)))
-                .where(cartoonMember.member.birthDate.after(
+                        .where(cartoonMember.member.birthDate.between(
+                        LocalDate.now().minusYears(cartoonSearch.getAgeRange() - 1),
                         LocalDate.now().minusYears(cartoonSearch.getAgeRange() + 8)))
                 .where(cartoonMember.thumbsUp.eq(true))
                 .fetch();

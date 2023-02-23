@@ -2,20 +2,19 @@ package com.webtoon.member.dto.response;
 
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.domain.MemberSession;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberResponse {
 
     private String nickname;
     private String email;
-
-    @Builder
-    public MemberResponse(String nickname, String email) {
-        this.nickname = nickname;
-        this.email = email;
-    }
 
     public static MemberResponse getFromMember(Member member) {
         return MemberResponse.builder()
