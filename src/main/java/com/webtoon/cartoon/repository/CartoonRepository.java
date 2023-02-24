@@ -14,11 +14,9 @@ public interface CartoonRepository {
 
     List<Cartoon> findAllByTitle(CartoonSearch cartoonSearch);
 
-    List<Cartoon> findAllByGenre(CartoonSearch cartoonSearch);
+    List<Cartoon> findAllByCartoonCond(CartoonSearch cartoonSearch);
 
     List<Cartoon> findAllOrderByLikes(CartoonSearch cartoonSearch);
-
-    List<Cartoon> findAllByDayOfTheWeek(CartoonSearch cartoonSearch);
 
     void delete(Cartoon cartoon);
 

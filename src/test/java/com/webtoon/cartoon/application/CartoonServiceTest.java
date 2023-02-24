@@ -2,19 +2,14 @@ package com.webtoon.cartoon.application;
 
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
-import com.webtoon.author.exception.AuthorNotFoundException;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
-import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.exception.CartoonForbiddenException;
-import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.util.ServiceTest;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
-import com.webtoon.util.enumerated.Progress;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +97,7 @@ class CartoonServiceTest extends ServiceTest {
 
         // when
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonService.findAllByGenre(cartoonSearch);
+        List<Cartoon> cartoonList = cartoonService.findAllByCartoonCond(cartoonSearch);
 
         // then
         assertThat(cartoonList.size()).isEqualTo(10);
@@ -168,7 +163,7 @@ class CartoonServiceTest extends ServiceTest {
 
         // when
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> onePageCartoonList = cartoonService.findAllByDayOfTheWeek(cartoonSearch);
+        List<Cartoon> onePageCartoonList = cartoonService.findAllByCartoonCond(cartoonSearch);
 
         // then
         assertThat(onePageCartoonList.size()).isEqualTo(20);

@@ -127,8 +127,6 @@ class AuthorTransactionServiceTest extends ServiceTest {
                 .id(9999L)
                 .build();
 
-        MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
-
         // expected
         Assertions.assertThrows(AuthorNotFoundException.class,
                 () -> authorTransactionService.deleteSet(authorSession, new MockHttpServletRequest()));

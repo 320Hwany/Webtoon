@@ -193,7 +193,7 @@ class CartoonControllerTest extends ControllerTest {
         String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
 
         // expected
-        mockMvc.perform(post("/cartoon/genre")
+        mockMvc.perform(post("/cartoon/cond")
                         .contentType(APPLICATION_JSON)
                         .content(cartoonSearchDtoJson))
                 .andExpect(status().isOk())
@@ -214,7 +214,7 @@ class CartoonControllerTest extends ControllerTest {
         String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
 
         // expected
-        mockMvc.perform(post("/cartoon/genre")
+        mockMvc.perform(post("/cartoon/cond")
                         .contentType(APPLICATION_JSON)
                         .content(cartoonSearchDtoJson))
                 .andExpect(status().isBadRequest())
@@ -310,7 +310,7 @@ class CartoonControllerTest extends ControllerTest {
         String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
 
         // expected
-        mockMvc.perform(post("/cartoon/day")
+        mockMvc.perform(post("/cartoon/cond")
                         .contentType(APPLICATION_JSON)
                         .content(cartoonSearchDtoJson))
                 .andExpect(status().isOk())

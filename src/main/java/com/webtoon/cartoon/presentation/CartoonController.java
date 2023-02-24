@@ -38,11 +38,12 @@ public class CartoonController {
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
-    @PostMapping("/cartoon/genre")
-    public ResponseEntity<CartoonListResult> getCartoonListByGenre(
+    @PostMapping("/cartoon/cond")
+    public ResponseEntity<CartoonListResult> getCartoonListByCond(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
         cartoonService.validateGenreValid(cartoonSearchDto.getGenre());
-        List<CartoonResponse> cartoonResponseList = cartoonTransactionService.findAllByGenreSet(cartoonSearchDto);
+        List<CartoonResponse> cartoonResponseList =
+                cartoonTransactionService.findAllByCartoonCondSet(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
@@ -50,13 +51,6 @@ public class CartoonController {
     public ResponseEntity<CartoonListResult> getCartoonListOrderByLikes(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
         List<CartoonResponse> cartoonResponseList = cartoonTransactionService.findAllOrderByLikes(cartoonSearchDto);
-        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
-    }
-
-    @PostMapping("/cartoon/day")
-    public ResponseEntity<CartoonListResult> getCartoonListByDay(
-            @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
-        List<CartoonResponse> cartoonResponseList = cartoonTransactionService.findAllByDayOfTheWeek(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 

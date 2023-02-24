@@ -1,5 +1,6 @@
 package com.webtoon.cartoon.dto.response;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.webtoon.author.dto.response.AuthorResponse;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.util.enumerated.DayOfTheWeek;
@@ -16,9 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class CartoonResponse {
 
     private String title;
@@ -31,6 +30,19 @@ public class CartoonResponse {
 
     private double rating;
     private long likes;
+
+    @Builder
+    @QueryProjection
+    public CartoonResponse(String title, AuthorResponse authorResponse, DayOfTheWeek dayOfTheWeek,
+                           Progress progress, Genre genre, double rating, long likes) {
+        this.title = title;
+        this.authorResponse = authorResponse;
+        this.dayOfTheWeek = dayOfTheWeek;
+        this.progress = progress;
+        this.genre = genre;
+        this.rating = rating;
+        this.likes = likes;
+    }
 
     public static CartoonResponse getFromCartoon(Cartoon cartoon) {
         return CartoonResponse.builder()

@@ -36,21 +36,15 @@ public class CartoonTransactionService {
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
-    public List<CartoonResponse> findAllByGenreSet(CartoonSearchDto cartoonSearchDto) {
+    public List<CartoonResponse> findAllByCartoonCondSet(CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonService.findAllByGenre(cartoonSearch);
+        List<Cartoon> cartoonList = cartoonService.findAllByCartoonCond(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
     public List<CartoonResponse> findAllOrderByLikes(CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<Cartoon> cartoonList = cartoonService.findAllOrderByLikes(cartoonSearch);
-        return CartoonResponse.getFromCartoonList(cartoonList);
-    }
-
-    public List<CartoonResponse> findAllByDayOfTheWeek(CartoonSearchDto cartoonSearchDto) {
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonService.findAllByDayOfTheWeek(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 

@@ -32,16 +32,12 @@ public class CartoonService {
         return cartoonRepository.findAllByTitle(cartoonSearch);
     }
 
-    public List<Cartoon> findAllByGenre(CartoonSearch cartoonSearch) {
-        return cartoonRepository.findAllByGenre(cartoonSearch);
+    public List<Cartoon> findAllByCartoonCond(CartoonSearch cartoonSearch) {
+        return cartoonRepository.findAllByCartoonCond(cartoonSearch);
     }
 
     public List<Cartoon> findAllOrderByLikes(CartoonSearch cartoonSearch) {
         return cartoonRepository.findAllOrderByLikes(cartoonSearch);
-    }
-
-    public List<Cartoon> findAllByDayOfTheWeek(CartoonSearch cartoonSearch) {
-        return cartoonRepository.findAllByDayOfTheWeek(cartoonSearch);
     }
 
     public void validateAuthorityForCartoon(AuthorSession authorSession, Long cartoonId) {
