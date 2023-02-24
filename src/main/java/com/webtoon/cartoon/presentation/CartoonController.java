@@ -38,19 +38,21 @@ public class CartoonController {
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
-    @PostMapping("/cartoon/cond")
-    public ResponseEntity<CartoonListResult> getCartoonListByCond(
+    @PostMapping("/cartoon/orderby/likes")
+    public ResponseEntity<CartoonListResult> getCartoonListByCondOrderByLikes(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
         cartoonService.validateGenreValid(cartoonSearchDto.getGenre());
         List<CartoonResponse> cartoonResponseList =
-                cartoonTransactionService.findAllByCartoonCondSet(cartoonSearchDto);
+                cartoonTransactionService.findAllByCartoonCondOrderByLikesSet(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
-    @PostMapping("/cartoon/likes")
-    public ResponseEntity<CartoonListResult> getCartoonListOrderByLikes(
+    @PostMapping("/cartoon/orderby/rating")
+    public ResponseEntity<CartoonListResult> getCartoonListByCondOrderByRating(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
-        List<CartoonResponse> cartoonResponseList = cartoonTransactionService.findAllOrderByLikes(cartoonSearchDto);
+        cartoonService.validateGenreValid(cartoonSearchDto.getGenre());
+        List<CartoonResponse> cartoonResponseList =
+                cartoonTransactionService.findAllByCartoonCondOrderByRatingSet(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 

@@ -10,6 +10,7 @@ import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.util.ServiceTest;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
+import com.webtoon.util.enumerated.Progress;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,71 +68,6 @@ class CartoonServiceTest extends ServiceTest {
         assertThat(onePageCartoonList.get(0).getTitle()).isEqualTo("만화 제목 10");
     }
 
-
-    @Test
-    @DisplayName("장르와 일치하는 만화 리스트를 한 페이지 가져옵니다 - 성공")
-    @Transactional
-    void findAllByGenre200() {
-        // given
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(0)
-                .dayOfTheWeek("NONE")
-                .progress("NONE")
-                .genre("ROMANCE")
-                .build();
-
-        List<Cartoon> cartoonGenreRomanceList = IntStream.range(1, 11)
-                .mapToObj(i -> Cartoon.builder()
-                        .genre(Genre.ROMANCE)
-                        .build())
-                .collect(Collectors.toList());
-
-        List<Cartoon> cartoonGenreAcitonList = IntStream.range(11, 16)
-                .mapToObj(i -> Cartoon.builder()
-                        .genre(Genre.ACTION)
-                        .build())
-                .collect(Collectors.toList());
-
-        cartoonRepository.saveAll(cartoonGenreRomanceList);
-        cartoonRepository.saveAll(cartoonGenreAcitonList);
-
-        // when
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonService.findAllByCartoonCond(cartoonSearch);
-
-        // then
-        assertThat(cartoonList.size()).isEqualTo(10);
-    }
-
-    @Test
-    @DisplayName("좋아요 수가 많은 순서로 만화 리스트를 한 페이지 가져옵니다 - 성공")
-    @Transactional
-    void findAllOrderByLikes200() {
-        // given
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(0)
-                .dayOfTheWeek("NONE")
-                .progress("NONE")
-                .genre("NONE")
-                .build();
-
-        List<Cartoon> cartoonList = LongStream.range(1, 31)
-                .mapToObj(i -> Cartoon.builder()
-                        .likes(i)
-                        .build())
-                .collect(Collectors.toList());
-
-        cartoonRepository.saveAll(cartoonList);
-
-        // when
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> onePageCartoonList = cartoonService.findAllOrderByLikes(cartoonSearch);
-
-        // then
-        assertThat(onePageCartoonList.size()).isEqualTo(20);
-        assertThat(onePageCartoonList.get(0).getLikes()).isEqualTo(30);
-    }
-
     @Test
     @DisplayName("입력한 요일에 맞는 만화를 좋아요 많은 순으로 보여줍니다 - 성공")
     @Transactional
@@ -163,11 +99,79 @@ class CartoonServiceTest extends ServiceTest {
 
         // when
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> onePageCartoonList = cartoonService.findAllByCartoonCond(cartoonSearch);
+        List<Cartoon> onePageCartoonList = cartoonService.findAllByCartoonCondOrderByLikes(cartoonSearch);
 
         // then
         assertThat(onePageCartoonList.size()).isEqualTo(20);
         assertThat(onePageCartoonList.get(0).getLikes()).isEqualTo(20);
+    }
+
+    @DisplayName("만화 상태와 일치하는 만화 리스트를 한 페이지 가져옵니다 - 성공")
+    @Transactional
+    void findAllByProgress200() {
+        // given
+        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+                .page(0)
+                .dayOfTheWeek("NONE")
+                .progress("SERIALIZATION")
+                .genre("NONE")
+                .build();
+
+        List<Cartoon> cartoonProgressSerializationList = IntStream.range(1, 11)
+                .mapToObj(i -> Cartoon.builder()
+                        .progress(Progress.SERIALIZATION)
+                        .build())
+                .collect(Collectors.toList());
+
+        List<Cartoon> cartoonProgressCompleteList = IntStream.range(11, 16)
+                .mapToObj(i -> Cartoon.builder()
+                        .progress(Progress.COMPLETE)
+                        .build())
+                .collect(Collectors.toList());
+
+        cartoonRepository.saveAll(cartoonProgressSerializationList);
+        cartoonRepository.saveAll(cartoonProgressCompleteList);
+
+        // when
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        List<Cartoon> cartoonList = cartoonService.findAllByCartoonCondOrderByLikes(cartoonSearch);
+
+        // then
+        assertThat(cartoonList.size()).isEqualTo(10);
+    }
+    @Test
+    @DisplayName("장르와 일치하는 만화 리스트를 한 페이지 가져옵니다 - 성공")
+    @Transactional
+    void findAllByGenre200() {
+        // given
+        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+                .page(0)
+                .dayOfTheWeek("NONE")
+                .progress("NONE")
+                .genre("ROMANCE")
+                .build();
+
+        List<Cartoon> cartoonGenreRomanceList = IntStream.range(1, 11)
+                .mapToObj(i -> Cartoon.builder()
+                        .genre(Genre.ROMANCE)
+                        .build())
+                .collect(Collectors.toList());
+
+        List<Cartoon> cartoonGenreAcitonList = IntStream.range(11, 16)
+                .mapToObj(i -> Cartoon.builder()
+                        .genre(Genre.ACTION)
+                        .build())
+                .collect(Collectors.toList());
+
+        cartoonRepository.saveAll(cartoonGenreRomanceList);
+        cartoonRepository.saveAll(cartoonGenreAcitonList);
+
+        // when
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        List<Cartoon> cartoonList = cartoonService.findAllByCartoonCondOrderByLikes(cartoonSearch);
+
+        // then
+        assertThat(cartoonList.size()).isEqualTo(10);
     }
 
     @Test

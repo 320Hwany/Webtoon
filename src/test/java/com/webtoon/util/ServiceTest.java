@@ -28,6 +28,7 @@ import org.springframework.test.annotation.Rollback;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.webtoon.util.constant.Constant.*;
@@ -117,6 +118,7 @@ public class ServiceTest {
                 .email("yhwjd@naver.com")
                 .password(passwordEncoder.encode("1234"))
                 .coin(ZERO_OF_TYPE_LONG)
+                .birthDate(LocalDate.of(1999,03,20))
                 .build();
 
         memberRepository.save(member);

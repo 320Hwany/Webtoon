@@ -36,15 +36,16 @@ public class CartoonTransactionService {
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
-    public List<CartoonResponse> findAllByCartoonCondSet(CartoonSearchDto cartoonSearchDto) {
+    public List<CartoonResponse> findAllByCartoonCondOrderByLikesSet(CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonService.findAllByCartoonCond(cartoonSearch);
+        List<Cartoon> cartoonList = cartoonService.findAllByCartoonCondOrderByLikes(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
-    public List<CartoonResponse> findAllOrderByLikes(CartoonSearchDto cartoonSearchDto) {
+
+    public List<CartoonResponse> findAllByCartoonCondOrderByRatingSet(CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonService.findAllOrderByLikes(cartoonSearch);
+        List<Cartoon> cartoonList = cartoonService.findAllByCartoonCondOrderByRating(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 

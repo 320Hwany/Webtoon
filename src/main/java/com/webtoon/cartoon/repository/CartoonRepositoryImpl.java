@@ -49,7 +49,7 @@ public class CartoonRepositoryImpl implements CartoonRepository {
     }
 
     @Override
-    public List<Cartoon> findAllByCartoonCond(CartoonSearch cartoonSearch) {
+    public List<Cartoon> findAllByCartoonCondOrderByLikes(CartoonSearch cartoonSearch) {
         List<Cartoon> cartoonList = jpaQueryFactory
                 .selectFrom(cartoon)
                 .leftJoin(cartoon.author, author)
@@ -68,12 +68,34 @@ public class CartoonRepositoryImpl implements CartoonRepository {
     }
 
     @Override
-    public List<Cartoon> findAllOrderByLikes(CartoonSearch cartoonSearch) {
-        PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
-                Sort.by(DESC, "likes"));
-        Page<Cartoon> cartoonPage = cartoonJpaRepository.findAll(pageRequest);
-        List<Cartoon> cartoonList = cartoonPage.getContent();
+    public List<Cartoon> findAllByCartoonCondOrderByRating(CartoonSearch cartoonSearch) {
+        List<Cartoon> cartoonList = jpaQueryFactory
+                .selectFrom(cartoon)
+                .leftJoin(cartoon.author, author)
+                .fetchJoin()
+                .where(
+                        dayOfTheWeekEq(cartoonSearch.getDayOfTheWeek()),
+                        genreEq(cartoonSearch.getGenre()),
+                        progressEq(cartoonSearch.getProgress())
+                )
+                .orderBy(cartoon.rating.desc())
+                .offset(cartoonSearch.getOffset())
+                .limit(cartoonSearch.getLimit())
+                .fetch();
+
         return cartoonList;
+    }
+
+    private BooleanExpression dayOfTheWeekEq(DayOfTheWeek dayOfTheWeek) {
+        return dayOfTheWeek != DayOfTheWeek.NONE ? cartoon.dayOfTheWeek.eq(dayOfTheWeek) : null;
+    }
+
+    private BooleanExpression genreEq(Genre genre) {
+        return genre != Genre.NONE ? cartoon.genre.eq(genre) : null;
+    }
+
+    private BooleanExpression progressEq(Progress progress) {
+        return progress != Progress.NONE ? cartoon.progress.eq(progress) : null;
     }
 
     @Override
@@ -94,17 +116,5 @@ public class CartoonRepositoryImpl implements CartoonRepository {
     @Override
     public long count() {
         return cartoonJpaRepository.count();
-    }
-
-    private BooleanExpression dayOfTheWeekEq(DayOfTheWeek dayOfTheWeek) {
-        return dayOfTheWeek != DayOfTheWeek.NONE ? cartoon.dayOfTheWeek.eq(dayOfTheWeek) : null;
-    }
-
-    private BooleanExpression genreEq(Genre genre) {
-        return genre != Genre.NONE ? cartoon.genre.eq(genre) : null;
-    }
-
-    private BooleanExpression progressEq(Progress progress) {
-        return progress != Progress.NONE ? cartoon.progress.eq(progress) : null;
     }
 }

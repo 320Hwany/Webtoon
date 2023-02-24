@@ -2,7 +2,9 @@ package com.webtoon.cartoonmember.application;
 
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoonmember.domain.CartoonMember;
+import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
 import com.webtoon.cartoonmember.repository.CartoonMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +22,15 @@ public class CartoonMemberService {
 
     private final CartoonMemberRepository cartoonMemberRepository;
 
-    public List<Cartoon> findAllCartoonByMemberId(Long memberId) {
+    public List<CartoonMemberResponse> findAllCartoonByMemberId(Long memberId) {
         return cartoonMemberRepository.findAllCartoonByMemberId(memberId);
     }
 
-    public List<Cartoon> findLikeListForMember(Long memberId) {
+    public List<CartoonMemberResponse> findLikeListForMember(Long memberId) {
         return cartoonMemberRepository.findLikeListForMember(memberId);
     }
 
-    public List<Cartoon> findAllByMemberAge(CartoonSearch cartoonSearch) {
+    public List<CartoonCore> findAllByMemberAge(CartoonSearch cartoonSearch) {
         return cartoonMemberRepository.findAllByMemberAge(cartoonSearch);
     }
 

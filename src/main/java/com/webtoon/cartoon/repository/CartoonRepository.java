@@ -14,9 +14,9 @@ public interface CartoonRepository {
 
     List<Cartoon> findAllByTitle(CartoonSearch cartoonSearch);
 
-    List<Cartoon> findAllByCartoonCond(CartoonSearch cartoonSearch);
+    List<Cartoon> findAllByCartoonCondOrderByLikes(CartoonSearch cartoonSearch);
 
-    List<Cartoon> findAllOrderByLikes(CartoonSearch cartoonSearch);
+    List<Cartoon> findAllByCartoonCondOrderByRating(CartoonSearch cartoonSearch);
 
     void delete(Cartoon cartoon);
 

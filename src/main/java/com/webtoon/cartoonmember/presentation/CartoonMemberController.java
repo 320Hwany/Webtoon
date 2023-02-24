@@ -3,6 +3,7 @@ package com.webtoon.cartoonmember.presentation;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
+import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoon.dto.response.CartoonListResult;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberRating;
@@ -10,6 +11,7 @@ import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberThumbsUp;
 import com.webtoon.cartoonmember.application.CartoonMemberService;
 import com.webtoon.cartoonmember.application.CartoonMemberTransactionalService;
+import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
@@ -47,26 +49,24 @@ public class CartoonMemberController {
 
     @GetMapping("/cartoonMember/member")
     public ResponseEntity<CartoonListResult> findAllForMember(@LoginForMember MemberSession memberSession) {
-        List<Cartoon> cartoonList = cartoonMemberService.findAllCartoonByMemberId(memberSession.getId());
-        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
+        List<CartoonMemberResponse> cartoonMemberResponseList =
+                cartoonMemberService.findAllCartoonByMemberId(memberSession.getId());
+        return ResponseEntity.ok(new CartoonListResult(cartoonMemberResponseList.size(), cartoonMemberResponseList));
     }
 
     @GetMapping("/cartoonMember/member/likeList")
     public ResponseEntity<CartoonListResult> findLikeListForMember(@LoginForMember MemberSession memberSession) {
-        List<Cartoon> cartoonList = cartoonMemberService.findLikeListForMember(memberSession.getId());
-        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
+        List<CartoonMemberResponse> cartoonMemberResponseList =
+                cartoonMemberService.findLikeListForMember(memberSession.getId());
+        return ResponseEntity.ok(new CartoonListResult(cartoonMemberResponseList.size(), cartoonMemberResponseList));
     }
 
     @PostMapping("/cartoonMember/ageRange")
     public ResponseEntity<CartoonListResult> findAllByMemberAge(@RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonMemberService.findAllByMemberAge(cartoonSearch);
-        List<CartoonResponse> cartoonResponseList = CartoonResponse.getFromCartoonList(cartoonList);
-        return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
+        List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearch);
+        return ResponseEntity.ok(new CartoonListResult(cartoonCoreList.size(), cartoonCoreList));
     }
-
 
     @PostMapping("/cartoonMember/rating/{cartoonId}/{rating}")
     public ResponseEntity<Void> rating(@LoginForMember MemberSession memberSession,

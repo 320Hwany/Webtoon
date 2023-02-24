@@ -7,6 +7,7 @@ import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.util.ControllerTest;
 import com.webtoon.util.enumerated.Genre;
+import com.webtoon.util.enumerated.Progress;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
@@ -160,6 +161,39 @@ class CartoonControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("입력한 요일에 맞는 만화 리스트를 가져옵니다")
+    void getCartoonListByDay200() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+
+        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+                .page(1)
+                .dayOfTheWeek("MON")
+                .progress("NONE")
+                .genre("NONE")
+                .build();
+
+        List<Cartoon> cartoonList = LongStream.range(1, 31)
+                .mapToObj(i -> Cartoon.builder()
+                        .author(author)
+                        .title("만화 제목 " + i)
+                        .likes(i)
+                        .build())
+                .collect(Collectors.toList());
+
+        cartoonRepository.saveAll(cartoonList);
+
+        String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
+
+        // expected
+        mockMvc.perform(post("/cartoon/orderby/likes")
+                        .contentType(APPLICATION_JSON)
+                        .content(cartoonSearchDtoJson))
+                .andExpect(status().isOk())
+                .andDo(document("cartoon/get/day/200"));
+    }
+
+    @Test
     @DisplayName("입력한 장르의 만화 리스트를 보여줍니다 - 성공")
     void getCartoonListByGenre200() throws Exception {
         // given
@@ -193,7 +227,7 @@ class CartoonControllerTest extends ControllerTest {
         String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
 
         // expected
-        mockMvc.perform(post("/cartoon/cond")
+        mockMvc.perform(post("/cartoon/orderby/likes")
                         .contentType(APPLICATION_JSON)
                         .content(cartoonSearchDtoJson))
                 .andExpect(status().isOk())
@@ -201,8 +235,49 @@ class CartoonControllerTest extends ControllerTest {
     }
 
     @Test
-    @DisplayName("페이지를 잘못 입력하거나 장르를 잘못입력하면 오류메세지를 보여줍니다 - 실패")
-    void getCartoonListByGenre400() throws Exception {
+    @DisplayName("입력한 만화 상황의 만화 리스트를 보여줍니다 - 성공")
+    void getCartoonListByProgress200() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+
+        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+                .page(1)
+                .dayOfTheWeek("NONE")
+                .progress("SERIALIZATION")
+                .genre("NONE")
+                .build();
+
+        List<Cartoon> cartoonProgressSerializationList = IntStream.range(1, 11)
+                .mapToObj(i -> Cartoon.builder()
+                        .author(author)
+                        .title("만화 제목 " + i)
+                        .progress(Progress.SERIALIZATION)
+                        .build())
+                .collect(Collectors.toList());
+
+        List<Cartoon> cartoonProgressCompleteList = IntStream.range(11, 21)
+                .mapToObj(i -> Cartoon.builder()
+                        .title("만화 제목 " + i)
+                        .progress(Progress.COMPLETE)
+                        .build())
+                .collect(Collectors.toList());
+
+        cartoonRepository.saveAll(cartoonProgressSerializationList);
+        cartoonRepository.saveAll(cartoonProgressCompleteList);
+
+        String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
+
+        // expected
+        mockMvc.perform(post("/cartoon/orderby/likes")
+                        .contentType(APPLICATION_JSON)
+                        .content(cartoonSearchDtoJson))
+                .andExpect(status().isOk())
+                .andDo(document("cartoon/get/progress/200"));
+    }
+
+    @Test
+    @DisplayName("입력사항을 잘못입력하면 오류메세지를 보여줍니다 - 실패")
+    void getCartoonList400() throws Exception {
         // given
         CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
                 .page(-10)
@@ -214,107 +289,11 @@ class CartoonControllerTest extends ControllerTest {
         String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
 
         // expected
-        mockMvc.perform(post("/cartoon/cond")
+        mockMvc.perform(post("/cartoon/orderby/likes")
                         .contentType(APPLICATION_JSON)
                         .content(cartoonSearchDtoJson))
                 .andExpect(status().isBadRequest())
                 .andDo(document("cartoon/get/genre/400"));
-    }
-
-    @Test
-    @DisplayName("좋아요가 많은 순으로 만화 리스트를 한 페이지 보여줍니다 - 성공")
-    void getCartoonListOrderByLikes200() throws Exception {
-        // given
-        Author author = saveAuthorInRepository();
-
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(1)
-                .dayOfTheWeek("NONE")
-                .progress("NONE")
-                .genre("NONE")
-                .build();
-
-        List<Cartoon> cartoonList = LongStream.range(1, 31)
-                .mapToObj(i -> Cartoon.builder()
-                        .author(author)
-                        .title("만화 제목 " + i)
-                        .likes(i)
-                        .build())
-                .collect(Collectors.toList());
-
-        cartoonRepository.saveAll(cartoonList);
-
-        String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
-
-        // expected
-        mockMvc.perform(post("/cartoon/likes")
-                        .contentType(APPLICATION_JSON)
-                        .content(cartoonSearchDtoJson))
-                .andExpect(status().isOk())
-                .andDo(document("cartoon/get/likes/200"));
-    }
-
-    @Test
-    @DisplayName("페이지를 잘못 입력하면 좋아요가 많은 순으로 페이지를 가져올 수 없습니다 - 실패")
-    void getCartoonListOrderByLikes400() throws Exception {
-        // given
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(-10)
-                .dayOfTheWeek("NONE")
-                .progress("NONE")
-                .genre("NONE")
-                .build();
-
-        List<Cartoon> cartoonList = LongStream.range(1, 31)
-                .mapToObj(i -> Cartoon.builder()
-                        .title("만화 제목 " + i)
-                        .likes(i)
-                        .build())
-                .collect(Collectors.toList());
-
-        cartoonRepository.saveAll(cartoonList);
-
-        String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
-
-        // expected
-        mockMvc.perform(post("/cartoon/likes")
-                        .contentType(APPLICATION_JSON)
-                        .content(cartoonSearchDtoJson))
-                .andExpect(status().isBadRequest())
-                .andDo(document("cartoon/get/likes/400"));
-    }
-
-    @Test
-    @DisplayName("입력한 요일에 맞는 만화 리스트를 가져옵니다")
-    void getCartoonListByDay200() throws Exception {
-        // given
-        Author author = saveAuthorInRepository();
-
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(1)
-                .dayOfTheWeek("MON")
-                .progress("NONE")
-                .genre("NONE")
-                .build();
-
-        List<Cartoon> cartoonList = LongStream.range(1, 31)
-                .mapToObj(i -> Cartoon.builder()
-                        .author(author)
-                        .title("만화 제목 " + i)
-                        .likes(i)
-                        .build())
-                .collect(Collectors.toList());
-
-        cartoonRepository.saveAll(cartoonList);
-
-        String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
-
-        // expected
-        mockMvc.perform(post("/cartoon/cond")
-                        .contentType(APPLICATION_JSON)
-                        .content(cartoonSearchDtoJson))
-                .andExpect(status().isOk())
-                .andDo(document("cartoon/get/day/200"));
     }
 
     @Test

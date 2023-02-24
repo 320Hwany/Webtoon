@@ -32,12 +32,12 @@ public class CartoonService {
         return cartoonRepository.findAllByTitle(cartoonSearch);
     }
 
-    public List<Cartoon> findAllByCartoonCond(CartoonSearch cartoonSearch) {
-        return cartoonRepository.findAllByCartoonCond(cartoonSearch);
+    public List<Cartoon> findAllByCartoonCondOrderByLikes(CartoonSearch cartoonSearch) {
+        return cartoonRepository.findAllByCartoonCondOrderByLikes(cartoonSearch);
     }
 
-    public List<Cartoon> findAllOrderByLikes(CartoonSearch cartoonSearch) {
-        return cartoonRepository.findAllOrderByLikes(cartoonSearch);
+    public List<Cartoon> findAllByCartoonCondOrderByRating(CartoonSearch cartoonSearch) {
+        return cartoonRepository.findAllByCartoonCondOrderByRating(cartoonSearch);
     }
 
     public void validateAuthorityForCartoon(AuthorSession authorSession, Long cartoonId) {

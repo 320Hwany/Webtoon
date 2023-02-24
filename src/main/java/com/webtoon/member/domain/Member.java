@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import static com.webtoon.util.constant.Constant.PAYCOIN;
 import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;

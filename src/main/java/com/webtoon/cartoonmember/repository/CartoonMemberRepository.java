@@ -3,7 +3,9 @@ package com.webtoon.cartoonmember.repository;
 
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoonmember.domain.CartoonMember;
+import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
 
 import java.util.List;
@@ -17,13 +19,13 @@ public interface CartoonMemberRepository {
 
     Optional<CartoonMember> findByCartoonIdAndMemberId(Long cartoonId, Long memberId);
 
-    List<Cartoon> findAllCartoonByMemberId(Long memberId);
+    List<CartoonMemberResponse> findAllCartoonByMemberId(Long memberId);
+
+    List<CartoonMemberResponse> findLikeListForMember(Long memberId);
 
     long findCartoonSizeWhereRated(Long cartoonId);
 
-    List<Cartoon> findLikeListForMember(Long memberId);
-
-    List<Cartoon> findAllByMemberAge(CartoonSearch cartoonSearch);
+    List<CartoonCore> findAllByMemberAge(CartoonSearch cartoonSearch);
 
     void deleteAll();
 
