@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class CartoonResponse {
 
+    private Long id;
     private String title;
     private AuthorResponse authorResponse;
 
@@ -33,8 +34,9 @@ public class CartoonResponse {
 
     @Builder
     @QueryProjection
-    public CartoonResponse(String title, AuthorResponse authorResponse, DayOfTheWeek dayOfTheWeek,
+    public CartoonResponse(Long id, String title, AuthorResponse authorResponse, DayOfTheWeek dayOfTheWeek,
                            Progress progress, Genre genre, double rating, long likes) {
+        this.id = id;
         this.title = title;
         this.authorResponse = authorResponse;
         this.dayOfTheWeek = dayOfTheWeek;
@@ -46,6 +48,7 @@ public class CartoonResponse {
 
     public static CartoonResponse getFromCartoon(Cartoon cartoon) {
         return CartoonResponse.builder()
+                .id(cartoon.getId())
                 .title(cartoon.getTitle())
                 .authorResponse(AuthorResponse.getFromAuthor(cartoon.getAuthor()))
                 .dayOfTheWeek(cartoon.getDayOfTheWeek())

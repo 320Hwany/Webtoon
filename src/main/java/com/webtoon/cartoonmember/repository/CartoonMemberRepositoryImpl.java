@@ -110,8 +110,8 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .leftJoin(cartoonMember.member, member)
 //                .where(
 //                        member.birthDate.between(
-//                                        LocalDate.now().minusYears(cartoonSearch.getAgeRange() + 8),
-//                                        LocalDate.now().minusYears(cartoonSearch.getAgeRange() - 1))
+//                                LocalDate.now().minusYears(cartoonSearch.getAgeRange() + 8),
+//                                LocalDate.now().minusYears(cartoonSearch.getAgeRange() - 1))
 //                )
                 .groupBy(cartoon.title)
                 .orderBy(cartoon.title.count().desc())

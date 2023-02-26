@@ -2,21 +2,25 @@ package com.webtoon.content.presentation;
 
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.application.CartoonService;
+import com.webtoon.content.application.ContentService;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.dto.request.ContentGet;
 import com.webtoon.content.dto.request.ContentSave;
 import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.content.dto.request.ContentUpdateSet;
+import com.webtoon.content.dto.response.ContentListResult;
 import com.webtoon.content.dto.response.ContentResponse;
 import com.webtoon.content.application.ContentTransactionService;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForAuthor;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -25,6 +29,7 @@ public class ContentController {
 
     private final ContentTransactionService contentTransactionService;
     private final CartoonService cartoonService;
+    private final ContentService contentService;
 
     @PostMapping("/content/{cartoonId}")
     public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
@@ -33,6 +38,12 @@ public class ContentController {
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
         contentTransactionService.saveSet(cartoonId, contentSave);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/content/{cartoonId}")
+    public ResponseEntity<ContentListResult> getContents(@PathVariable Long cartoonId, Pageable pageable) {
+        List<ContentResponse> contentResponseList = contentService.findAllByCartoonId(cartoonId, pageable);
+        return ResponseEntity.ok(new ContentListResult(contentResponseList.size(), contentResponseList));
     }
 
     @GetMapping("/content/{cartoonId}/{contentEpisode}")

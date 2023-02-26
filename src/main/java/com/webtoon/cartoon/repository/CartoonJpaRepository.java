@@ -18,7 +18,4 @@ public interface CartoonJpaRepository extends JpaRepository<Cartoon, Long> {
 
     @EntityGraph(attributePaths = {"author"})
     List<Cartoon> findAllByTitleContains(String title, Pageable pageable);
-
-    @EntityGraph(attributePaths = {"author"})
-    List<Cartoon> findAllByDayOfTheWeek(DayOfTheWeek dayOfTheWeek, Pageable pageable);
 }

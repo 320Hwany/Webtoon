@@ -78,9 +78,4 @@ public class Member extends BaseTimeEntity {
             this.coin -= PAYCOIN;
         }
     }
-
-    public int getYear() {
-        int year = birthDate.getYear();
-        return year;
-    }
 }

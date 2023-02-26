@@ -26,7 +26,6 @@ public class ContentImgInfoController {
     @PostMapping("/contentImg/{contentId}")
     public ResponseEntity<Void> save(@RequestParam MultipartFile multipartFile,
                                      @PathVariable Long contentId) throws IOException {
-
         contentImgInfoService.imgUploadOnServer(multipartFile, imgDir);
         contentImgInfoTransactionService.saveSet(contentId, multipartFile);
         return ResponseEntity.ok().build();

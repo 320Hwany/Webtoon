@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Builder
@@ -32,5 +34,10 @@ public class ContentResponse {
                 .rating(content.getRating())
                 .registrationDate(content.getRegistrationDate())
                 .build();
+    }
+
+    public static List<ContentResponse> getFromContentList(List<Content> contentList) {
+        return contentList.stream().map(ContentResponse::getFromContent)
+                .collect(Collectors.toList());
     }
 }

@@ -7,6 +7,7 @@ import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.exception.CartoonForbiddenException;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.content.domain.Content;
 import com.webtoon.util.BaseTimeEntity;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
@@ -18,6 +19,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.webtoon.util.constant.Constant.*;
