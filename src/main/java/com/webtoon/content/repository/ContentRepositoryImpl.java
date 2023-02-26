@@ -66,6 +66,11 @@ public class ContentRepositoryImpl implements ContentRepository {
     }
 
     @Override
+    public void saveAll(List<Content> contentList) {
+        contentJpaRepository.saveAll(contentList);
+    }
+
+    @Override
     public void deleteAll() {
         contentJpaRepository.deleteAll();
     }

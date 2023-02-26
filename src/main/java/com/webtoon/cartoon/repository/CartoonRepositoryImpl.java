@@ -42,9 +42,7 @@ public class CartoonRepositoryImpl implements CartoonRepository {
     public List<Cartoon> findAllByTitle(CartoonSearch cartoonSearch) {
         PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
                 Sort.by(DESC, "likes"));
-        List<Cartoon> cartoonList =
-                cartoonJpaRepository.findAllByTitleContains(cartoonSearch.getTitle(), pageRequest);
-        return cartoonList;
+        return cartoonJpaRepository.findAllByTitleContains(cartoonSearch.getTitle(), pageRequest);
     }
 
     @Override

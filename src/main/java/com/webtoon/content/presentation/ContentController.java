@@ -41,7 +41,7 @@ public class ContentController {
     }
 
     @GetMapping("/content/{cartoonId}")
-    public ResponseEntity<ContentListResult> getContents(@PathVariable Long cartoonId, Pageable pageable) {
+    public ResponseEntity<ContentListResult> getContentList(@PathVariable Long cartoonId, Pageable pageable) {
         List<ContentResponse> contentResponseList = contentService.findAllByCartoonId(cartoonId, pageable);
         return ResponseEntity.ok(new ContentListResult(contentResponseList.size(), contentResponseList));
     }

@@ -31,11 +31,6 @@ public class CartoonController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{cartoonId}")
-    public void getCartoon(@PathVariable Long cartoonId) {
-
-    }
-
     @PostMapping("/cartoon/title")
     public ResponseEntity<CartoonListResult> getCartoonListByTitle(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {

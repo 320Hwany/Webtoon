@@ -15,21 +15,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class CartoonMemberControllerTest extends ControllerTest {
 
-    @Test
-    @DisplayName("사용자가 만화를 읽으면 CartoonMember 연결 테이블에 회원 - 만화 정보가 추가됩니다")
-    void memberReadCartoon() throws Exception {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        Member member = saveMemberInRepository();
-        MockHttpSession session = loginMemberSession(member);
-
-        // expected
-        mockMvc.perform(post("/cartoonMember/read/{cartoonId}", cartoon.getId())
-                        .session(session))
-                .andExpect(status().isOk())
-                .andDo(document("cartoonMember/read/200"));
-    }
+//    @Test
+//    @DisplayName("사용자가 만화를 읽으면 CartoonMember 연결 테이블에 회원 - 만화 정보가 추가됩니다")
+//    void memberReadCartoon() throws Exception {
+//        // given
+//        Author author = saveAuthorInRepository();
+//        Cartoon cartoon = saveCartoonInRepository(author);
+//        Member member = saveMemberInRepository();
+//        MockHttpSession session = loginMemberSession(member);
+//
+//        // expected
+//        mockMvc.perform(post("/cartoonMember/read/{cartoonId}", cartoon.getId())
+//                        .session(session))
+//                .andExpect(status().isOk())
+//                .andDo(document("cartoonMember/read/200"));
+//    }
 
     @Test
     @DisplayName("사용자가 만화를 읽으면 CartoonMember 연결 테이블에 회원 - 만화 정보가 추가됩니다")

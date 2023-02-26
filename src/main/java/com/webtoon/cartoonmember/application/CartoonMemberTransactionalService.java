@@ -1,22 +1,22 @@
 package com.webtoon.cartoonmember.application;
 
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberRating;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberThumbsUp;
-import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
 import com.webtoon.cartoonmember.repository.CartoonMemberRepository;
+import com.webtoon.global.openfeign.DynamicUrlOpenFeign;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

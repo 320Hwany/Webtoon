@@ -8,6 +8,7 @@ import com.webtoon.content.dto.request.ContentGet;
 import com.webtoon.content.dto.request.ContentSave;
 import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.content.dto.request.ContentUpdateSet;
+import com.webtoon.content.dto.response.ContentResponse;
 import com.webtoon.content.exception.ContentNotFoundException;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.exception.LackOfCoinException;
@@ -16,8 +17,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;
 import static org.assertj.core.api.Assertions.*;
@@ -30,6 +38,32 @@ class ContentServiceTest extends ServiceTest {
 
     @Autowired
     private ContentTransactionService contentTransactionService;
+
+    @Test
+    @DisplayName("만화의 컨텐츠를 한 페이지 가져옵니다")
+    void findAllByCartoonId() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+
+        List<Content> contentList = IntStream.range(1, 11)
+                .mapToObj(i -> Content.builder()
+                        .cartoon(cartoon)
+                        .episode(i)
+                        .build())
+                .collect(Collectors.toList());
+
+        contentRepository.saveAll(contentList);
+
+        Pageable pageable = PageRequest.of(0, 20, Sort.Direction.DESC, "id");
+
+        // when
+        List<ContentResponse> contentResponseList = contentService.findAllByCartoonId(cartoon.getId(), pageable);
+
+        // then
+        assertThat(contentResponseList.size()).isEqualTo(10);
+        assertThat(contentResponseList.get(0).getEpisode()).isEqualTo(10);
+    }
 
     @Test
     @DisplayName("cartoonId, ContentSave로부터 그 만화에 해당하는 컨텐츠를 추가합니다")
