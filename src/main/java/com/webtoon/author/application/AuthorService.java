@@ -63,7 +63,8 @@ public class AuthorService {
     }
 
     @Transactional
-    public void delete(Author author) {
+    public void delete(Long authorSessionId) {
+        Author author = authorRepository.getById(authorSessionId);
         authorRepository.delete(author);
     }
 

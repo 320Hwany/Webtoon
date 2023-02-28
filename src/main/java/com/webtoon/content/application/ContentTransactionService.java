@@ -1,5 +1,6 @@
 package com.webtoon.content.application;
 
+import com.webtoon.cartoon.application.CartoonService;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.content.domain.Content;
@@ -23,12 +24,14 @@ import static com.webtoon.util.constant.Constant.TWO_WEEKS;
 public class ContentTransactionService {
 
     private final ContentRepository contentRepository;
-    private final CartoonRepository cartoonRepository;
+
+    private final CartoonService cartoonService;
+
     private final MemberRepository memberRepository;
 
     @Transactional
     public void saveSet(Long cartoonId, ContentSave contentSave) {
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
+        Cartoon cartoon = cartoonService.getById(cartoonId);
         Content content = Content.getFromContentSaveAndCartoon(contentSave, cartoon);
         contentRepository.save(content);
     }

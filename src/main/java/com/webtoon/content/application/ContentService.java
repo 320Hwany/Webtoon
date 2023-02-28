@@ -1,5 +1,7 @@
 package com.webtoon.content.application;
 
+import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.dto.response.ContentResponse;
 import com.webtoon.content.exception.ContentNotFoundException;
@@ -17,6 +19,7 @@ import java.util.List;
 public class ContentService {
 
     private final ContentRepository contentRepository;
+
 
     public Content getById(Long id) {
         return contentRepository.getById(id);

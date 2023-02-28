@@ -7,7 +7,6 @@ import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.dto.response.AuthorCartoonResponse;
 import com.webtoon.author.dto.response.AuthorResponse;
-import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import lombok.RequiredArgsConstructor;
@@ -48,8 +47,7 @@ public class AuthorTransactionService {
 
     @Transactional
     public void deleteSet(AuthorSession authorSession, HttpServletRequest httpServletRequest) {
-        Author author = authorService.getById(authorSession.getId());
-        authorService.delete(author);
+        authorService.delete(authorSession.getId());
         authorService.invalidateSession(authorSession, httpServletRequest);
     }
 

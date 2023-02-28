@@ -1,12 +1,10 @@
 package com.webtoon.cartoonmember.repository;
 
 
-import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
-import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
 
 import java.util.List;
 import java.util.Optional;

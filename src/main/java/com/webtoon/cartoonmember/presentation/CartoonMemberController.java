@@ -10,6 +10,7 @@ import com.webtoon.cartoonmember.dto.request.CartoonMemberThumbsUp;
 import com.webtoon.cartoonmember.application.CartoonMemberService;
 import com.webtoon.cartoonmember.application.CartoonMemberTransactionalService;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
+import com.webtoon.content.dto.response.ContentListResult;
 import com.webtoon.global.openfeign.DynamicUrlOpenFeign;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForMember;
@@ -31,13 +32,13 @@ public class CartoonMemberController {
     private final DynamicUrlOpenFeign feign;
 
     @PostMapping("/cartoonMember/read/{cartoonId}")
-    public void memberReadCartoon(@LoginForMember MemberSession memberSession,
-                                                  @PathVariable Long cartoonId) {
+    public ResponseEntity<ContentListResult> memberReadCartoon(@LoginForMember MemberSession memberSession,
+                                                               @PathVariable Long cartoonId) {
 
         CartoonMemberSave cartoonMemberSave =
                 CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
         cartoonMemberTransactionalService.saveSet(cartoonMemberSave);
-        feign.findContentList(cartoonId, PageRequest.of(
+        return feign.findContentList(cartoonId, PageRequest.of(
                 0, 20, Sort.Direction.DESC, "id"
         ));
     }
