@@ -33,5 +33,4 @@ public class AcceptanceTestExecutionListener extends AbstractTestExecutionListen
     private void execute(final JdbcTemplate jdbcTemplate, final String query) {
         jdbcTemplate.execute(query);
     }
-
 }

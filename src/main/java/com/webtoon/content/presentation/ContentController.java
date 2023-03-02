@@ -10,7 +10,6 @@ import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.content.dto.request.ContentUpdateSet;
 import com.webtoon.content.dto.response.ContentListResult;
 import com.webtoon.content.dto.response.ContentResponse;
-import com.webtoon.content.application.ContentTransactionService;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForAuthor;
 import com.webtoon.util.annotation.LoginForMember;
@@ -27,7 +26,6 @@ import java.util.List;
 @RestController
 public class ContentController {
 
-    private final ContentTransactionService contentTransactionService;
     private final CartoonService cartoonService;
     private final ContentService contentService;
 
@@ -36,7 +34,7 @@ public class ContentController {
                                      @PathVariable Long cartoonId,
                                      @RequestBody @Valid ContentSave contentSave) {
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
-        contentTransactionService.saveSet(cartoonId, contentSave);
+        contentService.saveSet(cartoonId, contentSave);
         return ResponseEntity.ok().build();
     }
 
@@ -52,7 +50,7 @@ public class ContentController {
                                                              @PathVariable int contentEpisode) {
 
         ContentGet contentGet = ContentGet.getFromIdAndEpisode(memberSession.getId(), cartoonId, contentEpisode);
-        Content content = contentTransactionService.getContentTransactionSet(contentGet);
+        Content content = contentService.getContentTransactionSet(contentGet);
         ContentResponse contentResponse = ContentResponse.getFromContent(content);
         return ResponseEntity.ok(contentResponse);
     }
@@ -65,7 +63,7 @@ public class ContentController {
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
         ContentUpdateSet contentUpdateSet =
                 ContentUpdateSet.getFromIdAndEpisode(cartoonId, contentEpisode, contentUpdate);
-        contentTransactionService.updateSet(contentUpdateSet);
+        contentService.updateSet(contentUpdateSet);
         return ResponseEntity.ok().build();
     }
 }

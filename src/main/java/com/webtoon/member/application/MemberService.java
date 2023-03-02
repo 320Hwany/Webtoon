@@ -2,8 +2,10 @@ package com.webtoon.member.application;
 
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.domain.MemberSession;
+import com.webtoon.member.dto.request.MemberCharge;
 import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.dto.request.MemberSignup;
+import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.member.exception.MemberDuplicationException;
 import com.webtoon.member.exception.MemberUnauthorizedException;
 import com.webtoon.member.repository.MemberRepository;
@@ -32,6 +34,32 @@ public class MemberService {
         throw new MemberUnauthorizedException();
     }
 
+    @Transactional
+    public void signupSet(MemberSignup memberSignup) {
+        checkDuplication(memberSignup);
+        Member member = Member.getFromMemberSignup(memberSignup, passwordEncoder);
+        memberRepository.save(member);
+    }
+
+    @Transactional
+    public Member updateSet(MemberSession memberSession, MemberUpdate memberUpdate) {
+        Member member = memberRepository.getById(memberSession.getId());
+        member.update(memberUpdate, passwordEncoder);
+        return member;
+    }
+
+    @Transactional
+    public void deleteSet(MemberSession memberSession) {
+        Member member = memberRepository.getById(memberSession.getId());
+        memberRepository.delete(member);
+    }
+
+    @Transactional
+    public void chargeCoinTransactionSet(MemberSession memberSession, MemberCharge memberCharge) {
+        Member member = memberRepository.getById(memberSession.getId());
+        member.chargeCoin(memberCharge.getChargeAmount());
+    }
+
     public void checkDuplication(MemberSignup memberSignup) {
         Optional<Member> findMemberByNickname = memberRepository.findByNickname(memberSignup.getNickname());
         Optional<Member> findMemberByEmail = memberRepository.findByEmail(memberSignup.getEmail());
@@ -50,15 +78,5 @@ public class MemberService {
 
     public Member getById(Long memberId) {
         return memberRepository.getById(memberId);
-    }
-
-    @Transactional
-    public void save(Member member) {
-        memberRepository.save(member);
-    }
-
-    @Transactional
-    public void delete(Member member) {
-        memberRepository.delete(member);
     }
 }

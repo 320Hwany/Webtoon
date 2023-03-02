@@ -4,11 +4,14 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.dto.request.AuthorSignup;
+import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.dto.response.AuthorCartoonResponse;
+import com.webtoon.author.dto.response.AuthorResponse;
 import com.webtoon.author.exception.AuthorDuplicationException;
 import com.webtoon.author.exception.AuthorUnauthorizedException;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,10 +30,32 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
     private final PasswordEncoder passwordEncoder;
 
+
     @Transactional
-    public void signup(AuthorSignup authorSignup) {
-        Author author = Author.getFromAuthorSignup(authorSignup, passwordEncoder);
-        authorRepository.save(author);
+    public void signupSet(AuthorSignup authorSignup) {
+        checkDuplication(authorSignup);
+        signup(authorSignup);
+    }
+
+    public AuthorResponse loginSet(AuthorLogin authorLogin, HttpServletRequest httpServletRequest) {
+        AuthorSession authorSession = makeAuthorSession(authorLogin);
+        makeSessionForAuthorSession(authorSession, httpServletRequest);
+        return AuthorResponse.getFromAuthorSession(authorSession);
+    }
+
+    @Transactional
+    public AuthorResponse updateSet(Long authorId, AuthorUpdate authorUpdate) {
+        Author author = authorRepository.getById(authorId);
+        author.update(authorUpdate, passwordEncoder);
+        AuthorResponse authorResponse = AuthorResponse.getFromAuthor(author);
+        return authorResponse;
+    }
+
+    @Transactional
+    public void deleteSet(AuthorSession authorSession, HttpServletRequest httpServletRequest) {
+        Author author = authorRepository.getById(authorSession.getId());
+        authorRepository.delete(author);
+        invalidateSession(authorSession, httpServletRequest);
     }
 
     public void checkDuplication(AuthorSignup authorSignup) {
@@ -39,6 +64,12 @@ public class AuthorService {
         if (findAuthorByNickname.isPresent() || findAuthorByEmail.isPresent()) {
             throw new AuthorDuplicationException();
         }
+    }
+
+    @Transactional
+    public void signup(AuthorSignup authorSignup) {
+        Author author = Author.getFromAuthorSignup(authorSignup, passwordEncoder);
+        authorRepository.save(author);
     }
 
     public AuthorSession makeAuthorSession(AuthorLogin authorLogin) {
@@ -58,17 +89,8 @@ public class AuthorService {
         authorSession.invalidateSession(request);
     }
 
-    public Author getById(Long authorId) {
-        return authorRepository.getById(authorId);
-    }
-
-    @Transactional
-    public void delete(Long authorSessionId) {
-        Author author = authorRepository.getById(authorSessionId);
-        authorRepository.delete(author);
-    }
-
-    public List<AuthorCartoonResponse> findAllByNicknameContains(CartoonSearch cartoonSearch) {
+    public List<AuthorCartoonResponse> findAllByNicknameContains(CartoonSearchDto cartoonSearchDto) {
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<Author> authorList = authorRepository.findAllByNicknameContains(cartoonSearch);
         return authorList.stream()
                 .map(AuthorCartoonResponse::getFromAuthor)

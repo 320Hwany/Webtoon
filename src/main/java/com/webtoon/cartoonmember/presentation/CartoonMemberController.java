@@ -8,7 +8,6 @@ import com.webtoon.cartoonmember.dto.request.CartoonMemberRating;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberThumbsUp;
 import com.webtoon.cartoonmember.application.CartoonMemberService;
-import com.webtoon.cartoonmember.application.CartoonMemberTransactionalService;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.content.dto.response.ContentListResult;
 import com.webtoon.global.openfeign.DynamicUrlOpenFeign;
@@ -28,7 +27,6 @@ import java.util.List;
 public class CartoonMemberController {
 
     private final CartoonMemberService cartoonMemberService;
-    private final CartoonMemberTransactionalService cartoonMemberTransactionalService;
     private final DynamicUrlOpenFeign feign;
 
     @PostMapping("/cartoonMember/read/{cartoonId}")
@@ -37,7 +35,7 @@ public class CartoonMemberController {
 
         CartoonMemberSave cartoonMemberSave =
                 CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
-        cartoonMemberTransactionalService.saveSet(cartoonMemberSave);
+        cartoonMemberService.saveSet(cartoonMemberSave);
         return feign.findContentList(cartoonId, PageRequest.of(
                 0, 20, Sort.Direction.DESC, "id"
         ));
@@ -48,7 +46,7 @@ public class CartoonMemberController {
                                          @PathVariable Long cartoonId) {
         CartoonMemberThumbsUp cartoonMemberThumbsUp =
                 CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
-        cartoonMemberTransactionalService.thumbsUpTransactionSet(cartoonMemberThumbsUp);
+        cartoonMemberService.thumbsUpTransactionSet(cartoonMemberThumbsUp);
         return ResponseEntity.ok().build();
     }
 
@@ -79,7 +77,7 @@ public class CartoonMemberController {
                                        @PathVariable double rating) {
         CartoonMemberRating cartoonMemberRating =
                 CartoonMemberRating.getFromIdAndRating(cartoonId, memberSession.getId(), rating);
-        cartoonMemberTransactionalService.ratingTransactionSet(cartoonMemberRating);
+        cartoonMemberService.ratingTransactionSet(cartoonMemberRating);
         return ResponseEntity.ok().build();
     }
 }

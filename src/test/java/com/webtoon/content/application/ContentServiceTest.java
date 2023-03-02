@@ -36,8 +36,6 @@ class ContentServiceTest extends ServiceTest {
     @Autowired
     private ContentService contentService;
 
-    @Autowired
-    private ContentTransactionService contentTransactionService;
 
     @Test
     @DisplayName("만화의 컨텐츠를 한 페이지 가져옵니다")
@@ -79,7 +77,7 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         // when
-        contentTransactionService.saveSet(cartoon.getId(), contentSave);
+        contentService.saveSet(cartoon.getId(), contentSave);
 
         // then
         assertThat(contentRepository.count()).isEqualTo(1);
@@ -97,7 +95,7 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         Assertions.assertThrows(CartoonNotFoundException.class,
-                () -> contentTransactionService.saveSet(9999L, contentSave));
+                () -> contentService.saveSet(9999L, contentSave));
     }
 
     @Test
@@ -123,7 +121,7 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         // when
-        Content findContent = contentTransactionService.getContentTransactionSet(contentGet);
+        Content findContent = contentService.getContentTransactionSet(contentGet);
 
         // then
         Member findMember = memberRepository.getById(member.getId());
@@ -164,7 +162,7 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         // when
-        Content findContent = contentTransactionService.getContentTransactionSet(contentGet);
+        Content findContent = contentService.getContentTransactionSet(contentGet);
 
         // then
         Member findMember = memberRepository.getById(member.getId());
@@ -203,9 +201,9 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         assertThrows(ContentNotFoundException.class,
-                () -> contentTransactionService.getContentTransactionSet(contentGetWithoutCartoon));
+                () -> contentService.getContentTransactionSet(contentGetWithoutCartoon));
         assertThrows(ContentNotFoundException.class,
-                () -> contentTransactionService.getContentTransactionSet(contentGetWithoutContentEpisode));
+                () -> contentService.getContentTransactionSet(contentGetWithoutContentEpisode));
     }
 
     @Test
@@ -232,7 +230,7 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         assertThrows(LackOfCoinException.class,
-                () -> contentTransactionService.getContentTransactionSet(contentGet));
+                () -> contentService.getContentTransactionSet(contentGet));
     }
 
     @Test
@@ -256,7 +254,7 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         // when
-        contentTransactionService.updateSet(contentUpdateSet);
+        contentService.updateSet(contentUpdateSet);
 
         // then
         Content findContent = contentRepository.getById(content.getId());
@@ -284,6 +282,6 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         assertThrows(ContentNotFoundException.class,
-                () -> contentTransactionService.updateSet(contentUpdateSet));
+                () -> contentService.updateSet(contentUpdateSet));
     }
 }

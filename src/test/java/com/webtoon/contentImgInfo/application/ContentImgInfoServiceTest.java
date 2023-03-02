@@ -14,6 +14,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,8 +29,6 @@ class ContentImgInfoServiceTest extends ServiceTest {
     @Autowired
     private ContentImgInfoService contentImgInfoService;
 
-    @Autowired
-    private ContentImgInfoTransactionService contentImgInfoTransactionService;
 
     @Test
     @DisplayName("만화 이미지를 서버에 업로드 합니다 - 성공")
@@ -125,7 +125,7 @@ class ContentImgInfoServiceTest extends ServiceTest {
         );
 
         // when
-        contentImgInfoTransactionService.saveSet(content.getId(), multipartFile);
+        contentImgInfoService.saveSet(content.getId(), multipartFile);
 
         // then
         assertThat(contentImgInfoRepository.count()).isEqualTo(1L);

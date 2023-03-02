@@ -24,6 +24,110 @@ class MemberServiceTest extends ServiceTest {
     @Autowired
     private MemberService memberService;
 
+
+    @Test
+    @DisplayName("회원이 저장됩니다 - 성공")
+    void signup() {
+        // given
+        MemberSignup memberSignup = MemberSignup.builder()
+                .nickname("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        // when
+        memberService.signupSet(memberSignup);
+
+        // then
+        assertThat(memberRepository.count()).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("memberSession에 맞는 member의 정보가 수정됩니다 - 성공")
+    void updateSet200() {
+        // given
+        Member member = saveMemberInRepository();
+
+        MemberSession memberSession = MemberSession.builder()
+                .id(member.getId())
+                .nickname("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        MemberUpdate memberUpdate = MemberUpdate.builder()
+                .nickname("수정 회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("123456789")
+                .build();
+
+        // when
+        Member findMember = memberService.updateSet(memberSession, memberUpdate);
+
+        // then
+        assertThat(findMember.getNickname()).isEqualTo(memberUpdate.getNickname());
+        assertThat(findMember.getEmail()).isEqualTo(memberUpdate.getEmail());
+        assertThat(passwordEncoder.matches("123456789", findMember.getPassword())).isTrue();
+    }
+
+    @Test
+    @DisplayName("memberSession에 맞는 member가 없으면 정보를 수정할 수 없습니다 - 실패")
+    void updateSet404() {
+        // given
+        MemberSession memberSession = MemberSession.builder()
+                .id(1L)
+                .nickname("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        MemberUpdate memberUpdate = MemberUpdate.builder()
+                .nickname("수정 회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("123456789")
+                .build();
+
+        // expected
+        assertThrows(MemberNotFoundException.class,
+                () -> memberService.updateSet(memberSession, memberUpdate));
+    }
+
+    @Test
+    @DisplayName("MemberSession에 맞는 Member가 있다면 Member를 삭제합니다 - 성공")
+    void deleteSet200() {
+        // given
+        Member member = saveMemberInRepository();
+
+        MemberSession memberSession = MemberSession.builder()
+                .id(member.getId())
+                .nickname(member.getNickname())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .build();
+
+        // when
+        memberService.deleteSet(memberSession);
+
+        // then
+        assertThat(memberRepository.count()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("MemberSession에 맞는 Member가 없다면 Member 삭제를 할 수 없습니다 - 실패")
+    void deleteSet404() {
+        // given
+        MemberSession memberSession = MemberSession.builder()
+                .id(1L)
+                .nickname("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        // expected
+        assertThrows(MemberNotFoundException.class,
+                () -> memberService.deleteSet(memberSession));
+    }
+
     @Test
     @DisplayName("회원이 존재하면 MemberSession을 생성합니다 - 성공")
     void makeMemberSession200() {
@@ -145,5 +249,50 @@ class MemberServiceTest extends ServiceTest {
         // then
         HttpSession session = httpServletRequest.getSession(false);
         assertThat(session).isNull();
+    }
+
+    @Test
+    @DisplayName("MemberSession에 맞는 Member가 있다면 Coin을 충전할 수 있습니다 - 성공")
+    void chargeCoinTransactionSet200() {
+        // given
+        Member member = saveMemberInRepository();
+
+        MemberSession memberSession = MemberSession.builder()
+                .id(member.getId())
+                .nickname(member.getNickname())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .build();
+
+        MemberCharge memberCharge = MemberCharge.builder()
+                .chargeAmount(10000L)
+                .build();
+
+        // when
+        memberService.chargeCoinTransactionSet(memberSession, memberCharge);
+        Member findMember = memberRepository.getById(memberSession.getId());
+
+        // then
+        assertThat(findMember.getCoin()).isEqualTo(10000L);
+    }
+
+    @Test
+    @DisplayName("MemberSession에 맞는 Member가 없다면 Coin을 충전할 수 없습니다 - 실패")
+    void chargeCoinTransactionSet404() {
+        // given
+        MemberSession memberSession = MemberSession.builder()
+                .id(1L)
+                .nickname("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password("1234")
+                .build();
+
+        MemberCharge memberCharge = MemberCharge.builder()
+                .chargeAmount(10000L)
+                .build();
+
+        // expected
+        assertThrows(MemberNotFoundException.class,
+                () -> memberService.chargeCoinTransactionSet(memberSession, memberCharge));
     }
 }

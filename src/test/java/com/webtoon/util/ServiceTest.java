@@ -19,20 +19,11 @@ import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.webtoon.util.constant.Constant.*;
-import static java.lang.Boolean.FALSE;
 
 @AcceptanceTest
 public class ServiceTest {

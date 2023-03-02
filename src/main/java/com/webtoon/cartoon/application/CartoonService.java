@@ -1,8 +1,14 @@
 package com.webtoon.cartoon.application;
 
+import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
+import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.dto.request.CartoonSave;
+import com.webtoon.cartoon.dto.request.CartoonSearchDto;
+import com.webtoon.cartoon.dto.request.CartoonUpdate;
+import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.util.enumerated.Genre;
@@ -18,26 +24,31 @@ import java.util.List;
 public class CartoonService {
 
     private final CartoonRepository cartoonRepository;
+    private final AuthorRepository authorRepository;
 
     @Transactional
-    public void save(Cartoon cartoon) {
+    public void saveSet(CartoonSave cartoonSave, AuthorSession authorSession) {
+        Author author = authorRepository.getById(authorSession.getId());
+        Cartoon cartoon = Cartoon.getFromCartoonSaveAndAuthor(cartoonSave, author);
         cartoonRepository.save(cartoon);
     }
 
-    public Cartoon getById(Long id) {
-        return cartoonRepository.getById(id);
+    public List<CartoonResponse> findAllByTitleSet(CartoonSearchDto cartoonSearchDto) {
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        List<Cartoon> cartoonList = cartoonRepository.findAllByTitle(cartoonSearch);
+        return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
-    public List<Cartoon> findAllByTitle(CartoonSearch cartoonSearch) {
-        return cartoonRepository.findAllByTitle(cartoonSearch);
+    public List<CartoonResponse> findAllByCartoonCondOrderByLikesSet(CartoonSearchDto cartoonSearchDto) {
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        List<Cartoon> cartoonList = cartoonRepository.findAllByCartoonCondOrderByLikes(cartoonSearch);
+        return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
-    public List<Cartoon> findAllByCartoonCondOrderByLikes(CartoonSearch cartoonSearch) {
-        return cartoonRepository.findAllByCartoonCondOrderByLikes(cartoonSearch);
-    }
-
-    public List<Cartoon> findAllByCartoonCondOrderByRating(CartoonSearch cartoonSearch) {
-        return cartoonRepository.findAllByCartoonCondOrderByRating(cartoonSearch);
+    public List<CartoonResponse> findAllByCartoonCondOrderByRatingSet(CartoonSearchDto cartoonSearchDto) {
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        List<Cartoon> cartoonList = cartoonRepository.findAllByCartoonCondOrderByRating(cartoonSearch);
+        return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
     public void validateAuthorityForCartoon(AuthorSession authorSession, Long cartoonId) {
@@ -52,7 +63,14 @@ public class CartoonService {
     }
 
     @Transactional
-    public void delete(Cartoon cartoon) {
+    public void updateSet(CartoonUpdate cartoonUpdate, Long cartoonId) {
+        Cartoon cartoon = cartoonRepository.getById(cartoonId);
+        cartoon.update(cartoonUpdate);
+    }
+
+    @Transactional
+    public void deleteSet(Long cartoonId) {
+        Cartoon cartoon = cartoonRepository.getById(cartoonId);
         cartoonRepository.delete(cartoon);
     }
 

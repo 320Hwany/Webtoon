@@ -30,6 +30,178 @@ class CartoonMemberServiceTest extends ServiceTest {
 
 
     @Test
+    @DisplayName("처음읽는 만화라면 CartoonMemberSave 정보로부터 CartoonMember를 저장합니다")
+    void saveSet200() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+
+        CartoonMemberSave cartoonMemberSave = CartoonMemberSave.builder()
+                .cartoonId(cartoon.getId())
+                .memberId(member.getId())
+                .build();
+
+        // when
+        cartoonMemberService.saveSet(cartoonMemberSave);
+
+        // then
+        assertThat(cartoonMemberRepository.count()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("처음읽는 만화가 아니라면 CartoonMember의 마지막으로 읽은 날짜만 업데이트합니다")
+    void saveSetAlreadyRead() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+
+        CartoonMemberSave cartoonMemberSave = CartoonMemberSave.builder()
+                .cartoonId(cartoon.getId())
+                .memberId(member.getId())
+                .build();
+
+        CartoonMember cartoonMember = CartoonMember.builder()
+                .cartoon(cartoon)
+                .member(member)
+                .thumbsUp(true)
+                .build();
+
+        cartoonMemberRepository.save(cartoonMember);
+
+        // when
+        cartoonMemberService.saveSet(cartoonMemberSave);
+
+        // then
+        assertThat(cartoonMemberRepository.count()).isEqualTo(1);
+        assertThat(cartoonMember.getLastModifiedDateTime()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("cartoonId, memberId 각각과 일치하는 만화, 회원이 없다면 예외가 발생합니다")
+    void saveSet404() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+
+        CartoonMemberSave cartoonMemberSaveWithoutCartoon = CartoonMemberSave.builder()
+                .cartoonId(9999L)
+                .memberId(member.getId())
+                .build();
+
+        CartoonMemberSave cartoonMemberSaveWithoutMember = CartoonMemberSave.builder()
+                .cartoonId(cartoon.getId())
+                .memberId(9999L)
+                .build();
+
+        // expected
+        assertThrows(CartoonNotFoundException.class,
+                () -> cartoonMemberService
+                        .saveSet(cartoonMemberSaveWithoutCartoon));
+        assertThrows(MemberNotFoundException.class,
+                () -> cartoonMemberService
+                        .saveSet(cartoonMemberSaveWithoutMember));
+    }
+
+    @Test
+    @DisplayName("회원이 만화를 좋아요를 누르면 만화는 좋아요 수가 올라가고 연결 테이블에는 thumbsUp이 true가 됩니다")
+    void thumbsUpTransactionSet200() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        CartoonMember cartoonMember = saveCartoonMemberInRepository(cartoon, member);
+        CartoonMemberThumbsUp cartoonMemberThumbsUp =
+                CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(cartoon.getId(), member.getId());
+
+        // when
+        cartoonMemberService.thumbsUpTransactionSet(cartoonMemberThumbsUp);
+
+        // then
+        Cartoon findCartoon = cartoonRepository.getById(cartoon.getId());
+        CartoonMember findCartoonMember = cartoonMemberRepository.getById(cartoonMember.getId());
+
+        assertThat(findCartoon.getLikes()).isEqualTo(1);
+        assertThat(findCartoonMember.isThumbsUp()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("memberId, cartoonId로 회원 - 만화 연결 테이블에 있는 정보를 찾을 수 없으면 예외가 발생합니다")
+    void thumbsUpTransactionSet404() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        saveCartoonMemberInRepository(cartoon, member);
+
+        CartoonMemberThumbsUp cartoonMemberWithoutCartoon =
+                CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(9999L, member.getId());
+        CartoonMemberThumbsUp cartoonMemberWithoutMember =
+                CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(cartoon.getId(), 9999L);
+        CartoonMemberThumbsUp cartoonMemberWithoutBoth =
+                CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(9999L, 9999L);
+
+        // expected
+        assertThrows(CartoonMemberNotFoundException.class,
+                () -> cartoonMemberService.thumbsUpTransactionSet(cartoonMemberWithoutCartoon));
+        assertThrows(CartoonMemberNotFoundException.class,
+                () -> cartoonMemberService.thumbsUpTransactionSet(cartoonMemberWithoutMember));
+        assertThrows(CartoonMemberNotFoundException.class,
+                () -> cartoonMemberService.thumbsUpTransactionSet(cartoonMemberWithoutBoth));
+    }
+
+    @Test
+    void ratingTransactionSet200() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        CartoonMember cartoonMember = CartoonMember.builder()
+                .cartoon(cartoon)
+                .member(member)
+                .rated(false)
+                .build();
+
+        cartoonMemberRepository.save(cartoonMember);
+
+        CartoonMemberRating cartoonMemberRating =
+                CartoonMemberRating.getFromIdAndRating(cartoon.getId(), member.getId(), 9.8);
+
+        // when
+        cartoonMemberService.ratingTransactionSet(cartoonMemberRating);
+
+        // then
+        Cartoon findCartoon = cartoonRepository.getById(cartoon.getId());
+        assertThat(findCartoon.getRating()).isEqualTo(9.8);
+    }
+
+    @Test
+    void ratingTransactionSet404() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        saveCartoonMemberInRepository(cartoon, member);
+
+        CartoonMemberRating cartoonMemberWithoutCartoon =
+                CartoonMemberRating.getFromIdAndRating(9999L, member.getId(), 9.8);
+        CartoonMemberRating cartoonMemberWithoutMember =
+                CartoonMemberRating.getFromIdAndRating(cartoon.getId(), 9999L, 9.8);
+        CartoonMemberRating cartoonMemberWithoutBoth =
+                CartoonMemberRating.getFromIdAndRating(9999L, 9999L, 9.8);
+
+        // expected
+        assertThrows(CartoonMemberNotFoundException.class,
+                () -> cartoonMemberService.ratingTransactionSet(cartoonMemberWithoutCartoon));
+        assertThrows(CartoonMemberNotFoundException.class,
+                () -> cartoonMemberService.ratingTransactionSet(cartoonMemberWithoutMember));
+        assertThrows(CartoonMemberNotFoundException.class,
+                () -> cartoonMemberService.ratingTransactionSet(cartoonMemberWithoutBoth));
+    }
+
+    @Test
     void findAllCartoonByMemberId() {
         // given
         Author author = saveAuthorInRepository();
@@ -65,28 +237,6 @@ class CartoonMemberServiceTest extends ServiceTest {
 
         // then
         assertThat(cartoonMemberResponseList.size()).isEqualTo(1);
-    }
-
-    @Test
-    void findCartoonSizeWhereRated() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        Member member = saveMemberInRepository();
-        CartoonMember cartoonMember = CartoonMember.builder()
-                .cartoon(cartoon)
-                .member(member)
-                .thumbsUp(true)
-                .rated(true)
-                .build();
-
-        cartoonMemberRepository.save(cartoonMember);
-
-        // when
-        long cartoonSize = cartoonMemberService.findCartoonSizeWhereRated(cartoon.getId());
-
-        // then
-        assertThat(cartoonSize).isEqualTo(1);
     }
 
     @Test
