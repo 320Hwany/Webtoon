@@ -13,5 +13,4 @@ public interface DynamicUrlOpenFeign {
 
     @GetMapping(value = "/content/{cartoonId}")
     ResponseEntity<ContentListResult> findContentList(@PathVariable Long cartoonId, Pageable pageable);
-
 }

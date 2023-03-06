@@ -15,7 +15,6 @@ import static org.springframework.http.HttpStatus.*;
 @RestControllerAdvice
 public class ControllerAdvice {
 
-    @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
@@ -30,7 +29,26 @@ public class ControllerAdvice {
         return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
     }
 
-    @ResponseBody
+    @ExceptionHandler(NotMatchException.class)
+    public ResponseEntity<ErrorResponse> notMatchException(NotMatchException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .statusCode(e.getStatusCode())
+                .message(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(DuplicationException.class)
+    public ResponseEntity<ErrorResponse> duplicationException(DuplicationException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .statusCode(e.getStatusCode())
+                .message(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
+    }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> notFoundException(NotFoundException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
@@ -41,7 +59,6 @@ public class ControllerAdvice {
         return ResponseEntity.status(NOT_FOUND).body(errorResponse);
     }
 
-    @ResponseBody
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorResponse> unauthorizedException(UnauthorizedException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
@@ -52,7 +69,6 @@ public class ControllerAdvice {
         return ResponseEntity.status(UNAUTHORIZED).body(errorResponse);
     }
 
-    @ResponseBody
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ErrorResponse> forbiddenException(ForbiddenException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
@@ -63,7 +79,6 @@ public class ControllerAdvice {
         return ResponseEntity.status(FORBIDDEN).body(errorResponse);
     }
 
-    @ResponseBody
     @ExceptionHandler(EnumTypeValidException.class)
     public ResponseEntity<ErrorResponse> enumTypeValidException(EnumTypeValidException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
@@ -75,7 +90,6 @@ public class ControllerAdvice {
         return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
     }
 
-    @ResponseBody
     @ExceptionHandler(LackOfCoinException.class)
     public ResponseEntity<ErrorResponse> lackOfCoinException(LackOfCoinException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()

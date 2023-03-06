@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Embedded;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
@@ -18,6 +19,7 @@ public class AuthorSession implements Serializable {
     private String nickname;
 
     private String email;
+
     private String password;
 
     @Builder

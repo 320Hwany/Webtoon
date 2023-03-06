@@ -43,7 +43,7 @@ public class CartoonMemberService {
     }
 
     @Transactional
-    public void thumbsUpTransactionSet(CartoonMemberThumbsUp cartoonMemberThumbsUp) {
+    public void thumbsUpSet(CartoonMemberThumbsUp cartoonMemberThumbsUp) {
         CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(
                         cartoonMemberThumbsUp.getCartoonId(), cartoonMemberThumbsUp.getMemberId())
                 .orElseThrow(CartoonMemberNotFoundException::new);
@@ -54,7 +54,7 @@ public class CartoonMemberService {
     }
 
     @Transactional
-    public void ratingTransactionSet(CartoonMemberRating cartoonMemberRating) {
+    public void ratingSet(CartoonMemberRating cartoonMemberRating) {
         CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(
                         cartoonMemberRating.getCartoonId(), cartoonMemberRating.getMemberId())
                 .orElseThrow(CartoonMemberNotFoundException::new);

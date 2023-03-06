@@ -25,7 +25,8 @@ public class AuthorCartoonResponse {
         return AuthorCartoonResponse.builder()
                 .nickname(author.getNickname())
                 .count(author.getCartoonList().size())
-                .cartoonResponseList(author.getCartoonList().stream()
+                .cartoonResponseList(
+                        author.getCartoonList().stream()
                         .map(CartoonResponse::getFromCartoon)
                         .collect(Collectors.toList()))
                 .build();

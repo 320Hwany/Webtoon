@@ -15,13 +15,13 @@ public class AcceptanceTestExecutionListener extends AbstractTestExecutionListen
         truncateTables(jdbcTemplate, truncateQueries);
     }
 
+    private JdbcTemplate getJdbcTemplate(final TestContext testContext) {
+        return testContext.getApplicationContext().getBean(JdbcTemplate.class);
+    }
+
     private List<String> getTruncateQueries(final JdbcTemplate jdbcTemplate) {
         return jdbcTemplate.queryForList("SELECT Concat('TRUNCATE TABLE ', TABLE_NAME, ';') " +
                 "AS q FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'", String.class);
-    }
-
-    private JdbcTemplate getJdbcTemplate(final TestContext testContext) {
-        return testContext.getApplicationContext().getBean(JdbcTemplate.class);
     }
 
     private void truncateTables(final JdbcTemplate jdbcTemplate, final List<String> truncateQueries) {

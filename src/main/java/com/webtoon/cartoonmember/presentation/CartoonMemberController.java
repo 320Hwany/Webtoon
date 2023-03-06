@@ -13,9 +13,8 @@ import com.webtoon.content.dto.response.ContentListResult;
 import com.webtoon.global.openfeign.DynamicUrlOpenFeign;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForMember;
+import com.webtoon.util.constant.Constant;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +35,7 @@ public class CartoonMemberController {
         CartoonMemberSave cartoonMemberSave =
                 CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
         cartoonMemberService.saveSet(cartoonMemberSave);
-        return feign.findContentList(cartoonId, PageRequest.of(
-                0, 20, Sort.Direction.DESC, "id"
-        ));
+        return feign.findContentList(cartoonId, Constant.firstPage);
     }
 
     @PostMapping("/cartoonMember/thumbsUp/{cartoonId}")
@@ -46,7 +43,7 @@ public class CartoonMemberController {
                                          @PathVariable Long cartoonId) {
         CartoonMemberThumbsUp cartoonMemberThumbsUp =
                 CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
-        cartoonMemberService.thumbsUpTransactionSet(cartoonMemberThumbsUp);
+        cartoonMemberService.thumbsUpSet(cartoonMemberThumbsUp);
         return ResponseEntity.ok().build();
     }
 
@@ -77,7 +74,7 @@ public class CartoonMemberController {
                                        @PathVariable double rating) {
         CartoonMemberRating cartoonMemberRating =
                 CartoonMemberRating.getFromIdAndRating(cartoonId, memberSession.getId(), rating);
-        cartoonMemberService.ratingTransactionSet(cartoonMemberRating);
+        cartoonMemberService.ratingSet(cartoonMemberRating);
         return ResponseEntity.ok().build();
     }
 }

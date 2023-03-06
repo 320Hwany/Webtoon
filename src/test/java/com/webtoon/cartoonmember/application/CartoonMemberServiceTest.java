@@ -107,7 +107,7 @@ class CartoonMemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("회원이 만화를 좋아요를 누르면 만화는 좋아요 수가 올라가고 연결 테이블에는 thumbsUp이 true가 됩니다")
-    void thumbsUpTransactionSet200() {
+    void thumbsUpSet200() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -117,7 +117,7 @@ class CartoonMemberServiceTest extends ServiceTest {
                 CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(cartoon.getId(), member.getId());
 
         // when
-        cartoonMemberService.thumbsUpTransactionSet(cartoonMemberThumbsUp);
+        cartoonMemberService.thumbsUpSet(cartoonMemberThumbsUp);
 
         // then
         Cartoon findCartoon = cartoonRepository.getById(cartoon.getId());
@@ -129,7 +129,7 @@ class CartoonMemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("memberId, cartoonId로 회원 - 만화 연결 테이블에 있는 정보를 찾을 수 없으면 예외가 발생합니다")
-    void thumbsUpTransactionSet404() {
+    void thumbsUpSet404() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -145,15 +145,15 @@ class CartoonMemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.thumbsUpTransactionSet(cartoonMemberWithoutCartoon));
+                () -> cartoonMemberService.thumbsUpSet(cartoonMemberWithoutCartoon));
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.thumbsUpTransactionSet(cartoonMemberWithoutMember));
+                () -> cartoonMemberService.thumbsUpSet(cartoonMemberWithoutMember));
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.thumbsUpTransactionSet(cartoonMemberWithoutBoth));
+                () -> cartoonMemberService.thumbsUpSet(cartoonMemberWithoutBoth));
     }
 
     @Test
-    void ratingTransactionSet200() {
+    void ratingSet200() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -170,7 +170,7 @@ class CartoonMemberServiceTest extends ServiceTest {
                 CartoonMemberRating.getFromIdAndRating(cartoon.getId(), member.getId(), 9.8);
 
         // when
-        cartoonMemberService.ratingTransactionSet(cartoonMemberRating);
+        cartoonMemberService.ratingSet(cartoonMemberRating);
 
         // then
         Cartoon findCartoon = cartoonRepository.getById(cartoon.getId());
@@ -178,7 +178,7 @@ class CartoonMemberServiceTest extends ServiceTest {
     }
 
     @Test
-    void ratingTransactionSet404() {
+    void ratingSet404() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -194,11 +194,11 @@ class CartoonMemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.ratingTransactionSet(cartoonMemberWithoutCartoon));
+                () -> cartoonMemberService.ratingSet(cartoonMemberWithoutCartoon));
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.ratingTransactionSet(cartoonMemberWithoutMember));
+                () -> cartoonMemberService.ratingSet(cartoonMemberWithoutMember));
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.ratingTransactionSet(cartoonMemberWithoutBoth));
+                () -> cartoonMemberService.ratingSet(cartoonMemberWithoutBoth));
     }
 
     @Test

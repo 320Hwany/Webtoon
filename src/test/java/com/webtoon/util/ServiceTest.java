@@ -1,6 +1,5 @@
 package com.webtoon.util;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.repository.AuthorRepository;

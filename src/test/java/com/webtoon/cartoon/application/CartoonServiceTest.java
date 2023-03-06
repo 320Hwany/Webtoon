@@ -4,7 +4,6 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.exception.AuthorNotFoundException;
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;

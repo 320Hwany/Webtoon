@@ -55,14 +55,14 @@ public class ContentRepositoryImpl implements ContentRepository {
     public Optional<Content> findByCartoonIdAndEpisode(Long cartoonId, int episode) {
         return Optional.ofNullable(
                 jpaQueryFactory.selectFrom(content)
-                .leftJoin(content.cartoon, cartoon)
-                .fetchJoin()
-                .where(content.cartoon.id.eq(cartoonId))
-                .where(content.episode.eq(episode))
-                .leftJoin(cartoon.author, author)
-                .fetchJoin()
-                .where(cartoon.author.id.eq(author.id))
-                .fetchOne());
+                        .leftJoin(content.cartoon, cartoon)
+                        .fetchJoin()
+                        .leftJoin(cartoon.author, author)
+                        .fetchJoin()
+                        .where(content.cartoon.id.eq(cartoonId),
+                                content.episode.eq(episode),
+                                cartoon.author.id.eq(author.id))
+                        .fetchOne());
     }
 
     @Override
