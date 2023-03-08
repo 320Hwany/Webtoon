@@ -1,6 +1,7 @@
 package com.webtoon.contentImgInfo.domain;
 
 import com.webtoon.content.domain.Content;
+import com.webtoon.contentImgInfo.exception.ImgUploadException;
 import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,9 +37,13 @@ public class ContentImgInfo extends BaseTimeEntity {
         this.content = content;
     }
 
-    public static void imgUploadOnServer(MultipartFile multipartFile, String imgDir) throws IOException {
+    public static void imgUploadOnServer(MultipartFile multipartFile, String imgDir) {
         String fullPath = imgDir + multipartFile.getOriginalFilename();
-        multipartFile.transferTo(new File(fullPath));
+        try {
+            multipartFile.transferTo(new File(fullPath));
+        } catch (IOException e) {
+            throw new ImgUploadException();
+        }
     }
 
     public static ContentImgInfo makeContentImgInfo(MultipartFile multipartFile, Content content) {

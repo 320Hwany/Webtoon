@@ -1,6 +1,8 @@
 package com.webtoon.global.error;
 
 import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.contentImgInfo.exception.GetImgException;
+import com.webtoon.contentImgInfo.exception.ImgUploadException;
 import com.webtoon.member.exception.LackOfCoinException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -92,6 +94,26 @@ public class ControllerAdvice {
 
     @ExceptionHandler(LackOfCoinException.class)
     public ResponseEntity<ErrorResponse> lackOfCoinException(LackOfCoinException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .statusCode(e.getStatusCode())
+                .message(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(ImgUploadException.class)
+    public ResponseEntity<ErrorResponse> imgUploadException(ImgUploadException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .statusCode(e.getStatusCode())
+                .message(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(GetImgException.class)
+    public ResponseEntity<ErrorResponse> getImgException(GetImgException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .statusCode(e.getStatusCode())
                 .message(e.getMessage())

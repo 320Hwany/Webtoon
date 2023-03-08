@@ -23,14 +23,14 @@ public class ContentImgInfoController {
 
     @PostMapping("/contentImg/{contentId}")
     public ResponseEntity<Void> save(@RequestParam MultipartFile multipartFile,
-                                     @PathVariable Long contentId) throws IOException {
+                                     @PathVariable Long contentId) {
         contentImgInfoService.imgUploadOnServer(multipartFile, imgDir);
         contentImgInfoService.saveSet(contentId, multipartFile);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/contentImg/{contentId}")
-    public ResponseEntity<UrlResource> getContentImg(@PathVariable Long contentId) throws IOException {
+    public ResponseEntity<UrlResource> getContentImg(@PathVariable Long contentId) {
         ContentImgInfo contentImgInfo = contentImgInfoService.getByContentId(contentId);
         UrlResource contentImg = contentImgInfoService.getImgFromServer(contentImgInfo, imgDir);
         MediaType mediaType = contentImgInfoService.getMediaType(contentImgInfo, imgDir);
