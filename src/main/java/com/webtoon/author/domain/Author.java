@@ -48,14 +48,6 @@ public class Author extends BaseTimeEntity {
         this.password = password;
     }
 
-    public static Author getFromAuthorSignup(AuthorSignup authorSignup, PasswordEncoder passwordEncoder) {
-        return Author.builder()
-                .nickname(authorSignup.getNickname())
-                .email(authorSignup.getEmail())
-                .password(passwordEncoder.encode(authorSignup.getPassword()))
-                .build();
-    }
-
     public void update(AuthorUpdate authorUpdate, PasswordEncoder passwordEncoder) {
         this.nickname = authorUpdate.getNickname();
         this.email = authorUpdate.getEmail();

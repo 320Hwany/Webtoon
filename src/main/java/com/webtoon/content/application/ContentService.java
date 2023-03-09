@@ -33,7 +33,7 @@ public class ContentService {
     @Transactional
     public void saveSet(Long cartoonId, ContentSave contentSave) {
         Cartoon cartoon = cartoonRepository.getById(cartoonId);
-        Content content = Content.getFromContentSaveAndCartoon(contentSave, cartoon);
+        Content content = contentSave.toEntity(cartoon);
         contentRepository.save(content);
     }
 

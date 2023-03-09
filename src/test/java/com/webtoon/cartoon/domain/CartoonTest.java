@@ -21,30 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class CartoonTest extends DomainTest {
 
     @Test
-    @DisplayName("CartoonSave와 Author로부터 Cartoon을 생성합니다")
-    void getFromCartoonSaveAndAuthor() {
-        // given
-        CartoonSave cartoonSave = CartoonSave.builder()
-                .title("만화 제목")
-                .dayOfTheWeek("MON")
-                .progress("SERIALIZATION")
-                .genre("ROMANCE")
-                .build();
-
-        Author author = getAuthor();
-
-        // when
-        Cartoon cartoon = Cartoon.getFromCartoonSaveAndAuthor(cartoonSave, author);
-
-        // then
-        assertThat(cartoon.getAuthor()).isEqualTo(author);
-        assertThat(cartoon.getTitle()).isEqualTo(cartoonSave.getTitle());
-        assertThat(cartoon.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.MON);
-        assertThat(cartoon.getProgress()).isEqualTo(Progress.SERIALIZATION);
-        assertThat(cartoon.getGenre()).isEqualTo(Genre.ROMANCE);
-    }
-
-    @Test
     @DisplayName("만화에 대한 작가 정보가 없거나 다른 작가라면 예외가 발생합니다")
     void validateAuthorityForCartoon() {
         // given

@@ -50,16 +50,6 @@ public class Member extends BaseTimeEntity {
         this.coin = coin;
     }
 
-    public static Member getFromMemberSignup(MemberSignup memberSignup, PasswordEncoder passwordEncoder) {
-        return Member.builder()
-                .nickname(memberSignup.getNickname())
-                .email(memberSignup.getEmail())
-                .password(passwordEncoder.encode(memberSignup.getPassword()))
-                .birthDate(memberSignup.getBirthDate())
-                .coin(ZERO_OF_TYPE_LONG)
-                .build();
-    }
-
     public void update(MemberUpdate memberUpdate, PasswordEncoder passwordEncoder) {
         this.nickname = memberUpdate.getNickname();
         this.email = memberUpdate.getEmail();

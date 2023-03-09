@@ -108,13 +108,13 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .leftJoin(cartoonMember.cartoon, cartoon)
                 .leftJoin(cartoon.author, author)
                 .leftJoin(cartoonMember.member, member)
-//                .where(
-//                        member.birthDate.between(
-//                                LocalDate.now().minusYears(cartoonSearch.getAgeRange() + 8),
-//                                LocalDate.now().minusYears(cartoonSearch.getAgeRange() - 1))
-//                )
+                .where(
+                        member.birthDate.between(
+                                LocalDate.now().minusYears(cartoonSearch.getAgeRange() + 8),
+                                LocalDate.now().minusYears(cartoonSearch.getAgeRange() - 1))
+                )
                 .groupBy(cartoon.title)
-                .orderBy(cartoon.title.count().desc())
+                .orderBy(cartoon.likes.desc())
                 .fetch();
 
         return cartoonCoreList;

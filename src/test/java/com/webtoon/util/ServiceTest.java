@@ -7,6 +7,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.repository.CartoonMemberRepository;
+import com.webtoon.comment.repository.CommentRepository;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.contentImgInfo.domain.ContentImgInfo;
@@ -47,6 +48,9 @@ public class ServiceTest {
 
     @Autowired
     protected ContentMemberRepository contentMemberRepository;
+
+    @Autowired
+    protected CommentRepository commentRepository;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;

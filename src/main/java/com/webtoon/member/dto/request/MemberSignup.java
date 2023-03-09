@@ -1,15 +1,19 @@
 package com.webtoon.member.dto.request;
 
+import com.webtoon.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+
+import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;
 
 @Getter
 @Builder
@@ -28,4 +32,14 @@ public class MemberSignup {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
+
+    public Member toEntity(PasswordEncoder passwordEncoder) {
+        return Member.builder()
+                .nickname(nickname)
+                .email(email)
+                .password(passwordEncoder.encode(password))
+                .birthDate(birthDate)
+                .coin(ZERO_OF_TYPE_LONG)
+                .build();
+    }
 }

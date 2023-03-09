@@ -29,7 +29,7 @@ public class MemberSession implements Serializable {
         this.password = password;
     }
 
-    public static MemberSession getFromMember(Member member) {
+    public static MemberSession toEntity(Member member) {
         return MemberSession.builder()
                 .id(member.getId())
                 .nickname(member.getNickname())

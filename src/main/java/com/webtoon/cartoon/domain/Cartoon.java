@@ -68,21 +68,6 @@ public class Cartoon extends BaseTimeEntity {
         this.likes = likes;
     }
 
-    public static Cartoon getFromCartoonSaveAndAuthor(CartoonSave cartoonSave, Author author) {
-        Cartoon cartoon = Cartoon.builder()
-                .title(cartoonSave.getTitle())
-                .author(author)
-                .dayOfTheWeek(DayOfTheWeek.valueOf(cartoonSave.getDayOfTheWeek()))
-                .progress(Progress.valueOf(cartoonSave.getProgress()))
-                .genre(Genre.valueOf(cartoonSave.getGenre()))
-                .rating(ZERO_OF_TYPE_DOUBLE)
-                .likes(ZERO_OF_TYPE_LONG)
-                .build();
-
-        author.getCartoonList().add(cartoon);
-        return cartoon;
-    }
-
     public static void validateEnumTypeValid(CartoonEnumField cartoonEnumField) {
         boolean isDayValid = DayOfTheWeek.validateValid(cartoonEnumField.getDayOfTheWeek());
         boolean isProgressValid = Progress.validateValid(cartoonEnumField.getProgress());

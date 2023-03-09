@@ -10,6 +10,8 @@ import com.webtoon.cartoon.application.CartoonService;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.repository.CartoonMemberRepository;
 import com.webtoon.cartoonmember.application.CartoonMemberService;
+import com.webtoon.comment.application.CommentService;
+import com.webtoon.comment.repository.CommentRepository;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.content.application.ContentService;
@@ -100,6 +102,12 @@ public class ControllerTest {
 
     @Autowired
     protected ContentMemberService contentMemberService;
+
+    @Autowired
+    protected CommentRepository commentRepository;
+
+    @Autowired
+    protected CommentService commentService;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;

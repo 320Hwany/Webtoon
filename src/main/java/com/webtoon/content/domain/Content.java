@@ -49,16 +49,6 @@ public class Content extends BaseTimeEntity {
         this.registrationDate = registrationDate;
     }
 
-    public static Content getFromContentSaveAndCartoon(ContentSave contentSave, Cartoon cartoon) {
-        return Content.builder()
-                .cartoon(cartoon)
-                .subTitle(contentSave.getSubTitle())
-                .episode(contentSave.getEpisode())
-                .registrationDate(contentSave.getRegistrationDate())
-                .rating(ZERO_OF_TYPE_DOUBLE)
-                .build();
-    }
-
     public void update(ContentUpdate contentUpdate) {
         this.subTitle = contentUpdate.getSubTitle();
         this.episode = contentUpdate.getEpisode();

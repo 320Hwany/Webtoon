@@ -28,7 +28,7 @@ public class MemberService {
     public MemberSession makeMemberSession(MemberLogin memberLogin) {
         Member member = memberRepository.getByEmail(memberLogin.getEmail());
         if (passwordEncoder.matches(memberLogin.getPassword(), member.getPassword())) {
-            MemberSession memberSession = MemberSession.getFromMember(member);
+            MemberSession memberSession = MemberSession.toEntity(member);
             return memberSession;
         }
         throw new MemberUnauthorizedException();
@@ -37,7 +37,7 @@ public class MemberService {
     @Transactional
     public void signupSet(MemberSignup memberSignup) {
         checkDuplication(memberSignup);
-        Member member = Member.getFromMemberSignup(memberSignup, passwordEncoder);
+        Member member = memberSignup.toEntity(passwordEncoder);
         memberRepository.save(member);
     }
 

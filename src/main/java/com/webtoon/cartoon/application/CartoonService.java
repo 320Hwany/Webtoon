@@ -29,7 +29,7 @@ public class CartoonService {
     @Transactional
     public void saveSet(CartoonSave cartoonSave, AuthorSession authorSession) {
         Author author = authorRepository.getById(authorSession.getId());
-        Cartoon cartoon = Cartoon.getFromCartoonSaveAndAuthor(cartoonSave, author);
+        Cartoon cartoon = cartoonSave.toEntity(author);
         cartoonRepository.save(cartoon);
     }
 

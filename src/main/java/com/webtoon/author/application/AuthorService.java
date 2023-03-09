@@ -47,7 +47,7 @@ public class AuthorService {
 
     @Transactional
     public void signup(AuthorSignup authorSignup) {
-        Author author = Author.getFromAuthorSignup(authorSignup, passwordEncoder);
+        Author author = authorSignup.toEntity(passwordEncoder);
         authorRepository.save(author);
     }
 
