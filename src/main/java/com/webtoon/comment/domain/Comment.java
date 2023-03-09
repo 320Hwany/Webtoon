@@ -1,6 +1,7 @@
 package com.webtoon.comment.domain;
 
 import com.webtoon.author.domain.Author;
+import com.webtoon.comment.dto.request.CommentUpdate;
 import com.webtoon.content.domain.Content;
 import com.webtoon.member.domain.Member;
 import lombok.AccessLevel;
@@ -43,5 +44,9 @@ public class Comment {
         this.member = member;
         this.content = content;
         this.likes = likes;
+    }
+
+    public void update(CommentUpdate commentUpdate) {
+        this.commentContent = commentUpdate.getCommentContent();
     }
 }

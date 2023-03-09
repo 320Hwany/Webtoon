@@ -11,6 +11,7 @@ import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.repository.CartoonMemberRepository;
 import com.webtoon.cartoonmember.application.CartoonMemberService;
 import com.webtoon.comment.application.CommentService;
+import com.webtoon.comment.domain.Comment;
 import com.webtoon.comment.repository.CommentRepository;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
@@ -192,6 +193,16 @@ public class ControllerTest {
                 .build();
 
         return contentMemberRepository.save(contentMember);
+    }
+
+    protected Comment saveCommentInRepository(Content content, Member member) {
+        Comment comment = Comment.builder()
+                .content(content)
+                .member(member)
+                .commentContent("댓글 내용입니다")
+                .build();
+
+        return commentRepository.save(comment);
     }
 
     protected MockHttpSession loginAuthorSession(Author author) throws Exception {

@@ -1,4 +1,4 @@
-package com.webtoon.comment.dto;
+package com.webtoon.comment.dto.request;
 
 import com.webtoon.comment.domain.Comment;
 import com.webtoon.content.domain.Content;

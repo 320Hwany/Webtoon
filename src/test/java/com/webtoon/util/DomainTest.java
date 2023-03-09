@@ -3,6 +3,7 @@ package com.webtoon.util;
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.comment.domain.Comment;
 import com.webtoon.content.domain.Content;
 import com.webtoon.member.domain.Member;
 import com.webtoon.util.enumerated.DayOfTheWeek;
@@ -56,6 +57,15 @@ public class DomainTest {
                 .coin(ZERO_OF_TYPE_LONG)
                 .build();
         return member;
+    }
+
+    protected static Comment getComment(Member member) {
+        Comment comment = Comment.builder()
+                .member(member)
+                .commentContent("댓글 내용입니다")
+                .build();
+
+        return comment;
     }
 
     protected static AuthorSession getAuthorSessionFromAuthor(Author author) {

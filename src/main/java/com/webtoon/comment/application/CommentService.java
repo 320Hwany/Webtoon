@@ -1,7 +1,9 @@
 package com.webtoon.comment.application;
 
 import com.webtoon.comment.domain.Comment;
-import com.webtoon.comment.dto.CommentSave;
+import com.webtoon.comment.dto.request.CommentSave;
+import com.webtoon.comment.dto.request.CommentUpdate;
+import com.webtoon.comment.dto.response.CommentResponse;
 import com.webtoon.comment.repository.CommentRepository;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.repository.ContentRepository;
@@ -21,10 +23,18 @@ public class CommentService {
     private final ContentRepository contentRepository;
 
     @Transactional
-    public Comment save(CommentSave commentSave, Long memberSessionId, Long contentId) {
+    public CommentResponse save(CommentSave commentSave, Long memberSessionId, Long contentId) {
         Member member = memberRepository.getById(memberSessionId);
         Content content = contentRepository.getById(contentId);
         Comment comment = commentSave.toEntity(member, content);
-        return commentRepository.save(comment);
+        commentRepository.save(comment);
+        return CommentResponse.getFromEntity(comment);
+    }
+
+    @Transactional
+    public CommentResponse update(Long commentId, CommentUpdate commentUpdate) {
+        Comment comment = commentRepository.getById(commentId);
+        comment.update(commentUpdate);
+        return CommentResponse.getFromEntity(comment);
     }
 }
