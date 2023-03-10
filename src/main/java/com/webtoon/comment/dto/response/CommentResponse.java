@@ -1,5 +1,6 @@
 package com.webtoon.comment.dto.response;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.webtoon.comment.domain.Comment;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,11 +18,15 @@ public class CommentResponse {
 
     private String nickname;
 
+    private long likes;
+
     @Builder
-    public CommentResponse(Long commentId, String commentContent, String nickname) {
+    @QueryProjection
+    public CommentResponse(Long commentId, String commentContent, String nickname, long likes) {
         this.commentId = commentId;
         this.commentContent = commentContent;
         this.nickname = nickname;
+        this.likes = likes;
     }
 
     public static CommentResponse getFromEntity(Comment comment) {
@@ -29,6 +34,7 @@ public class CommentResponse {
                 .commentId(comment.getId())
                 .commentContent(comment.getCommentContent())
                 .nickname(comment.getMember().getNickname())
+                .likes(comment.getLikes())
                 .build();
     }
 }

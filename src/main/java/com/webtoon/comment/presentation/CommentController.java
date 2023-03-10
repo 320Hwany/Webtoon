@@ -4,12 +4,15 @@ import com.webtoon.comment.application.CommentService;
 import com.webtoon.comment.dto.request.CommentSave;
 import com.webtoon.comment.dto.request.CommentUpdate;
 import com.webtoon.comment.dto.response.CommentResponse;
+import com.webtoon.comment.dto.response.CommentResult;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,8 +33,22 @@ public class CommentController {
     public ResponseEntity<CommentResponse> update(@LoginForMember MemberSession memberSession,
                                                   @PathVariable Long commentId,
                                                   @RequestBody CommentUpdate commentUpdate) {
-
+        commentService.validateAuthorization(commentId, memberSession.getId());
         CommentResponse commentResponse = commentService.update(commentId, commentUpdate);
         return ResponseEntity.ok(commentResponse);
+    }
+
+    @DeleteMapping("/comment/{commentId}")
+    public ResponseEntity<Void> delete(@LoginForMember MemberSession memberSession,
+                                       @PathVariable Long commentId) {
+        commentService.validateAuthorization(commentId, memberSession.getId());
+        commentService.delete(commentId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/comment/member")
+    public ResponseEntity<CommentResult> findAllForMember(@LoginForMember MemberSession memberSession) {
+        List<CommentResponse> commentResponseList = commentService.findAllForMember(memberSession.getId());
+        return ResponseEntity.ok(new CommentResult(commentResponseList));
     }
 }

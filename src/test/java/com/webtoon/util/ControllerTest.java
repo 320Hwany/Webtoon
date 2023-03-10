@@ -200,6 +200,7 @@ public class ControllerTest {
                 .content(content)
                 .member(member)
                 .commentContent("댓글 내용입니다")
+                .likes(ZERO_OF_TYPE_LONG)
                 .build();
 
         return commentRepository.save(comment);

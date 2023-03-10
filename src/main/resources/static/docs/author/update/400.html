@@ -477,13 +477,13 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
 Content-Type: application/json
-Content-Length: 248
+Content-Length: 271
 
 {
   "statusCode" : "400",
   "message" : "잘못된 요청입니다",
   "validation" : {
-    "password" : "비밀번호를 입력해주세요",
+    "password" : "영문/한글/숫자 1~20자 이내로 작성해주세요",
     "nickname" : "닉네임을 입력해주세요",
     "email" : "이메일을 입력해주세요"
   }

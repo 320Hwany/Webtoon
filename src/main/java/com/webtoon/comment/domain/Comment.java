@@ -49,4 +49,8 @@ public class Comment {
     public void update(CommentUpdate commentUpdate) {
         this.commentContent = commentUpdate.getCommentContent();
     }
+
+    public Long getMemberId() {
+        return member.getId();
+    }
 }

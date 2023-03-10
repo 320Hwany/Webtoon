@@ -7,6 +7,7 @@ public abstract class ForbiddenException extends RuntimeException {
 
     private final String statusCode = "403";
     private String message;
+
     public ForbiddenException(String message) {
         this.message = message;
     }
