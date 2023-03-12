@@ -2,9 +2,11 @@ package com.webtoon.member.exception;
 
 import com.webtoon.global.error.UnauthorizedException;
 
+import static com.webtoon.util.enumerated.ErrorMessage.*;
+
 public class MemberUnauthorizedException extends UnauthorizedException {
 
-    private static final String MESSAGE = "로그인 후 이용해주세요";
+    private static final String MESSAGE = MEMBER_UNAUTHORIZED.getValue();
 
     public MemberUnauthorizedException() {
         super(MESSAGE);

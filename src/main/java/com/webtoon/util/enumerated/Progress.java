@@ -1,7 +1,11 @@
 package com.webtoon.util.enumerated;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public enum Progress implements EnumModel {
+@Getter
+@AllArgsConstructor
+public enum Progress {
 
     SERIALIZATION("SERIALIZATION"),
     ONBREAK("ONBREAK"),
@@ -9,15 +13,6 @@ public enum Progress implements EnumModel {
     NONE("NONE");
 
     private String value;
-
-    Progress(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
 
     public static boolean validateValid(String inputProgress) {
         Progress[] progressList = values();

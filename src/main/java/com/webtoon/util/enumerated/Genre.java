@@ -1,6 +1,11 @@
 package com.webtoon.util.enumerated;
 
-public enum Genre implements EnumModel {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public enum Genre {
 
     COMEDY("COMEDY"),
     ROMANCE("ROMANCE"),
@@ -11,15 +16,6 @@ public enum Genre implements EnumModel {
     NONE("NONE");
 
     private String value;
-
-    Genre(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
 
     public static boolean validateValid(String inputGenre) {
         Genre[] genreList = values();

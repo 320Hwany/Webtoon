@@ -2,10 +2,12 @@ package com.webtoon.global.error;
 
 import lombok.Getter;
 
+import static com.webtoon.util.constant.Constant.*;
+
 @Getter
 public abstract class ForbiddenException extends RuntimeException {
 
-    private final String statusCode = "403";
+    private final String statusCode = FORBIDDEN;
     private String message;
 
     public ForbiddenException(String message) {

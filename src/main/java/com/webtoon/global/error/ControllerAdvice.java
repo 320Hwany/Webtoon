@@ -4,33 +4,32 @@ import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.contentImgInfo.exception.GetImgException;
 import com.webtoon.contentImgInfo.exception.ImgUploadException;
 import com.webtoon.member.exception.LackOfCoinException;
+import com.webtoon.util.constant.Constant;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
-import static org.springframework.http.HttpStatus.*;
+import static com.webtoon.util.enumerated.ErrorMessage.VALID_BAD_REQUEST;
 
 @RestControllerAdvice
 public class ControllerAdvice {
-    
-    // todo 에러 메세지 하드 코딩 수정
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
-                .statusCode("400")
-                .message("잘못된 요청입니다")
+                .statusCode(Constant.BAD_REQUEST)
+                .message(VALID_BAD_REQUEST.getValue())
                 .build();
 
         for (FieldError fieldError : e.getFieldErrors()) {
             errorResponse.addValidation(fieldError);
         }
 
-        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(NotMatchException.class)
@@ -40,7 +39,7 @@ public class ControllerAdvice {
                 .message(e.getMessage())
                 .build();
 
-        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(DuplicationException.class)
@@ -50,7 +49,7 @@ public class ControllerAdvice {
                 .message(e.getMessage())
                 .build();
 
-        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -60,7 +59,7 @@ public class ControllerAdvice {
                 .message(e.getMessage())
                 .build();
 
-        return ResponseEntity.status(NOT_FOUND).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
@@ -70,7 +69,7 @@ public class ControllerAdvice {
                 .message(e.getMessage())
                 .build();
 
-        return ResponseEntity.status(UNAUTHORIZED).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
     @ExceptionHandler(ForbiddenException.class)
@@ -80,7 +79,7 @@ public class ControllerAdvice {
                 .message(e.getMessage())
                 .build();
 
-        return ResponseEntity.status(FORBIDDEN).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }
 
     @ExceptionHandler(EnumTypeValidException.class)
@@ -91,7 +90,7 @@ public class ControllerAdvice {
                 .build();
 
         errorResponse.addValidation(e);
-        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(LackOfCoinException.class)
@@ -101,7 +100,7 @@ public class ControllerAdvice {
                 .message(e.getMessage())
                 .build();
 
-        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(ImgUploadException.class)
@@ -111,7 +110,7 @@ public class ControllerAdvice {
                 .message(e.getMessage())
                 .build();
 
-        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(GetImgException.class)
@@ -121,6 +120,6 @@ public class ControllerAdvice {
                 .message(e.getMessage())
                 .build();
 
-        return ResponseEntity.status(BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }

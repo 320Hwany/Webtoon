@@ -11,6 +11,8 @@ import com.webtoon.author.application.AuthorService;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

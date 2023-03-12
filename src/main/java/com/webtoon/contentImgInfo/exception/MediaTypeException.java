@@ -2,11 +2,14 @@ package com.webtoon.contentImgInfo.exception;
 
 import lombok.Getter;
 
+import static com.webtoon.util.constant.Constant.BAD_REQUEST;
+import static com.webtoon.util.enumerated.ErrorMessage.*;
+
 @Getter
 public class MediaTypeException extends RuntimeException {
 
-    private final String statusCode = "400";
-    private static final String MESSAGE = "MediaType을 알 수 없습니다";
+    private final String statusCode = BAD_REQUEST;
+    private static final String MESSAGE = MEDIA_TYPE_BAD_REQUEST.getValue();
 
     public MediaTypeException() {
         super(MESSAGE);

@@ -5,24 +5,27 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.webtoon.util.constant.Constant.*;
+import static com.webtoon.util.enumerated.ErrorMessage.*;
+
 @Getter
 public class EnumTypeValidException extends RuntimeException {
 
-    private final String statusCode = "400";
-    private static final String MESSAGE = "잘못된 요청입니다";
+    private final String statusCode = BAD_REQUEST;
+    private static final String MESSAGE = ENUM_TYPE_VALIDATION.getValue();
 
     private Map<String, String> validation = new HashMap<>();
 
     public EnumTypeValidException(Boolean isDayValid, Boolean isProgressValid, Boolean isGenreValid) {
         super(MESSAGE);
-        if (isDayValid == false) {
-            validation.put("dayOfTheWeek", "요일을 잘못 입력하였습니다");
+        if (!isDayValid) {
+            validation.put(DAY_OF_THE_WEEk, DAY_OF_THE_WEEK_BAD_REQUEST.getValue());
         }
-        if (isProgressValid == false) {
-            validation.put("Progress", "현재 진행 상황을 잘못 입력하였습니다");
+        if (!isProgressValid) {
+            validation.put(PROGRESS, PROGRESS_BAD_REQUEST.getValue());
         }
-        if (isGenreValid == false) {
-            validation.put("Genre", "장르를 잘못 입력하였습니다");
+        if (!isGenreValid) {
+            validation.put(GENRE, GENRE_BAD_REQUEST.getValue());
         }
     }
 }

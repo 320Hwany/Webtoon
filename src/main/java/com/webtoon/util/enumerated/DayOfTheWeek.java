@@ -2,9 +2,11 @@ package com.webtoon.util.enumerated;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
-public enum DayOfTheWeek implements EnumModel {
+public enum DayOfTheWeek {
 
     MON("MON"),
     TUE("TUE"),
@@ -16,11 +18,6 @@ public enum DayOfTheWeek implements EnumModel {
     NONE("NONE");
 
     private String value;
-
-    @Override
-    public String getValue() {
-        return value;
-    }
 
     public static boolean validateValid(String inputDayOfWeek) {
         DayOfTheWeek[] DayList = values();
