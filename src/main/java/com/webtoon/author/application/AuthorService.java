@@ -32,9 +32,10 @@ public class AuthorService {
 
 
     @Transactional
-    public void signupSet(AuthorSignup authorSignup) {
+    public void signup(AuthorSignup authorSignup) {
         checkDuplication(authorSignup);
-        signup(authorSignup);
+        Author author = authorSignup.toEntity(passwordEncoder);
+        authorRepository.save(author);
     }
 
     public void checkDuplication(AuthorSignup authorSignup) {
@@ -46,13 +47,7 @@ public class AuthorService {
     }
 
     @Transactional
-    public void signup(AuthorSignup authorSignup) {
-        Author author = authorSignup.toEntity(passwordEncoder);
-        authorRepository.save(author);
-    }
-
-    @Transactional
-    public AuthorResponse loginSet(AuthorLogin authorLogin, HttpServletRequest httpServletRequest) {
+    public AuthorResponse login(AuthorLogin authorLogin, HttpServletRequest httpServletRequest) {
         AuthorSession authorSession = makeAuthorSession(authorLogin);
         makeSessionForAuthorSession(authorSession, httpServletRequest);
         return AuthorResponse.getFromAuthorSession(authorSession);
@@ -73,7 +68,7 @@ public class AuthorService {
     }
 
     @Transactional
-    public AuthorResponse updateSet(Long authorId, AuthorUpdate authorUpdate) {
+    public AuthorResponse update(Long authorId, AuthorUpdate authorUpdate) {
         Author author = authorRepository.getById(authorId);
         author.update(authorUpdate, passwordEncoder);
         AuthorResponse authorResponse = AuthorResponse.getFromAuthor(author);
@@ -81,7 +76,7 @@ public class AuthorService {
     }
 
     @Transactional
-    public void deleteSet(AuthorSession authorSession, HttpServletRequest httpServletRequest) {
+    public void delete(AuthorSession authorSession, HttpServletRequest httpServletRequest) {
         Author author = authorRepository.getById(authorSession.getId());
         authorRepository.delete(author);
         invalidateSession(authorSession, httpServletRequest);
@@ -92,7 +87,8 @@ public class AuthorService {
     }
 
     public List<AuthorCartoonResponse> findAllByNicknameContains(CartoonSearchDto cartoonSearchDto) {
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        CartoonSearchDto cartoonEnumValidField = cartoonSearchDto.toCartoonEnumField();
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonEnumValidField);
         List<Author> authorList = authorRepository.findAllByNicknameContains(cartoonSearch);
         return authorList.stream()
                 .map(AuthorCartoonResponse::getFromAuthor)

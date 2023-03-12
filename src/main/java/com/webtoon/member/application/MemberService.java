@@ -49,7 +49,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void deleteSet(MemberSession memberSession) {
+    public void delete(MemberSession memberSession) {
         Member member = memberRepository.getById(memberSession.getId());
         memberRepository.delete(member);
     }

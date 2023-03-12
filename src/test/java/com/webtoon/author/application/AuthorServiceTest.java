@@ -32,7 +32,7 @@ class AuthorServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("중복 검증, 회원 가입 트랜잭션 세트를 진행합니다")
-    void signupSet() {
+    void signup() {
         // given
         AuthorSignup authorSignup = AuthorSignup.builder()
                 .nickname("작가 닉네임")
@@ -41,7 +41,7 @@ class AuthorServiceTest extends ServiceTest {
                 .build();
 
         // when
-        authorService.signupSet(authorSignup);
+        authorService.signup(authorSignup);
 
         // then
         assertThat(authorRepository.count()).isEqualTo(1L);
@@ -61,7 +61,7 @@ class AuthorServiceTest extends ServiceTest {
         MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
 
         // when
-        AuthorResponse authorResponse = authorService.loginSet(authorLogin, httpServletRequest);
+        AuthorResponse authorResponse = authorService.login(authorLogin, httpServletRequest);
 
         // then
         assertThat(authorResponse.getNickname()).isEqualTo(author.getNickname());
@@ -81,7 +81,7 @@ class AuthorServiceTest extends ServiceTest {
                 .build();
 
         // when
-        AuthorResponse authorResponse = authorService.updateSet(author.getId(), authorUpdate);
+        AuthorResponse authorResponse = authorService.update(author.getId(), authorUpdate);
 
         // then
         assertThat(authorResponse.getNickname()).isEqualTo("수정 닉네임");
@@ -100,12 +100,12 @@ class AuthorServiceTest extends ServiceTest {
 
         // expected
         Assertions.assertThrows(AuthorNotFoundException.class,
-                () -> authorService.updateSet(9999L, authorUpdate));
+                () -> authorService.update(9999L, authorUpdate));
     }
 
     @Test
     @DisplayName("AuthorId로 작가 회원을 찾고 작가를 삭제합니다")
-    void deleteSet200() {
+    void delete200() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -114,7 +114,7 @@ class AuthorServiceTest extends ServiceTest {
         MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
 
         // when
-        authorService.deleteSet(authorSession, httpServletRequest);
+        authorService.delete(authorSession, httpServletRequest);
 
         // then
         assertThat(authorRepository.count()).isEqualTo(0);
@@ -123,7 +123,7 @@ class AuthorServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("AuthorId와 일치하는 작가가 없다면 예외가 발생합니다")
-    void deleteSet404() {
+    void delete404() {
         // given
         AuthorSession authorSession = AuthorSession.builder()
                 .id(9999L)
@@ -131,7 +131,7 @@ class AuthorServiceTest extends ServiceTest {
 
         // expected
         Assertions.assertThrows(AuthorNotFoundException.class,
-                () -> authorService.deleteSet(authorSession, new MockHttpServletRequest()));
+                () -> authorService.delete(authorSession, new MockHttpServletRequest()));
     }
 
     @Test
@@ -163,23 +163,6 @@ class AuthorServiceTest extends ServiceTest {
         // expected
         assertThrows(AuthorDuplicationException.class,
                 () -> authorService.checkDuplication(authorSignup));
-    }
-
-    @Test
-    @DisplayName("회원가입이 성공합니다")
-    void signup() {
-        // given
-        AuthorSignup authorSignup = AuthorSignup.builder()
-                .nickname("작가 닉네임")
-                .email("yhwjd99@gmail.com")
-                .password("1234")
-                .build();
-
-        // when
-        authorService.signup(authorSignup);
-
-        // then
-        assertThat(authorRepository.count()).isEqualTo(1L);
     }
 
     @Test

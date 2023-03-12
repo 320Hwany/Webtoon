@@ -94,7 +94,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("MemberSession에 맞는 Member가 있다면 Member를 삭제합니다 - 성공")
-    void deleteSet200() {
+    void delete200() {
         // given
         Member member = saveMemberInRepository();
 
@@ -106,7 +106,7 @@ class MemberServiceTest extends ServiceTest {
                 .build();
 
         // when
-        memberService.deleteSet(memberSession);
+        memberService.delete(memberSession);
 
         // then
         assertThat(memberRepository.count()).isEqualTo(0);
@@ -114,7 +114,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("MemberSession에 맞는 Member가 없다면 Member 삭제를 할 수 없습니다 - 실패")
-    void deleteSet404() {
+    void delete404() {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
@@ -125,7 +125,7 @@ class MemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(MemberNotFoundException.class,
-                () -> memberService.deleteSet(memberSession));
+                () -> memberService.delete(memberSession));
     }
 
     @Test

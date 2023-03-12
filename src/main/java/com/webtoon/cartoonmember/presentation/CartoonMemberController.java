@@ -34,7 +34,7 @@ public class CartoonMemberController {
 
         CartoonMemberSave cartoonMemberSave =
                 CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
-        cartoonMemberService.saveSet(cartoonMemberSave);
+        cartoonMemberService.save(cartoonMemberSave);
         return feign.findContentList(cartoonId, Constant.firstPage);
     }
 
@@ -44,7 +44,7 @@ public class CartoonMemberController {
 
         CartoonMemberThumbsUp cartoonMemberThumbsUp =
                 CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
-        cartoonMemberService.thumbsUpSet(cartoonMemberThumbsUp);
+        cartoonMemberService.thumbsUp(cartoonMemberThumbsUp);
         return ResponseEntity.ok().build();
     }
 
@@ -68,8 +68,7 @@ public class CartoonMemberController {
     public ResponseEntity<CartoonListResult> findAllByMemberAge(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
 
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearch);
+        List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonCoreList.size(), cartoonCoreList));
     }
 
@@ -80,7 +79,7 @@ public class CartoonMemberController {
 
         CartoonMemberRating cartoonMemberRating =
                 CartoonMemberRating.getFromIdAndRating(cartoonId, memberSession.getId(), rating);
-        cartoonMemberService.ratingSet(cartoonMemberRating);
+        cartoonMemberService.rating(cartoonMemberRating);
         return ResponseEntity.ok().build();
     }
 }

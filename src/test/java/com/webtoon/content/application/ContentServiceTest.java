@@ -1,6 +1,7 @@
 package com.webtoon.content.application;
 
 import com.webtoon.author.domain.Author;
+import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.content.domain.Content;
@@ -68,6 +69,7 @@ class ContentServiceTest extends ServiceTest {
     void saveSet200() {
         // given
         Author author = saveAuthorInRepository();
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
         Cartoon cartoon = saveCartoonInRepository(author);
 
         ContentSave contentSave = ContentSave.builder()
@@ -77,7 +79,7 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         // when
-        contentService.saveSet(cartoon.getId(), contentSave);
+        contentService.saveSet(authorSession, cartoon.getId(), contentSave);
 
         // then
         assertThat(contentRepository.count()).isEqualTo(1);
@@ -87,6 +89,9 @@ class ContentServiceTest extends ServiceTest {
     @DisplayName("cartoonId에 해당하는 만화가 없다면 예외가 발생합니다")
     void saveSet404() {
         // given
+        Author author = saveAuthorInRepository();
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
+
         ContentSave contentSave = ContentSave.builder()
                 .subTitle("부제입니다")
                 .episode(20)
@@ -95,7 +100,7 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         Assertions.assertThrows(CartoonNotFoundException.class,
-                () -> contentService.saveSet(9999L, contentSave));
+                () -> contentService.saveSet(authorSession,9999L, contentSave));
     }
 
     @Test
@@ -238,6 +243,7 @@ class ContentServiceTest extends ServiceTest {
     void updateSet200() {
         // given
         Author author = saveAuthorInRepository();
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
         Cartoon cartoon = saveCartoonInRepository(author);
         Content content = saveContentInRepository(cartoon);
 
@@ -254,7 +260,7 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         // when
-        contentService.updateSet(contentUpdateSet);
+        contentService.updateSet(authorSession, cartoon.getId(), contentUpdateSet);
 
         // then
         Content findContent = contentRepository.getById(content.getId());
@@ -268,6 +274,10 @@ class ContentServiceTest extends ServiceTest {
     @DisplayName("입력한 정보에 맞는 컨텐츠가 없다면 예외가 발생합니다")
     void updateSet404() {
         // given
+        Author author = saveAuthorInRepository();
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
+        Cartoon cartoon = saveCartoonInRepository(author);
+
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
                 .episode(30)
@@ -282,6 +292,6 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         assertThrows(ContentNotFoundException.class,
-                () -> contentService.updateSet(contentUpdateSet));
+                () -> contentService.updateSet(authorSession, cartoon.getId(), contentUpdateSet));
     }
 }

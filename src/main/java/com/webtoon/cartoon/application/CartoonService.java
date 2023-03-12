@@ -5,10 +5,7 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.repository.AuthorRepository;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.cartoon.dto.request.CartoonSave;
-import com.webtoon.cartoon.dto.request.CartoonSearchDto;
-import com.webtoon.cartoon.dto.request.CartoonSearchTitle;
-import com.webtoon.cartoon.dto.request.CartoonUpdate;
+import com.webtoon.cartoon.dto.request.*;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.cartoon.repository.CartoonRepository;
@@ -28,7 +25,9 @@ public class CartoonService {
     private final AuthorRepository authorRepository;
 
     @Transactional
-    public void saveSet(CartoonSave cartoonSave, AuthorSession authorSession) {
+    public void save(CartoonSave cartoonSave, AuthorSession authorSession) {
+        CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonSave(cartoonSave);
+        Cartoon.validateEnumTypeValid(cartoonEnumField);
         Author author = authorRepository.getById(authorSession.getId());
         Cartoon cartoon = cartoonSave.toEntity(author);
         cartoonRepository.save(cartoon);
@@ -40,21 +39,18 @@ public class CartoonService {
     }
 
     public List<CartoonResponse> findAllByCartoonCondOrderByLikesSet(CartoonSearchDto cartoonSearchDto) {
-
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        CartoonSearchDto cartoonEnumValidField = cartoonSearchDto.toCartoonEnumField();
+        cartoonEnumValidField.validateEnumTypeValid();
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonEnumValidField);
         List<Cartoon> cartoonList = cartoonRepository.findAllByCartoonCondOrderByLikes(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
     public List<CartoonResponse> findAllByCartoonCondOrderByRatingSet(CartoonSearchDto cartoonSearchDto) {
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
+        CartoonSearchDto cartoonEnumValidField = cartoonSearchDto.toCartoonEnumField();
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonEnumValidField);
         List<Cartoon> cartoonList = cartoonRepository.findAllByCartoonCondOrderByRating(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);
-    }
-
-    public void validateAuthorityForCartoon(AuthorSession authorSession, Long cartoonId) {
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
-        cartoon.validateAuthorityForCartoon(authorSession);
     }
 
     public void validateGenreValid(String genre) {
@@ -64,15 +60,23 @@ public class CartoonService {
     }
 
     @Transactional
-    public void updateSet(CartoonUpdate cartoonUpdate, Long cartoonId) {
+    public void update(AuthorSession authorSession, CartoonUpdate cartoonUpdate, Long cartoonId) {
+        CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonUpdate(cartoonUpdate);
+        Cartoon.validateEnumTypeValid(cartoonEnumField);
         Cartoon cartoon = cartoonRepository.getById(cartoonId);
+        validateAuthorityForCartoon(authorSession, cartoon);
         cartoon.update(cartoonUpdate);
     }
 
     @Transactional
-    public void deleteSet(Long cartoonId) {
+    public void delete(AuthorSession authorSession, Long cartoonId) {
         Cartoon cartoon = cartoonRepository.getById(cartoonId);
+        validateAuthorityForCartoon(authorSession, cartoon);
         cartoonRepository.delete(cartoon);
+    }
+
+    public void validateAuthorityForCartoon(AuthorSession authorSession, Cartoon cartoon) {
+        cartoon.validateAuthorityForCartoon(authorSession);
     }
 
     @Transactional

@@ -2,7 +2,8 @@ package com.webtoon.comment.application;
 
 import com.webtoon.comment.domain.Comment;
 import com.webtoon.comment.dto.request.CommentSave;
-import com.webtoon.comment.dto.request.CommentUpdate;
+import com.webtoon.comment.dto.request.CommentSaveSet;
+import com.webtoon.comment.dto.request.CommentUpdateSet;
 import com.webtoon.comment.dto.response.CommentResponse;
 import com.webtoon.comment.exception.CommentForbiddenException;
 import com.webtoon.comment.repository.CommentRepository;
@@ -27,19 +28,28 @@ public class CommentService {
     private final ContentRepository contentRepository;
 
     @Transactional
-    public CommentResponse save(CommentSave commentSave, Long memberSessionId, Long contentId) {
-        Member member = memberRepository.getById(memberSessionId);
-        Content content = contentRepository.getById(contentId);
+    public CommentResponse save(CommentSaveSet commentSaveSet) {
+        Member member = memberRepository.getById(commentSaveSet.getMemberSessionId());
+        Content content = contentRepository.getById(commentSaveSet.getContentId());
+        CommentSave commentSave = commentSaveSet.getCommentSave();
         Comment comment = commentSave.toEntity(member, content);
         commentRepository.save(comment);
         return CommentResponse.getFromEntity(comment);
     }
 
     @Transactional
-    public CommentResponse update(Long commentId, CommentUpdate commentUpdate) {
-        Comment comment = commentRepository.getById(commentId);
-        comment.update(commentUpdate);
+    public CommentResponse update(CommentUpdateSet commentUpdateSet) {
+        validateAuthorization(commentUpdateSet.getCommentId(), commentUpdateSet.getMemberSessionId());
+        Comment comment = commentRepository.getById(commentUpdateSet.getCommentId());
+        comment.update(commentUpdateSet.getCommentUpdate());
         return CommentResponse.getFromEntity(comment);
+    }
+
+    @Transactional
+    public void delete(Long commentId, Long memberSessionId) {
+        validateAuthorization(commentId, memberSessionId);
+        Comment comment = commentRepository.getById(commentId);
+        commentRepository.delete(comment);
     }
 
     public void validateAuthorization(Long commentId, Long memberSessionId) {
@@ -48,12 +58,6 @@ public class CommentService {
         if (comment.getMemberId().longValue() != member.getId().longValue()) {
             throw new CommentForbiddenException();
         }
-    }
-
-    @Transactional
-    public void delete(Long commentId) {
-        Comment comment = commentRepository.getById(commentId);
-        commentRepository.delete(comment);
     }
 
     public List<CommentResponse> findAllForMember(Long memberId, Pageable pageable) {

@@ -3,6 +3,7 @@ package com.webtoon.cartoonmember.application;
 import com.webtoon.author.domain.Author;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.cartoonmember.domain.CartoonMember;
@@ -43,7 +44,7 @@ class CartoonMemberServiceTest extends ServiceTest {
                 .build();
 
         // when
-        cartoonMemberService.saveSet(cartoonMemberSave);
+        cartoonMemberService.save(cartoonMemberSave);
 
         // then
         assertThat(cartoonMemberRepository.count()).isEqualTo(1);
@@ -71,7 +72,7 @@ class CartoonMemberServiceTest extends ServiceTest {
         cartoonMemberRepository.save(cartoonMember);
 
         // when
-        cartoonMemberService.saveSet(cartoonMemberSave);
+        cartoonMemberService.save(cartoonMemberSave);
 
         // then
         assertThat(cartoonMemberRepository.count()).isEqualTo(1);
@@ -99,10 +100,10 @@ class CartoonMemberServiceTest extends ServiceTest {
         // expected
         assertThrows(CartoonNotFoundException.class,
                 () -> cartoonMemberService
-                        .saveSet(cartoonMemberSaveWithoutCartoon));
+                        .save(cartoonMemberSaveWithoutCartoon));
         assertThrows(MemberNotFoundException.class,
                 () -> cartoonMemberService
-                        .saveSet(cartoonMemberSaveWithoutMember));
+                        .save(cartoonMemberSaveWithoutMember));
     }
 
     @Test
@@ -117,7 +118,7 @@ class CartoonMemberServiceTest extends ServiceTest {
                 CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(cartoon.getId(), member.getId());
 
         // when
-        cartoonMemberService.thumbsUpSet(cartoonMemberThumbsUp);
+        cartoonMemberService.thumbsUp(cartoonMemberThumbsUp);
 
         // then
         Cartoon findCartoon = cartoonRepository.getById(cartoon.getId());
@@ -145,11 +146,11 @@ class CartoonMemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.thumbsUpSet(cartoonMemberWithoutCartoon));
+                () -> cartoonMemberService.thumbsUp(cartoonMemberWithoutCartoon));
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.thumbsUpSet(cartoonMemberWithoutMember));
+                () -> cartoonMemberService.thumbsUp(cartoonMemberWithoutMember));
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.thumbsUpSet(cartoonMemberWithoutBoth));
+                () -> cartoonMemberService.thumbsUp(cartoonMemberWithoutBoth));
     }
 
     @Test
@@ -170,7 +171,7 @@ class CartoonMemberServiceTest extends ServiceTest {
                 CartoonMemberRating.getFromIdAndRating(cartoon.getId(), member.getId(), 9.8);
 
         // when
-        cartoonMemberService.ratingSet(cartoonMemberRating);
+        cartoonMemberService.rating(cartoonMemberRating);
 
         // then
         Cartoon findCartoon = cartoonRepository.getById(cartoon.getId());
@@ -194,11 +195,11 @@ class CartoonMemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.ratingSet(cartoonMemberWithoutCartoon));
+                () -> cartoonMemberService.rating(cartoonMemberWithoutCartoon));
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.ratingSet(cartoonMemberWithoutMember));
+                () -> cartoonMemberService.rating(cartoonMemberWithoutMember));
         assertThrows(CartoonMemberNotFoundException.class,
-                () -> cartoonMemberService.ratingSet(cartoonMemberWithoutBoth));
+                () -> cartoonMemberService.rating(cartoonMemberWithoutBoth));
     }
 
     @Test
@@ -252,7 +253,7 @@ class CartoonMemberServiceTest extends ServiceTest {
                 .rated(true)
                 .build();
 
-        CartoonSearch cartoonSearch = CartoonSearch.builder()
+        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
                 .page(0)
                 .ageRange(20)
                 .build();
@@ -260,7 +261,7 @@ class CartoonMemberServiceTest extends ServiceTest {
         cartoonMemberRepository.save(cartoonMember);
 
         // when
-        List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearch);
+        List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearchDto);
 
         // then
         assertThat(cartoonCoreList.size()).isEqualTo(1);

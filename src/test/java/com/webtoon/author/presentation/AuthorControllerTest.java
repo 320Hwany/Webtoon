@@ -124,12 +124,10 @@ class AuthorControllerTest extends ControllerTest {
                 .genre("NONE")
                 .build();
 
-        String cartoonSearchDtoJson = objectMapper.writeValueAsString(cartoonSearchDto);
 
         // expected
-        mockMvc.perform(post("/author/nickname")
-                        .contentType(APPLICATION_JSON)
-                        .content(cartoonSearchDtoJson))
+        mockMvc.perform(get("/author/nickname")
+                        .param("nickname", "작가 이름"))
                 .andExpect(status().isOk())
                 .andDo(document("author/nickname/200"));
     }

@@ -1,5 +1,6 @@
 package com.webtoon.content.application;
 
+import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.content.domain.Content;
@@ -31,8 +32,9 @@ public class ContentService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void saveSet(Long cartoonId, ContentSave contentSave) {
+    public void saveSet(AuthorSession authorSession, Long cartoonId, ContentSave contentSave) {
         Cartoon cartoon = cartoonRepository.getById(cartoonId);
+        cartoon.validateAuthorityForCartoon(authorSession);
         Content content = contentSave.toEntity(cartoon);
         contentRepository.save(content);
     }
@@ -54,7 +56,9 @@ public class ContentService {
     }
 
     @Transactional
-    public void updateSet(ContentUpdateSet contentUpdateSet) {
+    public void updateSet(AuthorSession authorSession, Long cartoonId, ContentUpdateSet contentUpdateSet) {
+        Cartoon cartoon = cartoonRepository.getById(cartoonId);
+        cartoon.validateAuthorityForCartoon(authorSession);
         Content content =
                 contentRepository.findByCartoonIdAndEpisode(contentUpdateSet.getCartoonId(),
                         contentUpdateSet.getContentEpisode()).orElseThrow(ContentNotFoundException::new);

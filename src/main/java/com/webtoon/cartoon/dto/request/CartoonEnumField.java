@@ -1,10 +1,5 @@
 package com.webtoon.cartoon.dto.request;
 
-import com.webtoon.cartoon.exception.EnumTypeValidException;
-import com.webtoon.util.enumerated.DayOfTheWeek;
-import com.webtoon.util.enumerated.Genre;
-import com.webtoon.util.enumerated.Progress;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

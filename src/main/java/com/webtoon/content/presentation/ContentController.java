@@ -33,8 +33,7 @@ public class ContentController {
     public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
                                      @PathVariable Long cartoonId,
                                      @RequestBody @Valid ContentSave contentSave) {
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
-        contentService.saveSet(cartoonId, contentSave);
+        contentService.saveSet(authorSession, cartoonId, contentSave);
         return ResponseEntity.ok().build();
     }
 
@@ -60,10 +59,9 @@ public class ContentController {
                                        @PathVariable Long cartoonId, @PathVariable int contentEpisode,
                                        @RequestBody @Valid ContentUpdate contentUpdate) {
 
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);
         ContentUpdateSet contentUpdateSet =
                 ContentUpdateSet.getFromIdAndEpisode(cartoonId, contentEpisode, contentUpdate);
-        contentService.updateSet(contentUpdateSet);
+        contentService.updateSet(authorSession, cartoonId, contentUpdateSet);
         return ResponseEntity.ok().build();
     }
 }

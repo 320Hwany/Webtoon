@@ -29,19 +29,21 @@ public class AuthorController {
 
     @PostMapping("/author/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid AuthorSignup authorSignup) {
-        authorService.signupSet(authorSignup);
+        authorService.signup(authorSignup);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/author/login")
     public ResponseEntity<AuthorResponse> login(@RequestBody @Valid AuthorLogin authorLogin,
                                                 HttpServletRequest httpServletRequest) {
-        AuthorResponse authorResponse = authorService.loginSet(authorLogin, httpServletRequest);
+        AuthorResponse authorResponse = authorService.login(authorLogin, httpServletRequest);
         return ResponseEntity.ok(authorResponse);
     }
 
-    @PostMapping("/author/nickname")
-    public ResponseEntity<AuthorListResult> getAuthorListByNickname(@RequestBody CartoonSearchDto cartoonSearchDto) {
+    @GetMapping("/author/nickname")
+    public ResponseEntity<AuthorListResult> getAuthorListByNickname(
+            @ModelAttribute CartoonSearchDto cartoonSearchDto) {
+
         List<AuthorCartoonResponse> authorCartoonResponseList =
                 authorService.findAllByNicknameContains(cartoonSearchDto);
         return ResponseEntity.ok(new AuthorListResult(authorCartoonResponseList.size(), authorCartoonResponseList));
@@ -50,14 +52,14 @@ public class AuthorController {
     @PatchMapping("/author")
     public ResponseEntity<AuthorResponse> update(@LoginForAuthor AuthorSession authorSession,
                                                  @RequestBody @Valid AuthorUpdate authorUpdate) {
-        AuthorResponse authorResponse = authorService.updateSet(authorSession.getId(), authorUpdate);
+        AuthorResponse authorResponse = authorService.update(authorSession.getId(), authorUpdate);
         return ResponseEntity.ok(authorResponse);
     }
 
     @DeleteMapping("/author")
     public ResponseEntity<Void> delete(@LoginForAuthor AuthorSession authorSession,
                                        HttpServletRequest httpServletRequest) {
-        authorService.deleteSet(authorSession, httpServletRequest);
+        authorService.delete(authorSession, httpServletRequest);
         return ResponseEntity.ok().build();
     }
 

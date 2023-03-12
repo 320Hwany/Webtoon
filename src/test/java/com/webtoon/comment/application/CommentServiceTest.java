@@ -2,7 +2,9 @@ package com.webtoon.comment.application;
 
 import com.webtoon.comment.domain.Comment;
 import com.webtoon.comment.dto.request.CommentSave;
+import com.webtoon.comment.dto.request.CommentSaveSet;
 import com.webtoon.comment.dto.request.CommentUpdate;
+import com.webtoon.comment.dto.request.CommentUpdateSet;
 import com.webtoon.comment.dto.response.CommentResponse;
 import com.webtoon.comment.repository.CommentRepository;
 import com.webtoon.content.domain.Content;
@@ -53,13 +55,19 @@ class CommentServiceTest {
                 .subTitle("부제")
                 .build();
 
+        CommentSaveSet commentSaveSet = CommentSaveSet.builder()
+                .commentSave(commentSave)
+                .memberSessionId(ANY_ID)
+                .contentId(ANY_ID)
+                .build();
+
         // stub 1
         when(memberRepository.getById(any())).thenReturn(member);
         when(contentRepository.getById(any())).thenReturn(content);
         when(commentRepository.save(any())).thenReturn(commentSave.toEntity(member, content));
 
         // when
-        CommentResponse commentResponse = commentService.save(commentSave, ANY_ID, ANY_ID);
+        CommentResponse commentResponse = commentService.save(commentSaveSet);
 
         // then
         assertThat(commentResponse.getCommentContent()).isEqualTo("댓글 내용입니다");
@@ -71,6 +79,7 @@ class CommentServiceTest {
     void update() {
         // given
         Member member = Member.builder()
+                .id(1L)
                 .nickname("회원 닉네임")
                 .build();
 
@@ -83,11 +92,16 @@ class CommentServiceTest {
                 .commentContent("수정 댓글 내용입니다")
                 .build();
 
+        CommentUpdateSet commentUpdateSet = CommentUpdateSet.getFromParameter(1L, ANY_ID, commentUpdate);
+
         // stub 1
         when(commentRepository.getById(any())).thenReturn(comment);
 
+        // stub 2
+        when(memberRepository.getById(any())).thenReturn(member);
+
         // when
-        CommentResponse commentResponse = commentService.update(ANY_ID, commentUpdate);
+        CommentResponse commentResponse = commentService.update(commentUpdateSet);
 
         // then
         assertThat(commentResponse.getCommentContent()).isEqualTo("수정 댓글 내용입니다");

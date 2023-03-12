@@ -2,7 +2,9 @@ package com.webtoon.comment.presentation;
 
 import com.webtoon.comment.application.CommentService;
 import com.webtoon.comment.dto.request.CommentSave;
+import com.webtoon.comment.dto.request.CommentSaveSet;
 import com.webtoon.comment.dto.request.CommentUpdate;
+import com.webtoon.comment.dto.request.CommentUpdateSet;
 import com.webtoon.comment.dto.response.CommentResponse;
 import com.webtoon.comment.dto.response.CommentResult;
 import com.webtoon.member.domain.MemberSession;
@@ -25,8 +27,8 @@ public class CommentController {
     public ResponseEntity<Void> save(@LoginForMember MemberSession memberSession,
                                      @PathVariable Long contentId,
                                      @RequestBody CommentSave commentSave) {
-
-        commentService.save(commentSave, memberSession.getId(), contentId);
+        CommentSaveSet commentSaveSet = CommentSaveSet.getFromParameter(commentSave, memberSession.getId(), contentId);
+        commentService.save(commentSaveSet);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -35,16 +37,16 @@ public class CommentController {
                                                   @PathVariable Long commentId,
                                                   @RequestBody CommentUpdate commentUpdate) {
 
-        commentService.validateAuthorization(commentId, memberSession.getId());
-        CommentResponse commentResponse = commentService.update(commentId, commentUpdate);
+        CommentUpdateSet commentUpdateSet =
+                CommentUpdateSet.getFromParameter(memberSession.getId(), commentId, commentUpdate);
+        CommentResponse commentResponse = commentService.update(commentUpdateSet);
         return ResponseEntity.ok(commentResponse);
     }
 
     @DeleteMapping("/comment/{commentId}")
     public ResponseEntity<Void> delete(@LoginForMember MemberSession memberSession,
                                        @PathVariable Long commentId) {
-        commentService.validateAuthorization(commentId, memberSession.getId());
-        commentService.delete(commentId);
+        commentService.delete(commentId, memberSession.getId());
         return ResponseEntity.ok().build();
     }
 

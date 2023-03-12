@@ -49,7 +49,7 @@ class CartoonServiceTest extends ServiceTest {
                 .build();
 
         // when
-        cartoonService.saveSet(cartoonSave, authorSession);
+        cartoonService.save(cartoonSave, authorSession);
 
         // then
         assertThat(cartoonRepository.count()).isEqualTo(1L);
@@ -75,7 +75,7 @@ class CartoonServiceTest extends ServiceTest {
 
         // expected
         assertThrows(AuthorNotFoundException.class,
-                () -> cartoonService.saveSet(cartoonSave, authorSession));
+                () -> cartoonService.save(cartoonSave, authorSession));
     }
 
     @Test
@@ -240,7 +240,7 @@ class CartoonServiceTest extends ServiceTest {
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
 
         // expected
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoon.getId());
+        cartoonService.validateAuthorityForCartoon(authorSession, cartoon);
     }
 
     @Test
@@ -258,7 +258,7 @@ class CartoonServiceTest extends ServiceTest {
 
         // expected
         assertThrows(CartoonForbiddenException.class,
-                () -> cartoonService.validateAuthorityForCartoon(anotherAuthorSession, cartoon.getId()));
+                () -> cartoonService.validateAuthorityForCartoon(anotherAuthorSession, cartoon));
     }
 
     @Test
@@ -282,6 +282,7 @@ class CartoonServiceTest extends ServiceTest {
     void updateSet200() {
         // given
         Author author = saveAuthorInRepository();
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
         Cartoon cartoon = saveCartoonInRepository(author);
 
         CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
@@ -291,7 +292,7 @@ class CartoonServiceTest extends ServiceTest {
                 .genre("ROMANCE")
                 .build();
         // when
-        cartoonService.updateSet(cartoonUpdate, cartoon.getId());
+        cartoonService.update(authorSession, cartoonUpdate, cartoon.getId());
 
         // then
         assertThat(cartoon.getTitle()).isEqualTo("수정 만화 제목");
@@ -306,6 +307,7 @@ class CartoonServiceTest extends ServiceTest {
     void updateSet404() {
         // given
         Author author = saveAuthorInRepository();
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
         Cartoon cartoon = saveCartoonInRepository(author);
 
         CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
@@ -317,18 +319,19 @@ class CartoonServiceTest extends ServiceTest {
 
         // expected
         assertThrows(CartoonNotFoundException.class,
-                () -> cartoonService.updateSet(cartoonUpdate,9999L));
+                () -> cartoonService.update(authorSession, cartoonUpdate,9999L));
     }
 
     @Test
     @DisplayName("cartoonId와 일치하는 만화가 존재하면 만화를 삭제합니다")
-    void deleteSet200() {
+    void delete200() {
         // given
         Author author = saveAuthorInRepository();
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
         Cartoon cartoon = saveCartoonInRepository(author);
 
         // when
-        cartoonService.deleteSet(cartoon.getId());
+        cartoonService.delete(authorSession, cartoon.getId());
 
         // then
         assertThat(cartoonRepository.count()).isEqualTo(0);
@@ -336,14 +339,15 @@ class CartoonServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("만화가 존재하지 않으면 예외가 발생합니다")
-    void deleteSet404() {
+    void delete404() {
         // given
         Author author = saveAuthorInRepository();
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
         Cartoon cartoon = saveCartoonInRepository(author);
 
         // expected
         assertThrows(CartoonNotFoundException.class,
-                () -> cartoonService.deleteSet(9999L));
+                () -> cartoonService.delete(authorSession,9999L));
     }
 
 

@@ -48,7 +48,7 @@ public class MemberController {
 
     @DeleteMapping("/member")
     public ResponseEntity<Void> delete(@LoginForMember MemberSession memberSession) {
-        memberService.deleteSet(memberSession);
+        memberService.delete(memberSession);
         return ResponseEntity.ok().build();
     }
 

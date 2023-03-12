@@ -2,6 +2,7 @@ package com.webtoon.cartoonmember.application;
 
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoonmember.domain.CartoonMember;
@@ -32,7 +33,7 @@ public class CartoonMemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void saveSet(CartoonMemberSave cartoonMemberSave) {
+    public void save(CartoonMemberSave cartoonMemberSave) {
         Cartoon cartoon = cartoonRepository.getById(cartoonMemberSave.getCartoonId());
         Member member = memberRepository.getById(cartoonMemberSave.getMemberId());
         CartoonMember cartoonMember = CartoonMember.getFromCartoonAndMember(cartoon, member);
@@ -42,8 +43,9 @@ public class CartoonMemberService {
         cartoonMember.updateReadDate(LocalDateTime.now());
     }
 
+
     @Transactional
-    public void thumbsUpSet(CartoonMemberThumbsUp cartoonMemberThumbsUp) {
+    public void thumbsUp(CartoonMemberThumbsUp cartoonMemberThumbsUp) {
         CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(
                         cartoonMemberThumbsUp.getCartoonId(), cartoonMemberThumbsUp.getMemberId())
                 .orElseThrow(CartoonMemberNotFoundException::new);
@@ -54,7 +56,7 @@ public class CartoonMemberService {
     }
 
     @Transactional
-    public void ratingSet(CartoonMemberRating cartoonMemberRating) {
+    public void rating(CartoonMemberRating cartoonMemberRating) {
         CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(
                         cartoonMemberRating.getCartoonId(), cartoonMemberRating.getMemberId())
                 .orElseThrow(CartoonMemberNotFoundException::new);
@@ -75,7 +77,9 @@ public class CartoonMemberService {
         return cartoonMemberRepository.findLikeListForMember(memberId);
     }
 
-    public List<CartoonCore> findAllByMemberAge(CartoonSearch cartoonSearch) {
+    public List<CartoonCore> findAllByMemberAge(CartoonSearchDto cartoonSearchDto) {
+        CartoonSearchDto cartoonEnumValidField = cartoonSearchDto.toCartoonEnumField();
+        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonEnumValidField);
         return cartoonMemberRepository.findAllByMemberAge(cartoonSearch);
     }
 
