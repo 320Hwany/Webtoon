@@ -11,6 +11,7 @@ import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +56,7 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    public List<CommentResponse> findAllForMember(Long memberId) {
-        return commentRepository.findAllForMember(memberId);
+    public List<CommentResponse> findAllForMember(Long memberId, Pageable pageable) {
+        return commentRepository.findAllForMember(memberId, pageable);
     }
 }

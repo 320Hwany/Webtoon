@@ -261,8 +261,11 @@ class CommentControllerTest extends ControllerTest {
 
         // when
         mockMvc.perform(get("/comment/member")
-                        .session(session))
+                        .session(session)
+                        .param("page", "0")
+                        .param("size","20"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.count").value(1))
                 .andExpect(jsonPath("$.commentResponse[0].commentId").value(comment.getId()))
                 .andExpect(jsonPath("$.commentResponse[0].commentContent").value(comment.getCommentContent()))
                 .andExpect(jsonPath("$.commentResponse[0].nickname").value(member.getNickname()))

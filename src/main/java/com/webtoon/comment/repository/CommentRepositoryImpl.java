@@ -8,6 +8,7 @@ import com.webtoon.comment.dto.response.QCommentResponse;
 import com.webtoon.comment.exception.CommentNotFoundException;
 import com.webtoon.member.domain.QMember;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<CommentResponse> findAllForMember(Long memberId) {
+    public List<CommentResponse> findAllForMember(Long memberId, Pageable pageable) {
         return jpaQueryFactory.select(new QCommentResponse(
                         comment.id,
                         comment.commentContent,
@@ -45,6 +46,8 @@ public class CommentRepositoryImpl implements CommentRepository {
                 .leftJoin(comment.member, member)
                 .where(member.id.eq(memberId))
                 .orderBy(comment.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 

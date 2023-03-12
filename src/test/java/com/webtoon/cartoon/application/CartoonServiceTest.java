@@ -6,6 +6,7 @@ import com.webtoon.author.exception.AuthorNotFoundException;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
+import com.webtoon.cartoon.dto.request.CartoonSearchTitle;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.exception.CartoonForbiddenException;
@@ -82,12 +83,11 @@ class CartoonServiceTest extends ServiceTest {
     void findAllByTitle200() {
         // given
         Author author = saveAuthorInRepository();
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+
+        CartoonSearchTitle cartoonSearchTitle = CartoonSearchTitle.builder()
                 .page(0)
+                .size(20)
                 .title("만화 제목")
-                .dayOfTheWeek("NONE")
-                .progress("NONE")
-                .genre("NONE")
                 .build();
 
         List<Cartoon> cartoonListKr = IntStream.range(1, 11)
@@ -110,7 +110,7 @@ class CartoonServiceTest extends ServiceTest {
         cartoonRepository.saveAll(cartoonListEn);
 
         // when
-        List<CartoonResponse> cartoonResponseList = cartoonService.findAllByTitleSet(cartoonSearchDto);
+        List<CartoonResponse> cartoonResponseList = cartoonService.findAllByTitleSet(cartoonSearchTitle);
 
         // then
         assertThat(cartoonResponseList.size()).isEqualTo(10);

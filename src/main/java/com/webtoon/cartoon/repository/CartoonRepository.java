@@ -2,6 +2,7 @@ package com.webtoon.cartoon.repository;
 
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.dto.request.CartoonSearchTitle;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface CartoonRepository {
 
     Cartoon getById(Long id);
 
-    List<Cartoon> findAllByTitle(CartoonSearch cartoonSearch);
+    List<Cartoon> findAllByTitle(CartoonSearchTitle cartoonSearchTitle);
 
     List<Cartoon> findAllByCartoonCondOrderByLikes(CartoonSearch cartoonSearch);
 

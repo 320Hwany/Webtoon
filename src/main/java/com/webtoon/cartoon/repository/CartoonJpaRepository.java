@@ -1,8 +1,6 @@
 package com.webtoon.cartoon.repository;
 
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.util.enumerated.DayOfTheWeek;
-import com.webtoon.util.enumerated.Genre;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;

@@ -9,6 +9,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,8 +44,11 @@ class CommentRepositoryTest extends RepositoryTest {
                 .collect(Collectors.toList());
 
         commentRepository.saveAll(anotherCommentList);
+
+        PageRequest pageRequest = PageRequest.of(0, 20);
         // when
-        List<CommentResponse> commentResponseList = commentRepository.findAllForMember(member.getId());
+        List<CommentResponse> commentResponseList =
+                commentRepository.findAllForMember(member.getId(), pageRequest);
 
         // then
         assertThat(commentResponseList.size()).isEqualTo(10);

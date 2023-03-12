@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.dto.request.CartoonSearchTitle;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
@@ -39,10 +40,10 @@ public class CartoonRepositoryImpl implements CartoonRepository {
     }
 
     @Override
-    public List<Cartoon> findAllByTitle(CartoonSearch cartoonSearch) {
-        PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
+    public List<Cartoon> findAllByTitle(CartoonSearchTitle cartoonSearchTitle) {
+        PageRequest pageRequest = PageRequest.of(cartoonSearchTitle.getPage(), cartoonSearchTitle.getSize(),
                 Sort.by(DESC, "likes"));
-        return cartoonJpaRepository.findAllByTitleContains(cartoonSearch.getTitle(), pageRequest);
+        return cartoonJpaRepository.findAllByTitleContains(cartoonSearchTitle.getTitle(), pageRequest);
     }
 
     @Override

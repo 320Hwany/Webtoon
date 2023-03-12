@@ -1,6 +1,9 @@
 package com.webtoon.util.enumerated;
 
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public enum DayOfTheWeek implements EnumModel {
 
     MON("MON"),
@@ -13,10 +16,6 @@ public enum DayOfTheWeek implements EnumModel {
     NONE("NONE");
 
     private String value;
-
-    DayOfTheWeek(String value) {
-        this.value = value;
-    }
 
     @Override
     public String getValue() {

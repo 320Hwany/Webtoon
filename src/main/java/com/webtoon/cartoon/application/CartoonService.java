@@ -7,6 +7,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
+import com.webtoon.cartoon.dto.request.CartoonSearchTitle;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
@@ -33,13 +34,13 @@ public class CartoonService {
         cartoonRepository.save(cartoon);
     }
 
-    public List<CartoonResponse> findAllByTitleSet(CartoonSearchDto cartoonSearchDto) {
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
-        List<Cartoon> cartoonList = cartoonRepository.findAllByTitle(cartoonSearch);
+    public List<CartoonResponse> findAllByTitleSet(CartoonSearchTitle cartoonSearchTitle) {
+        List<Cartoon> cartoonList = cartoonRepository.findAllByTitle(cartoonSearchTitle);
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
     public List<CartoonResponse> findAllByCartoonCondOrderByLikesSet(CartoonSearchDto cartoonSearchDto) {
+
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<Cartoon> cartoonList = cartoonRepository.findAllByCartoonCondOrderByLikes(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);

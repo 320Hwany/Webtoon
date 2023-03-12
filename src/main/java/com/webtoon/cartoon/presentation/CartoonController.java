@@ -23,34 +23,39 @@ public class CartoonController {
     @PostMapping("/cartoon")
     public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
                                      @RequestBody @Valid CartoonSave cartoonSave) {
+
         CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonSave(cartoonSave);
         Cartoon.validateEnumTypeValid(cartoonEnumField);
         cartoonService.saveSet(cartoonSave, authorSession);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/cartoon/title")
+    @GetMapping("/cartoon/title")
     public ResponseEntity<CartoonListResult> getCartoonListByTitle(
-            @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
-        List<CartoonResponse> cartoonResponseList = cartoonService.findAllByTitleSet(cartoonSearchDto);
+            @ModelAttribute @Valid CartoonSearchTitle cartoonSearchTitle) {
+
+        List<CartoonResponse> cartoonResponseList = cartoonService.findAllByTitleSet(cartoonSearchTitle);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
-    @PostMapping("/cartoon/orderby/likes")
+    @GetMapping("/cartoon/orderby/likes")
     public ResponseEntity<CartoonListResult> getCartoonListByCondOrderByLikes(
-            @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
-        cartoonService.validateGenreValid(cartoonSearchDto.getGenre());
+            @ModelAttribute @Valid CartoonSearchDto cartoonSearchDto) {
+
+        CartoonSearchDto cartoonEnumField = cartoonSearchDto.toCartoonEnumField();
+        cartoonEnumField.validateEnumTypeValid();
         List<CartoonResponse> cartoonResponseList =
-                cartoonService.findAllByCartoonCondOrderByLikesSet(cartoonSearchDto);
+                cartoonService.findAllByCartoonCondOrderByLikesSet(cartoonEnumField);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
-    @PostMapping("/cartoon/orderby/rating")
+    @GetMapping("/cartoon/orderby/rating")
     public ResponseEntity<CartoonListResult> getCartoonListByCondOrderByRating(
             @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
-        cartoonService.validateGenreValid(cartoonSearchDto.getGenre());
+
+        CartoonSearchDto cartoonEnumField = cartoonSearchDto.toCartoonEnumField();
         List<CartoonResponse> cartoonResponseList =
-                cartoonService.findAllByCartoonCondOrderByRatingSet(cartoonSearchDto);
+                cartoonService.findAllByCartoonCondOrderByRatingSet(cartoonEnumField);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
@@ -58,6 +63,7 @@ public class CartoonController {
     public ResponseEntity<Void> update(@LoginForAuthor AuthorSession authorSession,
                                        @PathVariable Long cartoonId,
                                        @RequestBody @Valid CartoonUpdate cartoonUpdate) {
+
         CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonUpdate(cartoonUpdate);
         Cartoon.validateEnumTypeValid(cartoonEnumField);
         cartoonService.validateAuthorityForCartoon(authorSession, cartoonId);

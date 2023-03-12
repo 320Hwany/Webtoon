@@ -16,6 +16,8 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class ControllerAdvice {
+    
+    // todo 에러 메세지 하드 코딩 수정
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException e) {

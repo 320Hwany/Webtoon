@@ -11,5 +11,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class CommentResult<T> {
 
+    private long count;
+
     private T commentResponse;
 }

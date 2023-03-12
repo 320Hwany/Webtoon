@@ -1,16 +1,16 @@
 package com.webtoon.cartoon.dto.request;
 
 import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
+import com.webtoon.util.enumerated.Progress;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class CartoonEnumField {
 
     private String dayOfTheWeek;
@@ -19,6 +19,12 @@ public class CartoonEnumField {
 
     private String genre;
 
+    @Builder
+    public CartoonEnumField(String dayOfTheWeek, String progress, String genre) {
+        this.dayOfTheWeek = dayOfTheWeek;
+        this.progress = progress;
+        this.genre = genre;
+    }
 
     public static CartoonEnumField getFromCartoonSave(CartoonSave cartoonSave) {
         return CartoonEnumField.builder()

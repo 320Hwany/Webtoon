@@ -41,6 +41,7 @@ public class CartoonMemberController {
     @PostMapping("/cartoonMember/thumbsUp/{cartoonId}")
     public ResponseEntity<Void> thumbsUp(@LoginForMember MemberSession memberSession,
                                          @PathVariable Long cartoonId) {
+
         CartoonMemberThumbsUp cartoonMemberThumbsUp =
                 CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
         cartoonMemberService.thumbsUpSet(cartoonMemberThumbsUp);
@@ -49,6 +50,7 @@ public class CartoonMemberController {
 
     @GetMapping("/cartoonMember/member")
     public ResponseEntity<CartoonListResult> findAllForMember(@LoginForMember MemberSession memberSession) {
+
         List<CartoonMemberResponse> cartoonMemberResponseList =
                 cartoonMemberService.findAllCartoonByMemberId(memberSession.getId());
         return ResponseEntity.ok(new CartoonListResult(cartoonMemberResponseList.size(), cartoonMemberResponseList));
@@ -56,13 +58,16 @@ public class CartoonMemberController {
 
     @GetMapping("/cartoonMember/member/likeList")
     public ResponseEntity<CartoonListResult> findLikeListForMember(@LoginForMember MemberSession memberSession) {
+
         List<CartoonMemberResponse> cartoonMemberResponseList =
                 cartoonMemberService.findLikeListForMember(memberSession.getId());
         return ResponseEntity.ok(new CartoonListResult(cartoonMemberResponseList.size(), cartoonMemberResponseList));
     }
 
     @PostMapping("/cartoonMember/ageRange")
-    public ResponseEntity<CartoonListResult> findAllByMemberAge(@RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
+    public ResponseEntity<CartoonListResult> findAllByMemberAge(
+            @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
+
         CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonSearchDto);
         List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearch);
         return ResponseEntity.ok(new CartoonListResult(cartoonCoreList.size(), cartoonCoreList));
@@ -72,6 +77,7 @@ public class CartoonMemberController {
     public ResponseEntity<Void> rating(@LoginForMember MemberSession memberSession,
                                        @PathVariable Long cartoonId,
                                        @PathVariable double rating) {
+
         CartoonMemberRating cartoonMemberRating =
                 CartoonMemberRating.getFromIdAndRating(cartoonId, memberSession.getId(), rating);
         cartoonMemberService.ratingSet(cartoonMemberRating);

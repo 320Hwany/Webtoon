@@ -1,6 +1,7 @@
 package com.webtoon.cartoon.domain;
 
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
+import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
