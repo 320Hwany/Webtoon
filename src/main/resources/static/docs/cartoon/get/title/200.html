@@ -456,20 +456,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /cartoon/title HTTP/1.1
-Content-Type: application/json
-Content-Length: 154
-Host: localhost:8080
-
-{
-  "page" : 1,
-  "title" : "만화 제목",
-  "nickname" : null,
-  "ageRange" : 0,
-  "dayOfTheWeek" : "NONE",
-  "progress" : "NONE",
-  "genre" : "NONE"
-}</code></pre>
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /cartoon/title?page=0&amp;size=20&amp;title=%EB%A7%8C%ED%99%94+%EC%A0%9C%EB%AA%A9 HTTP/1.1
+Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
@@ -481,13 +469,13 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 2710
+Content-Length: 5408
 
 {
-  "count" : 10,
+  "count" : 20,
   "cartoonResponseList" : [ {
-    "id" : 112,
-    "title" : "만화 제목 10",
+    "id" : 132,
+    "title" : "만화 제목 30",
     "authorResponse" : {
       "nickname" : "작가 이름",
       "email" : "yhwjd99@gmail.com"
@@ -496,10 +484,10 @@ Content-Length: 2710
     "progress" : null,
     "genre" : null,
     "rating" : 0.0,
-    "likes" : 10
+    "likes" : 30
   }, {
-    "id" : 111,
-    "title" : "만화 제목 9",
+    "id" : 131,
+    "title" : "만화 제목 29",
     "authorResponse" : {
       "nickname" : "작가 이름",
       "email" : "yhwjd99@gmail.com"
@@ -508,10 +496,10 @@ Content-Length: 2710
     "progress" : null,
     "genre" : null,
     "rating" : 0.0,
-    "likes" : 9
+    "likes" : 29
   }, {
-    "id" : 110,
-    "title" : "만화 제목 8",
+    "id" : 130,
+    "title" : "만화 제목 28",
     "authorResponse" : {
       "nickname" : "작가 이름",
       "email" : "yhwjd99@gmail.com"
@@ -520,10 +508,10 @@ Content-Length: 2710
     "progress" : null,
     "genre" : null,
     "rating" : 0.0,
-    "likes" : 8
+    "likes" : 28
   }, {
-    "id" : 109,
-    "title" : "만화 제목 7",
+    "id" : 129,
+    "title" : "만화 제목 27",
     "authorResponse" : {
       "nickname" : "작가 이름",
       "email" : "yhwjd99@gmail.com"
@@ -532,10 +520,10 @@ Content-Length: 2710
     "progress" : null,
     "genre" : null,
     "rating" : 0.0,
-    "likes" : 7
+    "likes" : 27
   }, {
-    "id" : 108,
-    "title" : "만화 제목 6",
+    "id" : 128,
+    "title" : "만화 제목 26",
     "authorResponse" : {
       "nickname" : "작가 이름",
       "email" : "yhwjd99@gmail.com"
@@ -544,10 +532,10 @@ Content-Length: 2710
     "progress" : null,
     "genre" : null,
     "rating" : 0.0,
-    "likes" : 6
+    "likes" : 26
   }, {
-    "id" : 107,
-    "title" : "만화 제목 5",
+    "id" : 127,
+    "title" : "만화 제목 25",
     "authorResponse" : {
       "nickname" : "작가 이름",
       "email" : "yhwjd99@gmail.com"
@@ -556,10 +544,10 @@ Content-Length: 2710
     "progress" : null,
     "genre" : null,
     "rating" : 0.0,
-    "likes" : 5
+    "likes" : 25
   }, {
-    "id" : 106,
-    "title" : "만화 제목 4",
+    "id" : 126,
+    "title" : "만화 제목 24",
     "authorResponse" : {
       "nickname" : "작가 이름",
       "email" : "yhwjd99@gmail.com"
@@ -568,10 +556,10 @@ Content-Length: 2710
     "progress" : null,
     "genre" : null,
     "rating" : 0.0,
-    "likes" : 4
+    "likes" : 24
   }, {
-    "id" : 105,
-    "title" : "만화 제목 3",
+    "id" : 125,
+    "title" : "만화 제목 23",
     "authorResponse" : {
       "nickname" : "작가 이름",
       "email" : "yhwjd99@gmail.com"
@@ -580,10 +568,10 @@ Content-Length: 2710
     "progress" : null,
     "genre" : null,
     "rating" : 0.0,
-    "likes" : 3
+    "likes" : 23
   }, {
-    "id" : 104,
-    "title" : "만화 제목 2",
+    "id" : 124,
+    "title" : "만화 제목 22",
     "authorResponse" : {
       "nickname" : "작가 이름",
       "email" : "yhwjd99@gmail.com"
@@ -592,10 +580,10 @@ Content-Length: 2710
     "progress" : null,
     "genre" : null,
     "rating" : 0.0,
-    "likes" : 2
+    "likes" : 22
   }, {
-    "id" : 103,
-    "title" : "만화 제목 1",
+    "id" : 123,
+    "title" : "만화 제목 21",
     "authorResponse" : {
       "nickname" : "작가 이름",
       "email" : "yhwjd99@gmail.com"
@@ -604,7 +592,127 @@ Content-Length: 2710
     "progress" : null,
     "genre" : null,
     "rating" : 0.0,
-    "likes" : 1
+    "likes" : 21
+  }, {
+    "id" : 122,
+    "title" : "만화 제목 20",
+    "authorResponse" : {
+      "nickname" : "작가 이름",
+      "email" : "yhwjd99@gmail.com"
+    },
+    "dayOfTheWeek" : null,
+    "progress" : null,
+    "genre" : null,
+    "rating" : 0.0,
+    "likes" : 20
+  }, {
+    "id" : 121,
+    "title" : "만화 제목 19",
+    "authorResponse" : {
+      "nickname" : "작가 이름",
+      "email" : "yhwjd99@gmail.com"
+    },
+    "dayOfTheWeek" : null,
+    "progress" : null,
+    "genre" : null,
+    "rating" : 0.0,
+    "likes" : 19
+  }, {
+    "id" : 120,
+    "title" : "만화 제목 18",
+    "authorResponse" : {
+      "nickname" : "작가 이름",
+      "email" : "yhwjd99@gmail.com"
+    },
+    "dayOfTheWeek" : null,
+    "progress" : null,
+    "genre" : null,
+    "rating" : 0.0,
+    "likes" : 18
+  }, {
+    "id" : 119,
+    "title" : "만화 제목 17",
+    "authorResponse" : {
+      "nickname" : "작가 이름",
+      "email" : "yhwjd99@gmail.com"
+    },
+    "dayOfTheWeek" : null,
+    "progress" : null,
+    "genre" : null,
+    "rating" : 0.0,
+    "likes" : 17
+  }, {
+    "id" : 118,
+    "title" : "만화 제목 16",
+    "authorResponse" : {
+      "nickname" : "작가 이름",
+      "email" : "yhwjd99@gmail.com"
+    },
+    "dayOfTheWeek" : null,
+    "progress" : null,
+    "genre" : null,
+    "rating" : 0.0,
+    "likes" : 16
+  }, {
+    "id" : 117,
+    "title" : "만화 제목 15",
+    "authorResponse" : {
+      "nickname" : "작가 이름",
+      "email" : "yhwjd99@gmail.com"
+    },
+    "dayOfTheWeek" : null,
+    "progress" : null,
+    "genre" : null,
+    "rating" : 0.0,
+    "likes" : 15
+  }, {
+    "id" : 116,
+    "title" : "만화 제목 14",
+    "authorResponse" : {
+      "nickname" : "작가 이름",
+      "email" : "yhwjd99@gmail.com"
+    },
+    "dayOfTheWeek" : null,
+    "progress" : null,
+    "genre" : null,
+    "rating" : 0.0,
+    "likes" : 14
+  }, {
+    "id" : 115,
+    "title" : "만화 제목 13",
+    "authorResponse" : {
+      "nickname" : "작가 이름",
+      "email" : "yhwjd99@gmail.com"
+    },
+    "dayOfTheWeek" : null,
+    "progress" : null,
+    "genre" : null,
+    "rating" : 0.0,
+    "likes" : 13
+  }, {
+    "id" : 114,
+    "title" : "만화 제목 12",
+    "authorResponse" : {
+      "nickname" : "작가 이름",
+      "email" : "yhwjd99@gmail.com"
+    },
+    "dayOfTheWeek" : null,
+    "progress" : null,
+    "genre" : null,
+    "rating" : 0.0,
+    "likes" : 12
+  }, {
+    "id" : 113,
+    "title" : "만화 제목 11",
+    "authorResponse" : {
+      "nickname" : "작가 이름",
+      "email" : "yhwjd99@gmail.com"
+    },
+    "dayOfTheWeek" : null,
+    "progress" : null,
+    "genre" : null,
+    "rating" : 0.0,
+    "likes" : 11
   } ]
 }</code></pre>
 </div>

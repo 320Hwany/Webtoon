@@ -240,7 +240,7 @@ class ContentServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("입력한 정보로 컨텐츠를 찾고 컨텐츠를 수정합니다")
-    void updateSet200() {
+    void update200() {
         // given
         Author author = saveAuthorInRepository();
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
@@ -260,7 +260,7 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         // when
-        contentService.updateSet(authorSession, cartoon.getId(), contentUpdateSet);
+        contentService.update(authorSession, cartoon.getId(), contentUpdateSet);
 
         // then
         Content findContent = contentRepository.getById(content.getId());
@@ -272,7 +272,7 @@ class ContentServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("입력한 정보에 맞는 컨텐츠가 없다면 예외가 발생합니다")
-    void updateSet404() {
+    void update404() {
         // given
         Author author = saveAuthorInRepository();
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
@@ -292,6 +292,6 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         assertThrows(ContentNotFoundException.class,
-                () -> contentService.updateSet(authorSession, cartoon.getId(), contentUpdateSet));
+                () -> contentService.update(authorSession, cartoon.getId(), contentUpdateSet));
     }
 }

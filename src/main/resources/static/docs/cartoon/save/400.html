@@ -478,14 +478,14 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
 Content-Type: application/json
-Content-Length: 228
+Content-Length: 235
 
 {
   "statusCode" : "400",
-  "message" : "잘못된 요청입니다",
+  "message" : "잘못된 타입 요청입니다",
   "validation" : {
-    "Progress" : "현재 진행 상황을 잘못 입력하였습니다",
-    "dayOfTheWeek" : "요일을 잘못 입력하였습니다"
+    "DayOfTheWeek" : "요일을 잘못 입력하였습니다",
+    "Progress" : "현재 진행 상황을 잘못 입력하였습니다"
   }
 }</code></pre>
 </div>

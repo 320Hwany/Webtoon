@@ -1,6 +1,7 @@
 package com.webtoon.comment.repository;
 
 import com.webtoon.comment.domain.Comment;
+import com.webtoon.comment.dto.response.CommentContentResp;
 import com.webtoon.comment.dto.response.CommentResponse;
 import org.springframework.data.domain.Pageable;
 
@@ -13,6 +14,8 @@ public interface CommentRepository {
     Comment getById(Long commentId);
 
     List<CommentResponse> findAllForMember(Long memberId, Pageable pageable);
+
+    List<CommentContentResp> findAllForContent(Long contentId, Pageable pageable);
 
     long count();
 

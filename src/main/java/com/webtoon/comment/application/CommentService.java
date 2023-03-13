@@ -4,6 +4,7 @@ import com.webtoon.comment.domain.Comment;
 import com.webtoon.comment.dto.request.CommentSave;
 import com.webtoon.comment.dto.request.CommentSaveSet;
 import com.webtoon.comment.dto.request.CommentUpdateSet;
+import com.webtoon.comment.dto.response.CommentContentResp;
 import com.webtoon.comment.dto.response.CommentResponse;
 import com.webtoon.comment.exception.CommentForbiddenException;
 import com.webtoon.comment.repository.CommentRepository;
@@ -62,5 +63,9 @@ public class CommentService {
 
     public List<CommentResponse> findAllForMember(Long memberId, Pageable pageable) {
         return commentRepository.findAllForMember(memberId, pageable);
+    }
+
+    public List<CommentContentResp> findAllForContent(Long contentId, Pageable pageable) {
+        return commentRepository.findAllForContent(contentId, pageable);
     }
 }

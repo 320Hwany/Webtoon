@@ -271,4 +271,28 @@ class CommentControllerTest extends ControllerTest {
                 .andExpect(jsonPath("$.commentResponse[0].nickname").value(member.getNickname()))
                 .andExpect(jsonPath("$.commentResponse[0].likes").value(comment.getLikes()));
     }
+
+    @Test
+    @DisplayName("해당 만화의 댓글을 최신순으로 가져옵니다")
+    void findAllForContent() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+        Member member = saveMemberInRepository();
+        Comment comment = saveCommentInRepository(content, member);
+
+        // when
+        mockMvc.perform(get("/comment/{contentId}", content.getId())
+                        .param("page", "0")
+                        .param("size", "20"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.count").value(1))
+                .andExpect(jsonPath("$.commentResponse[0].commentId").value(comment.getId()))
+                .andExpect(jsonPath("$.commentResponse[0].commentContent").value(comment.getCommentContent()))
+                .andExpect(jsonPath("$.commentResponse[0].nickname").value(member.getNickname()))
+                .andExpect(jsonPath("$.commentResponse[0].likes").value(comment.getLikes()))
+                .andExpect(jsonPath("$.commentResponse[0].createDateTime")
+                        .value(comment.getCreateDateTime().toString()));
+    }
 }

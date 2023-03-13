@@ -83,7 +83,12 @@ class CommentServiceTest {
                 .nickname("회원 닉네임")
                 .build();
 
+        Content content = Content.builder()
+                .build();
+
         Comment comment = Comment.builder()
+                .id(1L)
+                .content(content)
                 .commentContent("댓글 내용입니다")
                 .member(member)
                 .build();

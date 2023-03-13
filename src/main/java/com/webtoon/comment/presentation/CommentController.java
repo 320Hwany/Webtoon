@@ -5,6 +5,7 @@ import com.webtoon.comment.dto.request.CommentSave;
 import com.webtoon.comment.dto.request.CommentSaveSet;
 import com.webtoon.comment.dto.request.CommentUpdate;
 import com.webtoon.comment.dto.request.CommentUpdateSet;
+import com.webtoon.comment.dto.response.CommentContentResp;
 import com.webtoon.comment.dto.response.CommentResponse;
 import com.webtoon.comment.dto.response.CommentResult;
 import com.webtoon.member.domain.MemberSession;
@@ -56,5 +57,11 @@ public class CommentController {
         List<CommentResponse> commentResponseList =
                 commentService.findAllForMember(memberSession.getId(), pageable);
         return ResponseEntity.ok(new CommentResult(commentResponseList.size(), commentResponseList));
+    }
+
+    @GetMapping("/comment/{contentId}")
+    public ResponseEntity<CommentResult> findAllForContent(@PathVariable Long contentId, Pageable pageable) {
+        List<CommentContentResp> commentContentRespList = commentService.findAllForContent(contentId, pageable);
+        return ResponseEntity.ok(new CommentResult(commentContentRespList.size(), commentContentRespList));
     }
 }

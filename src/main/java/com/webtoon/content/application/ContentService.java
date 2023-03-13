@@ -56,7 +56,7 @@ public class ContentService {
     }
 
     @Transactional
-    public void updateSet(AuthorSession authorSession, Long cartoonId, ContentUpdateSet contentUpdateSet) {
+    public void update(AuthorSession authorSession, Long cartoonId, ContentUpdateSet contentUpdateSet) {
         Cartoon cartoon = cartoonRepository.getById(cartoonId);
         cartoon.validateAuthorityForCartoon(authorSession);
         Content content =

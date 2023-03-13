@@ -61,7 +61,7 @@ public class ContentController {
 
         ContentUpdateSet contentUpdateSet =
                 ContentUpdateSet.getFromIdAndEpisode(cartoonId, contentEpisode, contentUpdate);
-        contentService.updateSet(authorSession, cartoonId, contentUpdateSet);
+        contentService.update(authorSession, cartoonId, contentUpdateSet);
         return ResponseEntity.ok().build();
     }
 }
