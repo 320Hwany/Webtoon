@@ -3,12 +3,11 @@ package com.webtoon.cartoon.domain;
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.dto.request.CartoonEnumField;
-import com.webtoon.cartoon.dto.request.CartoonSave;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.exception.CartoonForbiddenException;
 import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.util.DomainTest;
-import com.webtoon.util.constant.Constant;
+import com.webtoon.util.constant.ConstantCommon;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
@@ -65,7 +64,7 @@ class CartoonTest extends DomainTest {
                 .dayOfTheWeek(DayOfTheWeek.MON)
                 .progress(Progress.SERIALIZATION)
                 .genre(Genre.ROMANCE)
-                .rating(Constant.ZERO_OF_TYPE_DOUBLE)
+                .rating(ConstantCommon.ZERO_OF_TYPE_DOUBLE)
                 .likes(10)
                 .build();
 
@@ -85,7 +84,7 @@ class CartoonTest extends DomainTest {
                 .dayOfTheWeek(DayOfTheWeek.MON)
                 .progress(Progress.SERIALIZATION)
                 .genre(Genre.ROMANCE)
-                .rating(Constant.ZERO_OF_TYPE_DOUBLE)
+                .rating(ConstantCommon.ZERO_OF_TYPE_DOUBLE)
                 .build();
 
         double rating = 9.8253;

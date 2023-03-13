@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.webtoon.util.constant.Constant.TWO_WEEKS;
+import static com.webtoon.util.constant.ConstantCommon.TWO_WEEKS;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

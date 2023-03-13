@@ -17,11 +17,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import static com.webtoon.util.constant.Constant.*;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;

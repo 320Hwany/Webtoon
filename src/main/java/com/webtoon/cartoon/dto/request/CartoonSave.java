@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
-import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_DOUBLE;
-import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;
+import static com.webtoon.util.constant.ConstantCommon.ZERO_OF_TYPE_DOUBLE;
+import static com.webtoon.util.constant.ConstantCommon.ZERO_OF_TYPE_LONG;
+import static com.webtoon.util.constant.ConstantValid.CARTOON_TITLE_VALID_MESSAGE;
 
 @Getter
 @Builder
@@ -21,7 +22,7 @@ import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;
 @AllArgsConstructor
 public class CartoonSave {
 
-    @NotBlank(message = "제목을 입력해주세요")
+    @NotBlank(message = CARTOON_TITLE_VALID_MESSAGE)
     private String title;
 
     private String dayOfTheWeek;

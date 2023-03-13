@@ -1,14 +1,12 @@
 package com.webtoon.content.domain;
 
-import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.content.dto.request.ContentSave;
 import com.webtoon.content.dto.request.ContentUpdate;
 import com.webtoon.util.DomainTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static com.webtoon.util.constant.Constant.*;
+import static com.webtoon.util.constant.ConstantCommon.*;
 import static org.assertj.core.api.Assertions.*;
 
 class ContentTest extends DomainTest {

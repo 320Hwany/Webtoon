@@ -13,7 +13,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
-import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;
+import static com.webtoon.util.constant.ConstantCommon.ZERO_OF_TYPE_LONG;
+import static com.webtoon.util.constant.ConstantValid.*;
 
 @Getter
 @Builder
@@ -21,16 +22,16 @@ import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;
 @AllArgsConstructor
 public class MemberSignup {
 
-    @NotBlank(message = "닉네임을 입력해주세요")
+    @NotBlank(message = NICKNAME_VALID_MESSAGE)
     private String nickname;
 
-    @Email(message = "이메일을 입력해주세요")
+    @Email(message = EMAIL_VALID_MESSAGE)
     private String email;
 
-    @Pattern(regexp = "^[a-zA-Zㄱ-ㅎ가-힣0-9]{1,20}$", message = "영문/한글/숫자 1~20자 이내로 작성해주세요")
+    @Pattern(regexp = PASSWORD_REGEXP, message = PASSWORD_VALID_MESSAGE)
     private String password;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = YEAR_MONTH_DAY)
     private LocalDate birthDate;
 
     public Member toEntity(PasswordEncoder passwordEncoder) {

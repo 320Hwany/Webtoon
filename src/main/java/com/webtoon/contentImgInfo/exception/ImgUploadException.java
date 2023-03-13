@@ -2,7 +2,7 @@ package com.webtoon.contentImgInfo.exception;
 
 import lombok.Getter;
 
-import static com.webtoon.util.constant.Constant.BAD_REQUEST;
+import static com.webtoon.util.constant.ConstantCommon.BAD_REQUEST;
 import static com.webtoon.util.enumerated.ErrorMessage.*;
 
 @Getter

@@ -23,7 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
-import static com.webtoon.util.constant.Constant.*;
+import static com.webtoon.util.constant.ConstantCommon.*;
 
 @AcceptanceTest
 public class ServiceTest {

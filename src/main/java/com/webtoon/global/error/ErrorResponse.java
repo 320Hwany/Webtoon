@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @NoArgsConstructor
@@ -16,7 +17,7 @@ public class ErrorResponse {
     private String statusCode;
     private String message;
 
-    private Map<String, String> validation = new HashMap<>();
+    private Map<String, String> validation = new ConcurrentHashMap<>();
 
     @Builder
     public ErrorResponse(String statusCode, String message) {

@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -79,7 +80,6 @@ class CommentServiceTest {
     void update() {
         // given
         Member member = Member.builder()
-                .id(1L)
                 .nickname("회원 닉네임")
                 .build();
 
@@ -87,11 +87,13 @@ class CommentServiceTest {
                 .build();
 
         Comment comment = Comment.builder()
-                .id(1L)
                 .content(content)
                 .commentContent("댓글 내용입니다")
                 .member(member)
                 .build();
+
+        ReflectionTestUtils.setField(comment, "id", 1L);
+        ReflectionTestUtils.setField(member, "id", 1L);
 
         CommentUpdate commentUpdate = CommentUpdate.builder()
                 .commentContent("수정 댓글 내용입니다")

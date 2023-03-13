@@ -14,7 +14,7 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 import java.time.LocalDate;
 
-import static com.webtoon.util.constant.Constant.*;
+import static com.webtoon.util.constant.ConstantCommon.*;
 
 public class DomainTest {
 

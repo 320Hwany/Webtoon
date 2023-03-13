@@ -45,7 +45,7 @@ import javax.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 
-import static com.webtoon.util.constant.Constant.*;
+import static com.webtoon.util.constant.ConstantCommon.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;

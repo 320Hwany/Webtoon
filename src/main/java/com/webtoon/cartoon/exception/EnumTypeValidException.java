@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.webtoon.util.constant.Constant.*;
+import static com.webtoon.util.constant.ConstantCommon.*;
 import static com.webtoon.util.enumerated.ErrorMessage.*;
 
 @Getter

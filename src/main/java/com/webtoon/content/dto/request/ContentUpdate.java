@@ -11,19 +11,21 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+import static com.webtoon.util.constant.ConstantValid.*;
+
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContentUpdate {
 
-    @NotBlank(message = "부제를 입력해주세요")
+    @NotBlank(message = SUBTITLE_VALID_MESSAGE)
     private String subTitle;
 
-    @Min(value = 0, message = "몇 화인지를 입력해주세요")
+    @Min(value = 0, message = EPISODE_VALID_MESSAGE)
     private int episode;
 
-    @NotNull(message = "변경할 등록 날짜를 입력해주세요")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = REGISTRATION_DATE_VALID_MESSAGE)
+    @DateTimeFormat(pattern = YEAR_MONTH_DAY)
     private LocalDate registrationDate;
 }

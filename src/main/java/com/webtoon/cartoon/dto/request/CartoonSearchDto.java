@@ -9,12 +9,14 @@ import lombok.*;
 
 import javax.validation.constraints.Min;
 
+import static com.webtoon.util.constant.ConstantValid.PAGE_VALID_MESSAGE;
+
 
 @Getter @Setter
 @NoArgsConstructor
 public class CartoonSearchDto {
 
-    @Min(value = 0, message = "0 이상의 페이지를 입력해주세요")
+    @Min(value = 0, message = PAGE_VALID_MESSAGE)
     private int page;
 
     private String title;

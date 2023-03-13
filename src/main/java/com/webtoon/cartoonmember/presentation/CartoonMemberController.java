@@ -1,6 +1,5 @@
 package com.webtoon.cartoonmember.presentation;
 
-import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoon.dto.response.CartoonListResult;
@@ -13,7 +12,7 @@ import com.webtoon.content.dto.response.ContentListResult;
 import com.webtoon.global.openfeign.DynamicUrlOpenFeign;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForMember;
-import com.webtoon.util.constant.Constant;
+import com.webtoon.util.constant.ConstantCommon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +34,7 @@ public class CartoonMemberController {
         CartoonMemberSave cartoonMemberSave =
                 CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
         cartoonMemberService.save(cartoonMemberSave);
-        return feign.findContentList(cartoonId, Constant.firstPage);
+        return feign.findContentList(cartoonId, ConstantCommon.firstPage);
     }
 
     @PostMapping("/cartoonMember/thumbsUp/{cartoonId}")

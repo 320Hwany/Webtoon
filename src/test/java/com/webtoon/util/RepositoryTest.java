@@ -23,8 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
-import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_DOUBLE;
-import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;
+import static com.webtoon.util.constant.ConstantCommon.ZERO_OF_TYPE_DOUBLE;
+import static com.webtoon.util.constant.ConstantCommon.ZERO_OF_TYPE_LONG;
 
 @AcceptanceTest
 public class RepositoryTest {

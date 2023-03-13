@@ -50,9 +50,8 @@ public class Comment {
     private LocalDateTime lastModifiedDateTime;
 
     @Builder
-    public Comment(Long id, String commentContent, Member member, Content content, long likes,
+    public Comment(String commentContent, Member member, Content content, long likes,
                    LocalDateTime createDateTime, LocalDateTime lastModifiedDateTime) {
-        this.id = id;
         this.commentContent = commentContent;
         this.member = member;
         this.content = content;

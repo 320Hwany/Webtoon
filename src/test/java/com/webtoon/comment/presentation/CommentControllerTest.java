@@ -8,13 +8,11 @@ import com.webtoon.comment.dto.request.CommentUpdate;
 import com.webtoon.content.domain.Content;
 import com.webtoon.member.domain.Member;
 import com.webtoon.util.ControllerTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;
+import static com.webtoon.util.constant.ConstantCommon.ZERO_OF_TYPE_LONG;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

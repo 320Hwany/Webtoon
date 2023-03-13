@@ -7,12 +7,14 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 
+import static com.webtoon.util.constant.ConstantValid.CHARGE_VALID_MESSAGE;
+
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberCharge {
 
-    @Min(value = 0, message = "0코인 이상을 충전해주세요")
+    @Min(value = 0, message = CHARGE_VALID_MESSAGE)
     private long chargeAmount;
 }

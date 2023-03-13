@@ -4,7 +4,7 @@ import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.contentImgInfo.exception.GetImgException;
 import com.webtoon.contentImgInfo.exception.ImgUploadException;
 import com.webtoon.member.exception.LackOfCoinException;
-import com.webtoon.util.constant.Constant;
+import com.webtoon.util.constant.ConstantCommon;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -21,7 +21,7 @@ public class ControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
-                .statusCode(Constant.BAD_REQUEST)
+                .statusCode(ConstantCommon.BAD_REQUEST)
                 .message(VALID_BAD_REQUEST.getValue())
                 .build();
 

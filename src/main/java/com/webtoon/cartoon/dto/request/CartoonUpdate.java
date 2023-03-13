@@ -7,13 +7,15 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
+import static com.webtoon.util.constant.ConstantValid.CARTOON_TITLE_VALID_MESSAGE;
+
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartoonUpdate {
 
-    @NotBlank(message = "제목을 입력해주세요")
+    @NotBlank(message = CARTOON_TITLE_VALID_MESSAGE)
     private String title;
 
     private String dayOfTheWeek;

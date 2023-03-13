@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static com.webtoon.util.constant.Constant.PAYCOIN;
+import static com.webtoon.util.constant.ConstantCommon.PAYCOIN;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MemberTest extends DomainTest {

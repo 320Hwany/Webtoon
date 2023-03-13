@@ -3,7 +3,7 @@ package com.webtoon.comment.dto.request;
 import com.webtoon.comment.domain.Comment;
 import com.webtoon.content.domain.Content;
 import com.webtoon.member.domain.Member;
-import com.webtoon.util.constant.Constant;
+import com.webtoon.util.constant.ConstantCommon;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +26,7 @@ public class CommentSave {
                 .commentContent(commentContent)
                 .member(member)
                 .content(content)
-                .likes(Constant.ZERO_OF_TYPE_LONG)
+                .likes(ConstantCommon.ZERO_OF_TYPE_LONG)
                 .build();
     }
 }

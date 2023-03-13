@@ -3,9 +3,9 @@ package com.webtoon.util.constant;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-public class Constant {
+public class ConstantCommon {
 
-    private Constant() {}
+    private ConstantCommon() {}
 
     public static final long PAYCOIN = 200L;
     public static final long TWO_WEEKS = 2L;

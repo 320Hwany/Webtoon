@@ -7,16 +7,18 @@ import lombok.Setter;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+import static com.webtoon.util.constant.ConstantValid.*;
+
 @Getter @Setter
 public class CartoonSearchTitle {
 
-    @Min(value = 0, message = "0 이상의 페이지를 입력해주세요")
+    @Min(value = 0, message = PAGE_VALID_MESSAGE)
     private int page;
 
-    @Min(value = 0, message = "0 이상의 사이즈를 입력해주세요")
+    @Min(value = 0, message = SIZE_VALID_MESSAGE)
     private int size;
 
-    @NotBlank(message = "제목을 입력해주세요")
+    @NotBlank(message = CARTOON_TITLE_VALID_MESSAGE)
     private String title;
 
     @Builder

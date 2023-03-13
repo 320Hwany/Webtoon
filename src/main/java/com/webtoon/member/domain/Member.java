@@ -1,6 +1,5 @@
 package com.webtoon.member.domain;
 
-import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.member.exception.LackOfCoinException;
 import com.webtoon.util.BaseTimeEntity;
@@ -13,10 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
-import static com.webtoon.util.constant.Constant.PAYCOIN;
-import static com.webtoon.util.constant.Constant.ZERO_OF_TYPE_LONG;
+import static com.webtoon.util.constant.ConstantCommon.PAYCOIN;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -42,8 +39,7 @@ public class Member extends BaseTimeEntity {
     private long coin;
 
     @Builder
-    public Member(Long id, String nickname, String email, String password, LocalDate birthDate, long coin) {
-        this.id = id;
+    public Member(String nickname, String email, String password, LocalDate birthDate, long coin) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
