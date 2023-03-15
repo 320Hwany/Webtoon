@@ -42,6 +42,18 @@ public class CartoonSearchDto {
         this.genre = genre;
     }
 
+    public CartoonSearch toCartoonSearch() {
+        return CartoonSearch.builder()
+                .page(page)
+                .title(title)
+                .nickname(nickname)
+                .ageRange(ageRange)
+                .dayOfTheWeek(DayOfTheWeek.valueOf(dayOfTheWeek))
+                .progress(Progress.valueOf(progress))
+                .genre(Genre.valueOf(genre))
+                .build();
+    }
+
     public CartoonSearchDto toCartoonEnumField() {
         return CartoonSearchDto.builder()
                 .page(page)

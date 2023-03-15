@@ -9,6 +9,7 @@ import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberRating;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberThumbsUp;
+import com.webtoon.cartoonmember.dto.request.CartoonSearchAge;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
 import com.webtoon.cartoonmember.repository.CartoonMemberRepository;
@@ -77,10 +78,8 @@ public class CartoonMemberService {
         return cartoonMemberRepository.findLikeListForMember(memberId);
     }
 
-    public List<CartoonCore> findAllByMemberAge(CartoonSearchDto cartoonSearchDto) {
-        CartoonSearchDto cartoonEnumValidField = cartoonSearchDto.toCartoonEnumField();
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonEnumValidField);
-        return cartoonMemberRepository.findAllByMemberAge(cartoonSearch);
+    public List<CartoonCore> findAllByMemberAge(CartoonSearchAge cartoonSearchAge) {
+        return cartoonMemberRepository.findAllByMemberAge(cartoonSearchAge);
     }
 
     public boolean validateAlreadyRead(Long cartoonId, Long memberId) {

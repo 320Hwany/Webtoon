@@ -15,7 +15,9 @@ public interface CommentRepository {
 
     List<CommentResponse> findAllForMember(Long memberId, Pageable pageable);
 
-    List<CommentContentResp> findAllForContent(Long contentId, Pageable pageable);
+    List<CommentContentResp> findAllForContentNewest(Long contentId, Pageable pageable);
+
+    List<CommentContentResp> findAllForContentLikes(Long contentId, Pageable pageable);
 
     long count();
 

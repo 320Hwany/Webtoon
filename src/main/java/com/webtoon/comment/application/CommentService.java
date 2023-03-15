@@ -65,7 +65,11 @@ public class CommentService {
         return commentRepository.findAllForMember(memberId, pageable);
     }
 
-    public List<CommentContentResp> findAllForContent(Long contentId, Pageable pageable) {
-        return commentRepository.findAllForContent(contentId, pageable);
+    public List<CommentContentResp> findAllForContentNewest(Long contentId, Pageable pageable) {
+        return commentRepository.findAllForContentNewest(contentId, pageable);
+    }
+
+    public List<CommentContentResp> findAllForContentLikes(Long contentId, Pageable pageable) {
+        return commentRepository.findAllForContentLikes(contentId, pageable);
     }
 }

@@ -47,6 +47,7 @@ public class Cartoon extends BaseTimeEntity {
     private Genre genre;
 
     private double rating;
+
     private long likes;
 
     @Builder

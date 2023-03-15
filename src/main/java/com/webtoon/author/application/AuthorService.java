@@ -88,7 +88,7 @@ public class AuthorService {
 
     public List<AuthorCartoonResponse> findAllByNicknameContains(CartoonSearchDto cartoonSearchDto) {
         CartoonSearchDto cartoonEnumValidField = cartoonSearchDto.toCartoonEnumField();
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonEnumValidField);
+        CartoonSearch cartoonSearch = cartoonEnumValidField.toCartoonSearch();
         List<Author> authorList = authorRepository.findAllByNicknameContains(cartoonSearch);
         return authorList.stream()
                 .map(AuthorCartoonResponse::getFromAuthor)

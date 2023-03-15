@@ -10,6 +10,7 @@ import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberRating;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberThumbsUp;
+import com.webtoon.cartoonmember.dto.request.CartoonSearchAge;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
 import com.webtoon.member.domain.Member;
@@ -253,15 +254,16 @@ class CartoonMemberServiceTest extends ServiceTest {
                 .rated(true)
                 .build();
 
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
+        CartoonSearchAge cartoonSearchAge = CartoonSearchAge.builder()
                 .page(0)
+                .size(10)
                 .ageRange(20)
                 .build();
 
         cartoonMemberRepository.save(cartoonMember);
 
         // when
-        List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearchDto);
+        List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearchAge);
 
         // then
         assertThat(cartoonCoreList.size()).isEqualTo(1);

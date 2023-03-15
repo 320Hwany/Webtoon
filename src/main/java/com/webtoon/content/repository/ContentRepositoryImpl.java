@@ -44,10 +44,10 @@ public class ContentRepositoryImpl implements ContentRepository {
                 .selectFrom(content)
                 .leftJoin(content.cartoon, cartoon)
                 .fetchJoin()
-                .where(content.cartoon.id.eq(cartoonId))
+                .where(cartoon.id.eq(cartoonId))
+                .orderBy(content.episode.desc())
                 .offset(pageable.getPageNumber())
                 .limit(pageable.getPageSize())
-                .orderBy(content.episode.desc())
                 .fetch();
     }
 
@@ -59,9 +59,8 @@ public class ContentRepositoryImpl implements ContentRepository {
                         .fetchJoin()
                         .leftJoin(cartoon.author, author)
                         .fetchJoin()
-                        .where(content.cartoon.id.eq(cartoonId),
-                                content.episode.eq(episode),
-                                cartoon.author.id.eq(author.id))
+                        .where(cartoon.id.eq(cartoonId),
+                                content.episode.eq(episode))
                         .fetchOne());
     }
 

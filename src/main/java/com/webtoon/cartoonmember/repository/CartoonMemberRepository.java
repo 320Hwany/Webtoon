@@ -4,6 +4,7 @@ package com.webtoon.cartoonmember.repository;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoonmember.domain.CartoonMember;
+import com.webtoon.cartoonmember.dto.request.CartoonSearchAge;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface CartoonMemberRepository {
 
     long findCartoonSizeWhereRated(Long cartoonId);
 
-    List<CartoonCore> findAllByMemberAge(CartoonSearch cartoonSearch);
+    List<CartoonCore> findAllByMemberAge(CartoonSearchAge cartoonSearchAge);
 
     void deleteAll();
 

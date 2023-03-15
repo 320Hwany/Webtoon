@@ -278,19 +278,54 @@ class CommentControllerTest extends ControllerTest {
         Cartoon cartoon = saveCartoonInRepository(author);
         Content content = saveContentInRepository(cartoon);
         Member member = saveMemberInRepository();
-        Comment comment = saveCommentInRepository(content, member);
+        Comment comment1 = saveCommentInRepository(content, member);
+        Comment comment2 = Comment.builder()
+                .content(content)
+                .member(member)
+                .commentContent("댓글 내용입니다 - 2")
+                .likes(ZERO_OF_TYPE_LONG)
+                .build();
+
+        commentRepository.save(comment2);
 
         // when
-        mockMvc.perform(get("/comment/{contentId}", content.getId())
+        mockMvc.perform(get("/comment-newest/{contentId}", content.getId())
                         .param("page", "0")
                         .param("size", "20"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.count").value(1))
-                .andExpect(jsonPath("$.commentResponse[0].commentId").value(comment.getId()))
-                .andExpect(jsonPath("$.commentResponse[0].commentContent").value(comment.getCommentContent()))
+                .andExpect(jsonPath("$.count").value(2))
+                .andExpect(jsonPath("$.commentResponse[0].commentId").value(comment2.getId()))
+                .andExpect(jsonPath("$.commentResponse[0].commentContent").value(comment2.getCommentContent()))
                 .andExpect(jsonPath("$.commentResponse[0].nickname").value(member.getNickname()))
-                .andExpect(jsonPath("$.commentResponse[0].likes").value(comment.getLikes()))
-                .andExpect(jsonPath("$.commentResponse[0].createDateTime")
-                        .value(comment.getCreateDateTime().toString()));
+                .andExpect(jsonPath("$.commentResponse[0].likes").value(comment2.getLikes()));
+    }
+
+    @Test
+    @DisplayName("해당 만화의 댓글을 좋아요 순으로 가져옵니다")
+    void findAllForContentLikes() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+        Member member = saveMemberInRepository();
+        Comment comment1 = saveCommentInRepository(content, member);
+        Comment comment2 = Comment.builder()
+                .content(content)
+                .member(member)
+                .commentContent("댓글 내용입니다 - 2")
+                .likes(100)
+                .build();
+        commentRepository.save(comment2);
+
+        // when
+        mockMvc.perform(get("/comment-likes/{contentId}", content.getId())
+                        .param("page", "0")
+                        .param("size", "20"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.count").value(2))
+                .andExpect(jsonPath("$.commentResponse[0].commentId").value(comment2.getId()))
+                .andExpect(jsonPath("$.commentResponse[0].commentContent").value(comment2.getCommentContent()))
+                .andExpect(jsonPath("$.commentResponse[0].nickname").value(member.getNickname()))
+                .andExpect(jsonPath("$.commentResponse[0].likes").value(comment2.getLikes()));
     }
 }

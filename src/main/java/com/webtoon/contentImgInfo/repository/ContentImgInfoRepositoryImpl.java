@@ -29,7 +29,7 @@ public class ContentImgInfoRepositoryImpl implements ContentImgInfoRepository {
                 jpaQueryFactory.selectFrom(contentImgInfo)
                 .leftJoin(contentImgInfo.content, content)
                 .fetchJoin()
-                .where(contentImgInfo.content.id.eq(contentId))
+                .where(content.id.eq(contentId))
                 .fetchOne());
     }
 

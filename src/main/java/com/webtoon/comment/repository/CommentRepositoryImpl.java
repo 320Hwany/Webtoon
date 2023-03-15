@@ -58,7 +58,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<CommentContentResp> findAllForContent(Long contentId, Pageable pageable) {
+    public List<CommentContentResp> findAllForContentNewest(Long contentId, Pageable pageable) {
         return jpaQueryFactory.select(new QCommentContentResp(
                         comment.id,
                         comment.commentContent,
@@ -70,9 +70,28 @@ public class CommentRepositoryImpl implements CommentRepository {
                 .leftJoin(comment.member, member)
                 .leftJoin(comment.content, content)
                 .where(content.id.eq(contentId))
+                .orderBy(comment.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(comment.id.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<CommentContentResp> findAllForContentLikes(Long contentId, Pageable pageable) {
+        return jpaQueryFactory.select(new QCommentContentResp(
+                        comment.id,
+                        comment.commentContent,
+                        member.nickname,
+                        comment.likes,
+                        comment.createDateTime
+                ))
+                .from(comment)
+                .leftJoin(comment.member, member)
+                .leftJoin(comment.content, content)
+                .where(content.id.eq(contentId))
+                .orderBy(comment.likes.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 

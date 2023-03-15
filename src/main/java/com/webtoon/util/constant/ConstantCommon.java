@@ -23,4 +23,12 @@ public class ConstantCommon {
 
     public static final PageRequest firstPage
             = PageRequest.of(0, 20, Sort.Direction.DESC, "id");
+
+    public static long lowerBoundary(long age) {
+        return age + 8;
+    }
+
+    public static long upperBoundary(long age) {
+        return age - 1;
+    }
 }

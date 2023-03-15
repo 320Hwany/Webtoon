@@ -83,6 +83,24 @@ class CartoonMemberControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("연령대별 인기 만화를 인기순으로 보여줍니다")
+    void findAllByMemberAge() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Member member = saveMemberInRepository();
+        saveCartoonMemberInRepository(cartoon, member);
+
+        // expected
+        mockMvc.perform(get("/cartoonMember/ageRange")
+                        .param("page", "0")
+                        .param("size", "10")
+                        .param("ageRange", "20"))
+                .andExpect(status().isOk())
+                .andDo(document("cartoonMember/ageRange/200"));
+    }
+
+    @Test
     @DisplayName("회원이 만화 평점을 매깁니다")
     void rating() throws Exception {
         // given

@@ -41,14 +41,14 @@ public class CartoonService {
     public List<CartoonResponse> findAllByCartoonCondOrderByLikesSet(CartoonSearchDto cartoonSearchDto) {
         CartoonSearchDto cartoonEnumValidField = cartoonSearchDto.toCartoonEnumField();
         cartoonEnumValidField.validateEnumTypeValid();
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonEnumValidField);
+        CartoonSearch cartoonSearch = cartoonEnumValidField.toCartoonSearch();
         List<Cartoon> cartoonList = cartoonRepository.findAllByCartoonCondOrderByLikes(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
     public List<CartoonResponse> findAllByCartoonCondOrderByRatingSet(CartoonSearchDto cartoonSearchDto) {
         CartoonSearchDto cartoonEnumValidField = cartoonSearchDto.toCartoonEnumField();
-        CartoonSearch cartoonSearch = CartoonSearch.getByCartoonSearchDto(cartoonEnumValidField);
+        CartoonSearch cartoonSearch = cartoonEnumValidField.toCartoonSearch();
         List<Cartoon> cartoonList = cartoonRepository.findAllByCartoonCondOrderByRating(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);
     }

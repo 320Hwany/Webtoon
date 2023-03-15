@@ -3,6 +3,7 @@ package com.webtoon.member.domain;
 import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.member.exception.LackOfCoinException;
 import com.webtoon.util.BaseTimeEntity;
+import com.webtoon.util.constant.ConstantValid;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 import static com.webtoon.util.constant.ConstantCommon.PAYCOIN;
+import static com.webtoon.util.constant.ConstantValid.YEAR_MONTH_DAY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -33,7 +35,7 @@ public class Member extends BaseTimeEntity {
 
     private String password;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = YEAR_MONTH_DAY)
     private LocalDate birthDate;
 
     private long coin;

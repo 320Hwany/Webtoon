@@ -7,6 +7,7 @@ import com.webtoon.cartoonmember.dto.request.CartoonMemberRating;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
 import com.webtoon.cartoonmember.dto.request.CartoonMemberThumbsUp;
 import com.webtoon.cartoonmember.application.CartoonMemberService;
+import com.webtoon.cartoonmember.dto.request.CartoonSearchAge;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.content.dto.response.ContentListResult;
 import com.webtoon.global.openfeign.DynamicUrlOpenFeign;
@@ -63,11 +64,11 @@ public class CartoonMemberController {
         return ResponseEntity.ok(new CartoonListResult(cartoonMemberResponseList.size(), cartoonMemberResponseList));
     }
 
-    @PostMapping("/cartoonMember/ageRange")
+    @GetMapping("/cartoonMember/ageRange")
     public ResponseEntity<CartoonListResult> findAllByMemberAge(
-            @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
+            @ModelAttribute @Valid CartoonSearchAge cartoonSearchAge) {
 
-        List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearchDto);
+        List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearchAge);
         return ResponseEntity.ok(new CartoonListResult(cartoonCoreList.size(), cartoonCoreList));
     }
 

@@ -9,10 +9,12 @@ import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoon.dto.response.QCartoonCore;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.domain.QCartoonMember;
+import com.webtoon.cartoonmember.dto.request.CartoonSearchAge;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.cartoonmember.dto.response.QCartoonMemberResponse;
 import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
 import com.webtoon.member.domain.QMember;
+import com.webtoon.util.constant.ConstantCommon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +28,7 @@ import static com.webtoon.author.domain.QAuthor.author;
 import static com.webtoon.cartoon.domain.QCartoon.*;
 import static com.webtoon.cartoonmember.domain.QCartoonMember.cartoonMember;
 import static com.webtoon.member.domain.QMember.member;
+import static com.webtoon.util.constant.ConstantCommon.*;
 
 
 @RequiredArgsConstructor
@@ -39,13 +42,13 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
     public Optional<CartoonMember> findByCartoonIdAndMemberId(Long cartoonId, Long memberId) {
         return Optional.ofNullable(
                 jpaQueryFactory.selectFrom(cartoonMember)
-                .leftJoin(cartoonMember.cartoon, cartoon)
-                .fetchJoin()
-                .where(cartoonMember.cartoon.id.eq(cartoonId))
-                .leftJoin(cartoonMember.member, member)
-                .fetchJoin()
-                .where(cartoonMember.member.id.eq(memberId))
-                .fetchOne());
+                        .leftJoin(cartoonMember.cartoon, cartoon)
+                        .fetchJoin()
+                        .where(cartoon.id.eq(cartoonId))
+                        .leftJoin(cartoonMember.member, member)
+                        .fetchJoin()
+                        .where(member.id.eq(memberId))
+                        .fetchOne());
     }
 
     @Override
@@ -89,16 +92,18 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
     public long findCartoonSizeWhereRated(Long cartoonId) {
         return jpaQueryFactory.select(cartoonMember.count())
                 .from(cartoonMember)
+                .leftJoin(cartoonMember.cartoon, cartoon)
                 .where(
-                        cartoonMember.cartoon.id.eq(cartoonId),
+                        cartoon.id.eq(cartoonId),
                         cartoonMember.rated.eq(true)
                 )
                 .fetchOne().longValue();
     }
 
+    // todo ManyToOne Dto로 조회
     @Override
-    public List<CartoonCore> findAllByMemberAge(CartoonSearch cartoonSearch) {
-        List<CartoonCore> cartoonCoreList = jpaQueryFactory
+    public List<CartoonCore> findAllByMemberAge(CartoonSearchAge cartoonSearchAge) {
+        return jpaQueryFactory
                 .select(new QCartoonCore(
                         cartoon.title,
                         author.nickname,
@@ -110,14 +115,14 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .leftJoin(cartoonMember.member, member)
                 .where(
                         member.birthDate.between(
-                                LocalDate.now().minusYears(cartoonSearch.getAgeRange() + 8),
-                                LocalDate.now().minusYears(cartoonSearch.getAgeRange() - 1))
+                                LocalDate.now().minusYears(lowerBoundary(cartoonSearchAge.getAgeRange())),
+                                LocalDate.now().minusYears(upperBoundary(cartoonSearchAge.getAgeRange())))
                 )
                 .groupBy(cartoon.title)
                 .orderBy(cartoon.likes.desc())
+                .offset(cartoonSearchAge.getPage())
+                .limit(cartoonSearchAge.getSize())
                 .fetch();
-
-        return cartoonCoreList;
     }
 
     @Override

@@ -12,7 +12,8 @@ public class ConstantValid {
     public static final String YEAR_MONTH_DAY = "yyyy-MM-dd";
     public static final String CARTOON_TITLE_VALID_MESSAGE = "만화 제목을 입력해주세요";
     public static final String PAGE_VALID_MESSAGE = "0 이상의 페이지를 입력해주세요";
-    public static final String SIZE_VALID_MESSAGE = "한 페이지당 가져올 만화의 수를 입력해주세요";
+    public static final String AGE_VALID_MESSAGE = "1 이상의 나이를 입력해주세요";
+    public static final String CARTOON_SIZE_VALID_MESSAGE = "한 페이지당 가져올 만화의 수를 입력해주세요";
     public static final String SUBTITLE_VALID_MESSAGE = "만화 부제를 입력해주세요";
     public static final String EPISODE_VALID_MESSAGE = "몇 화인지를 입력해주세요";
     public static final String REGISTRATION_DATE_VALID_MESSAGE = "등록 날짜를 입력해주세요";

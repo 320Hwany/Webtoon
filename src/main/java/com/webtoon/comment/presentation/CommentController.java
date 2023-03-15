@@ -59,9 +59,15 @@ public class CommentController {
         return ResponseEntity.ok(new CommentResult(commentResponseList.size(), commentResponseList));
     }
 
-    @GetMapping("/comment/{contentId}")
-    public ResponseEntity<CommentResult> findAllForContent(@PathVariable Long contentId, Pageable pageable) {
-        List<CommentContentResp> commentContentRespList = commentService.findAllForContent(contentId, pageable);
+    @GetMapping("/comment-newest/{contentId}")
+    public ResponseEntity<CommentResult> findAllForContentNewest(@PathVariable Long contentId, Pageable pageable) {
+        List<CommentContentResp> commentContentRespList = commentService.findAllForContentNewest(contentId, pageable);
+        return ResponseEntity.ok(new CommentResult(commentContentRespList.size(), commentContentRespList));
+    }
+
+    @GetMapping("/comment-likes/{contentId}")
+    public ResponseEntity<CommentResult> findAllForContentLikes(@PathVariable Long contentId, Pageable pageable) {
+        List<CommentContentResp> commentContentRespList = commentService.findAllForContentLikes(contentId, pageable);
         return ResponseEntity.ok(new CommentResult(commentContentRespList.size(), commentContentRespList));
     }
 }

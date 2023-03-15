@@ -19,7 +19,6 @@ class ContentTest extends DomainTest {
         ContentUpdate contentUpdate = ContentUpdate.builder()
                 .subTitle("수정 부제입니다")
                 .episode(30)
-                .registrationDate(LocalDate.of(1999, 3, 20))
                 .build();
 
         // when
@@ -28,19 +27,5 @@ class ContentTest extends DomainTest {
         // then
         assertThat(content.getSubTitle()).isEqualTo("수정 부제입니다");
         assertThat(content.getEpisode()).isEqualTo(30);
-        assertThat(content.getRegistrationDate()).isEqualTo(LocalDate.of(1999, 3, 20));
-    }
-
-    @Test
-    void getLockLocalDate() {
-        // given
-        Content content = getContent();
-
-        // when
-        LocalDate lockLocalDate = content.getLockLocalDate(TWO_WEEKS);
-        LocalDate registrationDate = content.getRegistrationDate();
-
-        // then
-        assertThat(lockLocalDate).isEqualTo(registrationDate.plusWeeks(2));
     }
 }

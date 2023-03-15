@@ -37,18 +37,6 @@ public class CartoonSearch {
         this.genre = genre;
     }
 
-    public static CartoonSearch getByCartoonSearchDto(CartoonSearchDto cartoonSearchDto) {
-        return CartoonSearch.builder()
-                .page(cartoonSearchDto.getPage())
-                .title(cartoonSearchDto.getTitle())
-                .nickname(cartoonSearchDto.getNickname())
-                .ageRange(cartoonSearchDto.getAgeRange())
-                .dayOfTheWeek(DayOfTheWeek.valueOf(cartoonSearchDto.getDayOfTheWeek()))
-                .progress(Progress.valueOf(cartoonSearchDto.getProgress()))
-                .genre(Genre.valueOf(cartoonSearchDto.getGenre()))
-                .build();
-    }
-
     public int getOffset() {
         return Math.max(page - 1, 0) * limit;
     }

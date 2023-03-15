@@ -1,16 +1,18 @@
-package com.webtoon.cartoon.dto.request;
+package com.webtoon.cartoonmember.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 
 import static com.webtoon.util.constant.ConstantValid.*;
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter @Setter
-public class CartoonSearchTitle {
+@NoArgsConstructor(access = PROTECTED)
+public class CartoonSearchAge {
 
     @Min(value = 0, message = PAGE_VALID_MESSAGE)
     private int page;
@@ -18,13 +20,13 @@ public class CartoonSearchTitle {
     @Min(value = 0, message = CARTOON_SIZE_VALID_MESSAGE)
     private int size;
 
-    @NotBlank(message = CARTOON_TITLE_VALID_MESSAGE)
-    private String title;
+    @Min(value = 1, message = AGE_VALID_MESSAGE)
+    private long ageRange;
 
     @Builder
-    public CartoonSearchTitle(int page, int size, String title) {
+    public CartoonSearchAge(int page, int size, long ageRange) {
         this.page = page;
         this.size = size;
-        this.title = title;
+        this.ageRange = ageRange;
     }
 }

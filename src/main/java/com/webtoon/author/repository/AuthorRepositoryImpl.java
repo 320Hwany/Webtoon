@@ -37,6 +37,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         return authorJpaRepository.findByNickname(nickname);
     }
 
+    // todo OneToMany One 이 List
     @Override
     public List<Author> findAllByNicknameContains(CartoonSearch cartoonSearch) {
         PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
