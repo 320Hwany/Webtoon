@@ -6,6 +6,7 @@ Java 17, Spring Boot, Spring Data JPA, QueryDsl, Spring Rest Docs, JUnit 5, H2, 
 
 ## Trouble Shooting
 
+[Spring Data JPA, QueryDsl 사용하여 조회 기능 구현하기](https://320hwany.tistory.com/66)        
 [OSIV 설정을 False로 변경하기위한 리팩토링 과정](https://320hwany.tistory.com/65)        
 [테스트 코드 작성시 @Transactional 사용하지 않기](https://320hwany.tistory.com/64)       
 [요청과 응답에서 엔티티를 직접 사용하면 안되는 이유](https://320hwany.tistory.com/63)   
