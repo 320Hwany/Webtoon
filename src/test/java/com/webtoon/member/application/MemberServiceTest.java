@@ -6,6 +6,7 @@ import com.webtoon.member.dto.request.MemberCharge;
 import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.dto.request.MemberSignup;
 import com.webtoon.member.dto.request.MemberUpdate;
+import com.webtoon.member.dto.response.MemberResponse;
 import com.webtoon.member.exception.MemberDuplicationException;
 import com.webtoon.member.exception.MemberNotFoundException;
 import com.webtoon.util.ServiceTest;
@@ -33,10 +34,11 @@ class MemberServiceTest extends ServiceTest {
                 .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password("1234")
+                .gender("MAN")
                 .build();
 
         // when
-        memberService.signupSet(memberSignup);
+        memberService.signup(memberSignup);
 
         // then
         assertThat(memberRepository.count()).isEqualTo(1L);
@@ -44,7 +46,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("memberSession에 맞는 member의 정보가 수정됩니다 - 성공")
-    void updateSet200() {
+    void update200() {
         // given
         Member member = saveMemberInRepository();
 
@@ -62,17 +64,16 @@ class MemberServiceTest extends ServiceTest {
                 .build();
 
         // when
-        Member findMember = memberService.updateSet(memberSession, memberUpdate);
+        MemberResponse memberResponse = memberService.update(memberSession, memberUpdate);
 
         // then
-        assertThat(findMember.getNickname()).isEqualTo(memberUpdate.getNickname());
-        assertThat(findMember.getEmail()).isEqualTo(memberUpdate.getEmail());
-        assertThat(passwordEncoder.matches("123456789", findMember.getPassword())).isTrue();
+        assertThat(memberResponse.getNickname()).isEqualTo(memberUpdate.getNickname());
+        assertThat(memberResponse.getEmail()).isEqualTo(memberUpdate.getEmail());
     }
 
     @Test
     @DisplayName("memberSession에 맞는 member가 없으면 정보를 수정할 수 없습니다 - 실패")
-    void updateSet404() {
+    void update404() {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
@@ -89,7 +90,7 @@ class MemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(MemberNotFoundException.class,
-                () -> memberService.updateSet(memberSession, memberUpdate));
+                () -> memberService.update(memberSession, memberUpdate));
     }
 
     @Test
@@ -139,11 +140,17 @@ class MemberServiceTest extends ServiceTest {
                 .password("1234")
                 .build();
 
+        MockHttpServletRequest request = new MockHttpServletRequest();
+
         // when
-        MemberSession memberSession = memberService.makeMemberSession(memberLogin);
+        MemberResponse memberResponse = memberService.login(memberLogin, request);
 
         // then
-        assertThat(memberSession.getId()).isEqualTo(member.getId());
+        assertThat(memberResponse.getNickname()).isEqualTo(member.getNickname());
+        assertThat(memberResponse.getEmail()).isEqualTo(member.getEmail());
+        HttpSession session = request.getSession(false);
+        MemberSession findMemberSession = (MemberSession) session.getAttribute("memberSession");
+        assertThat(findMemberSession.getId()).isEqualTo(member.getId());
     }
 
     @Test
@@ -155,32 +162,11 @@ class MemberServiceTest extends ServiceTest {
                 .password("1234")
                 .build();
 
+        MockHttpServletRequest request = new MockHttpServletRequest();
+
         // expected
         assertThrows(MemberNotFoundException.class,
-                () -> memberService.makeMemberSession(memberLogin));
-    }
-
-    @Test
-    @DisplayName("MemberSession에 대한 세션을 생성합니다 - 성공")
-    void makeSessionForMemberSession200() {
-        // given
-        Member member = saveMemberInRepository();
-        MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
-
-        MemberLogin memberLogin = MemberLogin.builder()
-                .email("yhwjd@naver.com")
-                .password("1234")
-                .build();
-
-        MemberSession memberSession = memberService.makeMemberSession(memberLogin);
-
-        // when
-        memberService.makeSessionForMemberSession(memberSession, httpServletRequest);
-
-        // then
-        HttpSession session = httpServletRequest.getSession(false);
-        MemberSession findMemberSession = (MemberSession) session.getAttribute("memberSession");
-        assertThat(findMemberSession.getId()).isEqualTo(member.getId());
+                () -> memberService.login(memberLogin, request));
     }
 
     @Test
@@ -253,7 +239,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("MemberSession에 맞는 Member가 있다면 Coin을 충전할 수 있습니다 - 성공")
-    void chargeCoinTransactionSet200() {
+    void chargeCoin200() {
         // given
         Member member = saveMemberInRepository();
 
@@ -269,7 +255,7 @@ class MemberServiceTest extends ServiceTest {
                 .build();
 
         // when
-        memberService.chargeCoinTransactionSet(memberSession, memberCharge);
+        memberService.chargeCoin(memberSession, memberCharge);
         Member findMember = memberRepository.getById(memberSession.getId());
 
         // then
@@ -278,7 +264,7 @@ class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("MemberSession에 맞는 Member가 없다면 Coin을 충전할 수 없습니다 - 실패")
-    void chargeCoinTransactionSet404() {
+    void chargeCoin404() {
         // given
         MemberSession memberSession = MemberSession.builder()
                 .id(1L)
@@ -293,6 +279,6 @@ class MemberServiceTest extends ServiceTest {
 
         // expected
         assertThrows(MemberNotFoundException.class,
-                () -> memberService.chargeCoinTransactionSet(memberSession, memberCharge));
+                () -> memberService.chargeCoin(memberSession, memberCharge));
     }
 }

@@ -5,7 +5,7 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.dto.request.CartoonEnumField;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.exception.CartoonForbiddenException;
-import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.cartoon.exception.CartoonEnumTypeException;
 import com.webtoon.util.BaseTimeEntity;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
@@ -68,7 +68,7 @@ public class Cartoon extends BaseTimeEntity {
         boolean isGenreValid = Genre.validateValid(cartoonEnumField.getGenre());
 
         if ((!isDayValid) || (!isProgressValid) || (!isGenreValid)) {
-                throw new EnumTypeValidException(isDayValid, isProgressValid, isGenreValid);
+                throw new CartoonEnumTypeException(isDayValid, isProgressValid, isGenreValid);
         }
     }
 

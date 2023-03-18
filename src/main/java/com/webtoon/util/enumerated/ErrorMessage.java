@@ -29,6 +29,7 @@ public enum ErrorMessage {
     DAY_OF_THE_WEEK_BAD_REQUEST("요일을 잘못 입력하였습니다"),
     PROGRESS_BAD_REQUEST("현재 진행 상황을 잘못 입력하였습니다"),
     GENRE_BAD_REQUEST("장르를 잘못 입력하였습니다"),
+    GENDER_BAD_REQUEST("성별을 잘못 입력하였습니다"),
     VALID_BAD_REQUEST("잘못된 요청입니다");
 
     private String value;

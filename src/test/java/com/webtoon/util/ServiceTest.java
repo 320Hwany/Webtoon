@@ -16,6 +16,7 @@ import com.webtoon.contentmember.repository.ContentMemberRepository;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.repository.MemberRepository;
 import com.webtoon.util.enumerated.DayOfTheWeek;
+import com.webtoon.util.enumerated.Gender;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,7 @@ public class ServiceTest {
                 .password(passwordEncoder.encode("1234"))
                 .coin(ZERO_OF_TYPE_LONG)
                 .birthDate(LocalDate.of(1999,03,20))
+                .gender(Gender.MAN)
                 .build();
 
         memberRepository.save(member);

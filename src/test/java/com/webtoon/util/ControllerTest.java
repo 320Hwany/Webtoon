@@ -26,6 +26,7 @@ import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.repository.MemberRepository;
 import com.webtoon.member.application.MemberService;
 import com.webtoon.util.enumerated.DayOfTheWeek;
+import com.webtoon.util.enumerated.Gender;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
 import org.junit.jupiter.api.BeforeEach;
@@ -169,6 +170,7 @@ public class ControllerTest {
                 .email("yhwjd@naver.com")
                 .password(passwordEncoder.encode("1234"))
                 .coin(ZERO_OF_TYPE_LONG)
+                .gender(Gender.MAN)
                 .build();
 
         memberRepository.save(member);

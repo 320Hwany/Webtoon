@@ -1,12 +1,12 @@
 package com.webtoon.global.error;
 
-import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.cartoon.exception.CartoonEnumTypeException;
+import com.webtoon.member.exception.MemberEnumTypeException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.FieldError;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,7 +29,12 @@ public class ErrorResponse {
         validation.put(fieldError.getField(), fieldError.getDefaultMessage());
     }
 
-    public void addValidation(EnumTypeValidException e) {
+    public void addValidation(CartoonEnumTypeException e) {
+        Map<String, String> enumTypeValidation = e.getValidation();
+        validation = enumTypeValidation;
+    }
+
+    public void addValidation(MemberEnumTypeException e) {
         Map<String, String> enumTypeValidation = e.getValidation();
         validation = enumTypeValidation;
     }

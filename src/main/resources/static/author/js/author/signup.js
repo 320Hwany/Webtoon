@@ -17,8 +17,10 @@ document.getElementById("authorSignup").addEventListener('click', function (){
     }).then(res => {
         if(res.status == "200"){
             window.location.href = "http://localhost:8080/author/home.html"
-        } else if(res.status == "400"){
-            alert("회원정보를 다시 입력해주세요")
+        } else if(res.status != "200"){
+            res.json().then(data =>{
+                alert(data)
+            })
         }
     })
 })

@@ -11,7 +11,6 @@ import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.exception.CartoonForbiddenException;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
-import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.util.ServiceTest;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
@@ -126,7 +125,6 @@ class CartoonServiceTest extends ServiceTest {
                 .page(0)
                 .dayOfTheWeek("MON")
                 .progress("NONE")
-                .genre("NONE")
                 .build();
 
         List<Cartoon> cartoonMonList = LongStream.range(1, 21)
@@ -259,21 +257,6 @@ class CartoonServiceTest extends ServiceTest {
         // expected
         assertThrows(CartoonForbiddenException.class,
                 () -> cartoonService.validateAuthorityForCartoon(anotherAuthorSession, cartoon));
-    }
-
-    @Test
-    @DisplayName("입력한 장르가 유효하면 메소드를 통과합니다 - 성공")
-    void checkGenreValid200() {
-        // expected
-        cartoonService.validateGenreValid("ROMANCE");
-    }
-
-    @Test
-    @DisplayName("입력한 장르가 유효하지 않으면 예외가 발생합니다 - 실패")
-    void checkGenreValid400() {
-        // expected
-        assertThrows(EnumTypeValidException.class,
-                () -> cartoonService.validateGenreValid("존재하지 않는 장르"));
     }
 
     @Test

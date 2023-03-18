@@ -5,7 +5,7 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.dto.request.CartoonEnumField;
 import com.webtoon.cartoon.dto.request.CartoonUpdate;
 import com.webtoon.cartoon.exception.CartoonForbiddenException;
-import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.cartoon.exception.CartoonEnumTypeException;
 import com.webtoon.util.DomainTest;
 import com.webtoon.util.constant.ConstantCommon;
 import com.webtoon.util.enumerated.DayOfTheWeek;
@@ -141,7 +141,7 @@ class CartoonTest extends DomainTest {
                 .build();
 
         // expected
-        assertThrows(EnumTypeValidException.class,
+        assertThrows(CartoonEnumTypeException.class,
                 () -> Cartoon.validateEnumTypeValid(cartoonEnumField));
     }
 

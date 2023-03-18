@@ -7,9 +7,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.request.*;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
-import com.webtoon.cartoon.exception.EnumTypeValidException;
 import com.webtoon.cartoon.repository.CartoonRepository;
-import com.webtoon.util.enumerated.Genre;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,12 +49,6 @@ public class CartoonService {
         CartoonSearch cartoonSearch = cartoonEnumValidField.toCartoonSearch();
         List<Cartoon> cartoonList = cartoonRepository.findAllByCartoonCondOrderByRating(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);
-    }
-
-    public void validateGenreValid(String genre) {
-        if (!Genre.validateValid(genre)) {
-            throw new EnumTypeValidException(false, false, true);
-        }
     }
 
     @Transactional

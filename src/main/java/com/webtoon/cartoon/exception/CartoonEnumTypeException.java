@@ -1,25 +1,24 @@
 package com.webtoon.cartoon.exception;
 
+import com.webtoon.global.error.EnumTypeException;
 import lombok.Getter;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.webtoon.util.constant.ConstantCommon.*;
 import static com.webtoon.util.enumerated.ErrorMessage.*;
 
 @Getter
-public class EnumTypeValidException extends RuntimeException {
+public class CartoonEnumTypeException extends EnumTypeException {
 
-    private final String statusCode = BAD_REQUEST;
     private static final String MESSAGE = ENUM_TYPE_VALIDATION.getValue();
+    private Map<String, String> validation = new ConcurrentHashMap<>();
 
-    private Map<String, String> validation = new HashMap<>();
-
-    public EnumTypeValidException(Boolean isDayValid, Boolean isProgressValid, Boolean isGenreValid) {
+    public CartoonEnumTypeException(Boolean isDayValid, Boolean isProgressValid, Boolean isGenreValid) {
         super(MESSAGE);
         if (!isDayValid) {
-            validation.put(DAY_OF_THE_WEEk, DAY_OF_THE_WEEK_BAD_REQUEST.getValue());
+            validation.put(DAY_OF_THE_WEEK, DAY_OF_THE_WEEK_BAD_REQUEST.getValue());
         }
         if (!isProgressValid) {
             validation.put(PROGRESS, PROGRESS_BAD_REQUEST.getValue());

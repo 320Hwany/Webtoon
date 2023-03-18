@@ -10,6 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
 
+import java.time.LocalDate;
+
 import static org.springframework.http.MediaType.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -25,6 +27,7 @@ class MemberControllerTest extends ControllerTest {
                 .nickname("회원 닉네임")
                 .email("yhwjd99@gmail.com")
                 .password("1234")
+                .gender("MAN")
                 .build();
 
         String memberSignupJson = objectMapper.writeValueAsString(memberSignup);

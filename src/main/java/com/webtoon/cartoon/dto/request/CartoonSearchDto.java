@@ -1,7 +1,7 @@
 package com.webtoon.cartoon.dto.request;
 
 import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.cartoon.exception.CartoonEnumTypeException;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
@@ -72,7 +72,7 @@ public class CartoonSearchDto {
         boolean isGenreValid = Genre.validateValid(genre);
 
         if ((!isDayValid) || (!isProgressValid) || (!isGenreValid)) {
-            throw new EnumTypeValidException(isDayValid, isProgressValid, isGenreValid);
+            throw new CartoonEnumTypeException(isDayValid, isProgressValid, isGenreValid);
         }
     }
 }

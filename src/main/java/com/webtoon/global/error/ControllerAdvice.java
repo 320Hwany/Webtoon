@@ -1,10 +1,10 @@
 package com.webtoon.global.error;
 
-import com.webtoon.cartoon.exception.EnumTypeValidException;
+import com.webtoon.cartoon.exception.CartoonEnumTypeException;
 import com.webtoon.contentImgInfo.exception.GetImgException;
 import com.webtoon.contentImgInfo.exception.ImgUploadException;
 import com.webtoon.member.exception.LackOfCoinException;
-import com.webtoon.util.constant.ConstantCommon;
+import com.webtoon.member.exception.MemberEnumTypeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
+import static com.webtoon.util.constant.ConstantCommon.*;
 import static com.webtoon.util.enumerated.ErrorMessage.VALID_BAD_REQUEST;
 
 @RestControllerAdvice
@@ -21,7 +22,7 @@ public class ControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
-                .statusCode(ConstantCommon.BAD_REQUEST)
+                .statusCode(BAD_REQUEST)
                 .message(VALID_BAD_REQUEST.getValue())
                 .build();
 
@@ -82,8 +83,19 @@ public class ControllerAdvice {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }
 
-    @ExceptionHandler(EnumTypeValidException.class)
-    public ResponseEntity<ErrorResponse> enumTypeValidException(EnumTypeValidException e) {
+    @ExceptionHandler(CartoonEnumTypeException.class)
+    public ResponseEntity<ErrorResponse> enumTypeValidException(CartoonEnumTypeException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .statusCode(e.getStatusCode())
+                .message(e.getMessage())
+                .build();
+
+        errorResponse.addValidation(e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(MemberEnumTypeException.class)
+    public ResponseEntity<ErrorResponse> enumTypeValidException(MemberEnumTypeException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .statusCode(e.getStatusCode())
                 .message(e.getMessage())

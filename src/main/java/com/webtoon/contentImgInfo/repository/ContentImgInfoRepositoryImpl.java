@@ -23,6 +23,7 @@ public class ContentImgInfoRepositoryImpl implements ContentImgInfoRepository {
         contentImgInfoJpaRepository.save(contentImgInfo);
     }
 
+    // todo oneToOne
     @Override
     public Optional<ContentImgInfo> findByContentId(Long contentId) {
         return Optional.ofNullable(
@@ -30,7 +31,7 @@ public class ContentImgInfoRepositoryImpl implements ContentImgInfoRepository {
                 .leftJoin(contentImgInfo.content, content)
                 .fetchJoin()
                 .where(content.id.eq(contentId))
-                .fetchOne());
+                .fetchFirst());
     }
 
     @Override

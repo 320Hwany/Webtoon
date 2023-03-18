@@ -1,6 +1,5 @@
 package com.webtoon.member.presentation;
 
-import com.webtoon.member.domain.Member;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.member.dto.request.MemberCharge;
 import com.webtoon.member.dto.request.MemberLogin;
@@ -24,7 +23,7 @@ public class MemberController {
 
     @PostMapping("/member/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid MemberSignup memberSignup) {
-        memberService.signupSet(memberSignup);
+        memberService.signup(memberSignup);
         return ResponseEntity.ok().build();
     }
 
@@ -32,17 +31,14 @@ public class MemberController {
     public ResponseEntity<MemberResponse> login(@RequestBody @Valid MemberLogin memberLogin,
                                                 HttpServletRequest request) {
 
-        MemberSession memberSession = memberService.makeMemberSession(memberLogin);
-        memberService.makeSessionForMemberSession(memberSession, request);
-        MemberResponse memberResponse = MemberResponse.getFromMemberSession(memberSession);
+        MemberResponse memberResponse = memberService.login(memberLogin, request);
         return ResponseEntity.ok(memberResponse);
     }
 
     @PatchMapping("/member")
     public ResponseEntity<MemberResponse> update(@LoginForMember MemberSession memberSession,
                                                  @RequestBody @Valid MemberUpdate memberUpdate) {
-        Member member = memberService.updateSet(memberSession, memberUpdate);
-        MemberResponse memberResponse = MemberResponse.getFromMember(member);
+        MemberResponse memberResponse = memberService.update(memberSession, memberUpdate);
         return ResponseEntity.ok(memberResponse);
     }
 
@@ -62,7 +58,7 @@ public class MemberController {
     @PostMapping("/member/charge")
     public ResponseEntity<Void> charge(@LoginForMember MemberSession memberSession,
                                        @RequestBody @Valid MemberCharge memberCharge) {
-        memberService.chargeCoinTransactionSet(memberSession, memberCharge);
+        memberService.chargeCoin(memberSession, memberCharge);
         return ResponseEntity.ok().build();
     }
 }

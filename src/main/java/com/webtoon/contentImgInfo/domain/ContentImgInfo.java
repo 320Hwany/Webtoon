@@ -26,7 +26,9 @@ public class ContentImgInfo extends BaseTimeEntity {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "content_img_info_id")
     private Long id;
+
     private String imgName;
+
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "content_id")
     private Content content;

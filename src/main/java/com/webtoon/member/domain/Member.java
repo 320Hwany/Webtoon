@@ -4,6 +4,7 @@ import com.webtoon.member.dto.request.MemberUpdate;
 import com.webtoon.member.exception.LackOfCoinException;
 import com.webtoon.util.BaseTimeEntity;
 import com.webtoon.util.constant.ConstantValid;
+import com.webtoon.util.enumerated.Gender;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,14 +39,18 @@ public class Member extends BaseTimeEntity {
     @DateTimeFormat(pattern = YEAR_MONTH_DAY)
     private LocalDate birthDate;
 
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     private long coin;
 
     @Builder
-    public Member(String nickname, String email, String password, LocalDate birthDate, long coin) {
+    public Member(String nickname, String email, String password, LocalDate birthDate, Gender gender, long coin) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.birthDate = birthDate;
+        this.gender = gender;
         this.coin = coin;
     }
 

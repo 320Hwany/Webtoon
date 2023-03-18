@@ -1,6 +1,7 @@
 package com.webtoon.member.dto.request;
 
 import com.webtoon.member.domain.Member;
+import com.webtoon.util.enumerated.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,9 +18,7 @@ import static com.webtoon.util.constant.ConstantCommon.ZERO_OF_TYPE_LONG;
 import static com.webtoon.util.constant.ConstantValid.*;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class MemberSignup {
 
     @NotBlank(message = NICKNAME_VALID_MESSAGE)
@@ -34,12 +33,24 @@ public class MemberSignup {
     @DateTimeFormat(pattern = YEAR_MONTH_DAY)
     private LocalDate birthDate;
 
+    private String gender;
+
+    @Builder
+    public MemberSignup(String nickname, String email, String password, LocalDate birthDate, String gender) {
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.birthDate = birthDate;
+        this.gender = gender;
+    }
+
     public Member toEntity(PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .nickname(nickname)
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .birthDate(birthDate)
+                .gender(Gender.valueOf(gender))
                 .coin(ZERO_OF_TYPE_LONG)
                 .build();
     }
