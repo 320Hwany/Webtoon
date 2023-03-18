@@ -3,11 +3,8 @@ package com.webtoon.cartoonmember.presentation;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoon.dto.response.CartoonListResult;
-import com.webtoon.cartoonmember.dto.request.CartoonMemberRating;
-import com.webtoon.cartoonmember.dto.request.CartoonMemberSave;
-import com.webtoon.cartoonmember.dto.request.CartoonMemberThumbsUp;
+import com.webtoon.cartoonmember.dto.request.*;
 import com.webtoon.cartoonmember.application.CartoonMemberService;
-import com.webtoon.cartoonmember.dto.request.CartoonSearchAge;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.content.dto.response.ContentListResult;
 import com.webtoon.global.openfeign.DynamicUrlOpenFeign;
@@ -69,6 +66,14 @@ public class CartoonMemberController {
             @ModelAttribute @Valid CartoonSearchAge cartoonSearchAge) {
 
         List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearchAge);
+        return ResponseEntity.ok(new CartoonListResult(cartoonCoreList.size(), cartoonCoreList));
+    }
+
+    @GetMapping("/cartoonMember/gender")
+    public ResponseEntity<CartoonListResult> findAllByMemberGender(
+            @ModelAttribute @Valid CartoonSearchGender cartoonSearchGender) {
+
+        List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberGender(cartoonSearchGender);
         return ResponseEntity.ok(new CartoonListResult(cartoonCoreList.size(), cartoonCoreList));
     }
 

@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
+import com.webtoon.cartoon.domain.QCartoon;
 import com.webtoon.cartoon.dto.request.CartoonSearchTitle;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.util.enumerated.DayOfTheWeek;

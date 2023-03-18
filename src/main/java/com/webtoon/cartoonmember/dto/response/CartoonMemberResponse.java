@@ -13,15 +13,15 @@ public class CartoonMemberResponse {
 
     private String title;
 
-    private String nickname;
+    private String authorNickname;
 
     private LocalDateTime lastReadDate;
 
     @Builder
     @QueryProjection
-    public CartoonMemberResponse(String title, String nickname, LocalDateTime lastReadDate) {
+    public CartoonMemberResponse(String title, String authorNickname, LocalDateTime lastReadDate) {
         this.title = title;
-        this.nickname = nickname;
+        this.authorNickname = authorNickname;
         this.lastReadDate = lastReadDate;
     }
 }

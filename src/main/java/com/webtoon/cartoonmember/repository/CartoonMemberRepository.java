@@ -1,10 +1,10 @@
 package com.webtoon.cartoonmember.repository;
 
 
-import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonSearchAge;
+import com.webtoon.cartoonmember.dto.request.CartoonSearchGender;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 
 import java.util.List;
@@ -22,9 +22,11 @@ public interface CartoonMemberRepository {
 
     List<CartoonMemberResponse> findLikeListForMember(Long memberId);
 
-    long findCartoonSizeWhereRated(Long cartoonId);
-
     List<CartoonCore> findAllByMemberAge(CartoonSearchAge cartoonSearchAge);
+
+    List<CartoonCore> findAllByMemberGender(CartoonSearchGender cartoonSearchGender);
+
+    long findCartoonSizeWhereRated(Long cartoonId);
 
     void deleteAll();
 

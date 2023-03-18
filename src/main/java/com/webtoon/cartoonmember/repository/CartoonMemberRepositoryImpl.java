@@ -10,11 +10,13 @@ import com.webtoon.cartoon.dto.response.QCartoonCore;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.domain.QCartoonMember;
 import com.webtoon.cartoonmember.dto.request.CartoonSearchAge;
+import com.webtoon.cartoonmember.dto.request.CartoonSearchGender;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.cartoonmember.dto.response.QCartoonMemberResponse;
 import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
 import com.webtoon.member.domain.QMember;
 import com.webtoon.util.constant.ConstantCommon;
+import com.webtoon.util.enumerated.Gender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -122,6 +124,27 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .orderBy(cartoon.likes.desc())
                 .offset(cartoonSearchAge.getPage())
                 .limit(cartoonSearchAge.getSize())
+                .fetch();
+    }
+
+    @Override
+    public List<CartoonCore> findAllByMemberGender(CartoonSearchGender cartoonSearchGender) {
+        return jpaQueryFactory.select(new QCartoonCore(
+                        cartoon.title,
+                        author.nickname,
+                        cartoon.likes
+                ))
+                .from(cartoonMember)
+                .leftJoin(cartoonMember.cartoon, cartoon)
+                .leftJoin(cartoon.author, author)
+                .leftJoin(cartoonMember.member, member)
+                .where(
+                        member.gender.eq(Gender.valueOf(cartoonSearchGender.getGender()))
+                )
+                .groupBy(cartoon.title)
+                .orderBy(cartoonMember.cartoon.count().desc())
+                .offset(cartoonSearchGender.getPage())
+                .limit(cartoonSearchGender.getSize())
                 .fetch();
     }
 

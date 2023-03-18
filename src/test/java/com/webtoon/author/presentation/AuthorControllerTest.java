@@ -116,17 +116,9 @@ class AuthorControllerTest extends ControllerTest {
         // given
         saveAuthorInRepository();
 
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(0)
-                .nickname("작가 이름")
-                .dayOfTheWeek("NONE")
-                .progress("NONE")
-                .genre("NONE")
-                .build();
-
-
         // expected
         mockMvc.perform(get("/author/nickname")
+                        .param("page", "0")
                         .param("nickname", "작가 이름"))
                 .andExpect(status().isOk())
                 .andDo(document("author/nickname/200"));
