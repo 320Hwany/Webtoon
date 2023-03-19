@@ -102,7 +102,6 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 .fetchOne().longValue();
     }
 
-    // todo ManyToOne Dto로 조회
     @Override
     public List<CartoonCore> findAllByMemberAge(CartoonSearchAge cartoonSearchAge) {
         return jpaQueryFactory

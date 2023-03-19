@@ -40,7 +40,6 @@ public class CartoonRepositoryImpl implements CartoonRepository {
                 .orElseThrow(CartoonNotFoundException::new);
     }
 
-    // todo ManyToOne EntityGraph 사용
     @Override
     public List<Cartoon> findAllByTitle(CartoonSearchTitle cartoonSearchTitle) {
         PageRequest pageRequest = PageRequest.of(cartoonSearchTitle.getPage(), cartoonSearchTitle.getSize(),
@@ -48,7 +47,6 @@ public class CartoonRepositoryImpl implements CartoonRepository {
         return cartoonJpaRepository.findAllByTitleContains(cartoonSearchTitle.getTitle(), pageRequest);
     }
 
-    // todo ManyToOne 엔티티로 조회, 동적쿼리
     @Override
     public List<Cartoon> findAllByCartoonCondOrderByLikes(CartoonSearch cartoonSearch) {
         return jpaQueryFactory

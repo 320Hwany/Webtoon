@@ -7,6 +7,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpSession;
 
+import static com.webtoon.util.constant.ConstantCommon.AUTHOR_SESSION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AuthorSessionTest extends DomainTest {
@@ -30,12 +31,7 @@ public class AuthorSessionTest extends DomainTest {
     @DisplayName("세션을 생성합니다")
     void makeSession() {
         // given
-        AuthorSession authorSession = AuthorSession.builder()
-                .nickname("작가 닉네임")
-                .email("yhwjd99@gmail.com")
-                .password("1234")
-                .build();
-
+        AuthorSession authorSession = getAuthorSession();
         MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
 
         // when
@@ -43,7 +39,7 @@ public class AuthorSessionTest extends DomainTest {
 
         // then
         HttpSession findSession = httpServletRequest.getSession(false);
-        AuthorSession findAuthorSession = (AuthorSession) findSession.getAttribute("authorSession");
+        AuthorSession findAuthorSession = (AuthorSession) findSession.getAttribute(AUTHOR_SESSION);
         assertThat(findSession).isNotNull();
         assertThat(findAuthorSession).isEqualTo(authorSession);
     }
@@ -52,15 +48,10 @@ public class AuthorSessionTest extends DomainTest {
     @DisplayName("작가 로그인 세션을 삭제합니다")
     void invalidateSession() {
         // given
-        AuthorSession authorSession = AuthorSession.builder()
-                .nickname("작가 닉네임")
-                .email("yhwjd99@gmail.com")
-                .password("1234")
-                .build();
-
+        AuthorSession authorSession = getAuthorSession();
         MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
         HttpSession session = httpServletRequest.getSession(true);
-        session.setAttribute("SessionTest", authorSession);
+        session.setAttribute(AUTHOR_SESSION, authorSession);
 
         // when
         authorSession.invalidateSession(httpServletRequest);

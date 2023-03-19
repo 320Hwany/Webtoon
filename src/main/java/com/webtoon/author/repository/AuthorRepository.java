@@ -2,6 +2,7 @@ package com.webtoon.author.repository;
 
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
+import com.webtoon.author.dto.request.AuthorSearchNickname;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,7 @@ public interface AuthorRepository {
 
     Optional<Author> findByNickname(String nickname);
 
-    List<Author> findAllByNicknameContains(CartoonSearch cartoonSearch);
+    List<Author> findAllByNicknameContains(AuthorSearchNickname authorSearchNickname);
 
     Author getByEmail(String email);
 

@@ -6,11 +6,18 @@ import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.util.ControllerTest;
+import com.webtoon.util.constant.ConstantCommon;
+import com.webtoon.util.constant.ConstantValid;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
+import static com.webtoon.util.constant.ConstantCommon.BAD_REQUEST;
+import static com.webtoon.util.constant.ConstantCommon.NOT_FOUND;
+import static com.webtoon.util.constant.ConstantValid.*;
+import static com.webtoon.util.enumerated.ErrorMessage.AUTHOR_NOT_FOUND;
+import static com.webtoon.util.enumerated.ErrorMessage.VALID_BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -21,17 +28,19 @@ class AuthorControllerTest extends ControllerTest {
     @Test
     @DisplayName("작가 회원가입 - 성공")
     void signup200() throws Exception {
+        // given
         AuthorSignup authorSignup = AuthorSignup.builder()
                 .nickname("작가 이름")
                 .email("yhwjd99@gmail.com")
                 .password("1234")
                 .build();
 
-        String authorSignupJson = objectMapper.writeValueAsString(authorSignup);
+        String requestBody = objectMapper.writeValueAsString(authorSignup);
 
+        // expected
         mockMvc.perform(post("/author/signup")
                         .contentType(APPLICATION_JSON)
-                        .content(authorSignupJson))
+                        .content(requestBody))
                 .andExpect(status().isOk())
                 .andDo(document("author/signup/200"));
     }
@@ -39,16 +48,19 @@ class AuthorControllerTest extends ControllerTest {
     @Test
     @DisplayName("조건에 맞지 않으면 작가 회원가입이 되지 않습니다- 실패")
     void signup400() throws Exception {
+        // given
         AuthorSignup authorSignup = AuthorSignup.builder()
                 .nickname("")
                 .email("abc")
                 .password("")
                 .build();
-        String authorSignupJson = objectMapper.writeValueAsString(authorSignup);
 
+        String requestBody = objectMapper.writeValueAsString(authorSignup);
+
+        // expected
         mockMvc.perform(post("/author/signup")
                         .contentType(APPLICATION_JSON)
-                        .content(authorSignupJson))
+                        .content(requestBody))
                 .andExpect(status().isBadRequest())
                 .andDo(document("author/signup/400"));
     }
@@ -64,12 +76,15 @@ class AuthorControllerTest extends ControllerTest {
                 .password("1234")
                 .build();
 
-        String authorLoginJson = objectMapper.writeValueAsString(authorLogin);
+        String requestBody = objectMapper.writeValueAsString(authorLogin);
 
+        // expected
         mockMvc.perform(post("/author/login")
                         .contentType(APPLICATION_JSON)
-                        .content(authorLoginJson))
+                        .content(requestBody))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nickname").value(author.getNickname()))
+                .andExpect(jsonPath("$.email").value(author.getEmail()))
                 .andDo(document("author/login/200"));
     }
 
@@ -82,12 +97,16 @@ class AuthorControllerTest extends ControllerTest {
                 .password("")
                 .build();
 
-        String authorLoginJson = objectMapper.writeValueAsString(authorLogin);
+        String requestBody = objectMapper.writeValueAsString(authorLogin);
 
+        // expected
         mockMvc.perform(post("/author/login")
                         .contentType(APPLICATION_JSON)
-                        .content(authorLoginJson))
+                        .content(requestBody))
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.statusCode").value(BAD_REQUEST))
+                .andExpect(jsonPath("$.message").value(VALID_BAD_REQUEST.getValue()))
+                .andExpect(jsonPath("$.validation.email").value(EMAIL_VALID_MESSAGE))
                 .andDo(document("author/login/400"));
     }
 
@@ -100,30 +119,50 @@ class AuthorControllerTest extends ControllerTest {
                 .password("1234")
                 .build();
 
-        String authorLoginJson = objectMapper.writeValueAsString(authorLogin);
+        String requestBody = objectMapper.writeValueAsString(authorLogin);
 
         // expected
         mockMvc.perform(post("/author/login")
                         .contentType(APPLICATION_JSON)
-                        .content(authorLoginJson))
+                        .content(requestBody))
                 .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.statusCode").value(NOT_FOUND))
+                .andExpect(jsonPath("$.message").value(AUTHOR_NOT_FOUND.getValue()))
                 .andDo(document("author/login/404"));
     }
 
     @Test
-    @DisplayName("작가 닉네임으로 작가를 검색합니다 - 성공")
+    @DisplayName("작가 닉네임으로 작가 정보와 작가의 만화를 검색합니다 - 성공")
     void findAllByNickname200() throws Exception {
+        // given
+        Author author = saveAuthorInRepository();
+
+        // expected
+        mockMvc.perform(get("/author/nickname")
+                        .param("page", "0")
+                        .param("size", "20")
+                        .param("nickname", "작가 이름"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.count").value(1))
+                .andExpect(jsonPath("$.authorResponseList[0].nickname").value(author.getNickname()))
+                .andExpect(jsonPath("$.authorResponseList[0].count").value(0))
+                .andDo(document("author/nickname/200"));
+    }
+
+    @Test
+    @DisplayName("검색 조건이 맞지 않으면 예외가 발생합니다 - 실패")
+    void findAllByNickname400() throws Exception {
         // given
         saveAuthorInRepository();
 
         // expected
         mockMvc.perform(get("/author/nickname")
-                        .param("page", "0")
-                        .param("nickname", "작가 이름"))
-                .andExpect(status().isOk())
-                .andDo(document("author/nickname/200"));
+                        .param("page", "-1")
+                        .param("size", "20")
+                        .param("nickname", ""))
+                .andExpect(status().isBadRequest())
+                .andDo(document("author/nickname/400"));
     }
-
 
     @Test
     @DisplayName("로그인되어 있고 조건에 맞으면 회원정보가 수정됩니다 - 성공")
@@ -138,13 +177,13 @@ class AuthorControllerTest extends ControllerTest {
                 .password("4321")
                 .build();
 
-        String authorUpdateJson = objectMapper.writeValueAsString(authorUpdate);
+        String requestBody = objectMapper.writeValueAsString(authorUpdate);
 
         // expected
         mockMvc.perform(patch("/author")
                         .session(session)
                         .contentType(APPLICATION_JSON)
-                        .content(authorUpdateJson))
+                        .content(requestBody))
                 .andExpect(status().isOk())
                 .andDo(document("author/update/200"));
     }
@@ -162,13 +201,13 @@ class AuthorControllerTest extends ControllerTest {
                 .password("")
                 .build();
 
-        String authorUpdateJson = objectMapper.writeValueAsString(authorUpdate);
+        String requestBody = objectMapper.writeValueAsString(authorUpdate);
 
         // expected
         mockMvc.perform(patch("/author")
                         .session(session)
                         .contentType(APPLICATION_JSON)
-                        .content(authorUpdateJson))
+                        .content(requestBody))
                 .andExpect(status().isBadRequest())
                 .andDo(document("author/update/400"));
     }
@@ -185,12 +224,12 @@ class AuthorControllerTest extends ControllerTest {
                 .password("4321")
                 .build();
 
-        String authorUpdateJson = objectMapper.writeValueAsString(authorUpdate);
+        String requestBody = objectMapper.writeValueAsString(authorUpdate);
 
         // expected
         mockMvc.perform(patch("/author")
                         .contentType(APPLICATION_JSON)
-                        .content(authorUpdateJson))
+                        .content(requestBody))
                 .andExpect(status().isUnauthorized())
                 .andDo(document("author/update/401"));
     }
@@ -203,7 +242,7 @@ class AuthorControllerTest extends ControllerTest {
         MockHttpSession session = loginAuthorSession(author);
 
         // expected
-        mockMvc.perform(RestDocumentationRequestBuilders.delete("/author")
+        mockMvc.perform(delete("/author")
                         .session(session)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -217,7 +256,7 @@ class AuthorControllerTest extends ControllerTest {
         saveAuthorInRepository();
 
         // expected
-        mockMvc.perform(RestDocumentationRequestBuilders.delete("/author")
+        mockMvc.perform(delete("/author")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
                 .andDo(document("author/delete/401"));

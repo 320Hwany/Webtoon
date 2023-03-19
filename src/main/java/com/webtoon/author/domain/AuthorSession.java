@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.Objects;
 
+import static com.webtoon.util.constant.ConstantCommon.AUTHOR_SESSION;
+
 @Getter
 @NoArgsConstructor
 public class AuthorSession implements Serializable {
@@ -41,7 +43,7 @@ public class AuthorSession implements Serializable {
 
     public void makeSession(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
-        session.setAttribute("authorSession", this);
+        session.setAttribute(AUTHOR_SESSION, this);
     }
 
     public void invalidateSession(HttpServletRequest request) {

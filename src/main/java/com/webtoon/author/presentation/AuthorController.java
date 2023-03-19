@@ -2,6 +2,7 @@ package com.webtoon.author.presentation;
 
 import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.domain.AuthorSession;
+import com.webtoon.author.dto.request.AuthorSearchNickname;
 import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
 import com.webtoon.author.dto.response.AuthorCartoonResponse;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,10 +44,10 @@ public class AuthorController {
 
     @GetMapping("/author/nickname")
     public ResponseEntity<AuthorListResult> getAuthorListByNickname(
-            @ModelAttribute CartoonSearchDto cartoonSearchDto) {
+            @Valid @ModelAttribute AuthorSearchNickname authorSearchNickname) {
 
         List<AuthorCartoonResponse> authorCartoonResponseList =
-                authorService.findAllByNicknameContains(cartoonSearchDto);
+                authorService.findAllByNicknameContains(authorSearchNickname);
         return ResponseEntity.ok(new AuthorListResult(authorCartoonResponseList.size(), authorCartoonResponseList));
     }
 

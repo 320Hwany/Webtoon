@@ -23,7 +23,6 @@ public class ContentImgInfoRepositoryImpl implements ContentImgInfoRepository {
         contentImgInfoJpaRepository.save(contentImgInfo);
     }
 
-    // todo oneToOne
     @Override
     public Optional<ContentImgInfo> findByContentId(Long contentId) {
         return Optional.ofNullable(

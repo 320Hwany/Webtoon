@@ -146,7 +146,6 @@ public class ControllerTest {
                 .likes(ZERO_OF_TYPE_LONG)
                 .build();
 
-        // todo 양방향
         author.getCartoonList().add(cartoon);
         cartoonRepository.save(cartoon);
         return cartoon;

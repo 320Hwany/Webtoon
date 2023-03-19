@@ -42,7 +42,6 @@ public class CartoonSave {
                 .likes(ZERO_OF_TYPE_LONG)
                 .build();
 
-        author.getCartoonList().add(cartoon);
         return cartoon;
     }
 }

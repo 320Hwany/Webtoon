@@ -28,6 +28,7 @@ public class CartoonService {
         Cartoon.validateEnumTypeValid(cartoonEnumField);
         Author author = authorRepository.getById(authorSession.getId());
         Cartoon cartoon = cartoonSave.toEntity(author);
+        author.getCartoonList().add(cartoon);
         cartoonRepository.save(cartoon);
     }
 

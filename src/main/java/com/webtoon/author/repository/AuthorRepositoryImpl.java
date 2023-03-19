@@ -2,6 +2,7 @@ package com.webtoon.author.repository;
 
 import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
+import com.webtoon.author.dto.request.AuthorSearchNickname;
 import com.webtoon.author.exception.AuthorNotFoundException;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import lombok.RequiredArgsConstructor;
@@ -37,12 +38,11 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         return authorJpaRepository.findByNickname(nickname);
     }
 
-    // todo OneToMany One 이 List
     @Override
-    public List<Author> findAllByNicknameContains(CartoonSearch cartoonSearch) {
-        PageRequest pageRequest = PageRequest.of(cartoonSearch.getPage(), cartoonSearch.getLimit(),
+    public List<Author> findAllByNicknameContains(AuthorSearchNickname authorSearchNickname) {
+        PageRequest pageRequest = PageRequest.of(authorSearchNickname.getPage(), authorSearchNickname.getSize(),
                 Sort.by(DESC, "id"));
-        return authorJpaRepository.findAllByNicknameContains(cartoonSearch.getNickname(), pageRequest);
+        return authorJpaRepository.findAllByNicknameContains(authorSearchNickname.getNickname(), pageRequest);
     }
 
     @Override
