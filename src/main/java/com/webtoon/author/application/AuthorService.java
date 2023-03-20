@@ -11,8 +11,6 @@ import com.webtoon.author.dto.response.AuthorResponse;
 import com.webtoon.author.exception.AuthorDuplicationException;
 import com.webtoon.author.exception.AuthorNotMatchException;
 import com.webtoon.author.repository.AuthorRepository;
-import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

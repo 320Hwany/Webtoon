@@ -11,7 +11,7 @@ import static com.webtoon.util.constant.ConstantValid.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartoonSearchTitle {
 
-    @Min(value = 0, message = PAGE_VALID_MESSAGE)
+    @Min(value = 1, message = PAGE_VALID_MESSAGE)
     private int page;
 
     @Min(value = 0, message = CARTOON_SIZE_VALID_MESSAGE)

@@ -25,4 +25,8 @@ public class CartoonSearchGender {
         this.size = size;
         this.gender = gender;
     }
+
+    public int getOffset() {
+        return Math.max(page - 1, 0) * size;
+    }
 }

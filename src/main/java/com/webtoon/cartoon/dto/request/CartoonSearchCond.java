@@ -14,9 +14,9 @@ import static com.webtoon.util.constant.ConstantValid.PAGE_VALID_MESSAGE;
 
 @Getter @Setter
 @NoArgsConstructor
-public class CartoonSearchDto {
+public class CartoonSearchCond {
 
-    @Min(value = 0, message = PAGE_VALID_MESSAGE)
+    @Min(value = 1, message = PAGE_VALID_MESSAGE)
     private int page;
 
     private String title;
@@ -31,8 +31,8 @@ public class CartoonSearchDto {
     private String genre;
 
     @Builder
-    public CartoonSearchDto(int page, String title, String nickname, long ageRange,
-                            String dayOfTheWeek, String progress, String genre) {
+    public CartoonSearchCond(int page, String title, String nickname, long ageRange,
+                             String dayOfTheWeek, String progress, String genre) {
         this.page = page;
         this.title = title;
         this.nickname = nickname;
@@ -54,8 +54,8 @@ public class CartoonSearchDto {
                 .build();
     }
 
-    public CartoonSearchDto toCartoonEnumField() {
-        return CartoonSearchDto.builder()
+    public CartoonSearchCond toCartoonEnumField() {
+        return CartoonSearchCond.builder()
                 .page(page)
                 .title(title)
                 .nickname(nickname)

@@ -4,17 +4,16 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.author.exception.AuthorNotFoundException;
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoon.dto.request.CartoonSave;
-import com.webtoon.cartoon.dto.request.CartoonSearchDto;
-import com.webtoon.cartoon.dto.request.CartoonSearchTitle;
-import com.webtoon.cartoon.dto.request.CartoonUpdate;
+import com.webtoon.cartoon.dto.request.*;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
+import com.webtoon.cartoon.exception.CartoonEnumTypeException;
 import com.webtoon.cartoon.exception.CartoonForbiddenException;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.util.ServiceTest;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,7 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CartoonServiceTest extends ServiceTest {
@@ -34,8 +34,8 @@ class CartoonServiceTest extends ServiceTest {
     private CartoonService cartoonService;
 
     @Test
-    @DisplayName("AuthorSession과 id값이 일치하는 Author로 만화를 등록합니다 - 성공")
-    void saveSet200() {
+    @DisplayName("세션과 id값이 일치하는 작가로 만화를 등록합니다 - 성공")
+    void save200() {
         // given
         Author author = saveAuthorInRepository();
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
@@ -55,8 +55,8 @@ class CartoonServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("AuthorSession과 id값이 일치하는 Author가 없다면 만화 등록을 할 수 없습니다 - 실패")
-    void saveSet404() {
+    @DisplayName("세션과 id값이 일치하는 작가가 없다면 만화 등록을 할 수 없습니다 - 실패")
+    void save404() {
         // given
         CartoonSave cartoonSave = CartoonSave.builder()
                 .title("만화 제목")
@@ -78,17 +78,49 @@ class CartoonServiceTest extends ServiceTest {
     }
 
     @Test
+    @DisplayName("만화 입력 조건 중 Enum 타입이 유효하면 메소드를 통과합니다")
+    void validateCartoonSave200() {
+        // given
+        CartoonSave cartoonSave = CartoonSave.builder()
+                .title("만화 제목")
+                .dayOfTheWeek("MON")
+                .genre("ROMANCE")
+                .progress("SERIALIZATION")
+                .build();
+
+        // expected
+        CartoonService.validateCartoonSave(cartoonSave);
+    }
+
+    @Test
+    @DisplayName("만화 입력 조건 중 Enum 타입이 유효하지 않으면 예외가 발생합니다")
+    void validateCartoonSave400() {
+        // given
+        CartoonSave cartoonSave = CartoonSave.builder()
+                .title("만화 제목")
+                .dayOfTheWeek("유효하지 않은 날짜")
+                .genre("유효하지 않은 장르")
+                .progress("유효하지 않은 진행상황")
+                .build();
+
+        // expected
+        assertThrows(CartoonEnumTypeException.class,
+                () -> CartoonService.validateCartoonSave(cartoonSave));
+    }
+
+    @Test
     @DisplayName("제목을 포함하는 만화가 있다면 한 페이지를 보여줍니다 - 성공")
     void findAllByTitle200() {
-        // given
+        // given 1
         Author author = saveAuthorInRepository();
 
         CartoonSearchTitle cartoonSearchTitle = CartoonSearchTitle.builder()
-                .page(0)
+                .page(1)
                 .size(20)
                 .title("만화 제목")
                 .build();
 
+        // given 2 - cartoonList
         List<Cartoon> cartoonListKr = IntStream.range(1, 11)
                 .mapToObj(i -> Cartoon.builder()
                         .author(author)
@@ -109,7 +141,7 @@ class CartoonServiceTest extends ServiceTest {
         cartoonRepository.saveAll(cartoonListEn);
 
         // when
-        List<CartoonResponse> cartoonResponseList = cartoonService.findAllByTitleSet(cartoonSearchTitle);
+        List<CartoonResponse> cartoonResponseList = cartoonService.findAllByTitle(cartoonSearchTitle);
 
         // then
         assertThat(cartoonResponseList.size()).isEqualTo(10);
@@ -119,14 +151,14 @@ class CartoonServiceTest extends ServiceTest {
     @Test
     @DisplayName("입력한 요일에 맞는 만화를 좋아요 많은 순으로 보여줍니다 - 성공")
     void findAllByDayOfTheWeek() {
-        // given
+        // given 1
         Author author = saveAuthorInRepository();
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(0)
+        CartoonSearchCond cartoonSearchDto = CartoonSearchCond.builder()
+                .page(1)
                 .dayOfTheWeek("MON")
-                .progress("NONE")
                 .build();
 
+        // given 2 - cartoonList
         List<Cartoon> cartoonMonList = LongStream.range(1, 21)
                 .mapToObj(i -> Cartoon.builder()
                         .author(author)
@@ -148,29 +180,29 @@ class CartoonServiceTest extends ServiceTest {
 
         // when
         List<CartoonResponse> cartoonResponseList
-                = cartoonService.findAllByCartoonCondOrderByLikesSet(cartoonSearchDto);
+                = cartoonService.findAllByCartoonCondOrderByLikes(cartoonSearchDto);
 
         // then
         assertThat(cartoonResponseList.size()).isEqualTo(20);
         assertThat(cartoonResponseList.get(0).getLikes()).isEqualTo(20);
     }
 
+    @Test
     @DisplayName("만화 상태와 일치하는 만화 리스트를 한 페이지 가져옵니다 - 성공")
-    @Transactional
     void findAllByProgress200() {
-        // given
+        // given 1
         Author author = saveAuthorInRepository();
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(0)
-                .dayOfTheWeek("NONE")
+        CartoonSearchCond cartoonSearchDto = CartoonSearchCond.builder()
+                .page(1)
                 .progress("SERIALIZATION")
-                .genre("NONE")
                 .build();
 
+        // given 2 - cartoonList
         List<Cartoon> cartoonProgressSerializationList = IntStream.range(1, 11)
                 .mapToObj(i -> Cartoon.builder()
                         .author(author)
                         .progress(Progress.SERIALIZATION)
+                        .likes(i)
                         .build())
                 .collect(Collectors.toList());
 
@@ -178,6 +210,7 @@ class CartoonServiceTest extends ServiceTest {
                 .mapToObj(i -> Cartoon.builder()
                         .author(author)
                         .progress(Progress.COMPLETE)
+                        .likes(i)
                         .build())
                 .collect(Collectors.toList());
 
@@ -186,28 +219,29 @@ class CartoonServiceTest extends ServiceTest {
 
         // when
         List<CartoonResponse> cartoonResponseList
-                = cartoonService.findAllByCartoonCondOrderByLikesSet(cartoonSearchDto);
+                = cartoonService.findAllByCartoonCondOrderByLikes(cartoonSearchDto);
 
         // then
         assertThat(cartoonResponseList.size()).isEqualTo(10);
+        assertThat(cartoonResponseList.get(0).getLikes()).isEqualTo(10);
     }
+
     @Test
     @DisplayName("장르와 일치하는 만화 리스트를 한 페이지 가져옵니다 - 성공")
-    @Transactional
     void findAllByGenre200() {
-        // given
+        // given 1
         Author author = saveAuthorInRepository();
-        CartoonSearchDto cartoonSearchDto = CartoonSearchDto.builder()
-                .page(0)
-                .dayOfTheWeek("NONE")
-                .progress("NONE")
+        CartoonSearchCond cartoonSearchDto = CartoonSearchCond.builder()
+                .page(1)
                 .genre("ROMANCE")
                 .build();
 
+        // given 2 - cartoonList
         List<Cartoon> cartoonGenreRomanceList = IntStream.range(1, 11)
                 .mapToObj(i -> Cartoon.builder()
                         .author(author)
                         .genre(Genre.ROMANCE)
+                        .likes(i)
                         .build())
                 .collect(Collectors.toList());
 
@@ -215,6 +249,7 @@ class CartoonServiceTest extends ServiceTest {
                 .mapToObj(i -> Cartoon.builder()
                         .author(author)
                         .genre(Genre.ACTION)
+                        .likes(i)
                         .build())
                 .collect(Collectors.toList());
 
@@ -223,46 +258,47 @@ class CartoonServiceTest extends ServiceTest {
 
         // when
         List<CartoonResponse> cartoonResponseList
-                = cartoonService.findAllByCartoonCondOrderByLikesSet(cartoonSearchDto);
+                = cartoonService.findAllByCartoonCondOrderByLikes(cartoonSearchDto);
 
         // then
         assertThat(cartoonResponseList.size()).isEqualTo(10);
+        assertThat(cartoonResponseList.get(0).getLikes()).isEqualTo(10);
     }
 
     @Test
-    @DisplayName("작가가 만화에 대한 접근 권한이 있으면 메소드를 통과합니다 - 성공")
-    void checkAuthorityForCartoon200() {
+    @DisplayName("만화 입력 조건 중 Enum 타입이 유효하면 메소드를 통과합니다")
+    void validateSearchCond200() {
         // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
-
-        // expected
-        cartoonService.validateAuthorityForCartoon(authorSession, cartoon);
-    }
-
-    @Test
-    @DisplayName("작가가 만화에 대한 접근 권한이 없으면 예외가 발생합니다 - 실패")
-    void checkAuthorityForCartoon403() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        AuthorSession anotherAuthorSession = AuthorSession.builder()
-                .id(9999L)
-                .nickname("다른 회원")
-                .email("yhwjd@naver.com")
-                .password("4321")
+        CartoonSearchCond cartoonSearchCond = CartoonSearchCond.builder()
+                .page(1)
+                .dayOfTheWeek("MON")
+                .genre("ROMANCE")
+                .progress("SERIALIZATION")
                 .build();
 
         // expected
-        assertThrows(CartoonForbiddenException.class,
-                () -> cartoonService.validateAuthorityForCartoon(anotherAuthorSession, cartoon));
+        CartoonService.validateSearchCond(cartoonSearchCond);
+    }
+
+    @Test
+    @DisplayName("만화 입력 조건 중 Enum 타입이 유효하지 않으면 예외가 발생합니다")
+    void validateSearchCond400() {
+        // given
+        CartoonSearchCond cartoonSearchCond = CartoonSearchCond.builder()
+                .page(1)
+                .dayOfTheWeek("유효하지 않은 날짜")
+                .genre("유효하지 않은 장르")
+                .progress("유효하지 않은 진행상황")
+                .build();
+
+        // expected
+        assertThrows(CartoonEnumTypeException.class,
+                () -> CartoonService.validateSearchCond(cartoonSearchCond));
     }
 
     @Test
     @DisplayName("cartoonId와 일치하는 만화가 존재하면 수정에 성공합니다")
-    @Transactional
-    void updateSet200() {
+    void update200() {
         // given
         Author author = saveAuthorInRepository();
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
@@ -274,24 +310,29 @@ class CartoonServiceTest extends ServiceTest {
                 .progress("COMPLETE")
                 .genre("ROMANCE")
                 .build();
+
+        CartoonUpdateSet cartoonUpdateSet = CartoonUpdateSet.builder()
+                .authorSession(authorSession)
+                .cartoonId(cartoon.getId())
+                .cartoonUpdate(cartoonUpdate)
+                .build();
+
         // when
-        cartoonService.update(authorSession, cartoonUpdate, cartoon.getId());
+        CartoonResponse cartoonResponse = cartoonService.update(cartoonUpdateSet);
 
         // then
-        assertThat(cartoon.getTitle()).isEqualTo("수정 만화 제목");
-        assertThat(cartoon.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.TUE);
-        assertThat(cartoon.getProgress()).isEqualTo(Progress.COMPLETE);
-        assertThat(cartoon.getGenre()).isEqualTo(Genre.ROMANCE);
+        assertThat(cartoonResponse.getTitle()).isEqualTo("수정 만화 제목");
+        assertThat(cartoonResponse.getDayOfTheWeek()).isEqualTo(DayOfTheWeek.TUE);
+        assertThat(cartoonResponse.getProgress()).isEqualTo(Progress.COMPLETE);
+        assertThat(cartoonResponse.getGenre()).isEqualTo(Genre.ROMANCE);
     }
 
     @Test
     @DisplayName("cartoonId와 일치하는 만화가 없다면 예외가 발생합니다")
-    @Transactional
-    void updateSet404() {
+    void update404() {
         // given
         Author author = saveAuthorInRepository();
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
-        Cartoon cartoon = saveCartoonInRepository(author);
 
         CartoonUpdate cartoonUpdate = CartoonUpdate.builder()
                 .title("수정 만화 제목")
@@ -300,9 +341,15 @@ class CartoonServiceTest extends ServiceTest {
                 .genre("ROMANCE")
                 .build();
 
+        CartoonUpdateSet cartoonUpdateSet = CartoonUpdateSet.builder()
+                .authorSession(authorSession)
+                .cartoonId(9999L)
+                .cartoonUpdate(cartoonUpdate)
+                .build();
+
         // expected
         assertThrows(CartoonNotFoundException.class,
-                () -> cartoonService.update(authorSession, cartoonUpdate,9999L));
+                () -> cartoonService.update(cartoonUpdateSet));
     }
 
     @Test
@@ -326,25 +373,10 @@ class CartoonServiceTest extends ServiceTest {
         // given
         Author author = saveAuthorInRepository();
         AuthorSession authorSession = getAuthorSessionFromAuthor(author);
-        Cartoon cartoon = saveCartoonInRepository(author);
+        saveCartoonInRepository(author);
 
         // expected
         assertThrows(CartoonNotFoundException.class,
                 () -> cartoonService.delete(authorSession,9999L));
-    }
-
-
-    @Test
-    @DisplayName("좋아요를 누르면 Cartoon의 좋아요 개수가 1 증가합니다")
-    void addLike() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-
-        // when
-        cartoonService.addLike(cartoon);
-
-        // then
-        assertThat(cartoon.getLikes()).isEqualTo(1);
     }
 }

@@ -1,7 +1,6 @@
 package com.webtoon.cartoon.presentation;
 
 import com.webtoon.author.domain.AuthorSession;
-import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.dto.request.*;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.dto.response.CartoonListResult;
@@ -31,22 +30,22 @@ public class CartoonController {
     public ResponseEntity<CartoonListResult> getCartoonListByTitle(
             @ModelAttribute @Valid CartoonSearchTitle cartoonSearchTitle) {
 
-        List<CartoonResponse> cartoonResponseList = cartoonService.findAllByTitleSet(cartoonSearchTitle);
+        List<CartoonResponse> cartoonResponseList = cartoonService.findAllByTitle(cartoonSearchTitle);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
     @GetMapping("/cartoon/orderby/likes")
     public ResponseEntity<CartoonListResult> getCartoonListByCondOrderByLikes(
-            @ModelAttribute @Valid CartoonSearchDto cartoonSearchDto) {
+            @ModelAttribute @Valid CartoonSearchCond cartoonSearchDto) {
 
         List<CartoonResponse> cartoonResponseList =
-                cartoonService.findAllByCartoonCondOrderByLikesSet(cartoonSearchDto);
+                cartoonService.findAllByCartoonCondOrderByLikes(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
     @GetMapping("/cartoon/orderby/rating")
     public ResponseEntity<CartoonListResult> getCartoonListByCondOrderByRating(
-            @RequestBody @Valid CartoonSearchDto cartoonSearchDto) {
+            @RequestBody @Valid CartoonSearchCond cartoonSearchDto) {
 
         List<CartoonResponse> cartoonResponseList =
                 cartoonService.findAllByCartoonCondOrderByRatingSet(cartoonSearchDto);
@@ -54,12 +53,13 @@ public class CartoonController {
     }
 
     @PatchMapping("/cartoon/{cartoonId}")
-    public ResponseEntity<Void> update(@LoginForAuthor AuthorSession authorSession,
-                                       @PathVariable Long cartoonId,
-                                       @RequestBody @Valid CartoonUpdate cartoonUpdate) {
+    public ResponseEntity<CartoonResponse> update(@LoginForAuthor AuthorSession authorSession,
+                                                  @PathVariable Long cartoonId,
+                                                  @RequestBody @Valid CartoonUpdate cartoonUpdate) {
 
-        cartoonService.update(authorSession, cartoonUpdate, cartoonId);
-        return ResponseEntity.ok().build();
+        CartoonUpdateSet cartoonUpdateSet = CartoonUpdateSet.toCartoonUpdateSet(authorSession, cartoonUpdate, cartoonId);
+        CartoonResponse cartoonResponse = cartoonService.update(cartoonUpdateSet);
+        return ResponseEntity.ok(cartoonResponse);
     }
 
     @DeleteMapping("/cartoon/{cartoonId}")

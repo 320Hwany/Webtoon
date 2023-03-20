@@ -7,11 +7,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static com.webtoon.util.constant.ConstantCommon.PAGE_LIMIT;
+
 @Getter
 @NoArgsConstructor
 public class CartoonSearch {
 
-    private final int limit = 20;
+    private final int limit = PAGE_LIMIT;
     private int page;
     private String title;
     private String nickname;

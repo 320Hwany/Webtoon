@@ -1,8 +1,6 @@
 package com.webtoon.cartoonmember.application;
 
 import com.webtoon.cartoon.domain.Cartoon;
-import com.webtoon.cartoon.domain.CartoonSearch;
-import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.cartoonmember.domain.CartoonMember;

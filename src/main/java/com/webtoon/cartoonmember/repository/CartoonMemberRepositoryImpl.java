@@ -121,7 +121,7 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 )
                 .groupBy(cartoon.title)
                 .orderBy(cartoon.likes.desc())
-                .offset(cartoonSearchAge.getPage())
+                .offset(cartoonSearchAge.getOffset())
                 .limit(cartoonSearchAge.getSize())
                 .fetch();
     }
@@ -142,7 +142,7 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
                 )
                 .groupBy(cartoon.title)
                 .orderBy(cartoonMember.cartoon.count().desc())
-                .offset(cartoonSearchGender.getPage())
+                .offset(cartoonSearchGender.getOffset())
                 .limit(cartoonSearchGender.getSize())
                 .fetch();
     }

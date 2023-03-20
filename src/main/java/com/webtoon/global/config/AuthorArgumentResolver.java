@@ -14,6 +14,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import static com.webtoon.util.constant.ConstantCommon.AUTHOR_SESSION;
+
 @RequiredArgsConstructor
 public class AuthorArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -35,7 +37,7 @@ public class AuthorArgumentResolver implements HandlerMethodArgumentResolver {
         if (session == null) {
             throw new AuthorUnauthorizedException();
         }
-        AuthorSession authorSession = (AuthorSession) session.getAttribute("authorSession");
+        AuthorSession authorSession = (AuthorSession) session.getAttribute(AUTHOR_SESSION);
         authorRepository.validateAuthorPresent(authorSession);
         return authorSession;
     }

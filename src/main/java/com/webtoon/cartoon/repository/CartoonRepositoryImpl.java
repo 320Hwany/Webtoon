@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.webtoon.author.domain.QAuthor.author;
 import static com.webtoon.cartoon.domain.QCartoon.cartoon;
@@ -42,7 +43,7 @@ public class CartoonRepositoryImpl implements CartoonRepository {
 
     @Override
     public List<Cartoon> findAllByTitle(CartoonSearchTitle cartoonSearchTitle) {
-        PageRequest pageRequest = PageRequest.of(cartoonSearchTitle.getPage(), cartoonSearchTitle.getSize(),
+        PageRequest pageRequest = PageRequest.of(cartoonSearchTitle.getPage() - 1, cartoonSearchTitle.getSize(),
                 Sort.by(DESC, "likes"));
         return cartoonJpaRepository.findAllByTitleContains(cartoonSearchTitle.getTitle(), pageRequest);
     }

@@ -61,7 +61,7 @@ public class Cartoon extends BaseTimeEntity {
         this.rating = rating;
         this.likes = likes;
     }
-
+    
     public static void validateEnumTypeValid(CartoonEnumField cartoonEnumField) {
         boolean isDayValid = DayOfTheWeek.validateValid(cartoonEnumField.getDayOfTheWeek());
         boolean isProgressValid = Progress.validateValid(cartoonEnumField.getProgress());

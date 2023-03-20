@@ -4,14 +4,10 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.dto.request.AuthorLogin;
 import com.webtoon.author.dto.request.AuthorSignup;
 import com.webtoon.author.dto.request.AuthorUpdate;
-import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.util.ControllerTest;
-import com.webtoon.util.constant.ConstantCommon;
-import com.webtoon.util.constant.ConstantValid;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import static com.webtoon.util.constant.ConstantCommon.BAD_REQUEST;
 import static com.webtoon.util.constant.ConstantCommon.NOT_FOUND;

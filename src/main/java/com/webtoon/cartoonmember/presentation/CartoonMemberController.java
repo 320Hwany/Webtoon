@@ -1,6 +1,5 @@
 package com.webtoon.cartoonmember.presentation;
 
-import com.webtoon.cartoon.dto.request.CartoonSearchDto;
 import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoon.dto.response.CartoonListResult;
 import com.webtoon.cartoonmember.dto.request.*;

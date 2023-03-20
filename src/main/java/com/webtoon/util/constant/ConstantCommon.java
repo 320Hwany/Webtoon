@@ -16,6 +16,8 @@ public class ConstantCommon {
 
     public static final long ZERO_OF_TYPE_LONG = 0L;
 
+    public static final int PAGE_LIMIT = 20;
+
     public static final String AUTHOR_SESSION = "authorSession";
 
     public static final String MEMBER_SESSION = "memberSession";

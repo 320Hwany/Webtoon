@@ -29,4 +29,8 @@ public class CartoonSearchAge {
         this.size = size;
         this.ageRange = ageRange;
     }
+
+    public int getOffset() {
+        return Math.max(page - 1, 0) * size;
+    }
 }

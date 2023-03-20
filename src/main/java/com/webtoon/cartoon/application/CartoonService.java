@@ -24,56 +24,57 @@ public class CartoonService {
 
     @Transactional
     public void save(CartoonSave cartoonSave, AuthorSession authorSession) {
-        CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonSave(cartoonSave);
-        Cartoon.validateEnumTypeValid(cartoonEnumField);
+        validateCartoonSave(cartoonSave);
         Author author = authorRepository.getById(authorSession.getId());
         Cartoon cartoon = cartoonSave.toEntity(author);
         author.getCartoonList().add(cartoon);
         cartoonRepository.save(cartoon);
     }
 
-    public List<CartoonResponse> findAllByTitleSet(CartoonSearchTitle cartoonSearchTitle) {
+    protected static void validateCartoonSave(CartoonSave cartoonSave) {
+        CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonSave(cartoonSave);
+        Cartoon.validateEnumTypeValid(cartoonEnumField);
+    }
+
+    public List<CartoonResponse> findAllByTitle(CartoonSearchTitle cartoonSearchTitle) {
         List<Cartoon> cartoonList = cartoonRepository.findAllByTitle(cartoonSearchTitle);
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
-    public List<CartoonResponse> findAllByCartoonCondOrderByLikesSet(CartoonSearchDto cartoonSearchDto) {
-        CartoonSearchDto cartoonEnumValidField = cartoonSearchDto.toCartoonEnumField();
-        cartoonEnumValidField.validateEnumTypeValid();
+    public List<CartoonResponse> findAllByCartoonCondOrderByLikes(CartoonSearchCond cartoonSearchCond) {
+        CartoonSearchCond cartoonEnumValidField = validateSearchCond(cartoonSearchCond);
         CartoonSearch cartoonSearch = cartoonEnumValidField.toCartoonSearch();
         List<Cartoon> cartoonList = cartoonRepository.findAllByCartoonCondOrderByLikes(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
-    public List<CartoonResponse> findAllByCartoonCondOrderByRatingSet(CartoonSearchDto cartoonSearchDto) {
-        CartoonSearchDto cartoonEnumValidField = cartoonSearchDto.toCartoonEnumField();
+    public List<CartoonResponse> findAllByCartoonCondOrderByRatingSet(CartoonSearchCond cartoonSearchCond) {
+        CartoonSearchCond cartoonEnumValidField = validateSearchCond(cartoonSearchCond);
         CartoonSearch cartoonSearch = cartoonEnumValidField.toCartoonSearch();
         List<Cartoon> cartoonList = cartoonRepository.findAllByCartoonCondOrderByRating(cartoonSearch);
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
+    protected static CartoonSearchCond validateSearchCond(CartoonSearchCond cartoonSearchCond) {
+        CartoonSearchCond cartoonEnumValidField = cartoonSearchCond.toCartoonEnumField();
+        cartoonEnumValidField.validateEnumTypeValid();
+        return cartoonEnumValidField;
+    }
+
     @Transactional
-    public void update(AuthorSession authorSession, CartoonUpdate cartoonUpdate, Long cartoonId) {
-        CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonUpdate(cartoonUpdate);
+    public CartoonResponse update(CartoonUpdateSet cartoonUpdateSet) {
+        CartoonEnumField cartoonEnumField = CartoonEnumField.getFromCartoonUpdate(cartoonUpdateSet.getCartoonUpdate());
         Cartoon.validateEnumTypeValid(cartoonEnumField);
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
-        validateAuthorityForCartoon(authorSession, cartoon);
-        cartoon.update(cartoonUpdate);
+        Cartoon cartoon = cartoonRepository.getById(cartoonUpdateSet.getCartoonId());
+        cartoon.validateAuthorityForCartoon(cartoonUpdateSet.getAuthorSession());
+        cartoon.update(cartoonUpdateSet.getCartoonUpdate());
+        return CartoonResponse.getFromCartoon(cartoon);
     }
 
     @Transactional
     public void delete(AuthorSession authorSession, Long cartoonId) {
         Cartoon cartoon = cartoonRepository.getById(cartoonId);
-        validateAuthorityForCartoon(authorSession, cartoon);
-        cartoonRepository.delete(cartoon);
-    }
-
-    public void validateAuthorityForCartoon(AuthorSession authorSession, Cartoon cartoon) {
         cartoon.validateAuthorityForCartoon(authorSession);
-    }
-
-    @Transactional
-    public void addLike(Cartoon cartoon) {
-        cartoon.addLike();
+        cartoonRepository.delete(cartoon);
     }
 }

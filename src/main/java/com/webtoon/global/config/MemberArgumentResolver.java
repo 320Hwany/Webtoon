@@ -14,6 +14,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import static com.webtoon.util.constant.ConstantCommon.MEMBER_SESSION;
+
 @RequiredArgsConstructor
 public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -36,7 +38,7 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
             throw new MemberUnauthorizedException();
         }
 
-        MemberSession memberSession = (MemberSession) session.getAttribute("memberSession");
+        MemberSession memberSession = (MemberSession) session.getAttribute(MEMBER_SESSION);
         memberRepository.validateMemberPresent(memberSession);
 
         return memberSession;

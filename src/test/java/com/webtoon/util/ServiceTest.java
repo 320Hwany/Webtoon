@@ -56,7 +56,6 @@ public class ServiceTest {
     @Autowired
     protected PasswordEncoder passwordEncoder;
 
-
     protected Author saveAuthorInRepository() {
         Author author = Author.builder()
                 .nickname("작가 이름")
