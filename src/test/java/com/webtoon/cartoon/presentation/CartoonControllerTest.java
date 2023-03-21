@@ -21,6 +21,7 @@ import java.util.stream.LongStream;
 
 import static com.webtoon.util.constant.ConstantCommon.*;
 import static com.webtoon.util.constant.ConstantValid.CARTOON_TITLE_VALID_MESSAGE;
+import static com.webtoon.util.constant.ConstantValid.PAGE_VALID_MESSAGE;
 import static com.webtoon.util.enumerated.ErrorMessage.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -126,6 +127,9 @@ class CartoonControllerTest extends ControllerTest {
                         .param("size", "20")
                         .param("title", "만화 제목"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.count").value(20))
+                .andExpect(jsonPath("$.cartoonResponseList[0].title").value("만화 제목 30"))
+                .andExpect(jsonPath("$.cartoonResponseList[0].likes").value(30))
                 .andDo(document("cartoon/get/title/200"));
     }
 
@@ -148,6 +152,9 @@ class CartoonControllerTest extends ControllerTest {
                         .param("size", "20")
                         .param("title", "만화 제목"))
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.statusCode").value(BAD_REQUEST))
+                .andExpect(jsonPath("$.message").value(VALID_BAD_REQUEST.getValue()))
+                .andExpect(jsonPath("$.validation.page").value(PAGE_VALID_MESSAGE))
                 .andDo(document("cartoon/get/title/400"));
     }
 
@@ -158,15 +165,26 @@ class CartoonControllerTest extends ControllerTest {
         Author author = saveAuthorInRepository();
 
         // given 2 - cartoonList
-        List<Cartoon> cartoonList = LongStream.range(1, 31)
+        List<Cartoon> cartoonMONList = LongStream.range(1, 21)
                 .mapToObj(i -> Cartoon.builder()
                         .author(author)
                         .title("만화 제목 " + i)
                         .likes(i)
+                        .dayOfTheWeek(DayOfTheWeek.MON)
                         .build())
                 .collect(Collectors.toList());
 
-        cartoonRepository.saveAll(cartoonList);
+        List<Cartoon> cartoonTUEList = LongStream.range(21, 30)
+                .mapToObj(i -> Cartoon.builder()
+                        .author(author)
+                        .title("만화 제목 " + i)
+                        .likes(i)
+                        .dayOfTheWeek(DayOfTheWeek.TUE)
+                        .build())
+                .collect(Collectors.toList());
+
+        cartoonRepository.saveAll(cartoonMONList);
+        cartoonRepository.saveAll(cartoonTUEList);
 
         // expected
         mockMvc.perform(get("/cartoon/orderby/likes")
@@ -174,6 +192,9 @@ class CartoonControllerTest extends ControllerTest {
                         .param("size", "20")
                         .param("dayOfTheWeek", "MON"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.count").value(20))
+                .andExpect(jsonPath("$.cartoonResponseList[0].title").value("만화 제목 20"))
+                .andExpect(jsonPath("$.cartoonResponseList[0].likes").value(20))
                 .andDo(document("cartoon/get/day/200"));
     }
 
@@ -184,18 +205,20 @@ class CartoonControllerTest extends ControllerTest {
         Author author = saveAuthorInRepository();
 
         // given 2 - cartoonList
-        List<Cartoon> cartoonGenreRomanceList = IntStream.range(1, 11)
+        List<Cartoon> cartoonGenreRomanceList = IntStream.range(1, 21)
                 .mapToObj(i -> Cartoon.builder()
                         .author(author)
                         .title("만화 제목 " + i)
                         .genre(Genre.ROMANCE)
+                        .likes(i)
                         .build())
                 .collect(Collectors.toList());
 
-        List<Cartoon> cartoonGenreAcitonList = IntStream.range(11, 21)
+        List<Cartoon> cartoonGenreAcitonList = IntStream.range(21, 30)
                 .mapToObj(i -> Cartoon.builder()
                         .title("만화 제목 " + i)
                         .genre(Genre.ACTION)
+                        .likes(i)
                         .build())
                 .collect(Collectors.toList());
 
@@ -207,27 +230,33 @@ class CartoonControllerTest extends ControllerTest {
                         .param("page", "1")
                         .param("genre", "ROMANCE"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.count").value(20))
+                .andExpect(jsonPath("$.cartoonResponseList[0].title").value("만화 제목 20"))
+                .andExpect(jsonPath("$.cartoonResponseList[0].likes").value(20))
                 .andDo(document("cartoon/get/genre/200"));
     }
 
     @Test
     @DisplayName("입력한 만화 상황의 만화 리스트를 보여줍니다 - 성공")
     void getCartoonListByProgress200() throws Exception {
-        // given
+        // given 1
         Author author = saveAuthorInRepository();
 
-        List<Cartoon> cartoonProgressSerializationList = IntStream.range(1, 11)
+        // given 2 - cartoonList
+        List<Cartoon> cartoonProgressSerializationList = IntStream.range(1, 21)
                 .mapToObj(i -> Cartoon.builder()
                         .author(author)
                         .title("만화 제목 " + i)
                         .progress(Progress.SERIALIZATION)
+                        .likes(i)
                         .build())
                 .collect(Collectors.toList());
 
-        List<Cartoon> cartoonProgressCompleteList = IntStream.range(11, 21)
+        List<Cartoon> cartoonProgressCompleteList = IntStream.range(21, 31)
                 .mapToObj(i -> Cartoon.builder()
                         .title("만화 제목 " + i)
                         .progress(Progress.COMPLETE)
+                        .likes(i)
                         .build())
                 .collect(Collectors.toList());
 
@@ -239,6 +268,9 @@ class CartoonControllerTest extends ControllerTest {
                         .param("page", "1")
                         .param("progress", "SERIALIZATION"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.count").value(20))
+                .andExpect(jsonPath("$.cartoonResponseList[0].title").value("만화 제목 20"))
+                .andExpect(jsonPath("$.cartoonResponseList[0].likes").value(20))
                 .andDo(document("cartoon/get/progress/200"));
     }
 
@@ -247,8 +279,12 @@ class CartoonControllerTest extends ControllerTest {
     void getCartoonList400() throws Exception {
         // expected
         mockMvc.perform(get("/cartoon/orderby/likes")
+                        .param("page", "1")
                         .param("genre", "존재하지 않는 장르"))
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.statusCode").value(BAD_REQUEST))
+                .andExpect(jsonPath("$.message").value(ENUM_TYPE_VALIDATION.getValue()))
+                .andExpect(jsonPath("$.validation.Genre").value(GENRE_BAD_REQUEST.getValue()))
                 .andDo(document("cartoon/get/genre/400"));
     }
 

@@ -157,6 +157,8 @@ class AuthorControllerTest extends ControllerTest {
                         .param("size", "20")
                         .param("nickname", ""))
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.validation.page").value(PAGE_VALID_MESSAGE))
+                .andExpect(jsonPath("$.validation.nickname").value(NICKNAME_VALID_MESSAGE))
                 .andDo(document("author/nickname/400"));
     }
 

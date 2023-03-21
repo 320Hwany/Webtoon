@@ -6,12 +6,14 @@ import com.webtoon.cartoonmember.dto.request.*;
 import com.webtoon.cartoonmember.application.CartoonMemberService;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.content.dto.response.ContentListResult;
+import com.webtoon.global.error.BindingException;
 import com.webtoon.global.openfeign.DynamicUrlOpenFeign;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForMember;
 import com.webtoon.util.constant.ConstantCommon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -62,16 +64,18 @@ public class CartoonMemberController {
 
     @GetMapping("/cartoonMember/ageRange")
     public ResponseEntity<CartoonListResult> findAllByMemberAge(
-            @ModelAttribute @Valid CartoonSearchAge cartoonSearchAge) {
+            @ModelAttribute @Valid CartoonSearchAge cartoonSearchAge, BindingResult bindingResult) {
 
+        BindingException.validate(bindingResult);
         List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearchAge);
         return ResponseEntity.ok(new CartoonListResult(cartoonCoreList.size(), cartoonCoreList));
     }
 
     @GetMapping("/cartoonMember/gender")
     public ResponseEntity<CartoonListResult> findAllByMemberGender(
-            @ModelAttribute @Valid CartoonSearchGender cartoonSearchGender) {
+            @ModelAttribute @Valid CartoonSearchGender cartoonSearchGender, BindingResult bindingResult) {
 
+        BindingException.validate(bindingResult);
         List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberGender(cartoonSearchGender);
         return ResponseEntity.ok(new CartoonListResult(cartoonCoreList.size(), cartoonCoreList));
     }

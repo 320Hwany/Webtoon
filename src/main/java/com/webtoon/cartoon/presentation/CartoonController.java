@@ -5,9 +5,11 @@ import com.webtoon.cartoon.dto.request.*;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.cartoon.dto.response.CartoonListResult;
 import com.webtoon.cartoon.application.CartoonService;
+import com.webtoon.global.error.BindingException;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,25 +30,28 @@ public class CartoonController {
 
     @GetMapping("/cartoon/title")
     public ResponseEntity<CartoonListResult> getCartoonListByTitle(
-            @ModelAttribute @Valid CartoonSearchTitle cartoonSearchTitle) {
+            @ModelAttribute @Valid CartoonSearchTitle cartoonSearchTitle, BindingResult bindingResult) {
 
+        BindingException.validate(bindingResult);
         List<CartoonResponse> cartoonResponseList = cartoonService.findAllByTitle(cartoonSearchTitle);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
     @GetMapping("/cartoon/orderby/likes")
     public ResponseEntity<CartoonListResult> getCartoonListByCondOrderByLikes(
-            @ModelAttribute @Valid CartoonSearchCond cartoonSearchDto) {
+            @ModelAttribute @Valid CartoonSearchCond cartoonSearchCond, BindingResult bindingResult) {
 
+        BindingException.validate(bindingResult);
         List<CartoonResponse> cartoonResponseList =
-                cartoonService.findAllByCartoonCondOrderByLikes(cartoonSearchDto);
+                cartoonService.findAllByCartoonCondOrderByLikes(cartoonSearchCond);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
     @GetMapping("/cartoon/orderby/rating")
     public ResponseEntity<CartoonListResult> getCartoonListByCondOrderByRating(
-            @RequestBody @Valid CartoonSearchCond cartoonSearchDto) {
+            @ModelAttribute @Valid CartoonSearchCond cartoonSearchDto, BindingResult bindingResult) {
 
+        BindingException.validate(bindingResult);
         List<CartoonResponse> cartoonResponseList =
                 cartoonService.findAllByCartoonCondOrderByRatingSet(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
