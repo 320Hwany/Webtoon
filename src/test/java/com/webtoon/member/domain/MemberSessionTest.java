@@ -7,6 +7,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpSession;
 
+import static com.webtoon.util.constant.ConstantCommon.MEMBER_SESSION;
 import static org.assertj.core.api.Assertions.*;
 
 class MemberSessionTest extends DomainTest {
@@ -28,7 +29,7 @@ class MemberSessionTest extends DomainTest {
 
         // then
         HttpSession session = httpServletRequest.getSession(false);
-        MemberSession findMemberSession = (MemberSession) session.getAttribute("memberSession");
+        MemberSession findMemberSession = (MemberSession) session.getAttribute(MEMBER_SESSION);
         assertThat(memberSession).isEqualTo(findMemberSession);
     }
 
