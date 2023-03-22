@@ -1,6 +1,7 @@
 package com.webtoon.content.repository;
 
 import com.webtoon.content.domain.Content;
+import com.webtoon.content.dto.request.ContentGet;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface ContentRepository {
 
     Content getById(Long id);
 
-    List<Content> findAllByCartoonId(Long cartoonId, Pageable pageable);
+    List<Content> findAllForCartoon(ContentGet contentGet);
 
     Optional<Content> findByCartoonIdAndEpisode(Long cartoonId, int episode);
 

@@ -23,6 +23,8 @@ public class ConstantValid {
 
     public static final String CARTOON_SIZE_VALID_MESSAGE = "한 페이지당 가져올 만화의 수를 입력해주세요";
 
+    public static final String CONTENT_SIZE_VALID_MESSAGE = "한 페이지당 가져올 컨텐츠의 수를 입력해주세요";
+
     public static final String SUBTITLE_VALID_MESSAGE = "만화 부제를 입력해주세요";
 
     public static final String EPISODE_VALID_MESSAGE = "몇 화인지를 입력해주세요";

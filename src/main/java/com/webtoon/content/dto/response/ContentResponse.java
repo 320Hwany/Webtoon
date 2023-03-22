@@ -2,19 +2,14 @@ package com.webtoon.content.dto.response;
 
 import com.webtoon.cartoon.dto.response.CartoonResponse;
 import com.webtoon.content.domain.Content;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ContentResponse {
 
     private CartoonResponse cartoonResponse;
@@ -25,6 +20,16 @@ public class ContentResponse {
     private double rating;
 
     private LocalDate registrationDate;
+
+    @Builder
+    public ContentResponse(CartoonResponse cartoonResponse, String subTitle, int episode,
+                           double rating, LocalDate registrationDate) {
+        this.cartoonResponse = cartoonResponse;
+        this.subTitle = subTitle;
+        this.episode = episode;
+        this.rating = rating;
+        this.registrationDate = registrationDate;
+    }
 
     public static ContentResponse getFromContent(Content content) {
         return ContentResponse.builder()

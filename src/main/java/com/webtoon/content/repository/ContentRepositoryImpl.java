@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.webtoon.cartoon.domain.QCartoon;
 import com.webtoon.content.domain.Content;
 import com.webtoon.content.domain.QContent;
+import com.webtoon.content.dto.request.ContentGet;
 import com.webtoon.content.exception.ContentNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -39,15 +40,15 @@ public class ContentRepositoryImpl implements ContentRepository {
     }
 
     @Override
-    public List<Content> findAllByCartoonId(Long cartoonId, Pageable pageable) {
+    public List<Content> findAllForCartoon(ContentGet contentGet) {
         return jpaQueryFactory
                 .selectFrom(content)
                 .leftJoin(content.cartoon, cartoon)
                 .fetchJoin()
-                .where(cartoon.id.eq(cartoonId))
+                .where(cartoon.id.eq(contentGet.getCartoonId()))
                 .orderBy(content.episode.desc())
-                .offset(pageable.getPageNumber())
-                .limit(pageable.getPageSize())
+                .offset(contentGet.getOffset())
+                .limit(contentGet.getSize())
                 .fetch();
     }
 

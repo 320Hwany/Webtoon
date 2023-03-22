@@ -2,10 +2,7 @@ package com.webtoon.content.dto.request;
 
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.content.domain.Content;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Min;
@@ -17,9 +14,7 @@ import static com.webtoon.util.constant.ConstantCommon.ZERO_OF_TYPE_DOUBLE;
 import static com.webtoon.util.constant.ConstantValid.*;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ContentSave {
 
     @NotBlank(message = SUBTITLE_VALID_MESSAGE)
@@ -40,5 +35,12 @@ public class ContentSave {
                 .registrationDate(registrationDate)
                 .rating(ZERO_OF_TYPE_DOUBLE)
                 .build();
+    }
+
+    @Builder
+    public ContentSave(String subTitle, int episode, LocalDate registrationDate) {
+        this.subTitle = subTitle;
+        this.episode = episode;
+        this.registrationDate = registrationDate;
     }
 }

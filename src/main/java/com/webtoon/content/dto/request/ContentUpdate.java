@@ -1,9 +1,6 @@
 package com.webtoon.content.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Min;
@@ -14,9 +11,7 @@ import java.time.LocalDate;
 import static com.webtoon.util.constant.ConstantValid.*;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ContentUpdate {
 
     @NotBlank(message = SUBTITLE_VALID_MESSAGE)
@@ -28,4 +23,11 @@ public class ContentUpdate {
     @NotNull(message = REGISTRATION_DATE_VALID_MESSAGE)
     @DateTimeFormat(pattern = YEAR_MONTH_DAY)
     private LocalDate registrationDate;
+
+    @Builder
+    public ContentUpdate(String subTitle, int episode, LocalDate registrationDate) {
+        this.subTitle = subTitle;
+        this.episode = episode;
+        this.registrationDate = registrationDate;
+    }
 }

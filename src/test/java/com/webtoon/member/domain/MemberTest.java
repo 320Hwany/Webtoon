@@ -48,14 +48,14 @@ class MemberTest extends DomainTest {
 
     @Test
     @DisplayName("현재 날짜가 미리보기 잠금 날짜를 지났다면 코인을 지불하지 않습니다")
-    void validatePreviewContentAfterNowDate() {
+    void payForPreviewContentAfterNowDate() {
         // given
         Member member = getMember();
         member.chargeCoin(10000L);
         LocalDate lockLocalDate = LocalDate.now().minusWeeks(1);
 
         // when
-        member.validatePreviewContent(lockLocalDate);
+        member.payForPreviewContent(lockLocalDate);
 
         // then
         assertThat(member.getCoin()).isEqualTo(10000L);
@@ -63,14 +63,14 @@ class MemberTest extends DomainTest {
 
     @Test
     @DisplayName("현재 날짜가 미리보기 잠금 날짜를 지나지 않았다면 코인을 지불합니다")
-    void validatePreviewContentBeforeNowDate() {
+    void payForPreviewContentBeforeNowDate() {
         // given
         Member member = getMember();
         member.chargeCoin(10000L);
         LocalDate lockLocalDate = LocalDate.now().plusWeeks(1);
 
         // when
-        member.validatePreviewContent(lockLocalDate);
+        member.payForPreviewContent(lockLocalDate);
 
         // then
         assertThat(member.getCoin()).isEqualTo(10000L - PAYCOIN);
@@ -86,6 +86,6 @@ class MemberTest extends DomainTest {
 
         // expected
         Assertions.assertThrows(LackOfCoinException.class,
-                () -> member.validatePreviewContent(lockLocalDate));
+                () -> member.payForPreviewContent(lockLocalDate));
     }
 }

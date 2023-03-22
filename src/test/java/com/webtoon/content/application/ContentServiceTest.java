@@ -5,10 +5,7 @@ import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.content.domain.Content;
-import com.webtoon.content.dto.request.ContentGet;
-import com.webtoon.content.dto.request.ContentSave;
-import com.webtoon.content.dto.request.ContentUpdate;
-import com.webtoon.content.dto.request.ContentUpdateSet;
+import com.webtoon.content.dto.request.*;
 import com.webtoon.content.dto.response.ContentResponse;
 import com.webtoon.content.exception.ContentNotFoundException;
 import com.webtoon.member.domain.Member;
@@ -18,15 +15,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.webtoon.content.dto.request.ContentSaveSet.toContentSaveSet;
 import static com.webtoon.util.constant.ConstantCommon.ZERO_OF_TYPE_LONG;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,10 +31,52 @@ class ContentServiceTest extends ServiceTest {
     @Autowired
     private ContentService contentService;
 
+    @Test
+    @DisplayName("입력한 정보로부터 그 만화에 해당하는 컨텐츠를 추가합니다")
+    void save200() {
+        // given
+        Author author = saveAuthorInRepository();
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
+        Cartoon cartoon = saveCartoonInRepository(author);
+
+        ContentSave contentSave = ContentSave.builder()
+                .subTitle("부제입니다")
+                .episode(20)
+                .registrationDate(LocalDate.of(2023, 2, 20))
+                .build();
+
+        ContentSaveSet contentSaveSet = toContentSaveSet(authorSession, cartoon.getId(), contentSave);
+
+        // when
+        contentService.save(contentSaveSet);
+
+        // then
+        assertThat(contentRepository.count()).isEqualTo(1);
+    }
 
     @Test
-    @DisplayName("만화의 컨텐츠를 한 페이지 가져옵니다")
-    void findAllByCartoonId() {
+    @DisplayName("cartoonId에 해당하는 만화가 없다면 예외가 발생합니다")
+    void save404() {
+        // given
+        Author author = saveAuthorInRepository();
+        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
+
+        ContentSave contentSave = ContentSave.builder()
+                .subTitle("부제입니다")
+                .episode(20)
+                .registrationDate(LocalDate.of(2023, 2, 20))
+                .build();
+
+        ContentSaveSet contentSaveSet = toContentSaveSet(authorSession, 9999L, contentSave);
+
+        // expected
+        Assertions.assertThrows(CartoonNotFoundException.class,
+                () -> contentService.save(contentSaveSet));
+    }
+
+    @Test
+    @DisplayName("만화의 컨텐츠를 에피소드 역순으로 한 페이지 가져옵니다")
+    void findAllForCartoon() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -53,10 +90,14 @@ class ContentServiceTest extends ServiceTest {
 
         contentRepository.saveAll(contentList);
 
-        Pageable pageable = PageRequest.of(0, 20, Sort.Direction.DESC, "id");
+        ContentGet contentGet = ContentGet.builder()
+                .page(1)
+                .size(20)
+                .cartoonId(cartoon.getId())
+                .build();
 
         // when
-        List<ContentResponse> contentResponseList = contentService.findAllByCartoonId(cartoon.getId(), pageable);
+        List<ContentResponse> contentResponseList = contentService.findAllForCartoon(contentGet);
 
         // then
         assertThat(contentResponseList.size()).isEqualTo(10);
@@ -64,47 +105,8 @@ class ContentServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("cartoonId, ContentSave로부터 그 만화에 해당하는 컨텐츠를 추가합니다")
-    void saveSet200() {
-        // given
-        Author author = saveAuthorInRepository();
-        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
-        Cartoon cartoon = saveCartoonInRepository(author);
-
-        ContentSave contentSave = ContentSave.builder()
-                .subTitle("부제입니다")
-                .episode(20)
-                .registrationDate(LocalDate.of(2023, 2, 20))
-                .build();
-
-        // when
-        contentService.saveSet(authorSession, cartoon.getId(), contentSave);
-
-        // then
-        assertThat(contentRepository.count()).isEqualTo(1);
-    }
-
-    @Test
-    @DisplayName("cartoonId에 해당하는 만화가 없다면 예외가 발생합니다")
-    void saveSet404() {
-        // given
-        Author author = saveAuthorInRepository();
-        AuthorSession authorSession = getAuthorSessionFromAuthor(author);
-
-        ContentSave contentSave = ContentSave.builder()
-                .subTitle("부제입니다")
-                .episode(20)
-                .registrationDate(LocalDate.of(2023, 2, 20))
-                .build();
-
-        // expected
-        Assertions.assertThrows(CartoonNotFoundException.class,
-                () -> contentService.saveSet(authorSession,9999L, contentSave));
-    }
-
-    @Test
     @DisplayName("입력한 정보에 맞는 컨텐츠가 2주가 되지 않았다면 200코인을 차감하고 보여줍니다")
-    void getContentTransactionSetPayCoin() {
+    void getEpisodePayCoin() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -118,25 +120,25 @@ class ContentServiceTest extends ServiceTest {
 
         memberRepository.save(member);
 
-        ContentGet contentGet = ContentGet.builder()
+        EpisodeGetSet episodeGetSet = EpisodeGetSet.builder()
                 .memberSessionId(member.getId())
                 .cartoonId(cartoon.getId())
                 .contentEpisode(content.getEpisode())
                 .build();
 
         // when
-        Content findContent = contentService.getContentTransactionSet(contentGet);
+        ContentResponse contentResponse = contentService.getEpisode(episodeGetSet);
 
         // then
         Member findMember = memberRepository.getById(member.getId());
 
-        assertThat(findContent.getId()).isEqualTo(content.getId());
         assertThat(findMember.getCoin()).isEqualTo(9800);
+        assertThat(contentResponse.getEpisode()).isEqualTo(1);
     }
 
     @Test
     @DisplayName("입력한 정보에 맞는 컨텐츠가 2주가 넘었다면 무료로 보여줍니다")
-    void getContentTransactionSet() {
+    void getEpisodeForFree() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -159,60 +161,25 @@ class ContentServiceTest extends ServiceTest {
 
         memberRepository.save(member);
 
-        ContentGet contentGet = ContentGet.builder()
+        EpisodeGetSet episodeGetSet = EpisodeGetSet.builder()
                 .memberSessionId(member.getId())
                 .cartoonId(cartoon.getId())
                 .contentEpisode(content.getEpisode())
                 .build();
 
         // when
-        Content findContent = contentService.getContentTransactionSet(contentGet);
+        ContentResponse contentResponse = contentService.getEpisode(episodeGetSet);
 
         // then
         Member findMember = memberRepository.getById(member.getId());
 
-        assertThat(findContent.getId()).isEqualTo(content.getId());
         assertThat(findMember.getCoin()).isEqualTo(10000);
-    }
-
-    @Test
-    @DisplayName("입력한 정보에 맞는 컨텐츠가 없다면 예외가 발생합니다")
-    void getContentTransactionSet404() {
-        // given
-        Author author = saveAuthorInRepository();
-        Cartoon cartoon = saveCartoonInRepository(author);
-        Content content = saveContentInRepository(cartoon);
-        Member member = Member.builder()
-                .nickname("회원 닉네임")
-                .email("yhwjd@naver.com")
-                .password(passwordEncoder.encode("1234"))
-                .coin(10000L)
-                .build();
-
-        memberRepository.save(member);
-
-        ContentGet contentGetWithoutCartoon = ContentGet.builder()
-                .memberSessionId(member.getId())
-                .cartoonId(9999L)
-                .contentEpisode(content.getEpisode())
-                .build();
-
-        ContentGet contentGetWithoutContentEpisode = ContentGet.builder()
-                .memberSessionId(member.getId())
-                .cartoonId(cartoon.getId())
-                .contentEpisode(9999)
-                .build();
-
-        // expected
-        assertThrows(ContentNotFoundException.class,
-                () -> contentService.getContentTransactionSet(contentGetWithoutCartoon));
-        assertThrows(ContentNotFoundException.class,
-                () -> contentService.getContentTransactionSet(contentGetWithoutContentEpisode));
+        assertThat(contentResponse.getEpisode()).isEqualTo(1);
     }
 
     @Test
     @DisplayName("코인이 부족하다면 2주가 안된 컨텐츠를 볼 수 없습니다")
-    void validatePreviewContent() {
+    void LackOfCoin() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -226,7 +193,7 @@ class ContentServiceTest extends ServiceTest {
 
         memberRepository.save(member);
 
-        ContentGet contentGet = ContentGet.builder()
+        EpisodeGetSet episodeGet = EpisodeGetSet.builder()
                 .memberSessionId(member.getId())
                 .cartoonId(cartoon.getId())
                 .contentEpisode(content.getEpisode())
@@ -234,7 +201,42 @@ class ContentServiceTest extends ServiceTest {
 
         // expected
         assertThrows(LackOfCoinException.class,
-                () -> contentService.getContentTransactionSet(contentGet));
+                () -> contentService.getEpisode(episodeGet));
+    }
+
+    @Test
+    @DisplayName("입력한 정보에 맞는 컨텐츠가 없다면 예외가 발생합니다")
+    void getEpisode404() {
+        // given
+        Author author = saveAuthorInRepository();
+        Cartoon cartoon = saveCartoonInRepository(author);
+        Content content = saveContentInRepository(cartoon);
+        Member member = Member.builder()
+                .nickname("회원 닉네임")
+                .email("yhwjd@naver.com")
+                .password(passwordEncoder.encode("1234"))
+                .coin(10000L)
+                .build();
+
+        memberRepository.save(member);
+
+        EpisodeGetSet episodeGetWithoutCartoon = EpisodeGetSet.builder()
+                .memberSessionId(member.getId())
+                .cartoonId(9999L)
+                .contentEpisode(content.getEpisode())
+                .build();
+
+        EpisodeGetSet contentGetWithoutEpisodeGet = EpisodeGetSet.builder()
+                .memberSessionId(member.getId())
+                .cartoonId(cartoon.getId())
+                .contentEpisode(9999)
+                .build();
+
+        // expected
+        assertThrows(ContentNotFoundException.class,
+                () -> contentService.getEpisode(episodeGetWithoutCartoon));
+        assertThrows(ContentNotFoundException.class,
+                () -> contentService.getEpisode(contentGetWithoutEpisodeGet));
     }
 
     @Test
@@ -253,13 +255,14 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         ContentUpdateSet contentUpdateSet = ContentUpdateSet.builder()
+                .authorSession(authorSession)
                 .cartoonId(cartoon.getId())
                 .contentEpisode(content.getEpisode())
                 .contentUpdate(contentUpdate)
                 .build();
 
         // when
-        contentService.update(authorSession, cartoon.getId(), contentUpdateSet);
+        contentService.update(contentUpdateSet);
 
         // then
         Content findContent = contentRepository.getById(content.getId());
@@ -284,13 +287,14 @@ class ContentServiceTest extends ServiceTest {
                 .build();
 
         ContentUpdateSet contentUpdateSet = ContentUpdateSet.builder()
-                .cartoonId(9999L)
+                .authorSession(authorSession)
+                .cartoonId(cartoon.getId())
                 .contentEpisode(9999)
                 .contentUpdate(contentUpdate)
                 .build();
 
         // expected
         assertThrows(ContentNotFoundException.class,
-                () -> contentService.update(authorSession, cartoon.getId(), contentUpdateSet));
+                () -> contentService.update(contentUpdateSet));
     }
 }

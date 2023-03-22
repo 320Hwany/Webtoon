@@ -2,18 +2,16 @@ package com.webtoon.content.application;
 
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
+import com.webtoon.cartoon.exception.CartoonNotFoundException;
 import com.webtoon.cartoon.repository.CartoonRepository;
 import com.webtoon.content.domain.Content;
-import com.webtoon.content.dto.request.ContentGet;
-import com.webtoon.content.dto.request.ContentSave;
-import com.webtoon.content.dto.request.ContentUpdateSet;
+import com.webtoon.content.dto.request.*;
 import com.webtoon.content.dto.response.ContentResponse;
 import com.webtoon.content.exception.ContentNotFoundException;
 import com.webtoon.content.repository.ContentRepository;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,36 +30,39 @@ public class ContentService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void saveSet(AuthorSession authorSession, Long cartoonId, ContentSave contentSave) {
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
-        cartoon.validateAuthorityForCartoon(authorSession);
+    public void save(ContentSaveSet contentSaveSet) {
+        Cartoon cartoon = cartoonRepository.getById(contentSaveSet.getCartoonId());
+        cartoon.validateAuthorityForCartoon(contentSaveSet.getAuthorSession());
+        ContentSave contentSave = contentSaveSet.getContentSave();
         Content content = contentSave.toEntity(cartoon);
         contentRepository.save(content);
     }
 
-    public List<ContentResponse> findAllByCartoonId(Long cartoonId, Pageable pageable) {
-        List<Content> contentList = contentRepository.findAllByCartoonId(cartoonId, pageable);
+    public List<ContentResponse> findAllForCartoon(ContentGet contentGet) {
+        cartoonRepository.getById(contentGet.getCartoonId());
+        List<Content> contentList = contentRepository.findAllForCartoon(contentGet);
         return ContentResponse.getFromContentList(contentList);
     }
 
     @Transactional
-    public Content getContentTransactionSet(ContentGet contentGet) {
+    public ContentResponse getEpisode(EpisodeGetSet episodeGet) {
         Content content =
-                contentRepository.findByCartoonIdAndEpisode(contentGet.getCartoonId(), contentGet.getContentEpisode())
+                contentRepository.findByCartoonIdAndEpisode(episodeGet.getCartoonId(), episodeGet.getContentEpisode())
                         .orElseThrow(ContentNotFoundException::new);
         LocalDate lockLocalDate = content.getLockLocalDate(TWO_WEEKS);
-        Member member = memberRepository.getById(contentGet.getMemberSessionId());
-        member.validatePreviewContent(lockLocalDate);
-        return content;
+        Member member = memberRepository.getById(episodeGet.getMemberSessionId());
+        member.payForPreviewContent(lockLocalDate);
+        return ContentResponse.getFromContent(content);
     }
 
     @Transactional
-    public void update(AuthorSession authorSession, Long cartoonId, ContentUpdateSet contentUpdateSet) {
-        Cartoon cartoon = cartoonRepository.getById(cartoonId);
-        cartoon.validateAuthorityForCartoon(authorSession);
-        Content content =
-                contentRepository.findByCartoonIdAndEpisode(contentUpdateSet.getCartoonId(),
-                        contentUpdateSet.getContentEpisode()).orElseThrow(ContentNotFoundException::new);
+    public ContentResponse update(ContentUpdateSet contentUpdateSet) {
+        Cartoon cartoon = cartoonRepository.getById(contentUpdateSet.getCartoonId());
+        cartoon.validateAuthorityForCartoon(contentUpdateSet.getAuthorSession());
+        Content content = contentRepository.findByCartoonIdAndEpisode(contentUpdateSet.getCartoonId(),
+                        contentUpdateSet.getContentEpisode())
+                .orElseThrow(ContentNotFoundException::new);
         content.update(contentUpdateSet.getContentUpdate());
+        return ContentResponse.getFromContent(content);
     }
 }

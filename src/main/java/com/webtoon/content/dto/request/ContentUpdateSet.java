@@ -1,23 +1,34 @@
 package com.webtoon.content.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.webtoon.author.domain.AuthorSession;
+import lombok.*;
+
+import java.time.LocalDate;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ContentUpdateSet {
 
+    private AuthorSession authorSession;
     private Long cartoonId;
+
     private int contentEpisode;
+
     private ContentUpdate contentUpdate;
 
-    public static ContentUpdateSet getFromIdAndEpisode(Long cartoonId, int contentEpisode,
-                                                       ContentUpdate contentUpdate) {
+    @Builder
+    public ContentUpdateSet(AuthorSession authorSession, Long cartoonId,
+                            int contentEpisode, ContentUpdate contentUpdate) {
+        this.authorSession = authorSession;
+        this.cartoonId = cartoonId;
+        this.contentEpisode = contentEpisode;
+        this.contentUpdate = contentUpdate;
+    }
+
+    public static ContentUpdateSet toContentUpdateSet(AuthorSession authorSession, Long cartoonId,
+                                                      int contentEpisode, ContentUpdate contentUpdate) {
         return ContentUpdateSet.builder()
+                .authorSession(authorSession)
                 .cartoonId(cartoonId)
                 .contentEpisode(contentEpisode)
                 .contentUpdate(contentUpdate)
