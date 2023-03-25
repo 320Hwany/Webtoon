@@ -6,11 +6,13 @@ import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 
 import java.time.LocalDate;
 
+import static com.webtoon.util.constant.ConstantValid.YEAR_MONTH_DAY;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -33,7 +35,9 @@ public class Content extends BaseTimeEntity {
 
     private int episode;
 
+    @DateTimeFormat(pattern = YEAR_MONTH_DAY)
     private LocalDate registrationDate;
+
     private double rating;
 
     @Builder

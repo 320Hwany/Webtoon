@@ -5,12 +5,12 @@ import com.webtoon.cartoon.dto.response.CartoonListResult;
 import com.webtoon.cartoonmember.dto.request.*;
 import com.webtoon.cartoonmember.application.CartoonMemberService;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
+import com.webtoon.content.dto.request.ContentGet;
 import com.webtoon.content.dto.response.ContentListResult;
 import com.webtoon.global.error.BindingException;
-import com.webtoon.global.openfeign.DynamicUrlOpenFeign;
+import com.webtoon.global.resttemplate.RestTemplateService;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForMember;
-import com.webtoon.util.constant.ConstantCommon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,29 +19,34 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.webtoon.cartoonmember.dto.request.CartoonMemberRating.toCartoonMemberRating;
+import static com.webtoon.cartoonmember.dto.request.CartoonMemberSave.*;
+import static com.webtoon.cartoonmember.dto.request.CartoonMemberThumbsUp.*;
+import static com.webtoon.util.constant.ConstantCommon.*;
+
 @RequiredArgsConstructor
 @RestController
 public class CartoonMemberController {
 
     private final CartoonMemberService cartoonMemberService;
-    private final DynamicUrlOpenFeign feign;
+    private final RestTemplateService restTemplateService;
 
     @PostMapping("/cartoonMember/read/{cartoonId}")
     public ResponseEntity<ContentListResult> memberReadCartoon(@LoginForMember MemberSession memberSession,
                                                                @PathVariable Long cartoonId) {
 
-        CartoonMemberSave cartoonMemberSave =
-                CartoonMemberSave.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
+        CartoonMemberSave cartoonMemberSave = toCartoonMemberSave(cartoonId, memberSession.getId());
         cartoonMemberService.save(cartoonMemberSave);
-        return feign.findContentList(cartoonId, ConstantCommon.firstPage);
+        ContentGet contentGet = ContentGet.toContentGet(FIRST_PAGE, PAGE_LIMIT, cartoonId);
+        ContentListResult contentListResult = restTemplateService.getContentList(contentGet);
+        return ResponseEntity.ok(contentListResult);
     }
 
     @PostMapping("/cartoonMember/thumbsUp/{cartoonId}")
     public ResponseEntity<Void> thumbsUp(@LoginForMember MemberSession memberSession,
                                          @PathVariable Long cartoonId) {
 
-        CartoonMemberThumbsUp cartoonMemberThumbsUp =
-                CartoonMemberThumbsUp.getFromCartoonIdAndMemberId(cartoonId, memberSession.getId());
+        CartoonMemberThumbsUp cartoonMemberThumbsUp = toCartoonMemberThumbsUp(cartoonId, memberSession.getId());
         cartoonMemberService.thumbsUp(cartoonMemberThumbsUp);
         return ResponseEntity.ok().build();
     }
@@ -85,8 +90,7 @@ public class CartoonMemberController {
                                        @PathVariable Long cartoonId,
                                        @PathVariable double rating) {
 
-        CartoonMemberRating cartoonMemberRating =
-                CartoonMemberRating.getFromIdAndRating(cartoonId, memberSession.getId(), rating);
+        CartoonMemberRating cartoonMemberRating = toCartoonMemberRating(cartoonId, memberSession.getId(), rating);
         cartoonMemberService.rating(cartoonMemberRating);
         return ResponseEntity.ok().build();
     }

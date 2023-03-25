@@ -1,20 +1,21 @@
 package com.webtoon.cartoonmember.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartoonMemberThumbsUp {
 
     private Long cartoonId;
     private Long memberId;
 
-    public static CartoonMemberThumbsUp getFromCartoonIdAndMemberId(Long cartoonId, Long memberId) {
+    @Builder
+    public CartoonMemberThumbsUp(Long cartoonId, Long memberId) {
+        this.cartoonId = cartoonId;
+        this.memberId = memberId;
+    }
+
+    public static CartoonMemberThumbsUp toCartoonMemberThumbsUp(Long cartoonId, Long memberId) {
         return CartoonMemberThumbsUp.builder()
                 .cartoonId(cartoonId)
                 .memberId(memberId)

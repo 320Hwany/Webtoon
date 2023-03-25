@@ -25,6 +25,14 @@ public class ContentGet {
         this.cartoonId = cartoonId;
     }
 
+    public static ContentGet toContentGet(int page, int size, Long cartoonId) {
+        return ContentGet.builder()
+                .page(page)
+                .size(size)
+                .cartoonId(cartoonId)
+                .build();
+    }
+
     public int getOffset() {
         return Math.max(page - 1, 0) * size;
     }

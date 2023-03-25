@@ -9,8 +9,7 @@ import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoon.dto.response.QCartoonCore;
 import com.webtoon.cartoonmember.domain.CartoonMember;
 import com.webtoon.cartoonmember.domain.QCartoonMember;
-import com.webtoon.cartoonmember.dto.request.CartoonSearchAge;
-import com.webtoon.cartoonmember.dto.request.CartoonSearchGender;
+import com.webtoon.cartoonmember.dto.request.*;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.cartoonmember.dto.response.QCartoonMemberResponse;
 import com.webtoon.cartoonmember.exception.CartoonMemberNotFoundException;
@@ -41,16 +40,54 @@ public class CartoonMemberRepositoryImpl implements CartoonMemberRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Optional<CartoonMember> findByCartoonIdAndMemberId(Long cartoonId, Long memberId) {
+    public Optional<CartoonMember> findByCartoonMemberSave(CartoonMemberSave cartoonMemberSave) {
         return Optional.ofNullable(
                 jpaQueryFactory.selectFrom(cartoonMember)
                         .leftJoin(cartoonMember.cartoon, cartoon)
                         .fetchJoin()
-                        .where(cartoon.id.eq(cartoonId))
+                        .where(cartoon.id.eq(cartoonMemberSave.getCartoonId()))
                         .leftJoin(cartoonMember.member, member)
                         .fetchJoin()
-                        .where(member.id.eq(memberId))
+                        .where(member.id.eq(cartoonMemberSave.getMemberId()))
                         .fetchOne());
+    }
+
+    @Override
+    public Optional<CartoonMember> findByCartoonMemberThumbsUp(CartoonMemberThumbsUp cartoonMemberThumbsUp) {
+        return Optional.ofNullable(
+                jpaQueryFactory.selectFrom(cartoonMember)
+                        .leftJoin(cartoonMember.cartoon, cartoon)
+                        .fetchJoin()
+                        .where(cartoon.id.eq(cartoonMemberThumbsUp.getCartoonId()))
+                        .leftJoin(cartoonMember.member, member)
+                        .fetchJoin()
+                        .where(member.id.eq(cartoonMemberThumbsUp.getMemberId()))
+                        .fetchOne());
+    }
+
+    @Override
+    public Optional<CartoonMember> findByCartoonMemberRating(CartoonMemberRating cartoonMemberRating) {
+        return Optional.ofNullable(
+                jpaQueryFactory.selectFrom(cartoonMember)
+                        .leftJoin(cartoonMember.cartoon, cartoon)
+                        .fetchJoin()
+                        .where(cartoon.id.eq(cartoonMemberRating.getCartoonId()))
+                        .leftJoin(cartoonMember.member, member)
+                        .fetchJoin()
+                        .where(member.id.eq(cartoonMemberRating.getMemberId()))
+                        .fetchOne());
+    }
+
+    @Override
+    public CartoonMember getByCartoonMemberSave(CartoonMemberSave cartoonMemberSave) {
+        return jpaQueryFactory.selectFrom(cartoonMember)
+                .leftJoin(cartoonMember.cartoon, cartoon)
+                .fetchJoin()
+                .where(cartoon.id.eq(cartoonMemberSave.getCartoonId()))
+                .leftJoin(cartoonMember.member, member)
+                .fetchJoin()
+                .where(member.id.eq(cartoonMemberSave.getMemberId()))
+                .fetchOne();
     }
 
     @Override

@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.*;
 class CartoonMemberTest extends DomainTest {
 
     @Test
-    @DisplayName("thumbsUp 메소드를 실행하면 thumbsUp이 true로 바뀐다")
+    @DisplayName("thumbsUp 메소드를 실행하면 thumbsUp 필드 값이 true로 바뀐다")
     void thumbsUp() {
         // given
         CartoonMember cartoonMember = CartoonMember.builder()
@@ -26,7 +26,7 @@ class CartoonMemberTest extends DomainTest {
     }
 
     @Test
-    @DisplayName("rated 메소드를 실행하면 rated가 true로 바뀐다")
+    @DisplayName("rated 메소드를 실행하면 rated 필드 값이 true로 바뀐다")
     void rated() {
         // given
         CartoonMember cartoonMember = CartoonMember.builder()

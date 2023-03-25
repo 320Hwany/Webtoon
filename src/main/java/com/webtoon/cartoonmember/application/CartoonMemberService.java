@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static com.webtoon.cartoonmember.domain.CartoonMember.*;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -33,20 +34,30 @@ public class CartoonMemberService {
     public void save(CartoonMemberSave cartoonMemberSave) {
         Cartoon cartoon = cartoonRepository.getById(cartoonMemberSave.getCartoonId());
         Member member = memberRepository.getById(cartoonMemberSave.getMemberId());
-        CartoonMember cartoonMember = CartoonMember.getFromCartoonAndMember(cartoon, member);
-        if (!validateAlreadyRead(cartoonMemberSave.getCartoonId(), cartoonMemberSave.getMemberId())) {
-            cartoonMemberRepository.save(cartoonMember);
-        }
-        cartoonMember.updateReadDate(LocalDateTime.now());
+        CartoonMember cartoonMember = toCartoonMember(cartoon, member);
+        readCartoon(cartoonMemberSave, cartoonMember);
     }
 
+    @Transactional
+    public void readCartoon(CartoonMemberSave cartoonMemberSave, CartoonMember cartoonMember) {
+        if (!validateAlreadyRead(cartoonMemberSave)) {
+            CartoonMember psCartoonMember = cartoonMemberRepository.save(cartoonMember);
+            psCartoonMember.updateReadDate(LocalDateTime.now());
+        } else {
+            CartoonMember findCartoonMember = cartoonMemberRepository.getByCartoonMemberSave(cartoonMemberSave);
+            findCartoonMember.updateReadDate(LocalDateTime.now());
+        }
+    }
+
+    protected boolean validateAlreadyRead(CartoonMemberSave cartoonMemberSave) {
+        Optional<CartoonMember> cartoonMember = cartoonMemberRepository.findByCartoonMemberSave(cartoonMemberSave);
+        return cartoonMember.isPresent();
+    }
 
     @Transactional
     public void thumbsUp(CartoonMemberThumbsUp cartoonMemberThumbsUp) {
-        CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(
-                        cartoonMemberThumbsUp.getCartoonId(), cartoonMemberThumbsUp.getMemberId())
+        CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonMemberThumbsUp(cartoonMemberThumbsUp)
                 .orElseThrow(CartoonMemberNotFoundException::new);
-
         cartoonMember.thumbsUp();
         Cartoon cartoon = cartoonMember.getCartoon();
         cartoon.addLike();
@@ -54,8 +65,7 @@ public class CartoonMemberService {
 
     @Transactional
     public void rating(CartoonMemberRating cartoonMemberRating) {
-        CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(
-                        cartoonMemberRating.getCartoonId(), cartoonMemberRating.getMemberId())
+        CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonMemberRating(cartoonMemberRating)
                 .orElseThrow(CartoonMemberNotFoundException::new);
 
         if (!cartoonMember.isRated()) {
@@ -81,10 +91,5 @@ public class CartoonMemberService {
     public List<CartoonCore> findAllByMemberGender(CartoonSearchGender cartoonSearchGender) {
         Gender.validateValid(cartoonSearchGender.getGender());
         return cartoonMemberRepository.findAllByMemberGender(cartoonSearchGender);
-    }
-
-    public boolean validateAlreadyRead(Long cartoonId, Long memberId) {
-        Optional<CartoonMember> cartoonMember = cartoonMemberRepository.findByCartoonIdAndMemberId(cartoonId, memberId);
-        return cartoonMember.isPresent();
     }
 }

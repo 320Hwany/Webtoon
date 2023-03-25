@@ -21,6 +21,7 @@ import com.webtoon.contentImgInfo.application.ContentImgInfoService;
 import com.webtoon.contentmember.domain.ContentMember;
 import com.webtoon.contentmember.repository.ContentMemberRepository;
 import com.webtoon.contentmember.application.ContentMemberService;
+import com.webtoon.global.resttemplate.RestTemplateService;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.repository.MemberRepository;
@@ -40,6 +41,7 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpSession;
@@ -114,6 +116,7 @@ public class ControllerTest {
     @Autowired
     protected PasswordEncoder passwordEncoder;
 
+
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
@@ -169,6 +172,7 @@ public class ControllerTest {
                 .nickname("회원 닉네임")
                 .email("yhwjd@naver.com")
                 .password(passwordEncoder.encode("1234"))
+                .birthDate(LocalDate.of(1999, 03, 20))
                 .coin(ZERO_OF_TYPE_LONG)
                 .gender(Gender.MAN)
                 .build();

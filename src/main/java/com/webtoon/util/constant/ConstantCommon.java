@@ -18,6 +18,8 @@ public class ConstantCommon {
 
     public static final int PAGE_LIMIT = 20;
 
+    public static final int FIRST_PAGE = 1;
+
     public static final String AUTHOR_SESSION = "authorSession";
 
     public static final String MEMBER_SESSION = "memberSession";
@@ -38,11 +40,6 @@ public class ConstantCommon {
     public static final String FORBIDDEN = "403";
 
     public static final String NOT_FOUND = "404";
-
-
-    public static final PageRequest firstPage
-            = PageRequest.of(0, 20, Sort.Direction.DESC, "id");
-
 
     public static long lowerBoundary(long age) {
         return age + 8;

@@ -40,14 +40,15 @@ public class CartoonMember extends BaseTimeEntity {
     private LocalDateTime lastReadDate;
 
     @Builder
-    public CartoonMember(Cartoon cartoon, Member member, boolean thumbsUp, boolean rated) {
+    public CartoonMember(Cartoon cartoon, Member member, boolean thumbsUp, boolean rated, LocalDateTime lastReadDate) {
         this.cartoon = cartoon;
         this.member = member;
         this.thumbsUp = thumbsUp;
         this.rated = rated;
+        this.lastReadDate = lastReadDate;
     }
 
-    public static CartoonMember getFromCartoonAndMember(Cartoon cartoon, Member member) {
+    public static CartoonMember toCartoonMember(Cartoon cartoon, Member member) {
         return CartoonMember.builder()
                 .cartoon(cartoon)
                 .member(member)

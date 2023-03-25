@@ -3,8 +3,7 @@ package com.webtoon.cartoonmember.repository;
 
 import com.webtoon.cartoon.dto.response.CartoonCore;
 import com.webtoon.cartoonmember.domain.CartoonMember;
-import com.webtoon.cartoonmember.dto.request.CartoonSearchAge;
-import com.webtoon.cartoonmember.dto.request.CartoonSearchGender;
+import com.webtoon.cartoonmember.dto.request.*;
 import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 
 import java.util.List;
@@ -16,7 +15,13 @@ public interface CartoonMemberRepository {
 
     CartoonMember getById(Long cartoonMemberId);
 
-    Optional<CartoonMember> findByCartoonIdAndMemberId(Long cartoonId, Long memberId);
+    Optional<CartoonMember> findByCartoonMemberSave(CartoonMemberSave cartoonMemberSave);
+
+    Optional<CartoonMember> findByCartoonMemberThumbsUp(CartoonMemberThumbsUp cartoonMemberThumbsUp);
+
+    Optional<CartoonMember> findByCartoonMemberRating(CartoonMemberRating cartoonMemberRating);
+
+    CartoonMember getByCartoonMemberSave(CartoonMemberSave cartoonMemberSave);
 
     List<CartoonMemberResponse> findAllCartoonByMemberId(Long memberId);
 
