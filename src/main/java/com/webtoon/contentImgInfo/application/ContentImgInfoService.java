@@ -27,14 +27,14 @@ public class ContentImgInfoService {
     private final ContentRepository contentRepository;
 
     @Transactional
-    public void saveSet(Long contentId, MultipartFile multipartFile) {
+    public void save(Long contentId, MultipartFile uploadImg) {
         Content content = contentRepository.getById(contentId);
-        ContentImgInfo contentImgInfo = ContentImgInfo.makeContentImgInfo(multipartFile, content);
+        ContentImgInfo contentImgInfo = ContentImgInfo.makeContentImgInfo(uploadImg, content);
         contentImgInfoRepository.save(contentImgInfo);
     }
 
-    public void imgUploadOnServer(MultipartFile multipartFile, String imgDir) {
-        ContentImgInfo.imgUploadOnServer(multipartFile, imgDir);
+    public void imgUploadOnServer(MultipartFile uploadImg, String imgDir) {
+        ContentImgInfo.imgUploadOnServer(uploadImg, imgDir);
     }
 
     public ContentImgInfo getByContentId(Long contentId) {

@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.webtoon.comment.dto.request.CommentSaveSet.*;
+import static com.webtoon.comment.dto.request.CommentUpdateSet.*;
+
 @RequiredArgsConstructor
 @RestController
 public class CommentController {
@@ -28,7 +31,7 @@ public class CommentController {
     public ResponseEntity<Void> save(@LoginForMember MemberSession memberSession,
                                      @PathVariable Long contentId,
                                      @RequestBody CommentSave commentSave) {
-        CommentSaveSet commentSaveSet = CommentSaveSet.getFromParameter(commentSave, memberSession.getId(), contentId);
+        CommentSaveSet commentSaveSet = toCommentSaveSet(commentSave, memberSession.getId(), contentId);
         commentService.save(commentSaveSet);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -38,8 +41,7 @@ public class CommentController {
                                                   @PathVariable Long commentId,
                                                   @RequestBody CommentUpdate commentUpdate) {
 
-        CommentUpdateSet commentUpdateSet =
-                CommentUpdateSet.getFromParameter(memberSession.getId(), commentId, commentUpdate);
+        CommentUpdateSet commentUpdateSet = toCommentUpdateSet(memberSession.getId(), commentId, commentUpdate);
         CommentResponse commentResponse = commentService.update(commentUpdateSet);
         return ResponseEntity.ok(commentResponse);
     }
@@ -54,8 +56,7 @@ public class CommentController {
     @GetMapping("/comment/member")
     public ResponseEntity<CommentResult> findAllForMember(@LoginForMember MemberSession memberSession,
                                                           Pageable pageable) {
-        List<CommentResponse> commentResponseList =
-                commentService.findAllForMember(memberSession.getId(), pageable);
+        List<CommentResponse> commentResponseList = commentService.findAllForMember(memberSession.getId(), pageable);
         return ResponseEntity.ok(new CommentResult(commentResponseList.size(), commentResponseList));
     }
 

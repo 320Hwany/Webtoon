@@ -22,15 +22,15 @@ public class ContentImgInfoController {
     private String imgDir;
 
     @PostMapping("/contentImg/{contentId}")
-    public ResponseEntity<Void> save(@RequestParam MultipartFile multipartFile,
+    public ResponseEntity<Void> save(@RequestParam MultipartFile uploadImg,
                                      @PathVariable Long contentId) {
-        contentImgInfoService.imgUploadOnServer(multipartFile, imgDir);
-        contentImgInfoService.saveSet(contentId, multipartFile);
+        contentImgInfoService.imgUploadOnServer(uploadImg, imgDir);
+        contentImgInfoService.save(contentId, uploadImg);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/contentImg/{contentId}")
-    public ResponseEntity<UrlResource> getContentImg(@PathVariable Long contentId) {
+    @GetMapping("/contentImg")
+    public ResponseEntity<UrlResource> getContentImg(@RequestParam Long contentId) {
         ContentImgInfo contentImgInfo = contentImgInfoService.getByContentId(contentId);
         UrlResource contentImg = contentImgInfoService.getImgFromServer(contentImgInfo, imgDir);
         MediaType mediaType = contentImgInfoService.getMediaType(contentImgInfo, imgDir);

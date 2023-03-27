@@ -1,21 +1,22 @@
 package com.webtoon.contentmember.dto.requeset;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ContentMemberSave {
 
     private Long contentId;
 
     private Long memberId;
 
-    public static ContentMemberSave getFromContentIdAndMemberId(Long contentId, Long memberId) {
+    @Builder
+    public ContentMemberSave(Long contentId, Long memberId) {
+        this.contentId = contentId;
+        this.memberId = memberId;
+    }
+
+    public static ContentMemberSave toContentMemberSave(Long contentId, Long memberId) {
         return ContentMemberSave.builder()
                 .contentId(contentId)
                 .memberId(memberId)

@@ -21,7 +21,6 @@ import com.webtoon.contentImgInfo.application.ContentImgInfoService;
 import com.webtoon.contentmember.domain.ContentMember;
 import com.webtoon.contentmember.repository.ContentMemberRepository;
 import com.webtoon.contentmember.application.ContentMemberService;
-import com.webtoon.global.resttemplate.RestTemplateService;
 import com.webtoon.member.domain.Member;
 import com.webtoon.member.dto.request.MemberLogin;
 import com.webtoon.member.repository.MemberRepository;
@@ -41,7 +40,6 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpSession;

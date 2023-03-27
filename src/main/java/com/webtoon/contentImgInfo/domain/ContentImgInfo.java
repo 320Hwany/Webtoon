@@ -39,18 +39,18 @@ public class ContentImgInfo extends BaseTimeEntity {
         this.content = content;
     }
 
-    public static void imgUploadOnServer(MultipartFile multipartFile, String imgDir) {
-        String fullPath = imgDir + multipartFile.getOriginalFilename();
+    public static void imgUploadOnServer(MultipartFile uploadImg, String imgDir) {
+        String fullPath = imgDir + uploadImg.getOriginalFilename();
         try {
-            multipartFile.transferTo(new File(fullPath));
+            uploadImg.transferTo(new File(fullPath));
         } catch (IOException e) {
             throw new ImgUploadException();
         }
     }
 
-    public static ContentImgInfo makeContentImgInfo(MultipartFile multipartFile, Content content) {
+    public static ContentImgInfo makeContentImgInfo(MultipartFile uploadImg, Content content) {
             return ContentImgInfo.builder()
-                    .imgName(multipartFile.getOriginalFilename())
+                    .imgName(uploadImg.getOriginalFilename())
                     .content(content)
                     .build();
     }

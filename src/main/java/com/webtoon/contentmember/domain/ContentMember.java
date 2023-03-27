@@ -36,7 +36,7 @@ public class ContentMember {
         this.member = member;
     }
 
-    public static ContentMember getFromContentAndMember(Content content, Member member) {
+    public static ContentMember toContentMember(Content content, Member member) {
         return ContentMember.builder()
                 .content(content)
                 .member(member)

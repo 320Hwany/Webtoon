@@ -23,7 +23,7 @@ public class CommentSaveSet {
         this.contentId = contentId;
     }
 
-    public static CommentSaveSet getFromParameter(CommentSave commentSave, Long memberSessionId, Long contentId) {
+    public static CommentSaveSet toCommentSaveSet(CommentSave commentSave, Long memberSessionId, Long contentId) {
         return CommentSaveSet.builder()
                 .commentSave(commentSave)
                 .memberSessionId(memberSessionId)

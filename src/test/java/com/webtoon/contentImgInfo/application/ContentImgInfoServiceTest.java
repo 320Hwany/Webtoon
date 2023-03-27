@@ -125,7 +125,7 @@ class ContentImgInfoServiceTest extends ServiceTest {
         );
 
         // when
-        contentImgInfoService.saveSet(content.getId(), multipartFile);
+        contentImgInfoService.save(content.getId(), multipartFile);
 
         // then
         assertThat(contentImgInfoRepository.count()).isEqualTo(1L);

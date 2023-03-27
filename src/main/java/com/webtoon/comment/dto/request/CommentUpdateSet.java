@@ -24,7 +24,7 @@ public class CommentUpdateSet {
         this.commentUpdate = commentUpdate;
     }
 
-    public static CommentUpdateSet getFromParameter(Long memberSessionId, Long commentId, CommentUpdate commentUpdate) {
+    public static CommentUpdateSet toCommentUpdateSet(Long memberSessionId, Long commentId, CommentUpdate commentUpdate) {
         return CommentUpdateSet.builder()
                 .commentId(commentId)
                 .memberSessionId(memberSessionId)

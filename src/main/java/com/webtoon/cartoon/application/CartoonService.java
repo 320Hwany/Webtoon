@@ -48,7 +48,7 @@ public class CartoonService {
         return CartoonResponse.getFromCartoonList(cartoonList);
     }
 
-    public List<CartoonResponse> findAllByCartoonCondOrderByRatingSet(CartoonSearchCond cartoonSearchCond) {
+    public List<CartoonResponse> findAllByCartoonCondOrderByRating(CartoonSearchCond cartoonSearchCond) {
         CartoonSearchCond cartoonEnumValidField = validateSearchCond(cartoonSearchCond);
         CartoonSearch cartoonSearch = cartoonEnumValidField.toCartoonSearch();
         List<Cartoon> cartoonList = cartoonRepository.findAllByCartoonCondOrderByRating(cartoonSearch);

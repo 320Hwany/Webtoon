@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.webtoon.contentmember.domain.ContentMember.toContentMember;
+
 @RequiredArgsConstructor
 @Service
 public class ContentMemberService {
@@ -23,7 +25,7 @@ public class ContentMemberService {
     public void save(ContentMemberSave contentMemberSave) {
         Content content = contentRepository.getById(contentMemberSave.getContentId());
         Member member = memberRepository.getById(contentMemberSave.getMemberId());
-        ContentMember contentMember = ContentMember.getFromContentAndMember(content, member);
+        ContentMember contentMember = toContentMember(content, member);
         contentMemberRepository.save(contentMember);
     }
 }

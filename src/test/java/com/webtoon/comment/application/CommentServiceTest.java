@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import static com.webtoon.comment.dto.request.CommentUpdateSet.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -99,7 +100,7 @@ class CommentServiceTest {
                 .commentContent("수정 댓글 내용입니다")
                 .build();
 
-        CommentUpdateSet commentUpdateSet = CommentUpdateSet.getFromParameter(1L, ANY_ID, commentUpdate);
+        CommentUpdateSet commentUpdateSet = toCommentUpdateSet(1L, ANY_ID, commentUpdate);
 
         // stub 1
         when(commentRepository.getById(any())).thenReturn(comment);

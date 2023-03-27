@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.webtoon.cartoon.dto.request.CartoonUpdateSet.toCartoonUpdateSet;
+
 @RequiredArgsConstructor
 @RestController
 public class CartoonController {
@@ -53,7 +55,7 @@ public class CartoonController {
 
         BindingException.validate(bindingResult);
         List<CartoonResponse> cartoonResponseList =
-                cartoonService.findAllByCartoonCondOrderByRatingSet(cartoonSearchDto);
+                cartoonService.findAllByCartoonCondOrderByRating(cartoonSearchDto);
         return ResponseEntity.ok(new CartoonListResult(cartoonResponseList.size(), cartoonResponseList));
     }
 
@@ -62,7 +64,7 @@ public class CartoonController {
                                                   @PathVariable Long cartoonId,
                                                   @RequestBody @Valid CartoonUpdate cartoonUpdate) {
 
-        CartoonUpdateSet cartoonUpdateSet = CartoonUpdateSet.toCartoonUpdateSet(authorSession, cartoonUpdate, cartoonId);
+        CartoonUpdateSet cartoonUpdateSet = toCartoonUpdateSet(authorSession, cartoonUpdate, cartoonId);
         CartoonResponse cartoonResponse = cartoonService.update(cartoonUpdateSet);
         return ResponseEntity.ok(cartoonResponse);
     }

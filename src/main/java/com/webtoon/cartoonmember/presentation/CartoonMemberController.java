@@ -8,7 +8,7 @@ import com.webtoon.cartoonmember.dto.response.CartoonMemberResponse;
 import com.webtoon.content.dto.request.ContentGet;
 import com.webtoon.content.dto.response.ContentListResult;
 import com.webtoon.global.error.BindingException;
-import com.webtoon.global.resttemplate.RestTemplateService;
+import com.webtoon.rest_template.RestTemplateService;
 import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
