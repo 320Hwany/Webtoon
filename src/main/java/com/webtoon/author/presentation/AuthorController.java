@@ -12,6 +12,7 @@ import com.webtoon.author.application.AuthorService;
 import com.webtoon.global.error.BindingException;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class AuthorController {
     @PostMapping("/author/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid AuthorSignup authorSignup) {
         authorService.signup(authorSignup);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/author/login")

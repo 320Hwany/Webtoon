@@ -1,17 +1,24 @@
 package com.webtoon.contentImgInfo.domain;
 
 import com.webtoon.content.domain.Content;
+import com.webtoon.contentImgInfo.exception.GetImgException;
 import com.webtoon.contentImgInfo.exception.ImgUploadException;
+import com.webtoon.contentImgInfo.exception.MediaTypeException;
 import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -39,6 +46,13 @@ public class ContentImgInfo extends BaseTimeEntity {
         this.content = content;
     }
 
+    public static ContentImgInfo toContentImgInfo(MultipartFile uploadImg, Content content) {
+        return ContentImgInfo.builder()
+                .imgName(uploadImg.getOriginalFilename())
+                .content(content)
+                .build();
+    }
+
     public static void imgUploadOnServer(MultipartFile uploadImg, String imgDir) {
         String fullPath = imgDir + uploadImg.getOriginalFilename();
         try {
@@ -48,10 +62,20 @@ public class ContentImgInfo extends BaseTimeEntity {
         }
     }
 
-    public static ContentImgInfo makeContentImgInfo(MultipartFile uploadImg, Content content) {
-            return ContentImgInfo.builder()
-                    .imgName(uploadImg.getOriginalFilename())
-                    .content(content)
-                    .build();
+    public UrlResource getImgFromServer(ContentImgInfo contentImgInfo, String imgDir) {
+        try {
+            return new UrlResource("file:" + imgDir + contentImgInfo.getImgName());
+        } catch (MalformedURLException e) {
+            throw new GetImgException();
+        }
+    }
+
+    public MediaType getMediaType(ContentImgInfo contentImgInfo, String imgDir) {
+        try {
+            return MediaType.parseMediaType(
+                    Files.probeContentType(Paths.get("file:" + imgDir + contentImgInfo.getImgName())));
+        } catch (IOException e) {
+            throw new MediaTypeException();
+        }
     }
 }

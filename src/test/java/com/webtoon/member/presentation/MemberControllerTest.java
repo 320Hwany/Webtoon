@@ -25,7 +25,7 @@ class MemberControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("조건이 맞으면 회원가입이 됩니다 - 성공")
-    void signup200() throws Exception {
+    void signup201() throws Exception {
         // given
         MemberSignup memberSignup = MemberSignup.builder()
                 .nickname("회원 닉네임")
@@ -40,8 +40,8 @@ class MemberControllerTest extends ControllerTest {
         mockMvc.perform(post("/member/signup")
                         .contentType(APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isOk())
-                .andDo(document("member/signup/200"));
+                .andExpect(status().isCreated())
+                .andDo(document("member/signup/201"));
     }
 
     @Test

@@ -4,6 +4,8 @@ package com.webtoon.util.enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor
 public enum DayOfTheWeek {
@@ -21,11 +23,6 @@ public enum DayOfTheWeek {
 
     public static boolean validateValid(String inputDayOfWeek) {
         DayOfTheWeek[] DayList = values();
-        for (DayOfTheWeek day : DayList) {
-            if (inputDayOfWeek.equals(day.getValue())) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(DayList).anyMatch(day -> inputDayOfWeek.equals(day.getValue()));
     }
 }

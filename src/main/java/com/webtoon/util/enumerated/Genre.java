@@ -3,6 +3,8 @@ package com.webtoon.util.enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor
 public enum Genre {
@@ -19,11 +21,6 @@ public enum Genre {
 
     public static boolean validateValid(String inputGenre) {
         Genre[] genreList = values();
-        for (Genre genre : genreList) {
-            if (inputGenre.equals(genre.getValue())) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(genreList).anyMatch(genre -> inputGenre.equals(genre.getValue()));
     }
 }

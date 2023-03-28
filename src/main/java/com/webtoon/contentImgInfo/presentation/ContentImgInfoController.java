@@ -5,6 +5,7 @@ import com.webtoon.contentImgInfo.application.ContentImgInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class ContentImgInfoController {
                                      @PathVariable Long contentId) {
         contentImgInfoService.imgUploadOnServer(uploadImg, imgDir);
         contentImgInfoService.save(contentId, uploadImg);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/contentImg")

@@ -32,7 +32,7 @@ class CartoonControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("작가로 로그인하면 만화를 등록할 수 있습니다 - 성공")
-    void save200() throws Exception {
+    void save201() throws Exception {
         // given
         Author author = saveAuthorInRepository();
         MockHttpSession session = loginAuthorSession(author);
@@ -51,8 +51,8 @@ class CartoonControllerTest extends ControllerTest {
                         .session(session)
                         .contentType(APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isOk())
-                .andDo(document("cartoon/save/200"));
+                .andExpect(status().isCreated())
+                .andDo(document("cartoon/save/201"));
     }
 
     @Test

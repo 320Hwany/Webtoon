@@ -9,6 +9,7 @@ import com.webtoon.member.domain.MemberSession;
 import com.webtoon.util.annotation.LoginForAuthor;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class ContentController {
                                      @RequestBody @Valid ContentSave contentSave) {
         ContentSaveSet contentSaveSet = toContentSaveSet(authorSession, cartoonId, contentSave);
         contentService.save(contentSaveSet);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/content")

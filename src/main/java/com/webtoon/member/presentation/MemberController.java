@@ -9,6 +9,7 @@ import com.webtoon.member.dto.response.MemberResponse;
 import com.webtoon.member.application.MemberService;
 import com.webtoon.util.annotation.LoginForMember;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class MemberController {
     @PostMapping("/member/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid MemberSignup memberSignup) {
         memberService.signup(memberSignup);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/member/login")

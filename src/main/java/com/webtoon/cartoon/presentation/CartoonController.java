@@ -8,6 +8,7 @@ import com.webtoon.cartoon.application.CartoonService;
 import com.webtoon.global.error.BindingException;
 import com.webtoon.util.annotation.LoginForAuthor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class CartoonController {
     public ResponseEntity<Void> save(@LoginForAuthor AuthorSession authorSession,
                                      @RequestBody @Valid CartoonSave cartoonSave) {
         cartoonService.save(cartoonSave, authorSession);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/cartoon/title")

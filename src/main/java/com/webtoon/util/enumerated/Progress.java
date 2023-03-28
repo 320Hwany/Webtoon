@@ -3,6 +3,8 @@ package com.webtoon.util.enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor
 public enum Progress {
@@ -16,11 +18,6 @@ public enum Progress {
 
     public static boolean validateValid(String inputProgress) {
         Progress[] progressList = values();
-        for (Progress progress : progressList) {
-            if (inputProgress.equals(progress.getValue())) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(progressList).anyMatch(progress -> inputProgress.equals(progress.getValue()));
     }
 }

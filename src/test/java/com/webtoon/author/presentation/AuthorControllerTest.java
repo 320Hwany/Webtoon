@@ -23,7 +23,7 @@ class AuthorControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("작가 회원가입 - 성공")
-    void signup200() throws Exception {
+    void signup201() throws Exception {
         // given
         AuthorSignup authorSignup = AuthorSignup.builder()
                 .nickname("작가 이름")
@@ -37,8 +37,8 @@ class AuthorControllerTest extends ControllerTest {
         mockMvc.perform(post("/author/signup")
                         .contentType(APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isOk())
-                .andDo(document("author/signup/200"));
+                .andExpect(status().isCreated())
+                .andDo(document("author/signup/201"));
     }
 
     @Test

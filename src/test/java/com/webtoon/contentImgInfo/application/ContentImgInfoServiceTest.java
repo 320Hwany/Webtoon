@@ -29,10 +29,8 @@ class ContentImgInfoServiceTest extends ServiceTest {
     @Autowired
     private ContentImgInfoService contentImgInfoService;
 
-
     @Test
     @DisplayName("만화 이미지를 서버에 업로드 합니다 - 성공")
-    @Rollback
     void imgUploadOnServer() throws IOException {
         // given
         String imgDir = "/Users/jeong-youhwan/file/test/";
@@ -111,7 +109,7 @@ class ContentImgInfoServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("만화 이미지에 대한 정보를 저장합니다 - 성공")
-    void saveSet() {
+    void save() {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);

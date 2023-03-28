@@ -26,7 +26,7 @@ class ContentControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("작가로 로그인한 후 자신의 만화에 내용을 추가할 수 있습니다 - 성공")
-    void save200() throws Exception {
+    void save201() throws Exception {
         // given
         Author author = saveAuthorInRepository();
         Cartoon cartoon = saveCartoonInRepository(author);
@@ -45,8 +45,8 @@ class ContentControllerTest extends ControllerTest {
                         .session(session)
                         .contentType(APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isOk())
-                .andDo(document("content/save/200"));
+                .andExpect(status().isCreated())
+                .andDo(document("content/save/201"));
     }
 
     @Test
