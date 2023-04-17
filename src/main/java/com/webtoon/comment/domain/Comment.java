@@ -50,7 +50,7 @@ public class Comment {
     private LocalDateTime lastModifiedDateTime;
 
     @Builder
-    public Comment(String commentContent, Member member, Content content, long likes,
+    protected Comment(String commentContent, Member member, Content content, long likes,
                    LocalDateTime createDateTime, LocalDateTime lastModifiedDateTime) {
         this.commentContent = commentContent;
         this.member = member;

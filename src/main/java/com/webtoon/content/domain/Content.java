@@ -41,7 +41,7 @@ public class Content extends BaseTimeEntity {
     private double rating;
 
     @Builder
-    public Content(Cartoon cartoon, String subTitle, int episode, double rating,
+    protected Content(Cartoon cartoon, String subTitle, int episode, double rating,
                    LocalDate registrationDate) {
         this.cartoon = cartoon;
         this.subTitle = subTitle;
@@ -60,3 +60,4 @@ public class Content extends BaseTimeEntity {
         return registrationDate.plusWeeks(weeks);
     }
 }
+

@@ -11,6 +11,8 @@ public class ConstantCommon {
 
     public static final long TWO_WEEKS = 2L;
 
+    public static final int FIVE_MINUTES = 300000;
+
     public static final double ZERO_OF_TYPE_DOUBLE = 0;
 
 
@@ -23,6 +25,8 @@ public class ConstantCommon {
     public static final String AUTHOR_SESSION = "authorSession";
 
     public static final String MEMBER_SESSION = "memberSession";
+
+    public static final String CARTOON_LIKES = "cartoonLikes";
 
     public static final String DAY_OF_THE_WEEK = "DayOfTheWeek";
 

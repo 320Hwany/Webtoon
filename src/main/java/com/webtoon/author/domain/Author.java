@@ -37,7 +37,7 @@ public class Author extends BaseTimeEntity {
     private List<Cartoon> cartoonList = new ArrayList<>();
 
     @Builder
-    public Author(String nickname, String email, String password) {
+    protected Author(String nickname, String email, String password) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;

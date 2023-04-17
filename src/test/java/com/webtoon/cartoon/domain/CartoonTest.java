@@ -177,11 +177,10 @@ class CartoonTest extends DomainTest {
                 .progress(Progress.SERIALIZATION)
                 .genre(Genre.ROMANCE)
                 .rating(ZERO_OF_TYPE_DOUBLE)
-                .likes(10)
                 .build();
 
         // when
-        cartoon.addLike();
+        cartoon.addLike(10);
 
         // then
         assertThat(cartoon.getLikes()).isEqualTo(11);

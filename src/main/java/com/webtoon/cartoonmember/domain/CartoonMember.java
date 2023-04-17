@@ -40,7 +40,7 @@ public class CartoonMember extends BaseTimeEntity {
     private LocalDateTime lastReadDate;
 
     @Builder
-    public CartoonMember(Cartoon cartoon, Member member, boolean thumbsUp, boolean rated, LocalDateTime lastReadDate) {
+    protected CartoonMember(Cartoon cartoon, Member member, boolean thumbsUp, boolean rated, LocalDateTime lastReadDate) {
         this.cartoon = cartoon;
         this.member = member;
         this.thumbsUp = thumbsUp;

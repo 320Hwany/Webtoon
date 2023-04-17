@@ -12,14 +12,22 @@ import com.webtoon.member.domain.Member;
 import com.webtoon.member.repository.MemberRepository;
 import com.webtoon.util.enumerated.Gender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.webtoon.cartoonmember.domain.CartoonMember.*;
+import static com.webtoon.util.constant.ConstantCommon.*;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -29,6 +37,7 @@ public class CartoonMemberService {
     private final CartoonMemberRepository cartoonMemberRepository;
     private final CartoonRepository cartoonRepository;
     private final MemberRepository memberRepository;
+    private final CacheManager cacheManager;
 
     @Transactional
     public void save(CartoonMemberSave cartoonMemberSave) {
@@ -54,13 +63,39 @@ public class CartoonMemberService {
         return cartoonMember.isPresent();
     }
 
+    @Scheduled(fixedRate = FIVE_MINUTES)
+    @CacheEvict(value = CARTOON_LIKES, allEntries = true)
+    @Transactional
+    public void flushCacheToDB() {
+        ConcurrentHashMap<Long, Long> likesMap = (ConcurrentHashMap<Long, Long>) Objects
+                .requireNonNull(cacheManager.getCache(CARTOON_LIKES)).getNativeCache();
+        for (Map.Entry<Long, Long> entry : likesMap.entrySet()) {
+            Long cartoonId = entry.getKey();
+            Long likes = entry.getValue();
+            Cartoon cartoon = cartoonRepository.getById(cartoonId);
+            cartoon.synchronizationLike(likes);
+        }
+    }
+
+    @Cacheable(value = CARTOON_LIKES, key = "#cartoonId")
+    public long getCartoonLikesFromCache(Long cartoonId) {
+        ConcurrentHashMap<Long, Long> likesMap = (ConcurrentHashMap<Long, Long>) Objects
+                .requireNonNull(cacheManager.getCache(CARTOON_LIKES)).getNativeCache();
+
+        if (likesMap.containsKey(cartoonId)) {
+            return likesMap.get(cartoonId);
+        }
+        return ZERO_OF_TYPE_LONG;
+    }
+
     @Transactional
     public void thumbsUp(CartoonMemberThumbsUp cartoonMemberThumbsUp) {
         CartoonMember cartoonMember = cartoonMemberRepository.findByCartoonMemberThumbsUp(cartoonMemberThumbsUp)
                 .orElseThrow(CartoonMemberNotFoundException::new);
         cartoonMember.thumbsUp();
         Cartoon cartoon = cartoonMember.getCartoon();
-        cartoon.addLike();
+        long likes = getCartoonLikesFromCache(cartoon.getId());
+        Objects.requireNonNull(cacheManager.getCache(CARTOON_LIKES)).put(cartoon.getId(), likes + 1);
     }
 
     @Transactional

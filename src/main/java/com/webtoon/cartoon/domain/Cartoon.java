@@ -51,7 +51,7 @@ public class Cartoon extends BaseTimeEntity {
     private long likes;
 
     @Builder
-    public Cartoon(String title, Author author, DayOfTheWeek dayOfTheWeek, Progress progress,
+    protected Cartoon(String title, Author author, DayOfTheWeek dayOfTheWeek, Progress progress,
                    Genre genre, double rating, long likes) {
         this.title = title;
         this.author = author;
@@ -85,8 +85,12 @@ public class Cartoon extends BaseTimeEntity {
         this.genre = Genre.valueOf(cartoonUpdate.getGenre());
     }
 
-    public void addLike() {
-        this.likes += 1;
+    public void addLike(long likes) {
+        this.likes = likes + 1;
+    }
+
+    public void synchronizationLike(long likes) {
+        this.likes = likes;
     }
 
     public void rating(double rating, long cartoonListSize) {

@@ -1,5 +1,6 @@
 package com.webtoon.member.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Objects;
 import static com.webtoon.util.constant.ConstantCommon.MEMBER_SESSION;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberSession implements Serializable {
 
     private Long id;
@@ -24,7 +25,7 @@ public class MemberSession implements Serializable {
     private String password;
 
     @Builder
-    public MemberSession(Long id, String nickname, String email, String password) {
+    protected MemberSession(Long id, String nickname, String email, String password) {
         this.id = id;
         this.nickname = nickname;
         this.email = email;

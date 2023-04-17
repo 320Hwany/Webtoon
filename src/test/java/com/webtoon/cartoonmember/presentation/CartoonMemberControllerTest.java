@@ -41,7 +41,9 @@ class CartoonMemberControllerTest extends ControllerTest {
 
         Cartoon findCartoon = cartoonRepository.getById(cartoon.getId());
         CartoonMember findCartoonMember = cartoonMemberRepository.getById(cartoonMember.getId());
-        assertThat(findCartoon.getLikes()).isEqualTo(1);
+        long cartoonLikesFromCache = cartoonMemberService.getCartoonLikesFromCache(findCartoon.getId());
+
+        assertThat(cartoonLikesFromCache).isEqualTo(1);
         assertThat(findCartoonMember.isThumbsUp()).isEqualTo(true);
     }
 

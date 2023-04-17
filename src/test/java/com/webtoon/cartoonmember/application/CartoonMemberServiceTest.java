@@ -201,12 +201,14 @@ class CartoonMemberServiceTest extends ServiceTest {
 
         // when
         cartoonMemberService.thumbsUp(cartoonMemberThumbsUp);
+        cartoonMemberService.flushCacheToDB();
 
         // then
         Cartoon findCartoon = cartoonRepository.getById(cartoon.getId());
         CartoonMember findCartoonMember = cartoonMemberRepository.getById(cartoonMember.getId());
+        long cartoonLikesFromCache = cartoonMemberService.getCartoonLikesFromCache(findCartoon.getId());
 
-        assertThat(findCartoon.getLikes()).isEqualTo(1);
+        assertThat(cartoonLikesFromCache).isEqualTo(1);
         assertThat(findCartoonMember.isThumbsUp()).isEqualTo(true);
     }
 

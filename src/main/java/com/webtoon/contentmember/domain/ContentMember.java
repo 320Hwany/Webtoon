@@ -31,7 +31,7 @@ public class ContentMember {
     private Member member;
 
     @Builder
-    public ContentMember(Content content, Member member) {
+    protected ContentMember(Content content, Member member) {
         this.content = content;
         this.member = member;
     }

@@ -1,16 +1,18 @@
 package com.webtoon.content.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ContentListResult<T> {
 
     private long count;
+
     private T cartoonResponseList;
+
+    @Builder
+    public ContentListResult(long count, T cartoonResponseList) {
+        this.count = count;
+        this.cartoonResponseList = cartoonResponseList;
+    }
 }
