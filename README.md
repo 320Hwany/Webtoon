@@ -11,7 +11,7 @@ Java 17, Spring Boot, Spring Data JPA, QueryDsl, Spring Rest Docs, JUnit 5, H2, 
   - 구현한 여러 조회 기능 중 대표적인 사례 4개를 정리해보았습니다.   
   
 - [OSIV 설정을 False로 변경하기위한 리팩토링 과정](https://320hwany.tistory.com/65)        
-  - OSIV 설증을 True로 하면 개발하기는 편하지만 성능상으로 문제가 발생할 수 있습니다.  
+  - OSIV 설정을 True로 하면 개발하기는 편하지만 성능상으로 문제가 발생할 수 있습니다.  
   - OSIV 설정을 False로 하여 각 계층이 가져야 할 역할을 정리하면서 리팩토링 해보았습니다.  
   
 - [테스트 코드 작성시 @Transactional 사용하지 않기](https://320hwany.tistory.com/64)       
