@@ -5,6 +5,10 @@
 Java 17, Spring Boot, Spring Data JPA, QueryDsl, Spring Rest Docs, JUnit 5, H2, MySQL, AWS EC2, AWS RDS
 
 ## Trouble Shooting
+- [JPA 양방향 매핑 사용하는게 맞을까?](https://320hwany.tistory.com/75)
+
+  - JPA 양방향 매핑을 사용하면 분명 편의성이 존재합니다.        
+  - 하지만 이러한 편의성이 과연 순환 참조를 만들지 않는 것보다 더 중요한 지에 대해 생각해보았습니다.   
 
 - [Spring Data JPA, QueryDsl 사용하여 조회 기능 구현하기](https://320hwany.tistory.com/66)     
   
