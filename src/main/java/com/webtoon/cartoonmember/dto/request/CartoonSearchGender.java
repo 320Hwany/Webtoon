@@ -20,7 +20,7 @@ public class CartoonSearchGender {
     private String gender;
 
     @Builder
-    public CartoonSearchGender(int page, int size, String gender) {
+    private CartoonSearchGender(int page, int size, String gender) {
         this.page = page;
         this.size = size;
         this.gender = gender;

@@ -22,7 +22,7 @@ public class ContentResponse {
     private LocalDate registrationDate;
 
     @Builder
-    public ContentResponse(CartoonResponse cartoonResponse, String subTitle, int episode,
+    private ContentResponse(CartoonResponse cartoonResponse, String subTitle, int episode,
                            double rating, LocalDate registrationDate) {
         this.cartoonResponse = cartoonResponse;
         this.subTitle = subTitle;

@@ -3,6 +3,7 @@ package com.webtoon.comment.domain;
 import com.webtoon.comment.dto.request.CommentUpdate;
 import com.webtoon.content.domain.Content;
 import com.webtoon.member.domain.Member;
+import com.webtoon.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +21,8 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -50,7 +50,7 @@ public class Comment {
     private LocalDateTime lastModifiedDateTime;
 
     @Builder
-    protected Comment(String commentContent, Member member, Content content, long likes,
+    private Comment(String commentContent, Member member, Content content, long likes,
                    LocalDateTime createDateTime, LocalDateTime lastModifiedDateTime) {
         this.commentContent = commentContent;
         this.member = member;

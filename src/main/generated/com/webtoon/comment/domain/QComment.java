@@ -22,6 +22,8 @@ public class QComment extends EntityPathBase<Comment> {
 
     public static final QComment comment = new QComment("comment");
 
+    public final com.webtoon.util.QBaseTimeEntity _super = new com.webtoon.util.QBaseTimeEntity(this);
+
     public final StringPath commentContent = createString("commentContent");
 
     public final com.webtoon.content.domain.QContent content;

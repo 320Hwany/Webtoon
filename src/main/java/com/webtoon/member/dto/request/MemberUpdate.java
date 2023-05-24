@@ -1,9 +1,6 @@
 package com.webtoon.member.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
@@ -14,9 +11,7 @@ import java.time.LocalDate;
 import static com.webtoon.util.constant.ConstantValid.*;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberUpdate {
 
     @NotBlank(message = NICKNAME_VALID_MESSAGE)
@@ -30,4 +25,12 @@ public class MemberUpdate {
 
     @DateTimeFormat(pattern = YEAR_MONTH_DAY)
     private LocalDate birthDate;
+
+    @Builder
+    private MemberUpdate(String nickname, String email, String password, LocalDate birthDate) {
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.birthDate = birthDate;
+    }
 }

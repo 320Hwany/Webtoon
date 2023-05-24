@@ -22,7 +22,7 @@ public class EpisodeGet {
     private int contentEpisode;
 
     @Builder
-    public EpisodeGet(int page, int size, Long cartoonId, int contentEpisode) {
+    private EpisodeGet(int page, int size, Long cartoonId, int contentEpisode) {
         this.page = page;
         this.size = size;
         this.cartoonId = cartoonId;

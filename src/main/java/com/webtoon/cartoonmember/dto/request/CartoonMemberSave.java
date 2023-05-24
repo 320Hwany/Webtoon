@@ -10,7 +10,7 @@ public class CartoonMemberSave {
     private Long memberId;
 
     @Builder
-    public CartoonMemberSave(Long cartoonId, Long memberId) {
+    private CartoonMemberSave(Long cartoonId, Long memberId) {
         this.cartoonId = cartoonId;
         this.memberId = memberId;
     }

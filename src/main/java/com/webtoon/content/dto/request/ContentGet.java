@@ -19,7 +19,7 @@ public class ContentGet {
     private Long cartoonId;
 
     @Builder
-    public ContentGet(int page, int size, Long cartoonId) {
+    private ContentGet(int page, int size, Long cartoonId) {
         this.page = page;
         this.size = size;
         this.cartoonId = cartoonId;

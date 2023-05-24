@@ -1,17 +1,18 @@
 package com.webtoon.author.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthorListResult<T> {
 
     private long count;
 
     private T authorResponseList;
+
+    @Builder
+    public AuthorListResult(long count, T authorResponseList) {
+        this.count = count;
+        this.authorResponseList = authorResponseList;
+    }
 }

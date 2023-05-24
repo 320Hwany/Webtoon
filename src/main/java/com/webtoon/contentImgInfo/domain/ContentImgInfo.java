@@ -41,7 +41,7 @@ public class ContentImgInfo extends BaseTimeEntity {
     private Content content;
 
     @Builder
-    protected ContentImgInfo(String imgName, Content content) {
+    private ContentImgInfo(String imgName, Content content) {
         this.imgName = imgName;
         this.content = content;
     }

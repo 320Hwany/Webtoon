@@ -85,7 +85,7 @@ public class CartoonMemberService {
         if (likesMap.containsKey(cartoonId)) {
             return likesMap.get(cartoonId);
         }
-        return ZERO_OF_TYPE_LONG;
+        return cartoonRepository.getById(cartoonId).getLikes();
     }
 
     @Transactional

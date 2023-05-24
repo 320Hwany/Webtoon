@@ -17,7 +17,7 @@ public class ContentUpdateSet {
     private ContentUpdate contentUpdate;
 
     @Builder
-    public ContentUpdateSet(AuthorSession authorSession, Long cartoonId,
+    private ContentUpdateSet(AuthorSession authorSession, Long cartoonId,
                             int contentEpisode, ContentUpdate contentUpdate) {
         this.authorSession = authorSession;
         this.cartoonId = cartoonId;

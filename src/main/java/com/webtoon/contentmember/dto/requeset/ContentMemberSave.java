@@ -11,7 +11,7 @@ public class ContentMemberSave {
     private Long memberId;
 
     @Builder
-    public ContentMemberSave(Long contentId, Long memberId) {
+    private ContentMemberSave(Long contentId, Long memberId) {
         this.contentId = contentId;
         this.memberId = memberId;
     }

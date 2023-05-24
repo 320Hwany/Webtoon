@@ -2,6 +2,7 @@ package com.webtoon.cartoon.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.webtoon.author.domain.QAuthor;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.domain.CartoonSearch;
 import com.webtoon.cartoon.domain.QCartoon;
@@ -16,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.webtoon.author.domain.QAuthor.author;
 import static com.webtoon.cartoon.domain.QCartoon.cartoon;
@@ -50,6 +50,7 @@ public class CartoonRepositoryImpl implements CartoonRepository {
 
     @Override
     public List<Cartoon> findAllByCartoonCondOrderByLikes(CartoonSearch cartoonSearch) {
+
         return jpaQueryFactory
                 .selectFrom(cartoon)
                 .leftJoin(cartoon.author, author)

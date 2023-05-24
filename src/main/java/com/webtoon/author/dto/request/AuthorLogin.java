@@ -1,6 +1,7 @@
 package com.webtoon.author.dto.request;
 
 import com.webtoon.util.constant.ConstantValid;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import static com.webtoon.util.constant.ConstantValid.*;
 
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthorLogin {
 
     @Email(message = EMAIL_VALID_MESSAGE)
@@ -22,7 +23,7 @@ public class AuthorLogin {
     private String password;
 
     @Builder
-    public AuthorLogin(String email, String password) {
+    private AuthorLogin(String email, String password) {
         this.email = email;
         this.password = password;
     }

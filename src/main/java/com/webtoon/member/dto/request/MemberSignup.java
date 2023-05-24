@@ -2,10 +2,7 @@ package com.webtoon.member.dto.request;
 
 import com.webtoon.member.domain.Member;
 import com.webtoon.util.enumerated.Gender;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,7 +15,7 @@ import static com.webtoon.util.constant.ConstantCommon.ZERO_OF_TYPE_LONG;
 import static com.webtoon.util.constant.ConstantValid.*;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberSignup {
 
     @NotBlank(message = NICKNAME_VALID_MESSAGE)
@@ -36,7 +33,7 @@ public class MemberSignup {
     private String gender;
 
     @Builder
-    public MemberSignup(String nickname, String email, String password, LocalDate birthDate, String gender) {
+    private MemberSignup(String nickname, String email, String password, LocalDate birthDate, String gender) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;

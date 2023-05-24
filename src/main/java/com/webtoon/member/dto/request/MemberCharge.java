@@ -14,7 +14,7 @@ public class MemberCharge {
     private long chargeAmount;
 
     @Builder
-    public MemberCharge(long chargeAmount) {
+    private MemberCharge(long chargeAmount) {
         this.chargeAmount = chargeAmount;
     }
 }

@@ -41,7 +41,7 @@ public class Content extends BaseTimeEntity {
     private double rating;
 
     @Builder
-    protected Content(Cartoon cartoon, String subTitle, int episode, double rating,
+    private Content(Cartoon cartoon, String subTitle, int episode, double rating,
                    LocalDate registrationDate) {
         this.cartoon = cartoon;
         this.subTitle = subTitle;

@@ -25,7 +25,7 @@ public class MemberSession implements Serializable {
     private String password;
 
     @Builder
-    protected MemberSession(Long id, String nickname, String email, String password) {
+    private MemberSession(Long id, String nickname, String email, String password) {
         this.id = id;
         this.nickname = nickname;
         this.email = email;

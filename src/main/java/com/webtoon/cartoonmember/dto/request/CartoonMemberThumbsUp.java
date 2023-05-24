@@ -10,7 +10,7 @@ public class CartoonMemberThumbsUp {
     private Long memberId;
 
     @Builder
-    public CartoonMemberThumbsUp(Long cartoonId, Long memberId) {
+    private CartoonMemberThumbsUp(Long cartoonId, Long memberId) {
         this.cartoonId = cartoonId;
         this.memberId = memberId;
     }

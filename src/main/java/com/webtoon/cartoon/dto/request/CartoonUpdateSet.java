@@ -17,7 +17,7 @@ public class CartoonUpdateSet {
     private Long cartoonId;
 
     @Builder
-    public CartoonUpdateSet(AuthorSession authorSession, CartoonUpdate cartoonUpdate, Long cartoonId) {
+    private CartoonUpdateSet(AuthorSession authorSession, CartoonUpdate cartoonUpdate, Long cartoonId) {
         this.authorSession = authorSession;
         this.cartoonUpdate = cartoonUpdate;
         this.cartoonId = cartoonId;

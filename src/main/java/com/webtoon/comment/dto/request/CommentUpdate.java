@@ -14,7 +14,7 @@ public class CommentUpdate {
     private String commentContent;
 
     @Builder
-    public CommentUpdate(String commentContent) {
+    private CommentUpdate(String commentContent) {
         this.commentContent = commentContent;
     }
 }

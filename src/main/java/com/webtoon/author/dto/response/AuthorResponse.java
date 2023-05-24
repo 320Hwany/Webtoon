@@ -4,23 +4,24 @@ import com.webtoon.author.domain.Author;
 import com.webtoon.author.domain.AuthorSession;
 import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.cartoon.dto.response.CartoonResponse;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthorResponse {
 
     private String nickname;
     private String email;
+
+    @Builder
+    private AuthorResponse(String nickname, String email) {
+        this.nickname = nickname;
+        this.email = email;
+    }
 
     public static AuthorResponse getFromAuthorSession(AuthorSession authorSession) {
         return AuthorResponse.builder()

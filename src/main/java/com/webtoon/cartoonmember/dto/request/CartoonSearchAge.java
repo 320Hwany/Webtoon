@@ -24,7 +24,7 @@ public class CartoonSearchAge {
     private long ageRange;
 
     @Builder
-    public CartoonSearchAge(int page, int size, long ageRange) {
+    private CartoonSearchAge(int page, int size, long ageRange) {
         this.page = page;
         this.size = size;
         this.ageRange = ageRange;

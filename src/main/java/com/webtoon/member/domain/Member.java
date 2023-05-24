@@ -45,7 +45,7 @@ public class Member extends BaseTimeEntity {
     private long coin;
 
     @Builder
-    protected Member(String nickname, String email, String password, LocalDate birthDate, Gender gender, long coin) {
+    private Member(String nickname, String email, String password, LocalDate birthDate, Gender gender, long coin) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;

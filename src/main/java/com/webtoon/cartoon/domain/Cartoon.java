@@ -51,7 +51,7 @@ public class Cartoon extends BaseTimeEntity {
     private long likes;
 
     @Builder
-    protected Cartoon(String title, Author author, DayOfTheWeek dayOfTheWeek, Progress progress,
+    private Cartoon(String title, Author author, DayOfTheWeek dayOfTheWeek, Progress progress,
                    Genre genre, double rating, long likes) {
         this.title = title;
         this.author = author;

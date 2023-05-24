@@ -17,7 +17,7 @@ public class ContentSaveSet {
     private ContentSave contentSave;
 
     @Builder
-    public ContentSaveSet(AuthorSession authorSession, Long cartoonId, ContentSave contentSave) {
+    private ContentSaveSet(AuthorSession authorSession, Long cartoonId, ContentSave contentSave) {
         this.authorSession = authorSession;
         this.cartoonId = cartoonId;
         this.contentSave = contentSave;

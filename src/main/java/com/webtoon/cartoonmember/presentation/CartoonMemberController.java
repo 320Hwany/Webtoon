@@ -70,7 +70,6 @@ public class CartoonMemberController {
     @GetMapping("/cartoonMember/ageRange")
     public ResponseEntity<CartoonListResult> findAllByMemberAge(
             @ModelAttribute @Valid CartoonSearchAge cartoonSearchAge, BindingResult bindingResult) {
-
         BindingException.validate(bindingResult);
         List<CartoonCore> cartoonCoreList = cartoonMemberService.findAllByMemberAge(cartoonSearchAge);
         return ResponseEntity.ok(new CartoonListResult(cartoonCoreList.size(), cartoonCoreList));

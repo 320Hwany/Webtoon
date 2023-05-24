@@ -18,7 +18,7 @@ public class CommentUpdateSet {
     private CommentUpdate commentUpdate;
 
     @Builder
-    public CommentUpdateSet(Long memberSessionId, Long commentId, CommentUpdate commentUpdate) {
+    private CommentUpdateSet(Long memberSessionId, Long commentId, CommentUpdate commentUpdate) {
         this.memberSessionId = memberSessionId;
         this.commentId = commentId;
         this.commentUpdate = commentUpdate;

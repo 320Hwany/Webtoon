@@ -12,7 +12,7 @@ public class EpisodeGetSet {
     private int contentEpisode;
 
     @Builder
-    public EpisodeGetSet(Long memberSessionId, Long cartoonId, int contentEpisode) {
+    private EpisodeGetSet(Long memberSessionId, Long cartoonId, int contentEpisode) {
         this.memberSessionId = memberSessionId;
         this.cartoonId = cartoonId;
         this.contentEpisode = contentEpisode;

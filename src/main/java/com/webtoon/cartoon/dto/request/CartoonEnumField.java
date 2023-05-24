@@ -1,11 +1,12 @@
 package com.webtoon.cartoon.dto.request;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartoonEnumField {
 
     private String dayOfTheWeek;
@@ -15,7 +16,7 @@ public class CartoonEnumField {
     private String genre;
 
     @Builder
-    public CartoonEnumField(String dayOfTheWeek, String progress, String genre) {
+    private CartoonEnumField(String dayOfTheWeek, String progress, String genre) {
         this.dayOfTheWeek = dayOfTheWeek;
         this.progress = progress;
         this.genre = genre;

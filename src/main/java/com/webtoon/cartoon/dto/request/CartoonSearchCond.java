@@ -13,7 +13,7 @@ import static com.webtoon.util.constant.ConstantValid.PAGE_VALID_MESSAGE;
 
 
 @Getter @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartoonSearchCond {
 
     @Min(value = 1, message = PAGE_VALID_MESSAGE)
@@ -31,7 +31,7 @@ public class CartoonSearchCond {
     private String genre;
 
     @Builder
-    public CartoonSearchCond(int page, String title, String nickname, long ageRange,
+    private CartoonSearchCond(int page, String title, String nickname, long ageRange,
                              String dayOfTheWeek, String progress, String genre) {
         this.page = page;
         this.title = title;

@@ -4,11 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embedded;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
-import java.util.Objects;
 
 import static com.webtoon.util.constant.ConstantCommon.AUTHOR_SESSION;
 
@@ -25,7 +23,7 @@ public class AuthorSession implements Serializable {
     private String password;
 
     @Builder
-    public AuthorSession(Long id, String nickname, String email, String password) {
+    private AuthorSession(Long id, String nickname, String email, String password) {
         this.id = id;
         this.nickname = nickname;
         this.email = email;

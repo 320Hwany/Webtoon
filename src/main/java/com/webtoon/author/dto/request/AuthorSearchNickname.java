@@ -22,7 +22,7 @@ public class AuthorSearchNickname {
     private String nickname;
 
     @Builder
-    public AuthorSearchNickname(int page, int size, String nickname) {
+    private AuthorSearchNickname(int page, int size, String nickname) {
         this.page = page;
         this.size = size;
         this.nickname = nickname;

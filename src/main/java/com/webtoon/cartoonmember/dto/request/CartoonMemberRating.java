@@ -13,7 +13,7 @@ public class CartoonMemberRating {
     private double rating;
 
     @Builder
-    public CartoonMemberRating(Long cartoonId, Long memberId, double rating) {
+    private CartoonMemberRating(Long cartoonId, Long memberId, double rating) {
         this.cartoonId = cartoonId;
         this.memberId = memberId;
         this.rating = rating;

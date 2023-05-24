@@ -5,10 +5,7 @@ import com.webtoon.cartoon.domain.Cartoon;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
@@ -17,9 +14,7 @@ import static com.webtoon.util.constant.ConstantCommon.ZERO_OF_TYPE_LONG;
 import static com.webtoon.util.constant.ConstantValid.CARTOON_TITLE_VALID_MESSAGE;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartoonSave {
 
     @NotBlank(message = CARTOON_TITLE_VALID_MESSAGE)
@@ -30,6 +25,14 @@ public class CartoonSave {
     private String progress;
 
     private String genre;
+
+    @Builder
+    private CartoonSave(String title, String dayOfTheWeek, String progress, String genre) {
+        this.title = title;
+        this.dayOfTheWeek = dayOfTheWeek;
+        this.progress = progress;
+        this.genre = genre;
+    }
 
     public Cartoon toEntity(Author author) {
         Cartoon cartoon = Cartoon.builder()

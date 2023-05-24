@@ -456,7 +456,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /content/253/1 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /content?page=1&amp;size=20&amp;cartoonId=291 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -469,26 +469,29 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 409
+Content-Length: 494
 
 {
-  "cartoonResponse" : {
-    "id" : 253,
-    "title" : "만화 제목",
-    "authorResponse" : {
-      "nickname" : "작가 이름",
-      "email" : "yhwjd99@gmail.com"
+  "count" : 1,
+  "cartoonResponseList" : [ {
+    "cartoonResponse" : {
+      "id" : 291,
+      "title" : "만화 제목",
+      "authorResponse" : {
+        "nickname" : "작가 이름",
+        "email" : "yhwjd99@gmail.com"
+      },
+      "dayOfTheWeek" : "MON",
+      "progress" : "SERIALIZATION",
+      "genre" : "ROMANCE",
+      "rating" : 0.0,
+      "likes" : 0
     },
-    "dayOfTheWeek" : "MON",
-    "progress" : "SERIALIZATION",
-    "genre" : "ROMANCE",
-    "rating" : 0.0,
-    "likes" : 0
-  },
-  "subTitle" : "만화 부제",
-  "episode" : 1,
-  "rating" : 9.8,
-  "registrationDate" : "2023-01-20"
+    "subTitle" : "만화 부제",
+    "episode" : 1,
+    "rating" : 9.8,
+    "registrationDate" : "2023-01-20"
+  } ]
 }</code></pre>
 </div>
 </div>
@@ -498,7 +501,7 @@ Content-Length: 409
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-01-30 15:29:39 +0900
+Last updated 2023-03-29 11:30:07 +0900
 </div>
 </div>
 </body>

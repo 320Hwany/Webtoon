@@ -3,6 +3,7 @@ package com.webtoon.cartoon.domain;
 import com.webtoon.util.enumerated.DayOfTheWeek;
 import com.webtoon.util.enumerated.Genre;
 import com.webtoon.util.enumerated.Progress;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 import static com.webtoon.util.constant.ConstantCommon.PAGE_LIMIT;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartoonSearch {
 
     private final int limit = PAGE_LIMIT;
@@ -26,7 +27,7 @@ public class CartoonSearch {
     private Genre genre;
 
     @Builder
-    public CartoonSearch(Integer page, String title, String nickname, long ageRange,
+    private CartoonSearch(Integer page, String title, String nickname, long ageRange,
                          DayOfTheWeek dayOfTheWeek, Progress progress, Genre genre) {
         this.page = page;
         this.title = title;

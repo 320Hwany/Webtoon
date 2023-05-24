@@ -17,7 +17,7 @@ public class CommentSaveSet {
     private Long contentId;
 
     @Builder
-    public CommentSaveSet(CommentSave commentSave, Long memberSessionId, Long contentId) {
+    private CommentSaveSet(CommentSave commentSave, Long memberSessionId, Long contentId) {
         this.commentSave = commentSave;
         this.memberSessionId = memberSessionId;
         this.contentId = contentId;

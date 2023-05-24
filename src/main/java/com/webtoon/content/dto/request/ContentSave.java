@@ -27,6 +27,13 @@ public class ContentSave {
     @DateTimeFormat(pattern = YEAR_MONTH_DAY)
     private LocalDate registrationDate;
 
+    @Builder
+    private ContentSave(String subTitle, int episode, LocalDate registrationDate) {
+        this.subTitle = subTitle;
+        this.episode = episode;
+        this.registrationDate = registrationDate;
+    }
+
     public Content toEntity(Cartoon cartoon) {
         return Content.builder()
                 .cartoon(cartoon)
@@ -35,12 +42,5 @@ public class ContentSave {
                 .registrationDate(registrationDate)
                 .rating(ZERO_OF_TYPE_DOUBLE)
                 .build();
-    }
-
-    @Builder
-    public ContentSave(String subTitle, int episode, LocalDate registrationDate) {
-        this.subTitle = subTitle;
-        this.episode = episode;
-        this.registrationDate = registrationDate;
     }
 }

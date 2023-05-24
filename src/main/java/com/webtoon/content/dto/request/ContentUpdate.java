@@ -25,7 +25,7 @@ public class ContentUpdate {
     private LocalDate registrationDate;
 
     @Builder
-    public ContentUpdate(String subTitle, int episode, LocalDate registrationDate) {
+    private ContentUpdate(String subTitle, int episode, LocalDate registrationDate) {
         this.subTitle = subTitle;
         this.episode = episode;
         this.registrationDate = registrationDate;

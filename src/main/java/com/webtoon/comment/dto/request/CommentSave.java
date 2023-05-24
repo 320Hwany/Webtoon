@@ -17,7 +17,7 @@ public class CommentSave {
     private String commentContent;
 
     @Builder
-    public CommentSave(String commentContent) {
+    private CommentSave(String commentContent) {
         this.commentContent = commentContent;
     }
 

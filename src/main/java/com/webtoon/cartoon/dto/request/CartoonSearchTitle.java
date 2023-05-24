@@ -21,7 +21,7 @@ public class CartoonSearchTitle {
     private String title;
 
     @Builder
-    public CartoonSearchTitle(int page, int size, String title) {
+    private CartoonSearchTitle(int page, int size, String title) {
         this.page = page;
         this.size = size;
         this.title = title;
